@@ -3,6 +3,7 @@
     package="com.qingxin.medical">
 
     <application
+        android:name=".base.QingXinApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
