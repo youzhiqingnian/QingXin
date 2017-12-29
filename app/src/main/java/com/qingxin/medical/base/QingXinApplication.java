@@ -1,7 +1,9 @@
 package com.qingxin.medical.base;
 
+import com.qingxin.medical.fresco.QingXinFrescoModel;
 import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLDebug;
+import com.vlee78.android.vl.VLModelManager;
 
 /**
  * QingXinApplication
@@ -29,7 +31,8 @@ public class QingXinApplication extends VLApplication {
     @Override
     protected void onConfigModels() {
         super.onConfigModels();
-
+        VLModelManager manager = getModelManager();
+        manager.registerModel(QingXinFrescoModel.class);
     }
 
     @Override

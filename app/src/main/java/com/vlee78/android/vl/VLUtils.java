@@ -58,9 +58,12 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
 import com.vlee78.android.vl.VLAsyncHandler.VLAsyncRes;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
@@ -2091,5 +2094,18 @@ public final class VLUtils {
             }
         }
         return result;
+    }
+
+    /**
+     * 获取缓存文件夹
+     *
+     * @param context 上下文
+     * @return 缓存文件夹
+     */
+    public static File getCacheDir(Context context) {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            return context.getExternalCacheDir();
+        }
+        return context.getCacheDir();
     }
 }
