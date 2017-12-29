@@ -111,10 +111,6 @@ public class VLFragment extends Fragment implements VLMessageManager.VLMessageHa
         VLDebug.logV("Fragment pause : " + mClassName + ".onPause()");
         boolean visible = getUserVisibleHint();
         if (visible) onInvisible();
-        VLUmengStatModel vlUmengStatModel = getVLActivity().getVLUmengStatModel();
-        if (null != vlUmengStatModel) {
-            vlUmengStatModel.onPageEnd(getClass().getSimpleName());
-        }
     }
 
     @Override
@@ -124,11 +120,6 @@ public class VLFragment extends Fragment implements VLMessageManager.VLMessageHa
         VLDebug.logV("Fragment resume : " + mClassName + ".onResume()");
         boolean visible = getUserVisibleHint();
         if (visible) onVisible(false);
-
-        VLUmengStatModel vlUmengStatModel = getVLActivity().getVLUmengStatModel();
-        if (null != vlUmengStatModel) {
-            vlUmengStatModel.onPageStart(getClass().getSimpleName());
-        }
     }
 
     @Override

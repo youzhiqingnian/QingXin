@@ -16,10 +16,8 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Process;
-import android.support.multidex.MultiDex;
 import android.util.DisplayMetrics;
 import android.util.SparseArray;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +65,6 @@ public class VLApplication extends Application implements VLMessageManager.VLMes
 
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        MultiDex.install(this);
     }
 
     @Override

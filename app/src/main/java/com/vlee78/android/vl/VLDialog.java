@@ -9,8 +9,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.i90s.app.frogs.R;
+import com.qingxin.medical.R;
 
 
 public class VLDialog {

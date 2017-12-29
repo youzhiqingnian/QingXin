@@ -29,7 +29,7 @@ public class QingXinApplication extends VLApplication {
     @Override
     protected void onConfigModels() {
         super.onConfigModels();
-        
+
     }
 
     @Override

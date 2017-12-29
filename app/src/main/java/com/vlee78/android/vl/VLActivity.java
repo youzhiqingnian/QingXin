@@ -3,14 +3,14 @@ package com.vlee78.android.vl;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface.OnCancelListener;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class VLActivity extends FragmentActivity implements VLMessageManager.VLMessageHandler {
+public class VLActivity extends AppCompatActivity implements VLMessageManager.VLMessageHandler {
     public enum VLActivityState {
         ActivityInited,
         ActivityCreated,
@@ -251,17 +251,24 @@ public class VLActivity extends FragmentActivity implements VLMessageManager.VLM
         boolean isRequestFocuse = view.requestFocus();
         VLDebug.logD("showKeyboardByIMM=" + isRequestFocuse);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
+        if (null != imm) {
+            imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
+        }
     }
 
     public void hideKeyboardByIMM(View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        if (null != imm) {
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
     }
 
     public void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        if (null != inputManager) {
+            inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
     }
 
     public void showToast(final String msg) {
@@ -466,7 +473,7 @@ public class VLActivity extends FragmentActivity implements VLMessageManager.VLM
         }
     }
 
-    public void showProgressDialog(final String title, final String message, final boolean cancelable, final OnCancelListener cancelListener) {
+    public void showProgressDialog(final String title, final String message, final boolean cancelable, final DialogInterface.OnCancelListener cancelListener) {
         if (mState == VLActivityState.ActivityDestroyed)
             return;
         if (VLUtils.threadInMain()) {
@@ -598,10 +605,6 @@ public class VLActivity extends FragmentActivity implements VLMessageManager.VLM
             ignored.printStackTrace();
         }
         return false;
-    }
-
-    public VLUmengStatModel getVLUmengStatModel() {
-        return null;
     }
 
     public static class ProgressBarState {

@@ -58,13 +58,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-
 import com.vlee78.android.vl.VLAsyncHandler.VLAsyncRes;
-
-import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
@@ -226,7 +222,7 @@ public final class VLUtils {
 
     public static String getBluetoothAddress(Context app) {
         try {
-            BluetoothAdapter m_BluetoothAdapter = null; // Local Bluetooth adapter
+            BluetoothAdapter m_BluetoothAdapter; // Local Bluetooth adapter
             m_BluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             return m_BluetoothAdapter.getAddress();
         } catch (Exception e) {
@@ -244,7 +240,7 @@ public final class VLUtils {
 
     public static String getCombinedDeviceId(Context app) {
         String imei = androidIMEI(app);
-        if (!StringUtils.isBlank(imei)) return imei;
+        if (!TextUtils.isEmpty(imei)) return imei;
         String devIDShort = androidPseudoUniqId();
         String androidId = androidId(app);
         String mac = getMacAddress(app);
@@ -490,14 +486,13 @@ public final class VLUtils {
         if (am == null)
             return false;
 
-        @SuppressWarnings("deprecation")
         List<RunningTaskInfo> runningTaskInfos = am.getRunningTasks(1);
         if (runningTaskInfos == null || runningTaskInfos.size() == 0)
             return false;
 
         String topAppName;
         topAppName = runningTaskInfos.get(0).topActivity.getPackageName();
-        return topAppName != null && !topAppName.contains(context.getPackageName());
+        return !topAppName.contains(context.getPackageName());
 
     }
 
