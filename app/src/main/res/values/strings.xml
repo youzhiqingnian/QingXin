@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">青歆</string>
+
+    <string name="home_index_name">首页</string>
+    <string name="welfare_service">福利社</string>
+    <string name="exclusie_service">专属服务</string>
+    <string name="my">我的</string>
 </resources>

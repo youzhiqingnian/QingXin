@@ -46,4 +46,8 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.google.code.gson:gson:2.6.2'
     implementation files('libs/guava-19.0.jar')
+    compile ('com.alibaba.android:ultraviewpager:1.0.6.1@aar') {
+        transitive = true
+    }
+
 }

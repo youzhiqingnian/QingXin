@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/home_sl_bottom_ic1"
+        android:title="@string/home_index_name" />
+
+    <item
+        android:id="@+id/navigation_welfare_service"
+        android:icon="@drawable/home_sl_bottom_ic1"
+        android:title="@string/welfare_service" />
+
+    <item
+        android:id="@+id/navigation_exclusie_service"
+        android:icon="@drawable/home_sl_bottom_ic1"
+        android:title="@string/exclusie_service" />
+
+
+    <item
+        android:id="@+id/navigation_my"
+        android:icon="@drawable/home_sl_bottom_ic1"
+        android:title="@string/my" />
+</menu>
