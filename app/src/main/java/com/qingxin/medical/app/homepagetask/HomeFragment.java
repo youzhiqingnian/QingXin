@@ -91,6 +91,7 @@ public class HomeFragment extends VLFragment {
         rv_goddess_diary.setLayoutManager(new LinearLayoutManager(getActivity()));
         goddessDiaryAdapter = new HomeGoddessDiaryAdapter(getActivity());
         rv_goddess_diary.setAdapter(goddessDiaryAdapter);
+        rv_goddess_diary.setNestedScrollingEnabled(false);
 
     }
 
