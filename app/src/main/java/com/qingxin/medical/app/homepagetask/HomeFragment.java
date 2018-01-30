@@ -72,7 +72,7 @@ public class HomeFragment extends VLFragment {
     }
 
     private void initView() {
-        tv_city = (TextView) rootVeiw.findViewById(R.id.tv_city);
+        tv_city = rootVeiw.findViewById(R.id.tv_city);
         rv_strict_famous_doctor_institute = rootVeiw.findViewById(R.id.rv_strict_famous_doctor_institute);
         rv_goddess_diary = rootVeiw.findViewById(R.id.rv_goddess_diary);
 
@@ -86,6 +86,7 @@ public class HomeFragment extends VLFragment {
         rv_strict_famous_doctor_institute.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
         mAdapter = new RecyclerGridViewAdapter(getActivity());
         rv_strict_famous_doctor_institute.setAdapter(mAdapter);
+        rv_strict_famous_doctor_institute.setNestedScrollingEnabled(false);
 
 
         rv_goddess_diary.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -105,8 +106,8 @@ public class HomeFragment extends VLFragment {
 
     private void initViewPager() {
 
-        vp_viewpager = (ViewPager) rootVeiw.findViewById(R.id.vp_viewpager);
-        buttonBar = (VLStatedButtonBar) rootVeiw.findViewById(R.id.buttonBar);
+        vp_viewpager = rootVeiw.findViewById(R.id.vp_viewpager);
+        buttonBar = rootVeiw.findViewById(R.id.buttonBar);
 
         initFakeData();
         BannerPagerAdapter mAdapter = new BannerPagerAdapter(getActivity(), viewpagerImageList);

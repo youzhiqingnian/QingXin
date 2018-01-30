@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.widget.indicator.view.CircleImageView;
 import com.qingxin.medical.widget.indicator.view.RoundCornerImageView;
@@ -24,10 +25,9 @@ import java.util.List;
  */
 public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDiaryAdapter.MyViewHolder> {
     private Context context;
-    private List<Integer> height;
     private ItemClickListener itemClickListener;
 
-    public HomeGoddessDiaryAdapter(Context context) {
+    HomeGoddessDiaryAdapter(Context context) {
         this.context = context;
     }
 
@@ -38,8 +38,7 @@ public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDia
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MyViewHolder holder = new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.layout_home_goddess_diary_item, parent, false));
-        return holder;
+        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.layout_home_goddess_diary_item, parent, false));
     }
 
     @Override
@@ -70,32 +69,29 @@ public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDia
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        CircleImageView civ_home_goddess_diary_head;
+        SimpleDraweeView civ_home_goddess_diary_head;
 
         TextView tv_goddess_nickname, tv_cosmetic_diary_intro, tv_cosmetic_name, tv_scan_count, tv_collection_count;
 
         RoundCornerImageView riv_before_cosmetic, riv_after_cosmetic;
 
 
-        public MyViewHolder(final View itemView) {
+        MyViewHolder(final View itemView) {
             super(itemView);
-            civ_home_goddess_diary_head = (CircleImageView) itemView.findViewById(R.id.civ_home_goddess_diary_head);
-            riv_before_cosmetic = (RoundCornerImageView) itemView.findViewById(R.id.riv_before_cosmetic);
-            riv_after_cosmetic = (RoundCornerImageView) itemView.findViewById(R.id.riv_after_cosmetic);
-            tv_goddess_nickname = (TextView) itemView.findViewById(R.id.tv_goddess_nickname);
-            tv_cosmetic_diary_intro = (TextView) itemView.findViewById(R.id.tv_cosmetic_diary_intro);
-            tv_cosmetic_name = (TextView) itemView.findViewById(R.id.tv_cosmetic_name);
-            tv_scan_count = (TextView) itemView.findViewById(R.id.tv_scan_count);
-            tv_collection_count = (TextView) itemView.findViewById(R.id.tv_collection_count);
+            civ_home_goddess_diary_head = itemView.findViewById(R.id.civ_home_goddess_diary_head);
+            riv_before_cosmetic = itemView.findViewById(R.id.riv_before_cosmetic);
+            riv_after_cosmetic = itemView.findViewById(R.id.riv_after_cosmetic);
+            tv_goddess_nickname = itemView.findViewById(R.id.tv_goddess_nickname);
+            tv_cosmetic_diary_intro = itemView.findViewById(R.id.tv_cosmetic_diary_intro);
+            tv_cosmetic_name = itemView.findViewById(R.id.tv_cosmetic_name);
+            tv_scan_count = itemView.findViewById(R.id.tv_scan_count);
+            tv_collection_count = itemView.findViewById(R.id.tv_collection_count);
 
 
             //为item添加普通点击回调
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (itemClickListener != null) {
-                        itemClickListener.onItemClick(itemView, getPosition());
-                    }
+            itemView.setOnClickListener(v -> {
+                if (itemClickListener != null) {
+                    itemClickListener.onItemClick(itemView, getPosition());
                 }
             });
         }

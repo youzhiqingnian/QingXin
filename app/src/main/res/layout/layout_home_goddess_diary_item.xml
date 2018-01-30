@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -8,12 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.qingxin.medical.widget.indicator.view.CircleImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/civ_home_goddess_diary_head"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:scaleType="centerCrop"
-            android:src="@mipmap/girl_head" />
+            android:src="@mipmap/girl_head"
+            app:actualImageScaleType="centerCrop"
+            app:roundAsCircle="true" />
 
         <TextView
             android:id="@+id/tv_goddess_nickname"
@@ -21,6 +24,8 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="9dp"
+            android:layout_marginStart="9dp"
+            android:layout_toEndOf="@+id/civ_home_goddess_diary_head"
             android:layout_toRightOf="@+id/civ_home_goddess_diary_head"
             android:text="在树上唱歌"
             android:textColor="@color/text_color_hint"
@@ -31,11 +36,13 @@
         android:layout_width="match_parent"
         android:layout_height="168dp"
         android:layout_marginTop="12dp"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginEnd="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1">
 
@@ -61,6 +68,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:layout_weight="1">
 
             <com.qingxin.medical.widget.indicator.view.RoundCornerImageView
@@ -80,8 +88,6 @@
                 android:textColor="@color/white"
                 android:textSize="12sp" />
         </RelativeLayout>
-
-
     </LinearLayout>
 
     <TextView
@@ -113,6 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:contentDescription="@string/app_name"
             android:src="@mipmap/scan_logo" />
 
         <TextView
@@ -120,6 +127,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
             android:text="1251"
             android:textColor="@color/text_color_origin_price"
             android:textSize="12sp" />
@@ -129,6 +137,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:contentDescription="@string/app_name"
             android:src="@mipmap/collection_logo" />
 
         <TextView
@@ -136,14 +146,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="6dp"
+            android:layout_marginStart="6dp"
             android:text="1251"
             android:textColor="@color/text_color_origin_price"
             android:textSize="12sp" />
     </LinearLayout>
 
-    <TextView
+    <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/line_color"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:background="@color/line_color" />
 </LinearLayout>
