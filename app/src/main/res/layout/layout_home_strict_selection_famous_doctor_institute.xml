@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_famous_doctor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rl_top_pic"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+
+            <com.qingxin.medical.widget.indicator.view.RoundCornerImageView
+                android:id="@+id/rciv_doctor_intro"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/famous_doctor" />
+
+
+            <ImageView
+                android:id="@+id/iv_doctor_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/btn_play_logo" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_doctor_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_top_pic"
+            android:layout_marginTop="15dp"
+            android:text="成都铜雀台"
+            android:textColor="@color/text_color"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_doctor_intro_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_doctor_name"
+            android:layout_marginTop="8dp"
+            android:text="打造你的专属之美"
+            android:textColor="@color/text_color_origin_price"
+            android:textSize="12sp" />
+    </RelativeLayout>
+
+</LinearLayout>

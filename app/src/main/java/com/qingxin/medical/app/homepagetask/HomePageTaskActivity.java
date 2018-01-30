@@ -140,12 +140,12 @@ public class HomePageTaskActivity extends QingXinActivity implements HomePageTas
         @Override
         public void onStatedButtonBarCreated(VLStatedButtonBar buttonBar) {
             VLStatedButtonBar.VLStatedButton button = new VLStatedButtonBar.VLStatedButton(mContext);
-            button.setStatedButtonDelegate(new MainBottomBarButtonDelegate("首页", R.mipmap.home_page_uncheck_ic, R.mipmap.home_page_check_ic));
+            button.setStatedButtonDelegate(new MainBottomBarButtonDelegate("首页", R.mipmap.home_tab_uncheck, R.mipmap.home_tab_check));
             button.setPadding(VLUtils.dip2px(8), 0, VLUtils.dip2px(8), 0);
             buttonBar.addStatedButton(button);
 
             button = new VLStatedButtonBar.VLStatedButton(mContext);
-            button.setStatedButtonDelegate(new MainBottomBarButtonDelegate("福利社", R.mipmap.home_page_uncheck_ic, R.mipmap.home_page_check_ic));
+            button.setStatedButtonDelegate(new MainBottomBarButtonDelegate("福利社", R.mipmap.welfare_service_tab_uncheck, R.mipmap.welfare_service_tab_check));
             button.setPadding(VLUtils.dip2px(8), 0, VLUtils.dip2px(8), 0);
             buttonBar.addStatedButton(button);
 
@@ -153,12 +153,12 @@ public class HomePageTaskActivity extends QingXinActivity implements HomePageTas
             buttonBar.addStatedView(imageView, (float) 1.3);*/
 
             button = new VLStatedButtonBar.VLStatedButton(mContext);
-            button.setStatedButtonDelegate(new MainBottomBarButtonDelegate("专属服务", R.mipmap.home_page_uncheck_ic, R.mipmap.home_page_check_ic));
+            button.setStatedButtonDelegate(new MainBottomBarButtonDelegate("专属服务", R.mipmap.exclusive_service_tab_uncheck, R.mipmap.exclusive_service_tab_check));
             button.setPadding(VLUtils.dip2px(8), 0, VLUtils.dip2px(8), 0);
             buttonBar.addStatedButton(button);
 
             button = new VLStatedButtonBar.VLStatedButton(mContext);
-            button.setStatedButtonDelegate(new MainBottomBarButtonDelegate("我的", R.mipmap.home_page_uncheck_ic, R.mipmap.home_page_check_ic));
+            button.setStatedButtonDelegate(new MainBottomBarButtonDelegate("我的", R.mipmap.my_tab_uncheck, R.mipmap.my_tab_check));
             button.setPadding(VLUtils.dip2px(8), 0, VLUtils.dip2px(8), 0);
             buttonBar.addStatedButton(button);
         }

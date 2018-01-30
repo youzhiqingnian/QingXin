@@ -4,6 +4,14 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="text_color">#464A4C</color>
+    <color name="light_text_color">#8D8E90</color>
+    <color name="text_color_blue">#3BC5E8</color>
+    <color name="text_color_pink">#F0488F</color>
+    <color name="text_color_hint">#8D8E90</color>
+    <color name="text_color_origin_price">#B2B3B4</color>
+    <color name="line_color">#DFE3E5</color>
+    <color name="gap_color_gray">#ECF0F3</color>
+    <color name="white">#FFFFFF</color>
 
 
 </resources>
