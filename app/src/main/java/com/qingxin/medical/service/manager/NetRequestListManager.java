@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
 import com.qingxin.medical.app.homepagetask.model.HomeBanner;
+import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.HomeProduct;
 import com.qingxin.medical.service.RetrofitHelper;
 import com.qingxin.medical.service.RetrofitService;
@@ -19,6 +20,15 @@ public class NetRequestListManager {
 
     public static Observable<Book> getSearchBooks(Context context,String name, String tag, int start, int count){
         return RetrofitHelper.getInstance(context).getServer().getSearchBooks(name,tag,start,count);
+    }
+
+    /**
+     * 获取首页数据
+     * @param context
+     * @return
+     */
+    public static Observable<HomeBean> getHomeData(Context context){
+        return RetrofitHelper.getInstance(context).getServer().getHomeData();
     }
 
     /**

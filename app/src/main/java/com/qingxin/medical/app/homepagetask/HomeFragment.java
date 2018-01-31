@@ -23,6 +23,7 @@ import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
 import com.qingxin.medical.app.homepagetask.model.HomeBanner;
+import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.HomeProduct;
 import com.qingxin.medical.service.entity.Book;
 import com.vlee78.android.vl.VLFragment;
@@ -60,7 +61,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
     private VLStatedButtonBar buttonBar;
 
-    private AtomicInteger mStep;
+//    private AtomicInteger mStep;
 
     public static final int MAX_STEP = 3;
 
@@ -69,6 +70,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     private HomeBanner mBanner;
     private GoddessDiary mDiary;
     private HomeProduct mProduct;
+    private HomeBean mHomeBean;
 
     private HomePageTaskPresenter mHomePageTaskPresenter;
 
@@ -91,8 +93,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
 
             return;
-        mStep = new AtomicInteger(0);
-        HomePageTaskPresenter mHomePageTaskPresenter = new HomePageTaskPresenter(getActivity(), this);
+        new HomePageTaskPresenter(getActivity(), this);
         if (getView() == null) {
             return;
         }
@@ -100,10 +101,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         initView();
         initListener();
 
-        mPresenter.getBannerList("");
-        mPresenter.getHomeProductList("3", "", "", "y");
-        mPresenter.getGoddessDiaryList("2", "");
-
+        mPresenter.getHomeData();
 
     }
 
@@ -139,12 +137,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
     }
 
-    /*@Override
-    public void onPause() {
-        super.onPause();
-        mPresenter.unsubscribe();
-    }*/
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -156,7 +148,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
      */
     private void setData() {
 
-        List<HomeBanner.ContentBean.ItemsBean> bannerList = mBanner.getContent().getItems();
+        List<HomeBean.ContentBean.BannersBean> bannerList = mHomeBean.getContent().getBanners();
 
         ViewPager vp_viewpager = rootVeiw.findViewById(R.id.vp_viewpager);
         BannerPagerAdapter mAdapter = new BannerPagerAdapter(getActivity(), bannerList);
@@ -180,26 +172,28 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         buttonBar.setStatedButtonBarDelegate(new DotBarDelegate(getActivity(), bannerList.size()));
         vp_viewpager.setCurrentItem(bannerList.size() * 1000);
         buttonBar.setChecked(vp_viewpager.getCurrentItem());
-
-        if (mProduct.getContent().getItems().size() >= 1) {
-            tv_free_program.setText(mProduct.getContent().getItems().get(0).getName());
-            tv_left_product_price.setText(mProduct.getContent().getItems().get(0).getPrice() + getStr(R.string.yuan));
-            tv_left_product_origin_price.setText(getStr(R.string.origin_price) + mProduct.getContent().getItems().get(0).getOld_price() + getStr(R.string.yuan));
-            iv_left_product_cover.setImageURI(Uri.parse(mProduct.getContent().getItems().get(0).getCover()));
+        
+        List<HomeBean.ContentBean.ProductsBean> productList = mHomeBean.getContent().getProducts();
+        
+        if (productList.size() >= 1) {
+            tv_free_program.setText(productList.get(0).getName());
+            tv_left_product_price.setText(productList.get(0).getPrice() + getStr(R.string.yuan));
+            tv_left_product_origin_price.setText(getStr(R.string.origin_price) + productList.get(0).getOld_price() + getStr(R.string.yuan));
+            iv_left_product_cover.setImageURI(Uri.parse(productList.get(0).getCover()));
         }
 
-        if (mProduct.getContent().getItems().size() >= 2) {
-            tv_right_top_program_title.setText(mProduct.getContent().getItems().get(1).getName());
-            tv_right_top_product_price.setText(mProduct.getContent().getItems().get(1).getPrice() + getStr(R.string.yuan));
-            tv_right_top_product_origin_price.setText(getStr(R.string.origin_price) + mProduct.getContent().getItems().get(1).getOld_price() + getStr(R.string.yuan));
-            iv_right_top_product_cover.setImageURI(Uri.parse(mProduct.getContent().getItems().get(1).getCover()));
+        if (productList.size() >= 2) {
+            tv_right_top_program_title.setText(productList.get(1).getName());
+            tv_right_top_product_price.setText(productList.get(1).getPrice() + getStr(R.string.yuan));
+            tv_right_top_product_origin_price.setText(getStr(R.string.origin_price) + productList.get(1).getOld_price() + getStr(R.string.yuan));
+            iv_right_top_product_cover.setImageURI(Uri.parse(productList.get(1).getCover()));
         }
 
-        if (mProduct.getContent().getItems().size() >= 3) {
-            tv_right_bottom_program_title.setText(mProduct.getContent().getItems().get(2).getName());
-            tv_right_bottom_product_price.setText(mProduct.getContent().getItems().get(2).getPrice() + getStr(R.string.yuan));
-            tv_right_bottom_product_origin_price.setText(getStr(R.string.origin_price) + mProduct.getContent().getItems().get(2).getOld_price() + getStr(R.string.yuan));
-            iv_right_bottom_product_cover.setImageURI(Uri.parse(mProduct.getContent().getItems().get(2).getCover()));
+        if (productList.size() >= 3) {
+            tv_right_bottom_program_title.setText(productList.get(2).getName());
+            tv_right_bottom_product_price.setText(productList.get(2).getPrice() + getStr(R.string.yuan));
+            tv_right_bottom_product_origin_price.setText(getStr(R.string.origin_price) + productList.get(2).getOld_price() + getStr(R.string.yuan));
+            iv_right_bottom_product_cover.setImageURI(Uri.parse(productList.get(2).getCover()));
         }
 
 
@@ -213,9 +207,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         rv_strict_famous_doctor_institute.setAdapter(strictSelctionAdapter);
         rv_strict_famous_doctor_institute.setNestedScrollingEnabled(false);
 
-
-        List<GoddessDiary.ContentBean.ItemsBean> diaryList = mDiary.getContent().getItems();
-
+        List<HomeBean.ContentBean.DiarysBean> diaryList = mHomeBean.getContent().getDiarys();
         if (diaryList != null && diaryList.size() > 0) {
             rv_goddess_diary.setLayoutManager(new LinearLayoutManager(getActivity()));
             HomeGoddessDiaryAdapter mGoddessDiaryAdapter = new HomeGoddessDiaryAdapter(getActivity(), diaryList);
@@ -237,35 +229,14 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
     }
 
-    @Override
-    public void onSuccess(HomeBanner banner) {
-        mBanner = banner;
-        mStep.incrementAndGet();
-        Log.i("banner==", mBanner.toString());
-
-        if (MAX_STEP == mStep.get()) {
-            setData();
-        }
-    }
 
     @Override
-    public void onSuccess(GoddessDiary diary) {
-        mDiary = diary;
-        mStep.incrementAndGet();
-        Log.i("女神日记列表==", mDiary.toString());
-        if (MAX_STEP == mStep.get()) {
+    public void onSuccess(HomeBean homeBean) {
+        mHomeBean = homeBean;
+        if(mHomeBean != null && mHomeBean.getCode().equals("200")){
             setData();
         }
-    }
-
-    @Override
-    public void onSuccess(HomeProduct product) {
-        mProduct = product;
-        mStep.incrementAndGet();
-        Log.i("产品列表==", mProduct.toString());
-        if (MAX_STEP == mStep.get()) {
-            setData();
-        }
+        
     }
 
     @Override
@@ -290,10 +261,10 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
     private class BannerPagerAdapter extends PagerAdapter {
 
-        private List<HomeBanner.ContentBean.ItemsBean> mBannerList;
+        private List<HomeBean.ContentBean.BannersBean> mBannerList;
         private Context mContext;
 
-        BannerPagerAdapter(Context context, List<HomeBanner.ContentBean.ItemsBean> bannerList) {
+        BannerPagerAdapter(Context context, List<HomeBean.ContentBean.BannersBean> bannerList) {
             this.mContext = context;
             this.mBannerList = bannerList;
         }

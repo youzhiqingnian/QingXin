@@ -10,15 +10,17 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
+import com.qingxin.medical.app.homepagetask.model.HomeBean;
+
 import java.util.List;
 
 
 public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDiaryAdapter.MyViewHolder> {
     private Context context;
     private ItemClickListener itemClickListener;
-    List<GoddessDiary.ContentBean.ItemsBean> mDiaryList;
+    List<HomeBean.ContentBean.DiarysBean> mDiaryList;
 
-    HomeGoddessDiaryAdapter(Context context, List<GoddessDiary.ContentBean.ItemsBean> diaryList) {
+    HomeGoddessDiaryAdapter(Context context, List<HomeBean.ContentBean.DiarysBean> diaryList) {
         this.context = context;
         this.mDiaryList = diaryList;
     }

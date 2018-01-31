@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
 import com.qingxin.medical.app.homepagetask.model.HomeBanner;
+import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.HomeProduct;
 import com.qingxin.medical.service.entity.Book;
 
@@ -21,6 +22,13 @@ public interface RetrofitService {
     Observable<Book> getSearchBooks(@Query("q") String name,
                                     @Query("tag") String tag, @Query("start") int start,
                                     @Query("count") int count);
+
+    /**
+     * 获取首页数据
+     * @return
+     */
+    @GET("/home")
+    Observable<HomeBean> getHomeData();
 
     /**
      *

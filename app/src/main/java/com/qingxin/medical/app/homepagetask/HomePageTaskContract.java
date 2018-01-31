@@ -4,6 +4,7 @@ import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
 import com.qingxin.medical.app.homepagetask.model.HomeBanner;
+import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.HomeProduct;
 import com.qingxin.medical.service.entity.Book;
 
@@ -17,11 +18,7 @@ public class HomePageTaskContract {
 
         void onSuccess(Book mBook);
 
-        void onSuccess(HomeBanner mBanner);
-
-        void onSuccess(GoddessDiary mDiary);
-
-        void onSuccess(HomeProduct mProduct);
+        void onSuccess(HomeBean homeBean);
 
         void onError(String result);
 
@@ -33,11 +30,7 @@ public class HomePageTaskContract {
 
         void getSearchBooks(String name,String tag,int start,int count);
 
-        void getBannerList(String limit);
-
-        void getGoddessDiaryList(String limit,String skip);
-
-        void getHomeProductList(String limit,String skip,String order,String isvip);
+        void getHomeData();
 
         boolean isDataMissing();
 
