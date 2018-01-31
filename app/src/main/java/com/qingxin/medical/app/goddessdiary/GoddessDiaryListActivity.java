@@ -2,19 +2,39 @@ package com.qingxin.medical.app.goddessdiary;
 
 import android.os.Bundle;
 import android.util.Log;
+
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.widget.indicator.view.RefreshListView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by zhikuo1 on 2018-01-31.
  */
-public class GoddessDiaryListActivity extends QingXinActivity implements GoddessDiaryContract.View{
+public class GoddessDiaryListActivity extends QingXinActivity implements GoddessDiaryContract.View {
 
     private GoddessDiaryContract.Presenter mPresenter;
 
     private GoddessDiary mDiary;
+
+    private String skip = "0";
+
+    private boolean isFirst = true;
+
+    private boolean hasMore = true;
+
+    private String limit = "2";
+
+    private RefreshListView lv_goddess_diary_list;
+
+    private GoddessDiaryListAdapter mAdapter;
+
+    private List<GoddessDiary.ContentBean.ItemsBean> mGoddessDiaryList = new ArrayList<>();
 
 
     @Override
@@ -22,9 +42,10 @@ public class GoddessDiaryListActivity extends QingXinActivity implements Goddess
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goddess_diary_list);
 
-        GoddessDiaryPresenter mGoddessDiaryPresenter = new GoddessDiaryPresenter(this,this);
+        new GoddessDiaryPresenter(this, this);
 
-        mPresenter.getGoddessDiaryList("10","");
+
+        mPresenter.getGoddessDiaryList("2", skip);
 
     }
 
@@ -36,15 +57,61 @@ public class GoddessDiaryListActivity extends QingXinActivity implements Goddess
 
     @Override
     public void onSuccess(GoddessDiary diary) {
+
         mDiary = diary;
-        Log.i("女神日记列表=",mDiary.toString());
-        setData();
+
+        if (skip.equals("0") && mGoddessDiaryList.size() > 0) {
+            mGoddessDiaryList.clear();
+        }
+
+        mGoddessDiaryList.addAll(mDiary.getContent().getItems());
+
+        int count = mDiary.getContent().getCount();
+
+        if (mGoddessDiaryList.size() == count) {
+            hasMore = false;
+        }
+
+        Log.i("女神日记列表=", mDiary.toString());
+
+        if (isFirst) {
+            setData();
+        } else {
+            if (mDiary.getContent().getItems() == null || mDiary.getContent().getItems().size() > 0) {
+                mAdapter.refresh(mGoddessDiaryList);
+            }
+        }
+
+        lv_goddess_diary_list.onRefreshComplete(true);
+
     }
 
     private void setData() {
 
-        RefreshListView lv_goddess_diary_list = findViewById(R.id.lv_goddess_diary_list);
+        lv_goddess_diary_list = findViewById(R.id.lv_goddess_diary_list);
+        mAdapter = new GoddessDiaryListAdapter(this, mDiary.getContent().getItems());
+        lv_goddess_diary_list.setAdapter(mAdapter);
+        isFirst = false;
 
+
+        lv_goddess_diary_list.setOnRefreshListener(new RefreshListView.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                hasMore = true;
+                skip = "0";
+                mPresenter.getGoddessDiaryList(limit, skip);
+            }
+
+            @Override
+            public void onLoadMore() {
+                if (hasMore) {
+                    skip = (Integer.valueOf(skip) + Integer.valueOf(limit)) + "";
+                    mPresenter.getGoddessDiaryList(limit, skip);
+                } else {
+                    lv_goddess_diary_list.onRefreshComplete(true);
+                }
+            }
+        });
     }
 
     @Override

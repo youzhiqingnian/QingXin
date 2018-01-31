@@ -9,6 +9,7 @@
         android:layout_height="match_parent"
         android:divider="@null"
         android:listSelector="@color/transparent"
+        android:dividerHeight="18dp"
         />
 
 </android.support.constraint.ConstraintLayout>
