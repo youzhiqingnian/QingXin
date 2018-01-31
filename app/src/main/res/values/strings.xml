@@ -5,4 +5,18 @@
     <string name="welfare_service">福利社</string>
     <string name="exclusie_service">专属服务</string>
     <string name="my">我的</string>
+
+
+    <!--首页-->
+    <string name="origin_price">原价</string>
+    <string name="yuan">元</string>
+    <string name="home_search_text_hint">大家在搜:自体脂肪填充</string>
+    <string name="share_only_by_new_person">歆人专享</string>
+    <string name="goddess_diary">女神日记</string>
+    <string name="local_strict_selection">本地严选</string>
+    <string name="encyclopedia_of_medical_beauty">医美百科</string>
+    <string name="strict_selection_famous_doctor_institute">严选名医机构</string>
+    <string name="more">更多</string>
+
+
 </resources>

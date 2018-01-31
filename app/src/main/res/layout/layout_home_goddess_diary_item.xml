@@ -46,11 +46,12 @@
             android:layout_marginRight="5dp"
             android:layout_weight="1">
 
-            <com.qingxin.medical.widget.indicator.view.RoundCornerImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/riv_before_cosmetic"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
+                app:roundedCornerRadius="10dp"
                 android:src="@mipmap/before1" />
 
             <TextView
@@ -71,11 +72,12 @@
             android:layout_marginStart="5dp"
             android:layout_weight="1">
 
-            <com.qingxin.medical.widget.indicator.view.RoundCornerImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/riv_after_cosmetic"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
+                app:roundedCornerRadius="10dp"
                 android:src="@mipmap/after2" />
 
             <TextView

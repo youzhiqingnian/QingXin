@@ -1,45 +1,76 @@
 package com.qingxin.medical.app.homepagetask;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
+import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
+import com.qingxin.medical.app.homepagetask.model.HomeBanner;
+import com.qingxin.medical.app.homepagetask.model.HomeProduct;
+import com.qingxin.medical.service.entity.Book;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
-import java.util.ArrayList;
+
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * 首界面
  */
-public class HomeFragment extends VLFragment {
+public class HomeFragment extends VLFragment implements HomePageTaskContract.View, View.OnClickListener {
 
     private View rootVeiw;
 
-    private TextView tv_city;
-    private ViewPager vp_viewpager;
+    private TextView tv_city,
+            tv_free_program,
+            tv_left_product_price,
+            tv_left_product_origin_price,
+            tv_right_top_program_title,
+            tv_right_top_product_price,
+            tv_right_top_product_origin_price,
+            tv_right_bottom_program_title,
+            tv_right_bottom_product_price,
+            tv_right_bottom_product_origin_price;
+
+    private SimpleDraweeView iv_left_product_cover,
+            iv_right_top_product_cover,
+            iv_right_bottom_product_cover;
+
+    private RelativeLayout rl_more_goddess_diary;
+
     private VLStatedButtonBar buttonBar;
-    private RecyclerView rv_strict_famous_doctor_institute,rv_goddess_diary;
 
-    private RecyclerGridViewAdapter mAdapter;
+    private AtomicInteger mStep;
 
-    private HomeGoddessDiaryAdapter goddessDiaryAdapter;
+    public static final int MAX_STEP = 3;
 
-    private RecyclerView.LayoutManager mLayoutManager;
+    private HomePageTaskContract.Presenter mPresenter;
 
+    private HomeBanner mBanner;
+    private GoddessDiary mDiary;
+    private HomeProduct mProduct;
 
-    private List<Integer> viewpagerImageList = new ArrayList<>();
+    private HomePageTaskPresenter mHomePageTaskPresenter;
 
     public HomeFragment() {
     }
@@ -58,42 +89,48 @@ public class HomeFragment extends VLFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
+
             return;
+        mStep = new AtomicInteger(0);
+        HomePageTaskPresenter mHomePageTaskPresenter = new HomePageTaskPresenter(getActivity(), this);
         if (getView() == null) {
             return;
         }
-
         rootVeiw = getView();
-
         initView();
+        initListener();
 
-        initViewPager();
+        mPresenter.getBannerList("");
+        mPresenter.getHomeProductList("3", "", "", "y");
+        mPresenter.getGoddessDiaryList("2", "");
+
 
     }
 
     private void initView() {
         tv_city = rootVeiw.findViewById(R.id.tv_city);
-        rv_strict_famous_doctor_institute = rootVeiw.findViewById(R.id.rv_strict_famous_doctor_institute);
-        rv_goddess_diary = rootVeiw.findViewById(R.id.rv_goddess_diary);
+        tv_free_program = rootVeiw.findViewById(R.id.tv_free_program);
+        tv_left_product_price = rootVeiw.findViewById(R.id.tv_left_product_price);
+        tv_left_product_origin_price = rootVeiw.findViewById(R.id.tv_left_product_origin_price);
+        tv_right_top_program_title = rootVeiw.findViewById(R.id.tv_right_top_program_title);
+        tv_right_top_product_price = rootVeiw.findViewById(R.id.tv_right_top_product_price);
+        tv_right_top_product_origin_price = rootVeiw.findViewById(R.id.tv_right_top_product_origin_price);
+        tv_right_bottom_program_title = rootVeiw.findViewById(R.id.tv_right_bottom_program_title);
+        tv_right_bottom_product_price = rootVeiw.findViewById(R.id.tv_right_bottom_product_price);
+        tv_right_bottom_product_origin_price = rootVeiw.findViewById(R.id.tv_right_bottom_product_origin_price);
 
-        initRecyclerView();
+        iv_left_product_cover = rootVeiw.findViewById(R.id.iv_left_product_cover);
+        iv_right_top_product_cover = rootVeiw.findViewById(R.id.iv_right_top_product_cover);
+        iv_right_bottom_product_cover = rootVeiw.findViewById(R.id.iv_right_bottom_product_cover);
 
+        rl_more_goddess_diary = rootVeiw.findViewById(R.id.rl_more_goddess_diary);
+
+        buttonBar = rootVeiw.findViewById(R.id.buttonBar);
     }
 
-    private void initRecyclerView() {
-        mLayoutManager = new GridLayoutManager(getActivity(), 2);
-        rv_strict_famous_doctor_institute.setLayoutManager(mLayoutManager);
-        rv_strict_famous_doctor_institute.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
-        mAdapter = new RecyclerGridViewAdapter(getActivity());
-        rv_strict_famous_doctor_institute.setAdapter(mAdapter);
-        rv_strict_famous_doctor_institute.setNestedScrollingEnabled(false);
 
-
-        rv_goddess_diary.setLayoutManager(new LinearLayoutManager(getActivity()));
-        goddessDiaryAdapter = new HomeGoddessDiaryAdapter(getActivity());
-        rv_goddess_diary.setAdapter(goddessDiaryAdapter);
-        rv_goddess_diary.setNestedScrollingEnabled(false);
-
+    private void initListener() {
+        rl_more_goddess_diary.setOnClickListener(this);
     }
 
     @Override
@@ -102,15 +139,27 @@ public class HomeFragment extends VLFragment {
 
     }
 
+    /*@Override
+    public void onPause() {
+        super.onPause();
+        mPresenter.unsubscribe();
+    }*/
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.unsubscribe();
+    }
 
-    private void initViewPager() {
+    /**
+     * 填充数据
+     */
+    private void setData() {
 
-        vp_viewpager = rootVeiw.findViewById(R.id.vp_viewpager);
-        buttonBar = rootVeiw.findViewById(R.id.buttonBar);
+        List<HomeBanner.ContentBean.ItemsBean> bannerList = mBanner.getContent().getItems();
 
-        initFakeData();
-        BannerPagerAdapter mAdapter = new BannerPagerAdapter(getActivity(), viewpagerImageList);
+        ViewPager vp_viewpager = rootVeiw.findViewById(R.id.vp_viewpager);
+        BannerPagerAdapter mAdapter = new BannerPagerAdapter(getActivity(), bannerList);
         vp_viewpager.setAdapter(mAdapter);
 
         vp_viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -128,36 +177,130 @@ public class HomeFragment extends VLFragment {
 
             }
         });
-        buttonBar.setStatedButtonBarDelegate(new DotBarDelegate(getActivity(), viewpagerImageList.size()));
-        vp_viewpager.setCurrentItem(viewpagerImageList.size() * 1000);
+        buttonBar.setStatedButtonBarDelegate(new DotBarDelegate(getActivity(), bannerList.size()));
+        vp_viewpager.setCurrentItem(bannerList.size() * 1000);
         buttonBar.setChecked(vp_viewpager.getCurrentItem());
+
+        if (mProduct.getContent().getItems().size() >= 1) {
+            tv_free_program.setText(mProduct.getContent().getItems().get(0).getName());
+            tv_left_product_price.setText(mProduct.getContent().getItems().get(0).getPrice() + getStr(R.string.yuan));
+            tv_left_product_origin_price.setText(getStr(R.string.origin_price) + mProduct.getContent().getItems().get(0).getOld_price() + getStr(R.string.yuan));
+            iv_left_product_cover.setImageURI(Uri.parse(mProduct.getContent().getItems().get(0).getCover()));
+        }
+
+        if (mProduct.getContent().getItems().size() >= 2) {
+            tv_right_top_program_title.setText(mProduct.getContent().getItems().get(1).getName());
+            tv_right_top_product_price.setText(mProduct.getContent().getItems().get(1).getPrice() + getStr(R.string.yuan));
+            tv_right_top_product_origin_price.setText(getStr(R.string.origin_price) + mProduct.getContent().getItems().get(1).getOld_price() + getStr(R.string.yuan));
+            iv_right_top_product_cover.setImageURI(Uri.parse(mProduct.getContent().getItems().get(1).getCover()));
+        }
+
+        if (mProduct.getContent().getItems().size() >= 3) {
+            tv_right_bottom_program_title.setText(mProduct.getContent().getItems().get(2).getName());
+            tv_right_bottom_product_price.setText(mProduct.getContent().getItems().get(2).getPrice() + getStr(R.string.yuan));
+            tv_right_bottom_product_origin_price.setText(getStr(R.string.origin_price) + mProduct.getContent().getItems().get(2).getOld_price() + getStr(R.string.yuan));
+            iv_right_bottom_product_cover.setImageURI(Uri.parse(mProduct.getContent().getItems().get(2).getCover()));
+        }
+
+
+        RecyclerView rv_strict_famous_doctor_institute = rootVeiw.findViewById(R.id.rv_strict_famous_doctor_institute);
+        RecyclerView rv_goddess_diary = rootVeiw.findViewById(R.id.rv_goddess_diary);
+
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+        rv_strict_famous_doctor_institute.setLayoutManager(mLayoutManager);
+        rv_strict_famous_doctor_institute.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
+        RecyclerGridViewAdapter strictSelctionAdapter = new RecyclerGridViewAdapter(getActivity());
+        rv_strict_famous_doctor_institute.setAdapter(strictSelctionAdapter);
+        rv_strict_famous_doctor_institute.setNestedScrollingEnabled(false);
+
+
+        List<GoddessDiary.ContentBean.ItemsBean> diaryList = mDiary.getContent().getItems();
+
+        if (diaryList != null && diaryList.size() > 0) {
+            rv_goddess_diary.setLayoutManager(new LinearLayoutManager(getActivity()));
+            HomeGoddessDiaryAdapter mGoddessDiaryAdapter = new HomeGoddessDiaryAdapter(getActivity(), diaryList);
+            rv_goddess_diary.setAdapter(mGoddessDiaryAdapter);
+            rv_goddess_diary.setNestedScrollingEnabled(false);
+        }
+
 
     }
 
-    private void initFakeData() {
+    @Override
+    public void setPresenter(HomePageTaskContract.Presenter presenter) {
+        mPresenter = checkNotNull(presenter);
+        mPresenter.subscribe();
+    }
 
-        viewpagerImageList.add(R.mipmap.image1);
-        viewpagerImageList.add(R.mipmap.image2);
-        viewpagerImageList.add(R.mipmap.image3);
-        viewpagerImageList.add(R.mipmap.image4);
-        viewpagerImageList.add(R.mipmap.image5);
+    @Override
+    public void onSuccess(Book mBook) {
 
+    }
+
+    @Override
+    public void onSuccess(HomeBanner banner) {
+        mBanner = banner;
+        mStep.incrementAndGet();
+        Log.i("banner==", mBanner.toString());
+
+        if (MAX_STEP == mStep.get()) {
+            setData();
+        }
+    }
+
+    @Override
+    public void onSuccess(GoddessDiary diary) {
+        mDiary = diary;
+        mStep.incrementAndGet();
+        Log.i("女神日记列表==", mDiary.toString());
+        if (MAX_STEP == mStep.get()) {
+            setData();
+        }
+    }
+
+    @Override
+    public void onSuccess(HomeProduct product) {
+        mProduct = product;
+        mStep.incrementAndGet();
+        Log.i("产品列表==", mProduct.toString());
+        if (MAX_STEP == mStep.get()) {
+            setData();
+        }
+    }
+
+    @Override
+    public void onError(String result) {
+
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+
+            case R.id.rl_more_goddess_diary:
+
+                Intent intent = new Intent(getActivity(), GoddessDiaryListActivity.class);
+                startActivity(intent);
+
+                break;
+
+        }
     }
 
 
     private class BannerPagerAdapter extends PagerAdapter {
 
-        private List<Integer> mHomePageRowCells;
+        private List<HomeBanner.ContentBean.ItemsBean> mBannerList;
         private Context mContext;
 
-        BannerPagerAdapter(Context context, List<Integer> homePageRowCells) {
+        BannerPagerAdapter(Context context, List<HomeBanner.ContentBean.ItemsBean> bannerList) {
             this.mContext = context;
-            this.mHomePageRowCells = homePageRowCells;
+            this.mBannerList = bannerList;
         }
 
         @Override
         public int getCount() {
-            return mHomePageRowCells.size() <= 1 ? mHomePageRowCells.size() : Short.MAX_VALUE;
+            return mBannerList.size() <= 1 ? mBannerList.size() : Short.MAX_VALUE;
         }
 
         @Override
@@ -168,8 +311,8 @@ public class HomeFragment extends VLFragment {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             View view = LayoutInflater.from(mContext).inflate(R.layout.layout_viewpager, container, false);
-            ImageView iv_viewpager_img = (ImageView) view.findViewById(R.id.iv_viewpager_img);
-            iv_viewpager_img.setImageResource(mHomePageRowCells.get(position % mHomePageRowCells.size()));
+            SimpleDraweeView iv_viewpager_img = view.findViewById(R.id.iv_viewpager_img);
+            iv_viewpager_img.setImageURI(Uri.parse(mBannerList.get(position % mBannerList.size()).getCover()));
             container.addView(view);
             return view;
         }
@@ -194,7 +337,7 @@ public class HomeFragment extends VLFragment {
         public void onStatedButtonBarCreated(VLStatedButtonBar buttonBar) {
             for (int i = 0; i < mCount; i++) {
                 VLStatedButtonBar.VLStatedButton button = new VLStatedButtonBar.VLStatedButton(mContext);
-                button.setStatedButtonDelegate(new DotButtonDelegate(mContext, R.mipmap.vp_unselected, R.mipmap.vp_selected));
+                button.setStatedButtonDelegate(new DotButtonDelegate(mContext, R.drawable.banner_unselected_circle_point, R.drawable.banner_selected_point));
                 buttonBar.addStatedButton(button);
             }
         }
@@ -233,9 +376,7 @@ public class HomeFragment extends VLFragment {
     }
 
     /**
-     * @author
-     * @Date 2016年8月29日
-     * @describe RecyclerView Item间距
+     * gridveiw item之间的间距
      */
     public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -243,7 +384,7 @@ public class HomeFragment extends VLFragment {
         private int spacing;
         private boolean includeEdge;
 
-        public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+        GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
             this.spanCount = spanCount;
             this.spacing = spacing;
             this.includeEdge = includeEdge;
@@ -271,5 +412,6 @@ public class HomeFragment extends VLFragment {
             }
         }
     }
+
 
 }

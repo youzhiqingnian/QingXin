@@ -1,34 +1,26 @@
 package com.qingxin.medical.app.homepagetask;
 
-/**
- * Created by user on 2018-01-30.
- */
-
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
-import com.qingxin.medical.widget.indicator.view.CircleImageView;
-import com.qingxin.medical.widget.indicator.view.RoundCornerImageView;
-
-import java.util.ArrayList;
+import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
 import java.util.List;
 
-/**
- * Created by w_x on 2016/6/17.
- * 设置RecyclerView的适配器
- */
+
 public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDiaryAdapter.MyViewHolder> {
     private Context context;
     private ItemClickListener itemClickListener;
+    List<GoddessDiary.ContentBean.ItemsBean> mDiaryList;
 
-    HomeGoddessDiaryAdapter(Context context) {
+    HomeGoddessDiaryAdapter(Context context, List<GoddessDiary.ContentBean.ItemsBean> diaryList) {
         this.context = context;
+        this.mDiaryList = diaryList;
     }
 
     public void setItemClickListener(ItemClickListener itemClickListener) {
@@ -46,25 +38,24 @@ public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDia
         /**
          * 得到item的LayoutParams布局参数
          */
-//        ViewGroup.LayoutParams params = holder.itemView.getLayoutParams();
-//        params.height = height.get(position);//把随机的高度赋予item布局
-//        holder.itemView.setLayoutParams(params);//把params设置item布局
 
-//        holder.textView.setText(list.get(position));//为控件绑定数据
-//        //为TextView添加监听回调
-//        holder.textView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (itemClickListener != null) {
-//                    itemClickListener.onItemSubViewClick(holder.textView, position);
-//                }
-//            }
-//        });
+        if(mDiaryList.get(position).getMem() != null){
+            holder.civ_home_goddess_diary_head.setImageURI(Uri.parse(mDiaryList.get(position).getMem().getCover()));
+            holder.tv_goddess_nickname.setText(mDiaryList.get(position).getMem().getName());
+        }
+
+
+
+        holder.riv_before_cosmetic.setImageURI(Uri.parse(mDiaryList.get(position).getOper_before_photo()));
+        holder.riv_after_cosmetic.setImageURI(Uri.parse(mDiaryList.get(position).getOper_after_photo()));
+        holder.tv_cosmetic_diary_intro.setText(mDiaryList.get(position).getSummary());
+        holder.tv_cosmetic_name.setText(mDiaryList.get(position).getTags());
+
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return mDiaryList.size();
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
@@ -73,7 +64,7 @@ public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDia
 
         TextView tv_goddess_nickname, tv_cosmetic_diary_intro, tv_cosmetic_name, tv_scan_count, tv_collection_count;
 
-        RoundCornerImageView riv_before_cosmetic, riv_after_cosmetic;
+        SimpleDraweeView riv_before_cosmetic, riv_after_cosmetic;
 
 
         MyViewHolder(final View itemView) {

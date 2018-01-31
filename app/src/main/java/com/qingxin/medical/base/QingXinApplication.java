@@ -1,5 +1,7 @@
 package com.qingxin.medical.base;
 
+import android.os.Handler;
+
 import com.qingxin.medical.fresco.QingXinFrescoModel;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.vlee78.android.vl.VLApplication;
@@ -15,6 +17,8 @@ public class QingXinApplication extends VLApplication {
 
     private static volatile QingXinApplication instance;
 
+    private Handler mMainThreadHandler = null;
+
     /**
      * 获取当前应用单例
      */
@@ -27,6 +31,9 @@ public class QingXinApplication extends VLApplication {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        mMainThreadHandler = new Handler();
+
     }
 
     @Override
@@ -42,4 +49,9 @@ public class QingXinApplication extends VLApplication {
         super.onConfigLogger();
         VLDebug.configDebug(this, (appIsDebug() ? VLDebug.VLLogLevel.Debug : VLDebug.VLLogLevel.Error), 24 * 60 * 60 * 1000, 3 * 24 * 60 * 60 * 1000);
     }
+
+    public Handler getmMainThreadHandler() {
+        return mMainThreadHandler;
+    }
+
 }

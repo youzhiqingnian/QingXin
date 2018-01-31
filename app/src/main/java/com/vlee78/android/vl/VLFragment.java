@@ -318,4 +318,8 @@ public class VLFragment extends Fragment implements VLMessageManager.VLMessageHa
     public Context getContext() {
         return getVLActivity();
     }
+
+    public String getStr(int resource){
+        return getActivity().getResources().getString(resource);
+    }
 }

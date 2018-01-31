@@ -33,6 +33,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
@@ -59,6 +60,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.qingxin.medical.base.QingXinApplication;
 import com.vlee78.android.vl.VLAsyncHandler.VLAsyncRes;
 
 import org.json.JSONArray;
@@ -112,6 +114,20 @@ public final class VLUtils {
 
     public static int getPageCount(int count, int pageSize) {
         return (count - 1) / pageSize + 1;
+    }
+
+    /**
+     * 获取主线程的handler
+     */
+    public static Handler getHandler() {
+        return QingXinApplication.getInstance().getmMainThreadHandler();
+    }
+
+    /**
+     * 延时在主线程执行runnable
+     */
+    public static boolean postDelayed(Runnable runnable, long delayMillis) {
+        return getHandler().postDelayed(runnable, delayMillis);
     }
 
     public static int pageSize(int count, int pageSize, int pageIndex) {

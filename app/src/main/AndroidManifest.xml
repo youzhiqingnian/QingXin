@@ -21,14 +21,22 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".app.homepagetask.HomePageTaskActivity">
+        android:theme="@style/AppBaseTheme">
+        <activity android:name=".app.homepagetask.HomePageTaskActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--女神日记列表-->
+        <activity
+            android:name=".app.goddessdiary.GoddessDiaryListActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>
