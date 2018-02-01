@@ -30,7 +30,7 @@ public class HomePageTaskContract {
 
         void getSearchBooks(String name,String tag,int start,int count);
 
-        void getHomeData();
+        void getHomeData(String banner_size, String product_size, String diary_size);
 
         boolean isDataMissing();
 

@@ -17,7 +17,7 @@
             android:layout_height="wrap_content">
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/civ_home_goddess_diary_head"
+                android:id="@+id/mAuthoerHeadSdv"
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:scaleType="centerCrop"
@@ -26,14 +26,14 @@
                 app:roundAsCircle="true" />
 
             <TextView
-                android:id="@+id/tv_goddess_nickname"
+                android:id="@+id/mAuthorName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="9dp"
                 android:layout_marginStart="9dp"
-                android:layout_toEndOf="@+id/civ_home_goddess_diary_head"
-                android:layout_toRightOf="@+id/civ_home_goddess_diary_head"
+                android:layout_toEndOf="@+id/mAuthoerHeadSdv"
+                android:layout_toRightOf="@+id/mAuthoerHeadSdv"
                 android:text="在树上唱歌"
                 android:textColor="@color/text_color_hint"
                 android:textSize="14sp" />
@@ -49,12 +49,11 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_weight="1">
 
                 <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/riv_before_cosmetic"
+                    android:id="@+id/mBeforeCoverSdv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
@@ -76,11 +75,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
-                android:layout_marginStart="5dp"
                 android:layout_weight="1">
 
                 <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/riv_after_cosmetic"
+                    android:id="@+id/mAfterCoverSdv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
@@ -100,7 +98,7 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_cosmetic_diary_intro"
+            android:id="@+id/mDiaryContentTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="17dp"
@@ -110,7 +108,7 @@
             android:text="这是我第一次在脸上动刀子，说实在的还是挺害怕的呢！但是又嫌自己的鼻子丑，我就这么纠结多之..." />
 
         <TextView
-            android:id="@+id/tv_cosmetic_name"
+            android:id="@+id/mDiaryTagTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -132,7 +130,7 @@
                 android:src="@mipmap/scan_logo" />
 
             <TextView
-                android:id="@+id/tv_scan_count"
+                android:id="@+id/mScanCountTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"
@@ -151,7 +149,7 @@
                 android:src="@mipmap/collection_logo" />
 
             <TextView
-                android:id="@+id/tv_collection_count"
+                android:id="@+id/mCollectionCountTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="6dp"

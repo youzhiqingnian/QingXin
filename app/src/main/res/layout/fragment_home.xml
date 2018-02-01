@@ -17,7 +17,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_city"
+                android:id="@+id/mCityTv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
@@ -36,7 +36,7 @@
                 android:background="@drawable/home_search_bg">
 
                 <ImageView
-                    android:id="@+id/tv_search_icon"
+                    android:id="@+id/mSearchIv"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_centerVertical="true"
@@ -45,10 +45,10 @@
                     android:src="@mipmap/home_search" />
 
                 <EditText
-                    android:id="@+id/et_search_key"
+                    android:id="@+id/mSearchEt"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/tv_search_icon"
+                    android:layout_toRightOf="@+id/mSearchIv"
                     android:background="@null"
                     android:hint="@string/home_search_text_hint"
                     android:paddingRight="15dp"
@@ -65,7 +65,7 @@
             android:layout_height="180dp">
 
             <android.support.v4.view.ViewPager
-                android:id="@+id/vp_viewpager"
+                android:id="@+id/mViewpagerVp"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:layout_marginTop="8dp"
@@ -73,7 +73,7 @@
                 android:orientation="horizontal" />
 
             <com.vlee78.android.vl.VLStatedButtonBar
-                android:id="@+id/buttonBar"
+                android:id="@+id/mStatedBtnBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -96,7 +96,7 @@
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:id="@+id/rl_share_only_new_person"
+                android:id="@+id/mShareRl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -122,7 +122,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_goddess_diary"
+                android:id="@+id/mDiaryRl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
@@ -147,7 +147,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_local_strict_selection"
+                android:id="@+id/mSelectionRl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
@@ -172,7 +172,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_beauty_medical"
+                android:id="@+id/mEncyclopediasRl"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
@@ -209,7 +209,7 @@
                 android:layout_weight="325">
 
                 <TextView
-                    android:id="@+id/tv_free_program"
+                    android:id="@+id/mFirstPrNameTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -222,20 +222,20 @@
                     android:id="@+id/ll_free_program_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_free_program"
+                    android:layout_below="@+id/mFirstPrNameTv"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="12dp"
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/tv_left_product_price"
+                        android:id="@+id/mFirstPrPriceTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_color_pink"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:id="@+id/tv_left_product_origin_price"
+                        android:id="@+id/mFirstPrOldPriceTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
@@ -244,13 +244,9 @@
                 </LinearLayout>
 
                 <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/iv_left_product_cover"
+                    android:id="@+id/mFirstPrCoverSdv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/ll_free_program_price"
-                    android:layout_marginLeft="44dp"
-                    android:layout_marginRight="33dp"
-                    android:layout_marginTop="12dp"
                     android:src="@mipmap/free_beauty_teeth" />
             </RelativeLayout>
 
@@ -270,18 +266,8 @@
                     android:layout_height="0dp"
                     android:layout_weight="1">
 
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/iv_right_top_product_cover"
-                        android:layout_width="68dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginTop="20dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="24dp"
-                        android:src="@mipmap/little_bubble" />
-
                     <TextView
-                        android:id="@+id/tv_right_top_program_title"
+                        android:id="@+id/mSecondPrNameTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="13dp"
@@ -292,27 +278,31 @@
                         android:id="@+id/ll_right_top_program_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_right_top_program_title"
+                        android:layout_below="@+id/mSecondPrNameTv"
                         android:layout_marginLeft="13dp"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tv_right_top_product_price"
+                            android:id="@+id/mSecondPrPriceTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/text_color_pink"
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/tv_right_top_product_origin_price"
+                            android:id="@+id/mSecondPrOldPriceTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
                             android:textColor="@color/text_color_origin_price"
                             android:textSize="12sp" />
                     </LinearLayout>
-
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/mSecondPrCoverSdv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/chengdu_yihou" />
 
                 </RelativeLayout>
 
@@ -326,18 +316,10 @@
                     android:layout_height="0dp"
                     android:layout_weight="1">
 
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/iv_right_bottom_product_cover"
-                        android:layout_width="72dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginTop="20dp"
-                        android:src="@mipmap/chengdu_yihou" />
+
 
                     <TextView
-                        android:id="@+id/tv_right_bottom_program_title"
+                        android:id="@+id/mThirdPrNameTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="13dp"
@@ -348,26 +330,32 @@
                         android:id="@+id/ll_right_bottom_program_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_right_bottom_program_title"
+                        android:layout_below="@+id/mThirdPrNameTv"
                         android:layout_marginLeft="13dp"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/tv_right_bottom_product_price"
+                            android:id="@+id/mThirdPrPriceTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/text_color_pink"
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/tv_right_bottom_product_origin_price"
+                            android:id="@+id/mThirdPrOldPriceTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
                             android:textColor="@color/text_color_origin_price"
                             android:textSize="12sp" />
                     </LinearLayout>
+
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/mThirdPrCoverSdv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@mipmap/little_bubble" />
 
 
                 </RelativeLayout>
@@ -380,7 +368,7 @@
             android:background="@color/gap_color_gray" />
 
         <RelativeLayout
-            android:id="@+id/rl_more_strict_selection_famous_doctor_institute"
+            android:id="@+id/mSlectionMoreRl"
             android:layout_width="match_parent"
             android:layout_height="40dp">
 
@@ -408,7 +396,7 @@
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_strict_famous_doctor_institute"
+            android:id="@+id/mSlectionRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
@@ -422,7 +410,7 @@
             android:background="@color/gap_color_gray" />
 
         <RelativeLayout
-            android:id="@+id/rl_more_goddess_diary"
+            android:id="@+id/mDiaryMoreRl"
             android:layout_width="match_parent"
             android:layout_height="40dp">
 
@@ -450,7 +438,7 @@
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_goddess_diary"
+            android:id="@+id/mDiaryRv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />

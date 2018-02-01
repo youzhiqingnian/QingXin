@@ -17,6 +17,8 @@
     <string name="encyclopedia_of_medical_beauty">医美百科</string>
     <string name="strict_selection_famous_doctor_institute">严选名医机构</string>
     <string name="more">更多</string>
+    <string name="location_failuer">定位失败</string>
+    <string name="city_unit">市</string>
 
 
 </resources>

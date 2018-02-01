@@ -34,7 +34,6 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:26.1.0'
     compile 'com.android.support:recyclerview-v7:26.1.0'
@@ -46,8 +45,8 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.google.code.gson:gson:2.6.2'
     implementation files('libs/guava-19.0.jar')
-    compile ('com.alibaba.android:ultraviewpager:1.0.6.1@aar') {
+    compile('com.alibaba.android:ultraviewpager:1.0.6.1@aar') {
         transitive = true
     }
-
+    implementation files('libs/AMap_Location_V3.7.0_20171218.jar')
 }

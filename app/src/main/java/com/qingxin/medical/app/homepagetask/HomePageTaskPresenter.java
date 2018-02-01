@@ -96,8 +96,8 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
     }
 
     @Override
-    public void getHomeData() {
-        mCompositeSubscription.add(NetRequestListManager.getHomeData(mContext)
+    public void getHomeData(String banner_size, String product_size, String diary_size) {
+        mCompositeSubscription.add(NetRequestListManager.getHomeData(mContext,banner_size,product_size,diary_size)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<HomeBean>() {

@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/iv_viewpager_img"
+        android:id="@+id/mSlectionMoreRl"
         android:layout_width="match_parent"
         android:layout_height="180dp"
         />

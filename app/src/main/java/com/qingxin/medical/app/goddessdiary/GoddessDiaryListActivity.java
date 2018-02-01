@@ -30,7 +30,7 @@ public class GoddessDiaryListActivity extends QingXinActivity implements Goddess
 
     private String limit = "2";
 
-    private RefreshListView lv_goddess_diary_list;
+    private RefreshListView mDiaryListRlv;
 
     private GoddessDiaryListAdapter mAdapter;
 
@@ -82,19 +82,19 @@ public class GoddessDiaryListActivity extends QingXinActivity implements Goddess
             }
         }
 
-        lv_goddess_diary_list.onRefreshComplete(true);
+        mDiaryListRlv.onRefreshComplete(true);
 
     }
 
     private void setData() {
 
-        lv_goddess_diary_list = findViewById(R.id.lv_goddess_diary_list);
+        mDiaryListRlv = findViewById(R.id.mDiaryListRlv);
         mAdapter = new GoddessDiaryListAdapter(this, mDiary.getContent().getItems());
-        lv_goddess_diary_list.setAdapter(mAdapter);
+        mDiaryListRlv.setAdapter(mAdapter);
         isFirst = false;
 
 
-        lv_goddess_diary_list.setOnRefreshListener(new RefreshListView.OnRefreshListener() {
+        mDiaryListRlv.setOnRefreshListener(new RefreshListView.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 hasMore = true;
@@ -108,7 +108,7 @@ public class GoddessDiaryListActivity extends QingXinActivity implements Goddess
                     skip = (Integer.valueOf(skip) + Integer.valueOf(limit)) + "";
                     mPresenter.getGoddessDiaryList(limit, skip);
                 } else {
-                    lv_goddess_diary_list.onRefreshComplete(true);
+                    mDiaryListRlv.onRefreshComplete(true);
                 }
             }
         });

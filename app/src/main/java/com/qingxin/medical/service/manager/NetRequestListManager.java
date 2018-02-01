@@ -27,8 +27,8 @@ public class NetRequestListManager {
      * @param context
      * @return
      */
-    public static Observable<HomeBean> getHomeData(Context context){
-        return RetrofitHelper.getInstance(context).getServer().getHomeData();
+    public static Observable<HomeBean> getHomeData(Context context, String banner_size, String product_size, String diary_size){
+        return RetrofitHelper.getInstance(context).getServer().getHomeData(banner_size,product_size,diary_size);
     }
 
     /**

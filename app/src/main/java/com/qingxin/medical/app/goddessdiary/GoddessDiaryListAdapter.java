@@ -34,14 +34,14 @@ public class GoddessDiaryListAdapter extends CommonAdapter<GoddessDiary.ContentB
             holder = new ViewHolder();
             convertView = View
                     .inflate(mContext,R.layout.layout_home_goddess_diary_item, null);
-            holder.civ_home_goddess_diary_head = convertView.findViewById(R.id.civ_home_goddess_diary_head);
-            holder.riv_before_cosmetic = convertView.findViewById(R.id.riv_before_cosmetic);
-            holder.riv_after_cosmetic = convertView.findViewById(R.id.riv_after_cosmetic);
-            holder.tv_goddess_nickname = convertView.findViewById(R.id.tv_goddess_nickname);
-            holder.tv_cosmetic_diary_intro = convertView.findViewById(R.id.tv_cosmetic_diary_intro);
-            holder.tv_cosmetic_name = convertView.findViewById(R.id.tv_cosmetic_name);
-            holder.tv_scan_count = convertView.findViewById(R.id.tv_scan_count);
-            holder.tv_collection_count = convertView.findViewById(R.id.tv_collection_count);
+            holder.mAuthoerHeadSdv = convertView.findViewById(R.id.mAuthoerHeadSdv);
+            holder.mBeforeCoverSdv = convertView.findViewById(R.id.mBeforeCoverSdv);
+            holder.mAfterCoverSdv = convertView.findViewById(R.id.mAfterCoverSdv);
+            holder.mAuthorName = convertView.findViewById(R.id.mAuthorName);
+            holder.mDiaryContentTv = convertView.findViewById(R.id.mDiaryContentTv);
+            holder.mDiaryTagTv = convertView.findViewById(R.id.mDiaryTagTv);
+            holder.mScanCountTv = convertView.findViewById(R.id.mScanCountTv);
+            holder.mCollectionCountTv = convertView.findViewById(R.id.mCollectionCountTv);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -49,27 +49,27 @@ public class GoddessDiaryListAdapter extends CommonAdapter<GoddessDiary.ContentB
 
 
         if(mData.get(position).getMem() != null){
-            holder.civ_home_goddess_diary_head.setImageURI(Uri.parse(mData.get(position).getMem().getCover()));
-            holder.tv_goddess_nickname.setText(mData.get(position).getMem().getName());
+            holder.mAuthoerHeadSdv.setImageURI(Uri.parse(mData.get(position).getMem().getCover()));
+            holder.mAuthorName.setText(mData.get(position).getMem().getName());
         }
 
 
 
-        holder.riv_before_cosmetic.setImageURI(Uri.parse(mData.get(position).getOper_before_photo()));
-        holder.riv_after_cosmetic.setImageURI(Uri.parse(mData.get(position).getOper_after_photo()));
-        holder.tv_cosmetic_diary_intro.setText(mData.get(position).getSummary());
-        holder.tv_cosmetic_name.setText(mData.get(position).getTags());
+        holder.mBeforeCoverSdv.setImageURI(Uri.parse(mData.get(position).getOper_before_photo()));
+        holder.mAfterCoverSdv.setImageURI(Uri.parse(mData.get(position).getOper_after_photo()));
+        holder.mDiaryContentTv.setText(mData.get(position).getSummary());
+        holder.mDiaryTagTv.setText(mData.get(position).getTags());
 
 
         return convertView;
     }
 
     class ViewHolder {
-        SimpleDraweeView civ_home_goddess_diary_head;
+        SimpleDraweeView mAuthoerHeadSdv;
 
-        TextView tv_goddess_nickname, tv_cosmetic_diary_intro, tv_cosmetic_name, tv_scan_count, tv_collection_count;
+        TextView mAuthorName, mDiaryContentTv, mDiaryTagTv, mScanCountTv, mCollectionCountTv;
 
-        SimpleDraweeView riv_before_cosmetic, riv_after_cosmetic;
+        SimpleDraweeView mBeforeCoverSdv, mAfterCoverSdv;
     }
 
 }

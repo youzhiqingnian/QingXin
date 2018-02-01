@@ -24,11 +24,14 @@ public interface RetrofitService {
                                     @Query("count") int count);
 
     /**
-     * 获取首页数据
+     *
+     * @param banner_size banner图的尺寸
+     * @param product_size 产品图的尺寸
+     * @param diary_size 女神日记图的尺寸
      * @return
      */
     @GET("/home")
-    Observable<HomeBean> getHomeData();
+    Observable<HomeBean> getHomeData(@Query("banner_size") String banner_size, @Query("product_size") String product_size, @Query("diary_size") String diary_size);
 
     /**
      *

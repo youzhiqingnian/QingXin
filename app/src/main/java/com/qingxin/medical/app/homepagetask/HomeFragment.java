@@ -1,10 +1,15 @@
 package com.qingxin.medical.app.homepagetask;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,14 +22,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
+import android.widget.Toast;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.Constants;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
-import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
-import com.qingxin.medical.app.homepagetask.model.HomeBanner;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
-import com.qingxin.medical.app.homepagetask.model.HomeProduct;
 import com.qingxin.medical.service.entity.Book;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLStatedButtonBar;
@@ -40,39 +47,42 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class HomeFragment extends VLFragment implements HomePageTaskContract.View, View.OnClickListener {
 
-    private View rootVeiw;
+    private View mRootView;
 
-    private TextView tv_city,
-            tv_free_program,
-            tv_left_product_price,
-            tv_left_product_origin_price,
-            tv_right_top_program_title,
-            tv_right_top_product_price,
-            tv_right_top_product_origin_price,
-            tv_right_bottom_program_title,
-            tv_right_bottom_product_price,
-            tv_right_bottom_product_origin_price;
+    private TextView mCityTv,
+            mFirstPrNameTv,
+            mFirstPrPriceTv,
+            mFirstPrOldPriceTv,
+            mSecondPrNameTv,
+            mSecondPrPriceTv,
+            mSecondPrOldPriceTv,
+            mThirdPrNameTv,
+            mThirdPrPriceTv,
+            mThirdPrOldPriceTv;
 
-    private SimpleDraweeView iv_left_product_cover,
-            iv_right_top_product_cover,
-            iv_right_bottom_product_cover;
+    private SimpleDraweeView mFirstPrCoverSdv,
+            mSecondPrCoverSdv,
+            mThirdPrCoverSdv;
 
-    private RelativeLayout rl_more_goddess_diary;
+    private RelativeLayout mShareRl,
+            mDiaryRl,
+            mSelectionRl,
+            mEncyclopediasRl,
+            mSlectionMoreRl,
+            mDiaryMoreRl;
 
-    private VLStatedButtonBar buttonBar;
-
-//    private AtomicInteger mStep;
-
-    public static final int MAX_STEP = 3;
+    private VLStatedButtonBar mStatedBtnBar;
 
     private HomePageTaskContract.Presenter mPresenter;
 
-    private HomeBanner mBanner;
-    private GoddessDiary mDiary;
-    private HomeProduct mProduct;
     private HomeBean mHomeBean;
 
-    private HomePageTaskPresenter mHomePageTaskPresenter;
+    //声明AMapLocationClient类对象
+    public AMapLocationClient mLocationClient = null;
+
+    //声明AMapLocationClientOption对象
+    public AMapLocationClientOption mLocationOption = null;
+
 
     public HomeFragment() {
     }
@@ -97,38 +107,140 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         if (getView() == null) {
             return;
         }
-        rootVeiw = getView();
+        mRootView = getView();
+
+
         initView();
         initListener();
 
-        mPresenter.getHomeData();
+        int screenWidth = VLUtils.getScreenWidth(getActivity());
+
+        String banner_size = screenWidth + "-" + VLUtils.dip2px(180);
+        String product_size = screenWidth * 325 / 750 + "-" + VLUtils.dip2px(180) + "," + screenWidth * 425 / 750 + "-" + VLUtils.dip2px(180);
+        String diary_size = (screenWidth - VLUtils.dip2px(40)) / 2 + "-" + VLUtils.dip2px(168);
+
+        mPresenter.getHomeData(banner_size, product_size, diary_size);
 
     }
 
     private void initView() {
-        tv_city = rootVeiw.findViewById(R.id.tv_city);
-        tv_free_program = rootVeiw.findViewById(R.id.tv_free_program);
-        tv_left_product_price = rootVeiw.findViewById(R.id.tv_left_product_price);
-        tv_left_product_origin_price = rootVeiw.findViewById(R.id.tv_left_product_origin_price);
-        tv_right_top_program_title = rootVeiw.findViewById(R.id.tv_right_top_program_title);
-        tv_right_top_product_price = rootVeiw.findViewById(R.id.tv_right_top_product_price);
-        tv_right_top_product_origin_price = rootVeiw.findViewById(R.id.tv_right_top_product_origin_price);
-        tv_right_bottom_program_title = rootVeiw.findViewById(R.id.tv_right_bottom_program_title);
-        tv_right_bottom_product_price = rootVeiw.findViewById(R.id.tv_right_bottom_product_price);
-        tv_right_bottom_product_origin_price = rootVeiw.findViewById(R.id.tv_right_bottom_product_origin_price);
+        mCityTv = mRootView.findViewById(R.id.mCityTv);
+        mFirstPrNameTv = mRootView.findViewById(R.id.mFirstPrNameTv);
+        mFirstPrPriceTv = mRootView.findViewById(R.id.mFirstPrPriceTv);
+        mFirstPrOldPriceTv = mRootView.findViewById(R.id.mFirstPrOldPriceTv);
+        mSecondPrNameTv = mRootView.findViewById(R.id.mSecondPrNameTv);
+        mSecondPrPriceTv = mRootView.findViewById(R.id.mSecondPrPriceTv);
+        mSecondPrOldPriceTv = mRootView.findViewById(R.id.mSecondPrOldPriceTv);
+        mThirdPrNameTv = mRootView.findViewById(R.id.mThirdPrNameTv);
+        mThirdPrPriceTv = mRootView.findViewById(R.id.mThirdPrPriceTv);
+        mThirdPrOldPriceTv = mRootView.findViewById(R.id.mThirdPrOldPriceTv);
 
-        iv_left_product_cover = rootVeiw.findViewById(R.id.iv_left_product_cover);
-        iv_right_top_product_cover = rootVeiw.findViewById(R.id.iv_right_top_product_cover);
-        iv_right_bottom_product_cover = rootVeiw.findViewById(R.id.iv_right_bottom_product_cover);
+        mFirstPrCoverSdv = mRootView.findViewById(R.id.mFirstPrCoverSdv);
+        mSecondPrCoverSdv = mRootView.findViewById(R.id.mSecondPrCoverSdv);
+        mThirdPrCoverSdv = mRootView.findViewById(R.id.mThirdPrCoverSdv);
 
-        rl_more_goddess_diary = rootVeiw.findViewById(R.id.rl_more_goddess_diary);
+        mShareRl = mRootView.findViewById(R.id.mShareRl);
+        mDiaryRl = mRootView.findViewById(R.id.mDiaryRl);
+        mSelectionRl = mRootView.findViewById(R.id.mSelectionRl);
+        mEncyclopediasRl = mRootView.findViewById(R.id.mEncyclopediasRl);
+        mSlectionMoreRl = mRootView.findViewById(R.id.mSlectionMoreRl);
+        mDiaryMoreRl = mRootView.findViewById(R.id.mDiaryMoreRl);
 
-        buttonBar = rootVeiw.findViewById(R.id.buttonBar);
+        mStatedBtnBar = mRootView.findViewById(R.id.mStatedBtnBar);
     }
 
 
+    private void requestGaodeLoction() {
+
+        //初始化定位
+        mLocationClient = new AMapLocationClient(getActivity());
+
+        //初始化AMapLocationClientOption对象
+        mLocationOption = new AMapLocationClientOption();
+
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+
+        //获取最近3s内精度最高的一次定位结果：
+        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
+//        mLocationOption.setOnceLocationLatest(true);
+
+        //获取一次定位结果：
+        //该方法默认为false
+        mLocationOption.setOnceLocation(true);
+
+//        //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
+//        mLocationOption.setInterval(1000);
+
+        //设置是否返回地址信息（默认返回地址信息）
+        mLocationOption.setNeedAddress(true);
+
+
+        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
+        mLocationOption.setHttpTimeOut(20000);
+
+
+        //给定位客户端对象设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.READ_PHONE_STATE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                //权限还没有授予，需要在这里写申请权限的代码
+                ActivityCompat.requestPermissions(getActivity(),
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE},
+                        Constants.GAODE_MAP_GRANTED_REQUEST_CODE);
+            } else {
+                //权限已经被授予，在这里直接写要执行的相应方法即可
+                //启动定位
+                mLocationClient.startLocation();
+            }
+
+        } else {
+            //启动定位
+            mLocationClient.startLocation();
+        }
+
+
+        //设置定位回调监听
+        mLocationClient.setLocationListener(new AMapLocationListener() {
+            @Override
+            public void onLocationChanged(AMapLocation aMapLocation) {
+                if (aMapLocation != null) {
+                    if (aMapLocation.getErrorCode() == 0) {
+                        //可在其中解析amapLocation获取相应内容。
+                        Log.i("城市码", aMapLocation.getCityCode() + aMapLocation.getCity());
+                        String cityName = aMapLocation.getCity();
+                        if (cityName.endsWith(getStr(R.string.city_unit))) {
+                            cityName = cityName.substring(0, cityName.length() - 1);
+                        }
+                        mCityTv.setText(cityName);
+
+                    } else {
+                        //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
+                        Log.e("AmapError", "location Error, ErrCode:"
+                                + aMapLocation.getErrorCode() + ", errInfo:"
+                                + aMapLocation.getErrorInfo());
+                        // 提示定位失败
+                        Toast.makeText(getActivity(), getStr(R.string.location_failuer), Toast.LENGTH_LONG);
+                    }
+                }
+            }
+        });
+    }
+
     private void initListener() {
-        rl_more_goddess_diary.setOnClickListener(this);
+        mShareRl.setOnClickListener(this);
+        mDiaryRl.setOnClickListener(this);
+        mSelectionRl.setOnClickListener(this);
+        mEncyclopediasRl.setOnClickListener(this);
+        mSlectionMoreRl.setOnClickListener(this);
+        mDiaryMoreRl.setOnClickListener(this);
     }
 
     @Override
@@ -150,18 +262,18 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
         List<HomeBean.ContentBean.BannersBean> bannerList = mHomeBean.getContent().getBanners();
 
-        ViewPager vp_viewpager = rootVeiw.findViewById(R.id.vp_viewpager);
+        ViewPager mViewpagerVp = mRootView.findViewById(R.id.mViewpagerVp);
         BannerPagerAdapter mAdapter = new BannerPagerAdapter(getActivity(), bannerList);
-        vp_viewpager.setAdapter(mAdapter);
+        mViewpagerVp.setAdapter(mAdapter);
 
-        vp_viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewpagerVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
 
             @Override
             public void onPageSelected(int position) {
-                buttonBar.setChecked(position);
+                mStatedBtnBar.setChecked(position);
             }
 
             @Override
@@ -169,52 +281,56 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
             }
         });
-        buttonBar.setStatedButtonBarDelegate(new DotBarDelegate(getActivity(), bannerList.size()));
-        vp_viewpager.setCurrentItem(bannerList.size() * 1000);
-        buttonBar.setChecked(vp_viewpager.getCurrentItem());
-        
+        mStatedBtnBar.setStatedButtonBarDelegate(new DotBarDelegate(getActivity(), bannerList.size()));
+        mViewpagerVp.setCurrentItem(bannerList.size() * 1000);
+        mStatedBtnBar.setChecked(mViewpagerVp.getCurrentItem());
+
         List<HomeBean.ContentBean.ProductsBean> productList = mHomeBean.getContent().getProducts();
-        
+
         if (productList.size() >= 1) {
-            tv_free_program.setText(productList.get(0).getName());
-            tv_left_product_price.setText(productList.get(0).getPrice() + getStr(R.string.yuan));
-            tv_left_product_origin_price.setText(getStr(R.string.origin_price) + productList.get(0).getOld_price() + getStr(R.string.yuan));
-            iv_left_product_cover.setImageURI(Uri.parse(productList.get(0).getCover()));
+            mFirstPrNameTv.setText(productList.get(0).getName());
+            mFirstPrPriceTv.setText(productList.get(0).getPrice() + getStr(R.string.yuan));
+            mFirstPrOldPriceTv.setText(getStr(R.string.origin_price) + productList.get(0).getOld_price() + getStr(R.string.yuan));
+            mFirstPrCoverSdv.setImageURI(Uri.parse(productList.get(0).getCover()));
         }
 
         if (productList.size() >= 2) {
-            tv_right_top_program_title.setText(productList.get(1).getName());
-            tv_right_top_product_price.setText(productList.get(1).getPrice() + getStr(R.string.yuan));
-            tv_right_top_product_origin_price.setText(getStr(R.string.origin_price) + productList.get(1).getOld_price() + getStr(R.string.yuan));
-            iv_right_top_product_cover.setImageURI(Uri.parse(productList.get(1).getCover()));
+            mSecondPrNameTv.setText(productList.get(1).getName());
+            mSecondPrPriceTv.setText(productList.get(1).getPrice() + getStr(R.string.yuan));
+            mSecondPrOldPriceTv.setText(getStr(R.string.origin_price) + productList.get(1).getOld_price() + getStr(R.string.yuan));
+            mSecondPrCoverSdv.setImageURI(Uri.parse(productList.get(1).getCover()));
         }
 
         if (productList.size() >= 3) {
-            tv_right_bottom_program_title.setText(productList.get(2).getName());
-            tv_right_bottom_product_price.setText(productList.get(2).getPrice() + getStr(R.string.yuan));
-            tv_right_bottom_product_origin_price.setText(getStr(R.string.origin_price) + productList.get(2).getOld_price() + getStr(R.string.yuan));
-            iv_right_bottom_product_cover.setImageURI(Uri.parse(productList.get(2).getCover()));
+            mThirdPrNameTv.setText(productList.get(2).getName());
+            mThirdPrPriceTv.setText(productList.get(2).getPrice() + getStr(R.string.yuan));
+            mThirdPrOldPriceTv.setText(getStr(R.string.origin_price) + productList.get(2).getOld_price() + getStr(R.string.yuan));
+            mThirdPrCoverSdv.setImageURI(Uri.parse(productList.get(2).getCover()));
         }
 
 
-        RecyclerView rv_strict_famous_doctor_institute = rootVeiw.findViewById(R.id.rv_strict_famous_doctor_institute);
-        RecyclerView rv_goddess_diary = rootVeiw.findViewById(R.id.rv_goddess_diary);
+        RecyclerView mSlectionRv = mRootView.findViewById(R.id.mSlectionRv);
+        RecyclerView mDiaryRv = mRootView.findViewById(R.id.mDiaryRv);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
-        rv_strict_famous_doctor_institute.setLayoutManager(mLayoutManager);
-        rv_strict_famous_doctor_institute.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
+        mSlectionRv.setLayoutManager(mLayoutManager);
+        mSlectionRv.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
         RecyclerGridViewAdapter strictSelctionAdapter = new RecyclerGridViewAdapter(getActivity());
-        rv_strict_famous_doctor_institute.setAdapter(strictSelctionAdapter);
-        rv_strict_famous_doctor_institute.setNestedScrollingEnabled(false);
+        mSlectionRv.setAdapter(strictSelctionAdapter);
+        mSlectionRv.setNestedScrollingEnabled(false);
 
         List<HomeBean.ContentBean.DiarysBean> diaryList = mHomeBean.getContent().getDiarys();
         if (diaryList != null && diaryList.size() > 0) {
-            rv_goddess_diary.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mDiaryRv.setLayoutManager(new LinearLayoutManager(getActivity()));
             HomeGoddessDiaryAdapter mGoddessDiaryAdapter = new HomeGoddessDiaryAdapter(getActivity(), diaryList);
-            rv_goddess_diary.setAdapter(mGoddessDiaryAdapter);
-            rv_goddess_diary.setNestedScrollingEnabled(false);
+            mDiaryRv.setAdapter(mGoddessDiaryAdapter);
+            mDiaryRv.setNestedScrollingEnabled(false);
         }
 
+        /**
+         * 初始化定位
+         */
+        requestGaodeLoction();
 
     }
 
@@ -233,10 +349,10 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     @Override
     public void onSuccess(HomeBean homeBean) {
         mHomeBean = homeBean;
-        if(mHomeBean != null && mHomeBean.getCode().equals("200")){
+        if (mHomeBean != null && mHomeBean.getCode().equals("200")) {
             setData();
         }
-        
+
     }
 
     @Override
@@ -248,13 +364,29 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.rl_more_goddess_diary:
+            case R.id.mShareRl:
+                // 歆人专享
 
+                break;
+
+            case R.id.mSelectionRl:
+            case R.id.mSlectionMoreRl:
+                // 本地严选
+
+                break;
+
+            case R.id.mEncyclopediasRl:
+                // 医美百科
+
+                break;
+
+            case R.id.mDiaryRl:
+            case R.id.mDiaryMoreRl:
+                // 女神日记
                 Intent intent = new Intent(getActivity(), GoddessDiaryListActivity.class);
                 startActivity(intent);
 
                 break;
-
         }
     }
 
@@ -281,11 +413,11 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.layout_viewpager, container, false);
-            SimpleDraweeView iv_viewpager_img = view.findViewById(R.id.iv_viewpager_img);
-            iv_viewpager_img.setImageURI(Uri.parse(mBannerList.get(position % mBannerList.size()).getCover()));
-            container.addView(view);
-            return view;
+            View mView = LayoutInflater.from(mContext).inflate(R.layout.layout_viewpager, container, false);
+            SimpleDraweeView mSlectionMoreRl = mView.findViewById(R.id.mSlectionMoreRl);
+            mSlectionMoreRl.setImageURI(Uri.parse(mBannerList.get(position % mBannerList.size()).getCover()));
+            container.addView(mView);
+            return mView;
         }
 
         @Override
@@ -382,6 +514,19 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 }
             }
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        if (requestCode == Constants.GAODE_MAP_GRANTED_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                mLocationClient.startLocation();
+            } else {
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
 

@@ -16,12 +16,12 @@ import java.util.List;
 
 
 public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDiaryAdapter.MyViewHolder> {
-    private Context context;
+    private Context mContext;
     private ItemClickListener itemClickListener;
     List<HomeBean.ContentBean.DiarysBean> mDiaryList;
 
     HomeGoddessDiaryAdapter(Context context, List<HomeBean.ContentBean.DiarysBean> diaryList) {
-        this.context = context;
+        this.mContext = context;
         this.mDiaryList = diaryList;
     }
 
@@ -32,7 +32,7 @@ public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDia
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.layout_home_goddess_diary_item, parent, false));
+        return new MyViewHolder(LayoutInflater.from(mContext).inflate(R.layout.layout_home_goddess_diary_item, parent, false));
     }
 
     @Override
@@ -42,16 +42,16 @@ public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDia
          */
 
         if(mDiaryList.get(position).getMem() != null){
-            holder.civ_home_goddess_diary_head.setImageURI(Uri.parse(mDiaryList.get(position).getMem().getCover()));
-            holder.tv_goddess_nickname.setText(mDiaryList.get(position).getMem().getName());
+            holder.mAuthoerHeadSdv.setImageURI(Uri.parse(mDiaryList.get(position).getMem().getCover()));
+            holder.mAuthorName.setText(mDiaryList.get(position).getMem().getName());
         }
 
 
 
-        holder.riv_before_cosmetic.setImageURI(Uri.parse(mDiaryList.get(position).getOper_before_photo()));
-        holder.riv_after_cosmetic.setImageURI(Uri.parse(mDiaryList.get(position).getOper_after_photo()));
-        holder.tv_cosmetic_diary_intro.setText(mDiaryList.get(position).getSummary());
-        holder.tv_cosmetic_name.setText(mDiaryList.get(position).getTags());
+        holder.mBeforeCoverSdv.setImageURI(Uri.parse(mDiaryList.get(position).getOper_before_photo()));
+        holder.mAfterCoverSdv.setImageURI(Uri.parse(mDiaryList.get(position).getOper_after_photo()));
+        holder.mDiaryContentTv.setText(mDiaryList.get(position).getSummary());
+        holder.mDiaryTagTv.setText(mDiaryList.get(position).getTags());
 
     }
 
@@ -62,23 +62,22 @@ public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDia
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
-        SimpleDraweeView civ_home_goddess_diary_head;
-
-        TextView tv_goddess_nickname, tv_cosmetic_diary_intro, tv_cosmetic_name, tv_scan_count, tv_collection_count;
-
-        SimpleDraweeView riv_before_cosmetic, riv_after_cosmetic;
-
+        SimpleDraweeView mAuthoerHeadSdv, 
+                mBeforeCoverSdv, 
+                mAfterCoverSdv;
+        
+        TextView mAuthorName, mDiaryContentTv, mDiaryTagTv, mScanCountTv, mCollectionCountTv;
 
         MyViewHolder(final View itemView) {
             super(itemView);
-            civ_home_goddess_diary_head = itemView.findViewById(R.id.civ_home_goddess_diary_head);
-            riv_before_cosmetic = itemView.findViewById(R.id.riv_before_cosmetic);
-            riv_after_cosmetic = itemView.findViewById(R.id.riv_after_cosmetic);
-            tv_goddess_nickname = itemView.findViewById(R.id.tv_goddess_nickname);
-            tv_cosmetic_diary_intro = itemView.findViewById(R.id.tv_cosmetic_diary_intro);
-            tv_cosmetic_name = itemView.findViewById(R.id.tv_cosmetic_name);
-            tv_scan_count = itemView.findViewById(R.id.tv_scan_count);
-            tv_collection_count = itemView.findViewById(R.id.tv_collection_count);
+            mAuthoerHeadSdv = itemView.findViewById(R.id.mAuthoerHeadSdv);
+            mBeforeCoverSdv = itemView.findViewById(R.id.mBeforeCoverSdv);
+            mAfterCoverSdv = itemView.findViewById(R.id.mAfterCoverSdv);
+            mAuthorName = itemView.findViewById(R.id.mAuthorName);
+            mDiaryContentTv = itemView.findViewById(R.id.mDiaryContentTv);
+            mDiaryTagTv = itemView.findViewById(R.id.mDiaryTagTv);
+            mScanCountTv = itemView.findViewById(R.id.mScanCountTv);
+            mCollectionCountTv = itemView.findViewById(R.id.mCollectionCountTv);
 
 
             //为item添加普通点击回调

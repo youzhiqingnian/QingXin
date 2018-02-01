@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.widget.indicator.view.RoundCornerImageView;
 
@@ -17,9 +18,9 @@ import com.qingxin.medical.widget.indicator.view.RoundCornerImageView;
 
 public class RecyclerGridViewAdapter extends RecyclerView.Adapter<RecyclerGridViewAdapter.ViewHolder> {
     private Context mContext;
-//    private String[] data;
+    //    private String[] data;
 //    private int[] imgdata;
-    private LayoutInflater inf;
+    private LayoutInflater mInflater;
     //子view是否充满了手机屏幕
     private boolean isCompleteFill = false;
 
@@ -39,7 +40,7 @@ public class RecyclerGridViewAdapter extends RecyclerView.Adapter<RecyclerGridVi
         this.mContext = mContext;
 //        this.data = data;
 //        this.imgdata = imgdata;
-        inf = LayoutInflater.from(mContext);
+        mInflater = LayoutInflater.from(mContext);
 
     }
 
@@ -48,7 +49,7 @@ public class RecyclerGridViewAdapter extends RecyclerView.Adapter<RecyclerGridVi
     //该方法返回是ViewHolder，当有可复用View时，就不再调用
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = inf.inflate(R.layout.layout_home_strict_selection_famous_doctor_institute, viewGroup, false);
+        View v = mInflater.inflate(R.layout.layout_home_strict_selection_famous_doctor_institute, viewGroup, false);
         return new ViewHolder(v);
     }
 
@@ -75,16 +76,16 @@ public class RecyclerGridViewAdapter extends RecyclerView.Adapter<RecyclerGridVi
     //自定义的ViewHolder,减少findViewById调用次数
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        RoundCornerImageView rciv_doctor_intro;
+        SimpleDraweeView mSelectionCoverSdv;
 
-        TextView tv_doctor_name, tv_doctor_intro_content;
+        TextView mInstituteNameTv, mInstituteIntroTv;
 
         //在布局中找到所含有的UI组件
         public ViewHolder(View itemView) {
             super(itemView);
-            rciv_doctor_intro = (RoundCornerImageView) itemView.findViewById(R.id.rciv_doctor_intro);
-            tv_doctor_name = (TextView) itemView.findViewById(R.id.tv_doctor_name);
-            tv_doctor_intro_content = (TextView) itemView.findViewById(R.id.tv_doctor_intro_content);
+            mSelectionCoverSdv = itemView.findViewById(R.id.mSelectionCoverSdv);
+            mInstituteNameTv = itemView.findViewById(R.id.mInstituteNameTv);
+            mInstituteIntroTv = itemView.findViewById(R.id.mInstituteIntroTv);
 
         }
     }
