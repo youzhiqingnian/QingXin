@@ -8,21 +8,20 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.CommonAdapter;
-import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
-
+import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import java.util.List;
 
 /**
  * Created by zhikuo1 on 2018-01-31.
  */
 
-public class GoddessDiaryListAdapter extends CommonAdapter<GoddessDiary.ContentBean.ItemsBean> {
+public class GoddessDiaryListAdapter extends CommonAdapter<GoddessDiaryBean.ContentBean.ItemsBean> {
 
-    public GoddessDiaryListAdapter(Context contex, List<GoddessDiary.ContentBean.ItemsBean> mDatas){
+    public GoddessDiaryListAdapter(Context contex, List<GoddessDiaryBean.ContentBean.ItemsBean> mDatas){
         super(contex,mDatas);
     }
 
-    public void refresh(List<GoddessDiary.ContentBean.ItemsBean> datas){
+    public void refresh(List<GoddessDiaryBean.ContentBean.ItemsBean> datas){
         mData = datas;
         notifyDataSetChanged();
     }

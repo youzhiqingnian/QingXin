@@ -6,7 +6,7 @@ import java.util.List;
  * Created by zhikuo1 on 2018-01-31.
  */
 
-public class GoddessDiary {
+public class GoddessDiaryBean {
 
 
     /**

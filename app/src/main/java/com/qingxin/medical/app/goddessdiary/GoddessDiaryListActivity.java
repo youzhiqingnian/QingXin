@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
+import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.widget.indicator.view.RefreshListView;
 
@@ -20,7 +20,7 @@ public class GoddessDiaryListActivity extends QingXinActivity implements Goddess
 
     private GoddessDiaryContract.Presenter mPresenter;
 
-    private GoddessDiary mDiary;
+    private GoddessDiaryBean mDiary;
 
     private String skip = "0";
 
@@ -34,7 +34,7 @@ public class GoddessDiaryListActivity extends QingXinActivity implements Goddess
 
     private GoddessDiaryListAdapter mAdapter;
 
-    private List<GoddessDiary.ContentBean.ItemsBean> mGoddessDiaryList = new ArrayList<>();
+    private List<GoddessDiaryBean.ContentBean.ItemsBean> mGoddessDiaryList = new ArrayList<>();
 
 
     @Override
@@ -56,7 +56,7 @@ public class GoddessDiaryListActivity extends QingXinActivity implements Goddess
     }
 
     @Override
-    public void onSuccess(GoddessDiary diary) {
+    public void onSuccess(GoddessDiaryBean diary) {
 
         mDiary = diary;
 

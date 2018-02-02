@@ -2,12 +2,8 @@ package com.qingxin.medical.app.homepagetask;
 
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
-import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
-import com.qingxin.medical.app.homepagetask.model.HomeBanner;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
-import com.qingxin.medical.app.homepagetask.model.HomeProduct;
 import com.qingxin.medical.service.entity.Book;
-
 /**
  * Created by user on 2018-01-23.
  */

@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
-
 import java.util.List;
 
 

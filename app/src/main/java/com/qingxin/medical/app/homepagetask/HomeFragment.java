@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -323,6 +324,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         if (diaryList != null && diaryList.size() > 0) {
             mDiaryRv.setLayoutManager(new LinearLayoutManager(getActivity()));
             HomeGoddessDiaryAdapter mGoddessDiaryAdapter = new HomeGoddessDiaryAdapter(getActivity(), diaryList);
+            mDiaryRv.addItemDecoration(new SpaceItemDecoration(VLUtils.dip2px(18)));
             mDiaryRv.setAdapter(mGoddessDiaryAdapter);
             mDiaryRv.setNestedScrollingEnabled(false);
         }
@@ -515,6 +517,50 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             }
         }
     }
+
+    /**
+     * recyclerview  listview格式的间距
+     */
+    class SpaceItemDecoration extends RecyclerView.ItemDecoration {
+        int mSpace;
+
+        /**
+         * Retrieve any offsets for the given item. Each field of <code>outRect</code> specifies
+         * the number of pixels that the item view should be inset by, similar to padding or margin.
+         * The default implementation sets the bounds of outRect to 0 and returns.
+         * <p>
+         * <p>
+         * If this ItemDecoration does not affect the positioning of item views, it should set
+         * all four fields of <code>outRect</code> (left, top, right, bottom) to zero
+         * before returning.
+         * <p>
+         * <p>
+         * If you need to access Adapter for additional data, you can call
+         * {@link RecyclerView#getChildAdapterPosition(View)} to get the adapter position of the
+         * View.
+         *
+         * @param outRect Rect to receive the output.
+         * @param view    The child view to decorate
+         * @param parent  RecyclerView this ItemDecoration is decorating
+         * @param state   The current state of RecyclerView.
+         */
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+            outRect.left = 0;
+            outRect.right = 0;
+            outRect.bottom = mSpace;
+            if (parent.getChildAdapterPosition(view) == 0) {
+                outRect.top = VLUtils.dip2px(8);
+            }
+
+        }
+
+        public SpaceItemDecoration(int space) {
+            this.mSpace = space;
+        }
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

@@ -101,10 +101,10 @@ public class HomePageTaskActivity extends QingXinActivity {
                 //设置底部按钮选中及未选择状态
                 if (buttonState == VLStatedButtonBar.VLStatedButton.VLButtonState.StateChecked) {
                     mButtonImage.setImageResource(mCheckedResId);
-                    mButtonText.setTextColor(0xFF011321);
+                    mButtonText.setTextColor(getResources().getColor(R.color.text_color_blue));
                 } else {
                     mButtonImage.setImageResource(mNormalResId);
-                    mButtonText.setTextColor(0xFF6E7275);
+                    mButtonText.setTextColor(getResources().getColor(R.color.text_color_hint));
                 }
                 if (userState == 1) {
                     // 红点显示
