@@ -1,12 +1,9 @@
 package com.qingxin.medical.retrofit;
 
 import android.support.annotation.NonNull;
-
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModel;
-
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -48,12 +45,9 @@ public class RetrofitModel extends VLModel {
             return chain.proceed(request);
         });
 
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-            @Override
-            public void log(@NonNull String message) {
-                //打印retrofit日志
-                VLDebug.logE(TAG, "retrofitBack = " + message);
-            }
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(message -> {
+            //打印retrofit日志
+            VLDebug.logE(TAG, "retrofitBack = " + message);
         });
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         httpClient.addInterceptor(loggingInterceptor);

@@ -1,9 +1,10 @@
 package com.qingxin.medical.app.goddessdiary;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
+
 import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
 import com.qingxin.medical.service.manager.NetRequestListManager;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -16,9 +17,6 @@ import rx.subscriptions.CompositeSubscription;
 public class GoddessDiaryPresenter implements GoddessDiaryContract.Presenter {
 
     @NonNull
-    private Context mContext;
-
-    @NonNull
     private final GoddessDiaryContract.View mGoddessDiaryView;
 
     @NonNull
@@ -26,8 +24,7 @@ public class GoddessDiaryPresenter implements GoddessDiaryContract.Presenter {
 
     private GoddessDiary mDiary;
 
-    GoddessDiaryPresenter(@NonNull Context context, GoddessDiaryContract.View goddessDiaryView){
-        mContext = context;
+    GoddessDiaryPresenter(GoddessDiaryContract.View goddessDiaryView){
         mGoddessDiaryView = goddessDiaryView;
         mCompositeSubscription = new CompositeSubscription();
         mGoddessDiaryView.setPresenter(this);
