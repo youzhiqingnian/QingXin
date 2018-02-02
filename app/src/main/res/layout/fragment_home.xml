@@ -13,7 +13,7 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/mCityTv"
+            android:id="@+id/cityTv"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
@@ -32,7 +32,7 @@
             android:background="@drawable/home_search_bg">
 
             <ImageView
-                android:id="@+id/mSearchIv"
+                android:id="@+id/searchIv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
@@ -41,10 +41,10 @@
                 android:src="@mipmap/home_search" />
 
             <EditText
-                android:id="@+id/mSearchEt"
+                android:id="@+id/searchEt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/mSearchIv"
+                android:layout_toRightOf="@+id/searchIv"
                 android:background="@null"
                 android:hint="@string/home_search_text_hint"
                 android:paddingRight="15dp"
@@ -73,14 +73,14 @@
                 android:layout_height="180dp">
 
                 <android.support.v4.view.ViewPager
-                    android:id="@+id/mViewpagerVp"
+                    android:id="@+id/viewpagerVp"
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
                     android:background="#123456"
                     android:orientation="horizontal" />
 
                 <com.vlee78.android.vl.VLStatedButtonBar
-                    android:id="@+id/mStatedBtnBar"
+                    android:id="@+id/statedBtnBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
@@ -103,7 +103,7 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
-                    android:id="@+id/mShareRl"
+                    android:id="@+id/shareRl"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -129,7 +129,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/mDiaryRl"
+                    android:id="@+id/diaryRl"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -154,7 +154,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/mSelectionRl"
+                    android:id="@+id/selectionRl"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -179,7 +179,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
-                    android:id="@+id/mEncyclopediasRl"
+                    android:id="@+id/encyclopediasRl"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
@@ -221,12 +221,12 @@
                     android:layout_weight="325">
 
                     <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/mFirstPrCoverSdv"
+                        android:id="@+id/firstPrCoverSdv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 
                     <TextView
-                        android:id="@+id/mFirstPrNameTv"
+                        android:id="@+id/firstPrNameTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -245,14 +245,14 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/mFirstPrPriceTv"
+                            android:id="@+id/firstPrPriceTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/text_color_pink"
                             android:textSize="14sp" />
 
                         <TextView
-                            android:id="@+id/mFirstPrOldPriceTv"
+                            android:id="@+id/firstPrOldPriceTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
@@ -280,12 +280,12 @@
                         android:layout_weight="1">
 
                         <com.facebook.drawee.view.SimpleDraweeView
-                            android:id="@+id/mSecondPrCoverSdv"
+                            android:id="@+id/secondPrCoverSdv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
 
                         <TextView
-                            android:id="@+id/mSecondPrNameTv"
+                            android:id="@+id/secondPrNameTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="13dp"
@@ -303,14 +303,14 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/mSecondPrPriceTv"
+                                android:id="@+id/secondPrPriceTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_color_pink"
                                 android:textSize="14sp" />
 
                             <TextView
-                                android:id="@+id/mSecondPrOldPriceTv"
+                                android:id="@+id/secondPrOldPriceTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
@@ -332,12 +332,12 @@
                         android:layout_weight="1">
 
                         <com.facebook.drawee.view.SimpleDraweeView
-                            android:id="@+id/mThirdPrCoverSdv"
+                            android:id="@+id/thirdPrCoverSdv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
 
                         <TextView
-                            android:id="@+id/mThirdPrNameTv"
+                            android:id="@+id/thirdPrNameTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="13dp"
@@ -354,14 +354,14 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/mThirdPrPriceTv"
+                                android:id="@+id/thirdPrPriceTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_color_pink"
                                 android:textSize="14sp" />
 
                             <TextView
-                                android:id="@+id/mThirdPrOldPriceTv"
+                                android:id="@+id/thirdPrOldPriceTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
@@ -380,7 +380,7 @@
                 android:background="@color/gap_color_gray" />
 
             <RelativeLayout
-                android:id="@+id/mSlectionMoreRl"
+                android:id="@+id/slectionMoreRl"
                 android:layout_width="match_parent"
                 android:layout_height="40dp">
 
@@ -408,7 +408,7 @@
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/mSlectionRv"
+                android:id="@+id/slectionRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
@@ -422,7 +422,7 @@
                 android:background="@color/gap_color_gray" />
 
             <RelativeLayout
-                android:id="@+id/mDiaryMoreRl"
+                android:id="@+id/diaryMoreRl"
                 android:layout_width="match_parent"
                 android:layout_height="40dp">
 
@@ -450,7 +450,7 @@
             </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/mDiaryRv"
+                android:id="@+id/diaryRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="31dp" />

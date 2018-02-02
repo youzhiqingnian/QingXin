@@ -125,6 +125,7 @@ public class VLTitleBar extends FrameLayout {
         textView.setText(text);
         textView.setTextSize(textSize);
         textView.setTextColor(textColor);
+        textView.getPaint().setFakeBoldText(true);// 设置加粗
         clickRegion.addView(textView);
 
         LinearLayout container = getContainer(pos);

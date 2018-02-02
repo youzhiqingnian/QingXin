@@ -15,7 +15,7 @@
             android:layout_height="100dp">
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/mSelectionCoverSdv"
+                android:id="@+id/selectionCoverSdv"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:scaleType="centerCrop"
@@ -31,7 +31,7 @@
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/mInstituteNameTv"
+            android:id="@+id/instituteNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl_top_pic"
@@ -41,10 +41,10 @@
             android:textSize="14sp" />
 
         <TextView
-            android:id="@+id/mInstituteIntroTv"
+            android:id="@+id/instituteIntroTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/mInstituteNameTv"
+            android:layout_below="@+id/instituteNameTv"
             android:layout_marginTop="8dp"
             android:text="打造你的专属之美"
             android:textColor="@color/text_color_origin_price"

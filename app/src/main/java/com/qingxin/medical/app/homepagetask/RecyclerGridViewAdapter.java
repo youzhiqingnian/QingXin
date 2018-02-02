@@ -83,9 +83,9 @@ public class RecyclerGridViewAdapter extends RecyclerView.Adapter<RecyclerGridVi
         //在布局中找到所含有的UI组件
         public ViewHolder(View itemView) {
             super(itemView);
-            mSelectionCoverSdv = itemView.findViewById(R.id.mSelectionCoverSdv);
-            mInstituteNameTv = itemView.findViewById(R.id.mInstituteNameTv);
-            mInstituteIntroTv = itemView.findViewById(R.id.mInstituteIntroTv);
+            mSelectionCoverSdv = itemView.findViewById(R.id.selectionCoverSdv);
+            mInstituteNameTv = itemView.findViewById(R.id.instituteNameTv);
+            mInstituteIntroTv = itemView.findViewById(R.id.instituteIntroTv);
 
         }
     }

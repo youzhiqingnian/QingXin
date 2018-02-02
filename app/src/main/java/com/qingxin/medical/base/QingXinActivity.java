@@ -9,6 +9,4 @@ import com.vlee78.android.vl.VLActivity;
  */
 public class QingXinActivity extends VLActivity {
 
-
-
 }

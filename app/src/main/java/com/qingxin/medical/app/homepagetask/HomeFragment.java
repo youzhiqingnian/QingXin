@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
@@ -31,6 +32,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.Constants;
+import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.service.entity.Book;
@@ -39,7 +41,6 @@ import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -104,7 +105,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
 
             return;
-        new HomePageTaskPresenter(getActivity(), this);
+        new HomePageTaskPresenter(this);
         if (getView() == null) {
             return;
         }
@@ -125,29 +126,29 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     }
 
     private void initView() {
-        mCityTv = mRootView.findViewById(R.id.mCityTv);
-        mFirstPrNameTv = mRootView.findViewById(R.id.mFirstPrNameTv);
-        mFirstPrPriceTv = mRootView.findViewById(R.id.mFirstPrPriceTv);
-        mFirstPrOldPriceTv = mRootView.findViewById(R.id.mFirstPrOldPriceTv);
-        mSecondPrNameTv = mRootView.findViewById(R.id.mSecondPrNameTv);
-        mSecondPrPriceTv = mRootView.findViewById(R.id.mSecondPrPriceTv);
-        mSecondPrOldPriceTv = mRootView.findViewById(R.id.mSecondPrOldPriceTv);
-        mThirdPrNameTv = mRootView.findViewById(R.id.mThirdPrNameTv);
-        mThirdPrPriceTv = mRootView.findViewById(R.id.mThirdPrPriceTv);
-        mThirdPrOldPriceTv = mRootView.findViewById(R.id.mThirdPrOldPriceTv);
+        mCityTv = mRootView.findViewById(R.id.cityTv);
+        mFirstPrNameTv = mRootView.findViewById(R.id.firstPrNameTv);
+        mFirstPrPriceTv = mRootView.findViewById(R.id.firstPrPriceTv);
+        mFirstPrOldPriceTv = mRootView.findViewById(R.id.firstPrOldPriceTv);
+        mSecondPrNameTv = mRootView.findViewById(R.id.secondPrNameTv);
+        mSecondPrPriceTv = mRootView.findViewById(R.id.secondPrPriceTv);
+        mSecondPrOldPriceTv = mRootView.findViewById(R.id.secondPrOldPriceTv);
+        mThirdPrNameTv = mRootView.findViewById(R.id.thirdPrNameTv);
+        mThirdPrPriceTv = mRootView.findViewById(R.id.thirdPrPriceTv);
+        mThirdPrOldPriceTv = mRootView.findViewById(R.id.thirdPrOldPriceTv);
 
-        mFirstPrCoverSdv = mRootView.findViewById(R.id.mFirstPrCoverSdv);
-        mSecondPrCoverSdv = mRootView.findViewById(R.id.mSecondPrCoverSdv);
-        mThirdPrCoverSdv = mRootView.findViewById(R.id.mThirdPrCoverSdv);
+        mFirstPrCoverSdv = mRootView.findViewById(R.id.firstPrCoverSdv);
+        mSecondPrCoverSdv = mRootView.findViewById(R.id.secondPrCoverSdv);
+        mThirdPrCoverSdv = mRootView.findViewById(R.id.thirdPrCoverSdv);
 
-        mShareRl = mRootView.findViewById(R.id.mShareRl);
-        mDiaryRl = mRootView.findViewById(R.id.mDiaryRl);
-        mSelectionRl = mRootView.findViewById(R.id.mSelectionRl);
-        mEncyclopediasRl = mRootView.findViewById(R.id.mEncyclopediasRl);
-        mSlectionMoreRl = mRootView.findViewById(R.id.mSlectionMoreRl);
-        mDiaryMoreRl = mRootView.findViewById(R.id.mDiaryMoreRl);
+        mShareRl = mRootView.findViewById(R.id.shareRl);
+        mDiaryRl = mRootView.findViewById(R.id.diaryRl);
+        mSelectionRl = mRootView.findViewById(R.id.selectionRl);
+        mEncyclopediasRl = mRootView.findViewById(R.id.encyclopediasRl);
+        mSlectionMoreRl = mRootView.findViewById(R.id.slectionMoreRl);
+        mDiaryMoreRl = mRootView.findViewById(R.id.diaryMoreRl);
 
-        mStatedBtnBar = mRootView.findViewById(R.id.mStatedBtnBar);
+        mStatedBtnBar = mRootView.findViewById(R.id.statedBtnBar);
     }
 
 
@@ -263,7 +264,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
         List<HomeBean.ContentBean.BannersBean> bannerList = mHomeBean.getContent().getBanners();
 
-        ViewPager mViewpagerVp = mRootView.findViewById(R.id.mViewpagerVp);
+        ViewPager mViewpagerVp = mRootView.findViewById(R.id.viewpagerVp);
         BannerPagerAdapter mAdapter = new BannerPagerAdapter(getActivity(), bannerList);
         mViewpagerVp.setAdapter(mAdapter);
 
@@ -292,6 +293,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             mFirstPrNameTv.setText(productList.get(0).getName());
             mFirstPrPriceTv.setText(productList.get(0).getPrice() + getStr(R.string.yuan));
             mFirstPrOldPriceTv.setText(getStr(R.string.origin_price) + productList.get(0).getOld_price() + getStr(R.string.yuan));
+            mFirstPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             mFirstPrCoverSdv.setImageURI(Uri.parse(productList.get(0).getCover()));
         }
 
@@ -299,6 +301,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             mSecondPrNameTv.setText(productList.get(1).getName());
             mSecondPrPriceTv.setText(productList.get(1).getPrice() + getStr(R.string.yuan));
             mSecondPrOldPriceTv.setText(getStr(R.string.origin_price) + productList.get(1).getOld_price() + getStr(R.string.yuan));
+            mSecondPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             mSecondPrCoverSdv.setImageURI(Uri.parse(productList.get(1).getCover()));
         }
 
@@ -306,12 +309,13 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             mThirdPrNameTv.setText(productList.get(2).getName());
             mThirdPrPriceTv.setText(productList.get(2).getPrice() + getStr(R.string.yuan));
             mThirdPrOldPriceTv.setText(getStr(R.string.origin_price) + productList.get(2).getOld_price() + getStr(R.string.yuan));
+            mThirdPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
             mThirdPrCoverSdv.setImageURI(Uri.parse(productList.get(2).getCover()));
         }
 
 
-        RecyclerView mSlectionRv = mRootView.findViewById(R.id.mSlectionRv);
-        RecyclerView mDiaryRv = mRootView.findViewById(R.id.mDiaryRv);
+        RecyclerView mSlectionRv = mRootView.findViewById(R.id.slectionRv);
+        RecyclerView mDiaryRv = mRootView.findViewById(R.id.diaryRv);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         mSlectionRv.setLayoutManager(mLayoutManager);
@@ -327,6 +331,16 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             mDiaryRv.addItemDecoration(new SpaceItemDecoration(VLUtils.dip2px(18)));
             mDiaryRv.setAdapter(mGoddessDiaryAdapter);
             mDiaryRv.setNestedScrollingEnabled(false);
+
+            mGoddessDiaryAdapter.setOnItemClickListener(new HomeGoddessDiaryAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    Intent intent = new Intent(getActivity(), GoddessDiaryDetailActivity.class);
+                    intent.putExtra("id", mHomeBean.getContent().getDiarys().get(position).getId());
+                    startActivity(intent);
+                }
+            });
+
         }
 
         /**
@@ -366,24 +380,24 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.mShareRl:
+            case R.id.shareRl:
                 // 歆人专享
 
                 break;
 
-            case R.id.mSelectionRl:
-            case R.id.mSlectionMoreRl:
+            case R.id.selectionRl:
+            case R.id.slectionMoreRl:
                 // 本地严选
 
                 break;
 
-            case R.id.mEncyclopediasRl:
+            case R.id.encyclopediasRl:
                 // 医美百科
 
                 break;
 
-            case R.id.mDiaryRl:
-            case R.id.mDiaryMoreRl:
+            case R.id.diaryRl:
+            case R.id.diaryMoreRl:
                 // 女神日记
                 Intent intent = new Intent(getActivity(), GoddessDiaryListActivity.class);
                 startActivity(intent);
@@ -416,7 +430,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             View mView = LayoutInflater.from(mContext).inflate(R.layout.layout_viewpager, container, false);
-            SimpleDraweeView mSlectionMoreRl = mView.findViewById(R.id.mSlectionMoreRl);
+            SimpleDraweeView mSlectionMoreRl = mView.findViewById(R.id.slectionMoreRl);
             mSlectionMoreRl.setImageURI(Uri.parse(mBannerList.get(position % mBannerList.size()).getCover()));
             container.addView(mView);
             return mView;

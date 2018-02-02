@@ -13,13 +13,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
-    <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
 
     <application
         android:name=".base.QingXinApplication"
@@ -29,7 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppBaseTheme">
-        <activity android:name=".app.homepagetask.HomePageTaskActivity"
+        <activity android:name=".app.login.SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,17 +31,23 @@
             </intent-filter>
         </activity>
 
+        <!--home页-->
+        <activity
+            android:name=".app.homepagetask.HomePageTaskActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
+
         <!--女神日记列表-->
         <activity
             android:name=".app.goddessdiary.GoddessDiaryListActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" />
 
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="c7de8ff7aa4fcc71de9323045aee3b0d"/>
-
-        <service android:name="com.amap.api.location.APSService"></service>
+        <!--女神日记详情-->
+        <activity
+            android:name=".app.goddessdiary.GoddessDiaryDetailActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
 
     </application>
 

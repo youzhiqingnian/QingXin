@@ -7,15 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
+
 import java.util.List;
 
 
 public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDiaryAdapter.MyViewHolder> {
     private Context mContext;
-    private ItemClickListener itemClickListener;
+    private OnItemClickListener mOnItemClickListener = null;
     List<HomeBean.ContentBean.DiarysBean> mDiaryList;
 
     HomeGoddessDiaryAdapter(Context context, List<HomeBean.ContentBean.DiarysBean> diaryList) {
@@ -23,8 +25,8 @@ public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDia
         this.mDiaryList = diaryList;
     }
 
-    public void setItemClickListener(ItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
     }
 
 
@@ -39,17 +41,18 @@ public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDia
          * 得到item的LayoutParams布局参数
          */
 
-        if(mDiaryList.get(position).getMem() != null){
+        if (mDiaryList.get(position).getMem() != null) {
             holder.mAuthoerHeadSdv.setImageURI(Uri.parse(mDiaryList.get(position).getMem().getCover()));
             holder.mAuthorName.setText(mDiaryList.get(position).getMem().getName());
         }
-
 
 
         holder.mBeforeCoverSdv.setImageURI(Uri.parse(mDiaryList.get(position).getOper_before_photo()));
         holder.mAfterCoverSdv.setImageURI(Uri.parse(mDiaryList.get(position).getOper_after_photo()));
         holder.mDiaryContentTv.setText(mDiaryList.get(position).getSummary());
         holder.mDiaryTagTv.setText(mDiaryList.get(position).getTags());
+
+        holder.itemView.setTag(position);
 
     }
 
@@ -58,46 +61,41 @@ public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDia
         return mDiaryList.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
 
-        SimpleDraweeView mAuthoerHeadSdv, 
-                mBeforeCoverSdv, 
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        SimpleDraweeView mAuthoerHeadSdv,
+                mBeforeCoverSdv,
                 mAfterCoverSdv;
-        
+
         TextView mAuthorName, mDiaryContentTv, mDiaryTagTv, mScanCountTv, mCollectionCountTv;
 
         MyViewHolder(final View itemView) {
             super(itemView);
-            mAuthoerHeadSdv = itemView.findViewById(R.id.mAuthoerHeadSdv);
-            mBeforeCoverSdv = itemView.findViewById(R.id.mBeforeCoverSdv);
-            mAfterCoverSdv = itemView.findViewById(R.id.mAfterCoverSdv);
-            mAuthorName = itemView.findViewById(R.id.mAuthorName);
-            mDiaryContentTv = itemView.findViewById(R.id.mDiaryContentTv);
-            mDiaryTagTv = itemView.findViewById(R.id.mDiaryTagTv);
-            mScanCountTv = itemView.findViewById(R.id.mScanCountTv);
-            mCollectionCountTv = itemView.findViewById(R.id.mCollectionCountTv);
+            itemView.setOnClickListener(this);
 
+            mAuthoerHeadSdv = itemView.findViewById(R.id.authoerHeadSdv);
+            mBeforeCoverSdv = itemView.findViewById(R.id.beforeCoverSdv);
+            mAfterCoverSdv = itemView.findViewById(R.id.afterCoverSdv);
+            mAuthorName = itemView.findViewById(R.id.authorName);
+            mDiaryContentTv = itemView.findViewById(R.id.diaryContentTv);
+            mDiaryTagTv = itemView.findViewById(R.id.diaryTagTv);
+            mScanCountTv = itemView.findViewById(R.id.scanCountTv);
+            mCollectionCountTv = itemView.findViewById(R.id.collectionCountTv);
 
-            //为item添加普通点击回调
-            itemView.setOnClickListener(v -> {
-                if (itemClickListener != null) {
-                    itemClickListener.onItemClick(itemView, getPosition());
-                }
-            });
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (mOnItemClickListener != null) {
+                //注意这里使用getTag方法获取position
+                mOnItemClickListener.onItemClick(view, (int) view.getTag());
+            }
         }
     }
 
-    public interface ItemClickListener {
-
-        /**
-         * Item的普通点击
-         */
-        public void onItemClick(View view, int position);
-
-        /**
-         * Item长按
-         */
-        public void onItemLongClick(View view, int position);
+    public static interface OnItemClickListener {
+        void onItemClick(View view, int position);
     }
 
 }

@@ -1,21 +1,15 @@
 package com.qingxin.medical.app;
 
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.util.TypedValue;
-import android.view.Gravity;
-
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.homepagetask.UltraPagerAdapter;
-import com.tmall.ultraviewpager.UltraViewPager;
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+//        setContentView(R.layout.activity_main2);
 
 //        initViewPager();
 

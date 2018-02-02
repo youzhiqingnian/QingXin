@@ -2,6 +2,7 @@ package com.qingxin.medical.app.goddessdiary;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -9,7 +10,14 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.CommonAdapter;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
+import com.qingxin.medical.service.manager.NetRequestListManager;
+
 import java.util.List;
+
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Created by zhikuo1 on 2018-01-31.
@@ -33,14 +41,14 @@ public class GoddessDiaryListAdapter extends CommonAdapter<GoddessDiaryBean.Cont
             holder = new ViewHolder();
             convertView = View
                     .inflate(mContext,R.layout.layout_home_goddess_diary_item, null);
-            holder.mAuthoerHeadSdv = convertView.findViewById(R.id.mAuthoerHeadSdv);
-            holder.mBeforeCoverSdv = convertView.findViewById(R.id.mBeforeCoverSdv);
-            holder.mAfterCoverSdv = convertView.findViewById(R.id.mAfterCoverSdv);
-            holder.mAuthorName = convertView.findViewById(R.id.mAuthorName);
-            holder.mDiaryContentTv = convertView.findViewById(R.id.mDiaryContentTv);
-            holder.mDiaryTagTv = convertView.findViewById(R.id.mDiaryTagTv);
-            holder.mScanCountTv = convertView.findViewById(R.id.mScanCountTv);
-            holder.mCollectionCountTv = convertView.findViewById(R.id.mCollectionCountTv);
+            holder.mAuthoerHeadSdv = convertView.findViewById(R.id.authoerHeadSdv);
+            holder.mBeforeCoverSdv = convertView.findViewById(R.id.beforeCoverSdv);
+            holder.mAfterCoverSdv = convertView.findViewById(R.id.afterCoverSdv);
+            holder.mAuthorName = convertView.findViewById(R.id.authorName);
+            holder.mDiaryContentTv = convertView.findViewById(R.id.diaryContentTv);
+            holder.mDiaryTagTv = convertView.findViewById(R.id.diaryTagTv);
+            holder.mScanCountTv = convertView.findViewById(R.id.scanCountTv);
+            holder.mCollectionCountTv = convertView.findViewById(R.id.collectionCountTv);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -71,4 +79,73 @@ public class GoddessDiaryListAdapter extends CommonAdapter<GoddessDiaryBean.Cont
         SimpleDraweeView mBeforeCoverSdv, mAfterCoverSdv;
     }
 
+    /**
+     * Created by zhikuo1 on 2018-01-31.
+     */
+
+    public static class GoddessDiaryPresenter implements DiaryListContract.Presenter {
+
+        @NonNull
+        private final DiaryListContract.View mGoddessDiaryView;
+
+        @NonNull
+        private CompositeSubscription mCompositeSubscription;
+
+        private GoddessDiaryBean mDiary;
+
+        GoddessDiaryPresenter(DiaryListContract.View goddessDiaryView){
+            mGoddessDiaryView = goddessDiaryView;
+            mCompositeSubscription = new CompositeSubscription();
+            mGoddessDiaryView.setPresenter(this);
+        }
+
+        @Override
+        public void subscribe() {
+
+        }
+
+        @Override
+        public void unsubscribe() {
+            if (mCompositeSubscription.hasSubscriptions()){
+                mCompositeSubscription.unsubscribe();
+            }
+        }
+
+        @Override
+        public void populateTask() {
+
+        }
+
+        @Override
+        public void getGoddessDiaryList(String limit, String skip) {
+            mCompositeSubscription.add(NetRequestListManager.getGoddessDiary(limit,skip)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<GoddessDiaryBean>() {
+                        @Override
+                        public void onCompleted() {
+                            if (mDiary != null){
+                                mGoddessDiaryView.onSuccess(mDiary);
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            e.printStackTrace();
+                            mGoddessDiaryView.onError("请求失败！！");
+                        }
+
+                        @Override
+                        public void onNext(GoddessDiaryBean diary) {
+                            mDiary = diary;
+                        }
+                    })
+            );
+        }
+
+        @Override
+        public boolean isDataMissing() {
+            return false;
+        }
+    }
 }

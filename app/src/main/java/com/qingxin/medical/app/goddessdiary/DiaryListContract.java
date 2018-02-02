@@ -6,7 +6,7 @@ import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 /**
  * Created by zhikuo1 on 2018-01-31.
  */
-public class GoddessDiaryContract {
+public class DiaryListContract {
 
     interface View extends BaseView<Presenter> {
 

@@ -1,9 +1,6 @@
 package com.qingxin.medical.app.goddessdiary;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
-
-import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -11,37 +8,36 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * Created by zhikuo1 on 2018-01-31.
+ * Created by zhikuo1 on 2018-02-02.
  */
 
-public class GoddessDiaryPresenter implements GoddessDiaryContract.Presenter {
+public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presenter {
 
     @NonNull
-    private Context mContext;
-
-    @NonNull
-    private final GoddessDiaryContract.View mGoddessDiaryView;
+    private final DiaryDetailContract.View mDiaryDetailView;
 
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    private GoddessDiaryBean mDiary;
 
-    GoddessDiaryPresenter(@NonNull Context context, GoddessDiaryContract.View goddessDiaryView){
-        mContext = context;
-        mGoddessDiaryView = goddessDiaryView;
+    private GoddessDiaryDetailBean mDiaryDetailBean;
+
+    public GoddessDiaryDetailPresenter(DiaryDetailContract.View diaryDetailView) {
+        mDiaryDetailView = diaryDetailView;
         mCompositeSubscription = new CompositeSubscription();
-        mGoddessDiaryView.setPresenter(this);
+        mDiaryDetailView.setPresenter(this);
     }
 
     @Override
     public void subscribe() {
-
+        if (isDataMissing()) {
+            populateTask();
+        }
     }
 
     @Override
     public void unsubscribe() {
-        if (mCompositeSubscription.hasSubscriptions()){
+        if (mCompositeSubscription.hasSubscriptions()) {
             mCompositeSubscription.unsubscribe();
         }
     }
@@ -52,27 +48,27 @@ public class GoddessDiaryPresenter implements GoddessDiaryContract.Presenter {
     }
 
     @Override
-    public void getGoddessDiaryList(String limit, String skip) {
-        mCompositeSubscription.add(NetRequestListManager.getGoddessDiary(mContext,limit,skip)
+    public void getGoddessDiaryDetail(String id) {
+        mCompositeSubscription.add(NetRequestListManager.getGoddessDiaryDetail(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<GoddessDiaryBean>() {
+                .subscribe(new Observer<GoddessDiaryDetailBean>() {
                     @Override
                     public void onCompleted() {
-                        if (mDiary != null){
-                            mGoddessDiaryView.onSuccess(mDiary);
+                        if (mDiaryDetailBean != null) {
+                            mDiaryDetailView.onSuccess(mDiaryDetailBean);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        mGoddessDiaryView.onError("请求失败！！");
+                        mDiaryDetailView.onError("请求失败！！");
                     }
 
                     @Override
-                    public void onNext(GoddessDiaryBean diary) {
-                        mDiary = diary;
+                    public void onNext(GoddessDiaryDetailBean diaryDetailBean) {
+                        mDiaryDetailBean = diaryDetailBean;
                     }
                 })
         );
