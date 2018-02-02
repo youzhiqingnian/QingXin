@@ -52,7 +52,7 @@ public class GoddessDiaryPresenter implements GoddessDiaryContract.Presenter {
 
     @Override
     public void getGoddessDiaryList(String limit, String skip) {
-        mCompositeSubscription.add(NetRequestListManager.getGoddessDiary(mContext,limit,skip)
+        mCompositeSubscription.add(NetRequestListManager.getGoddessDiary(limit,skip)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<GoddessDiary>() {

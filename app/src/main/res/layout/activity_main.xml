@@ -3,24 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <com.vlee78.android.vl.VLPagerView
-      android:id="@+id/mainPager"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent" />
+    <com.vlee78.android.vl.VLPagerView
+        android:id="@+id/mainPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-  <com.vlee78.android.vl.VLStatedButtonBar
-      android:id="@+id/mainBottomBar"
-      android:layout_width="match_parent"
-      android:layout_height="49dp"
-      android:layout_alignParentBottom="true"
-      android:background="#FAFAFA" />
+    <com.vlee78.android.vl.VLStatedButtonBar
+        android:id="@+id/mainBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_alignParentBottom="true"
+        android:background="#FAFAFA" />
 
-  <View
-      android:layout_width="match_parent"
-      android:layout_height="0.5dp"
-      android:layout_above="@id/mainBottomBar"
-      android:background="#336E7275" />
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_above="@id/mainBottomBar"
+        android:background="#336E7275" />
 
 
 </RelativeLayout>

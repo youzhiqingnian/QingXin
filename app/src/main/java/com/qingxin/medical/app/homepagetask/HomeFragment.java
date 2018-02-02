@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
@@ -38,7 +39,6 @@ import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -103,7 +103,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
 
             return;
-        new HomePageTaskPresenter(getActivity(), this);
+        new HomePageTaskPresenter(this);
         if (getView() == null) {
             return;
         }

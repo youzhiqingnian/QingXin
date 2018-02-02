@@ -3,10 +3,15 @@ package com.qingxin.medical.app.goddessdiary;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.qingxin.medical.QingXinListView;
+import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiary;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.widget.indicator.view.RefreshListView;
+import com.vlee78.android.vl.VLAsyncHandler;
+import com.vlee78.android.vl.VLListView;
+import com.vlee78.android.vl.VLTitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +19,10 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by zhikuo1 on 2018-01-31.
+ * 女神日记列表
+ * Date 2018-01-31
+ *
+ * @author zhikuo1
  */
 public class GoddessDiaryListActivity extends QingXinActivity implements GoddessDiaryContract.View {
 
@@ -36,17 +44,42 @@ public class GoddessDiaryListActivity extends QingXinActivity implements Goddess
 
     private List<GoddessDiary.ContentBean.ItemsBean> mGoddessDiaryList = new ArrayList<>();
 
+    private QingXinListView mQingXinListView;
+    private VLListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goddess_diary_list);
-
+        VLTitleBar titleBar = findViewById(R.id.titleBar);
+        QingXinTitleBar.init(titleBar, getResources().getString(R.string.goddess_diary));
+        QingXinTitleBar.setLeftReturn(titleBar, this);
         new GoddessDiaryPresenter(this, this);
+        mListView = findViewById(R.id.listView);
 
 
         mPresenter.getGoddessDiaryList("2", skip);
 
+        updateListView();
+
+    }
+
+    private void updateListView(){
+        if (null == mQingXinListView){
+            mQingXinListView  = new QingXinListView(mListView, new QingXinListView.QingXinListViewDelegate() {
+                @Override
+                public void onLoadMore(VLListView listView, boolean isClear, VLAsyncHandler<Object> asyncHandler) {
+                    //TODO
+                }
+
+                @Override
+                public void onEmpty(VLListView listView) {
+
+                }
+            });
+        }else {
+            mQingXinListView.update();
+        }
     }
 
     @Override
@@ -87,8 +120,8 @@ public class GoddessDiaryListActivity extends QingXinActivity implements Goddess
     }
 
     private void setData() {
-
-        mDiaryListRlv = findViewById(R.id.mDiaryListRlv);
+        //TODO
+        //mDiaryListRlv = findViewById(R.id.mDiaryListRlv);
         mAdapter = new GoddessDiaryListAdapter(this, mDiary.getContent().getItems());
         mDiaryListRlv.setAdapter(mAdapter);
         isFirst = false;

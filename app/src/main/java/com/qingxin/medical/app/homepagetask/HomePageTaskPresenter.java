@@ -1,15 +1,18 @@
 package com.qingxin.medical.app.homepagetask;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
+
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.service.entity.Book;
 import com.qingxin.medical.service.manager.NetRequestListManager;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+
 import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by user on 2018-01-23.
  */
@@ -22,9 +25,6 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    @NonNull
-    private Context mContext;
-
     private Book mBook;
 
     private HomeBean mHomeBean;
@@ -32,11 +32,8 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
     /**
      * Creates a presenter for the add/edit view.
      * @param homePageTaskView
-      */
-    public HomePageTaskPresenter(@NonNull Context context,
-                                 HomePageTaskContract.View homePageTaskView
-                            ) {
-        mContext = context;
+     */
+    public HomePageTaskPresenter(HomePageTaskContract.View homePageTaskView) {
         mHomePageTaskView = checkNotNull(homePageTaskView);
         mCompositeSubscription = new CompositeSubscription();
         mHomePageTaskView.setPresenter(this);
@@ -45,14 +42,14 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
 
     @Override
     public void subscribe() {
-        if(isDataMissing()){
+        if (isDataMissing()) {
             populateTask();
         }
     }
 
     @Override
     public void unsubscribe() {
-        if (mCompositeSubscription.hasSubscriptions()){
+        if (mCompositeSubscription.hasSubscriptions()) {
             mCompositeSubscription.unsubscribe();
         }
     }
@@ -70,13 +67,13 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
 
     @Override
     public void getSearchBooks(String name, String tag, int start, int count) {
-        mCompositeSubscription.add(NetRequestListManager.getSearchBooks(mContext,name,tag,start,count)
+        mCompositeSubscription.add(NetRequestListManager.getSearchBooks(name, tag, start, count)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Book>() {
                     @Override
                     public void onCompleted() {
-                        if (mBook != null){
+                        if (mBook != null) {
                             mHomePageTaskView.onSuccess(mBook);
                         }
                     }
@@ -97,7 +94,7 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
 
     @Override
     public void getHomeData(String banner_size, String product_size, String diary_size) {
-        mCompositeSubscription.add(NetRequestListManager.getHomeData(mContext,banner_size,product_size,diary_size)
+        mCompositeSubscription.add(NetRequestListManager.getHomeData(banner_size,product_size,diary_size)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<HomeBean>() {
