@@ -1,8 +1,10 @@
 package com.qingxin.medical.app.goddessdiary;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.LoginFilter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
@@ -212,7 +215,8 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
 
                 }else{
                     // 如果没有登录就跳到登录页面
-
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
                 }
                 break;
 

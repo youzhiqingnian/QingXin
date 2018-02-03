@@ -22,6 +22,7 @@ public class DiaryDetailContract {
 
         void getGoddessDiaryDetail(String id);
 
-    }
+        void collectDiary(String id);
+
 
 }
