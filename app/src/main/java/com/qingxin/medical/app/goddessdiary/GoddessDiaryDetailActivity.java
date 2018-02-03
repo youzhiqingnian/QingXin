@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.LoginFilter;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -134,11 +133,35 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         }
     }
 
+    @Override
+    public void onSuccess(CollectBean mCollectBean) {
+        Log.i("collectBean", mCollectBean.toString());
+        if (mCollectBean.getContent() != null) {
+            // 如果收藏的结果不为空
+            if (mCollectBean.getContent().getIs_collect().equals("n")) {
+                mCollectionTv.setText(R.string.plus_collection);
+                showToast(getString(R.string.cancel_collect_ok));
+
+            } else {
+                mCollectionTv.setText(R.string.cancel_collection);
+                showToast(getString(R.string.collect_ok));
+            }
+
+        }
+    }
+
     @SuppressLint("DefaultLocale")
     private void setData(GoddessDiaryDetailBean diaryDetailBean) {
 
         GoddessDiaryDetailBean.ContentBean.ItemBean itemBean;
         itemBean = diaryDetailBean.getContent().getItem();
+        String collectState = "";
+        if (itemBean.getIs_collect().equals("y")) {
+            collectState = getString(R.string.cancel_collection);
+        } else {
+            collectState = getString(R.string.plus_collection);
+        }
+        mCollectionTv.setText(collectState);
 
         mAuthoerHeadSdv.setImageURI(Uri.parse(itemBean.getMem().getCover()));
         mAuthorNameTv.setText(itemBean.getMem().getName());
@@ -212,8 +235,8 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
                 // 收藏
                 if (QingXinApplication.getInstance().getLoginUser() != null) {
                     // 如果登录过了
-
-                }else{
+                    mPresenter.collectDiary(id);
+                } else {
                     // 如果没有登录就跳到登录页面
                     Intent intent = new Intent(this, LoginActivity.class);
                     startActivity(intent);

@@ -22,6 +22,8 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
 
     private GoddessDiaryDetailBean mDiaryDetailBean;
 
+    private CollectBean mCollectBean;
+
     public GoddessDiaryDetailPresenter(DiaryDetailContract.View diaryDetailView) {
         mDiaryDetailView = diaryDetailView;
         mCompositeSubscription = new CompositeSubscription();
@@ -64,6 +66,35 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
                     }
                 })
         );
+    }
+
+    @Override
+    public void collectDiary(String id) {
+
+        mCompositeSubscription.add(NetRequestListManager.collectDiary(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<CollectBean>() {
+                    @Override
+                    public void onCompleted() {
+                        if (mCollectBean != null) {
+                            mDiaryDetailView.onSuccess(mCollectBean);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                        mDiaryDetailView.onError("请求失败！！");
+                    }
+
+                    @Override
+                    public void onNext(CollectBean collectBean) {
+                        mCollectBean = collectBean;
+                    }
+                })
+        );
+
     }
 
 }

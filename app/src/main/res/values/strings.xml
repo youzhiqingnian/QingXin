@@ -22,6 +22,7 @@
 
     <!--女神日记-->
     <string name="plus_collection">+收藏</string>
+    <string name="cancel_collection">取消收藏</string>
     <string name="related_product">相关产品</string>
     <string name="rmb_icon">￥</string>
     <string name="publish_from">发布于:</string>
@@ -34,5 +35,7 @@
     <string name="xinlang_weibo">新浪微博</string>
     <string name="copy_link">复制链接</string>
     <string name="cancel">取消</string>
+    <string name="collect_ok">收藏成功</string>
+    <string name="cancel_collect_ok">已取消收藏</string>
 
 </resources>
