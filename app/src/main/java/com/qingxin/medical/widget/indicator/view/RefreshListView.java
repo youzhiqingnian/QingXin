@@ -15,7 +15,8 @@ import android.widget.TextView;
 
 import com.qingxin.medical.R;
 import com.qingxin.medical.utils.TimeUtils;
-import com.vlee78.android.vl.VLUtils;
+import com.vlee78.android.vl.VLBlock;
+import com.vlee78.android.vl.VLScheduler;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,7 +29,7 @@ import java.util.Date;
 public class RefreshListView extends ListView implements AbsListView.OnScrollListener,
         AdapterView.OnItemClickListener {
 
-    private String formater="yyyy-MM-dd HH:mm:ss";
+    private String formater = "yyyy-MM-dd HH:mm:ss";
 
     private static final int STATE_PULL_REFRESH = 0;// 下拉刷新
     private static final int STATE_RELEASE_REFRESH = 1;// 松开刷新
@@ -91,7 +92,7 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
 
         initArrowAnim();
         this.setOnScrollListener(this);
-        lastRefreshTime=getRefreshTime();
+        lastRefreshTime = getRefreshTime();
         tvTime.setText("更新时间:" + TimeUtils.getTimestampString(TimeUtils.string2Date(lastRefreshTime, formater)));
 
     }
@@ -129,7 +130,7 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
                     }
 
                     int endY = (int) ev.getRawY();
-                    int dy = (endY - startY)/3;// 移动便宜量
+                    int dy = (endY - startY) / 3;// 移动便宜量
 
                     if (dy > 0 && getFirstVisiblePosition() == 0) {// 只有下拉并且当前是第一个item,才允许下拉
                         tvTime.setText("更新时间:" + TimeUtils.getTimestampString(TimeUtils.string2Date(lastRefreshTime, formater)));
@@ -241,23 +242,24 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
             isLoadingMore = false;
         } else {//上拉加载
             //应交互要求，下拉刷新时间不到1秒增加1秒显示时间
-            long endTime=System.currentTimeMillis();
-            if (endTime-startTime<1000){
-                VLUtils.getHandler().postDelayed(new Runnable() {
+            long endTime = System.currentTimeMillis();
+            if (endTime - startTime < 1000) {
+                VLScheduler.instance.schedule(1000, VLScheduler.THREAD_MAIN, new VLBlock() {
                     @Override
-                    public void run() {
+                    protected void process(boolean canceled) {
                         closeRefreshProgress(success);
                     }
-                },1000);
-            }else {
+                });
+            } else {
                 closeRefreshProgress(success);
             }
         }
     }
+
     /**
      * 关闭下刷新头
      */
-    public void closeRefreshProgress(boolean success){
+    public void closeRefreshProgress(boolean success) {
         mCurrrentState = STATE_PULL_REFRESH;
         tvTitle.setText("下拉刷新");
         ivArrow.setVisibility(View.VISIBLE);
@@ -266,10 +268,11 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
         mHeaderView.setPadding(0, -mHeaderViewHeight, 0, 0);// 隐藏
 
         if (success) {
-            lastRefreshTime=getRefreshTime();
-            tvTime.setText("更新时间:" + TimeUtils.getTimestampString(TimeUtils.string2Date(lastRefreshTime,formater)));
+            lastRefreshTime = getRefreshTime();
+            tvTime.setText("更新时间:" + TimeUtils.getTimestampString(TimeUtils.string2Date(lastRefreshTime, formater)));
         }
     }
+
     /**
      * 获取当前时间
      */
@@ -374,6 +377,7 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
     public void setPushEnable(boolean enable) {
         this.pushEnable = enable;
     }
+
     public void setPullEnable(boolean enable) {
         this.pullEnable = enable;
     }

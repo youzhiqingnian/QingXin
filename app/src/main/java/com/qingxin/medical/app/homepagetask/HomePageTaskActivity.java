@@ -1,6 +1,7 @@
 package com.qingxin.medical.app.homepagetask;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,41 +13,28 @@ import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
-/**
- * Created by user on 2018-01-22.
- */
 
+/**
+ * @author zhikuo
+ */
 public class HomePageTaskActivity extends QingXinActivity {
 
-    public static final String SHOULD_LOAD_DATA_FROM_REPO_KEY = "SHOULD_LOAD_DATA_FROM_REPO_KEY";
-
-
-    private HomePageTaskPresenter mHomePageTaskPresenter;
-
-    private HomePageTaskContract.Presenter mPresenter;
+    public static void startSelf(Context context, int index) {
+        Intent intent = new Intent(context, HomePageTaskActivity.class);
+        intent.putExtra(INDEX, index);
+        context.startActivity(intent);
+    }
 
     private VLPagerView mFragmentPager;
     private VLStatedButtonBar mButtonBar;
     private static final String INDEX = "INDEX";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        if (savedInstanceState == null) {
-            savedInstanceState = new Bundle();
-        }
-
-        initView();
-
-    }
-
-    private void initView() {
-
-        mFragmentPager = (VLPagerView) findViewById(R.id.mainPager);
-        mButtonBar = (VLStatedButtonBar) findViewById(R.id.mainBottomBar);
+        mFragmentPager = findViewById(R.id.mainPager);
+        mButtonBar = findViewById(R.id.mainBottomBar);
         mFragmentPager.setOffscreenPageLimit(4);
         //将4个fragment添加至activity中
         VLFragment[] fragments = new VLFragment[]{HomeFragment.newInstance(), WelFareServiceFragment.newInstance(), ExclusiveServiceFragment.newInstance(), MyFragment.newInstance()};
@@ -54,16 +42,10 @@ public class HomePageTaskActivity extends QingXinActivity {
         //滑动切换界面 false不可滑动
         mFragmentPager.setScrollable(false);
         mButtonBar.setStatedButtonBarDelegate(new MainBottomBarDelegate(this));
-        mFragmentPager.setPageChangeListener(new VLPagerView.VLPageChangeListener() {
-            @Override
-            public void onPageChanged(int position) {
-                mButtonBar.setChecked(position);
-            }
-        });
-
+        mFragmentPager.setPageChangeListener(position -> mButtonBar.setChecked(position));
         mButtonBar.setChecked(getIntent().getIntExtra(INDEX, 0));
-
     }
+
 
     private class MainBottomBarDelegate implements VLStatedButtonBar.VLStatedButtonBarDelegate {
         private Context mContext;
@@ -89,8 +71,8 @@ public class HomePageTaskActivity extends QingXinActivity {
             @Override
             public void onStatedButtonCreated(VLStatedButtonBar.VLStatedButton button, LayoutInflater inflater) {
                 View view = inflater.inflate(R.layout.group_main_bottom_bar_button, button);
-                mButtonImage = (ImageView) view.findViewById(R.id.mainBottomBarButtonImage);
-                mButtonText = (TextView) view.findViewById(R.id.mainBottomBarButtonText);
+                mButtonImage = view.findViewById(R.id.mainBottomBarButtonImage);
+                mButtonText = view.findViewById(R.id.mainBottomBarButtonText);
                 red = view.findViewById(R.id.red);
                 mButtonText.setTextSize(11);
                 mButtonText.setText(mText);
@@ -128,9 +110,6 @@ public class HomePageTaskActivity extends QingXinActivity {
             button.setPadding(VLUtils.dip2px(8), 0, VLUtils.dip2px(8), 0);
             buttonBar.addStatedButton(button);
 
-            /*ImageView imageView = new ImageView(MainActivity.this);
-            buttonBar.addStatedView(imageView, (float) 1.3);*/
-
             button = new VLStatedButtonBar.VLStatedButton(mContext);
             button.setStatedButtonDelegate(new MainBottomBarButtonDelegate("专属服务", R.mipmap.exclusive_service_tab_uncheck, R.mipmap.exclusive_service_tab_check));
             button.setPadding(VLUtils.dip2px(8), 0, VLUtils.dip2px(8), 0);
@@ -147,48 +126,4 @@ public class HomePageTaskActivity extends QingXinActivity {
             mFragmentPager.gotoPage(position, true);
         }
     }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-//        mPresenter.unsubscribe();
-    }
-
-//    @Override
-//    public void setPresenter(HomePageTaskContract.Presenter presenter) {
-//        mPresenter = checkNotNull(presenter);
-//        mPresenter.subscribe();
-//    }
-//
-//
-//    @Override
-//    public void onSuccess(Book mBook) {
-//        text.setText(mBook.toString());
-//    }
-//
-//    @Override
-//    public void onError(String result) {
-//
-//    }
-//
-//    @Override
-//    public void setTitle(String title) {
-//
-//    }
-
-
-
 }
