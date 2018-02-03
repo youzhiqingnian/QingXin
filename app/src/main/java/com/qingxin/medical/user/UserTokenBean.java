@@ -7,15 +7,15 @@ import com.qingxin.medical.base.BaseBean;
  */
 public class UserTokenBean extends BaseBean {
 
-    private String status;
+    private User mem;
     private String token;
 
-    public String getStatus() {
-        return status;
+    public User getMem() {
+        return mem;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setMem(User mem) {
+        this.mem = mem;
     }
 
     public String getToken() {

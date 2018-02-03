@@ -2,6 +2,7 @@ package com.qingxin.medical.base;
 
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.fresco.QingXinFrescoModel;
 import com.qingxin.medical.map.GaoDeMapModel;
@@ -11,7 +12,9 @@ import com.qingxin.medical.user.UserModel;
 import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModelManager;
+
 import org.codehaus.jackson.map.ObjectMapper;
+
 import java.io.IOException;
 
 /**
@@ -99,6 +102,7 @@ public class QingXinApplication extends VLApplication {
         SharedPreferences.Editor sharedEditor = getSharedPreferences().edit();
         sharedEditor.remove(QingXinConstants.KEY_PREFERENCES_USER);
         sharedEditor.apply();
+        this.mUser = null;
     }
 
     /**
