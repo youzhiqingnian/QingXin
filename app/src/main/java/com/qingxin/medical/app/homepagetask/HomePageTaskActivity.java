@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.mine.MineFragment;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
@@ -37,7 +38,7 @@ public class HomePageTaskActivity extends QingXinActivity {
         mButtonBar = findViewById(R.id.mainBottomBar);
         mFragmentPager.setOffscreenPageLimit(4);
         //将4个fragment添加至activity中
-        VLFragment[] fragments = new VLFragment[]{HomeFragment.newInstance(), WelFareServiceFragment.newInstance(), ExclusiveServiceFragment.newInstance(), MyFragment.newInstance()};
+        VLFragment[] fragments = new VLFragment[]{HomeFragment.newInstance(), WelFareServiceFragment.newInstance(), ExclusiveServiceFragment.newInstance(), MineFragment.newInstance()};
         mFragmentPager.setFragmentPages(getSupportFragmentManager(), fragments);
         //滑动切换界面 false不可滑动
         mFragmentPager.setScrollable(false);

@@ -19,6 +19,16 @@ public class User extends BaseBean {
     //青歆币
     private String coin;
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    private String token;
+
     public String getName() {
         return name;
     }

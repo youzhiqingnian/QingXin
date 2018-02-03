@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/QingXin.iml" filepath="$PROJECT_DIR$/QingXin.iml" />
-      <module fileurl="file://D:\QingXin\QingXin.iml" filepath="D:\QingXin\QingXin.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://D:\QingXin\app\app.iml" filepath="D:\QingXin\app\app.iml" />
     </modules>
   </component>
 </project>
