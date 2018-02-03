@@ -28,6 +28,28 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+    signingConfigs {
+        debug {
+            storeFile file('keystore.jks')
+            storePassword "qingxin2018"
+            keyAlias "qingxin"
+            keyPassword "qingxin2018"
+        }
+        release {
+            storeFile file('keystore.jks')
+            storePassword "qingxin2018"
+            keyAlias "qingxin"
+            keyPassword "qingxin2018"
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
 }
 
 dependencies {
