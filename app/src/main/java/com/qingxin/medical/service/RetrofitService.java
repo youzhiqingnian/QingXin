@@ -1,11 +1,13 @@
 package com.qingxin.medical.service;
 
+import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.base.ContentBean;
 
 import retrofit2.http.GET;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -39,5 +41,13 @@ public interface RetrofitService {
      */
     @GET("/diary/{id}")
     Observable<GoddessDiaryDetailBean> getGoddessDiaryDetail(@Path("id") String id);
+
+    /**
+     * 获取女神日记详情
+     * @param id 日记的id
+     * @return
+     */
+    @PUT("/diary/{id}/collect")
+    Observable<CollectBean> collectDiary(@Path("id") String id);
 
 }

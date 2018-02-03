@@ -1,5 +1,6 @@
 package com.qingxin.medical.service.manager;
 
+import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
@@ -37,6 +38,10 @@ public class NetRequestListManager {
 
     public static Observable<GoddessDiaryDetailBean> getGoddessDiaryDetail(String id) {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getGoddessDiaryDetail(id);
+    }
+
+    public static Observable<CollectBean> collectDiary(String id) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).collectDiary(id);
     }
 
 }

@@ -14,6 +14,8 @@ public class DiaryDetailContract {
 
         void onSuccess(GoddessDiaryDetailBean mDiary);
 
+        void onSuccess(CollectBean mCollectBean);
+
         void onError(String result);
 
     }
@@ -22,6 +24,7 @@ public class DiaryDetailContract {
 
         void getGoddessDiaryDetail(String id);
 
-    }
+        void collectDiary(String id);
 
+    }
 }
