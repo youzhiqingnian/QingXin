@@ -18,11 +18,8 @@ public class DiaryListContract {
 
     interface Presenter extends BasePresenter {
 
-        void populateTask();
-
         void getGoddessDiaryList(String limit,String skip);
 
-        boolean isDataMissing();
     }
 
 

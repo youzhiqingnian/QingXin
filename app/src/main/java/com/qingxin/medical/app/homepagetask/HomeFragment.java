@@ -314,13 +314,15 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         }
 
 
+        List<HomeBean.ContentBean.PreferrsBean> preferrsList = mHomeBean.getContent().getPreferrs();
+
         RecyclerView mSlectionRv = mRootView.findViewById(R.id.slectionRv);
         RecyclerView mDiaryRv = mRootView.findViewById(R.id.diaryRv);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         mSlectionRv.setLayoutManager(mLayoutManager);
         mSlectionRv.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
-        RecyclerGridViewAdapter strictSelctionAdapter = new RecyclerGridViewAdapter(getActivity());
+        RecyclerGridViewAdapter strictSelctionAdapter = new RecyclerGridViewAdapter(getActivity(),preferrsList);
         mSlectionRv.setAdapter(strictSelctionAdapter);
         mSlectionRv.setNestedScrollingEnabled(false);
 
@@ -357,14 +359,9 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     }
 
     @Override
-    public void onSuccess(Book mBook) {
-
-    }
-
-
-    @Override
     public void onSuccess(HomeBean homeBean) {
         mHomeBean = homeBean;
+        Log.i("homeBean",homeBean.toString());
         if (mHomeBean != null && mHomeBean.getCode().equals("200")) {
             setData();
         }

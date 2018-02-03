@@ -112,11 +112,6 @@ public class GoddessDiaryListAdapter extends CommonAdapter<GoddessDiaryBean.Cont
         }
 
         @Override
-        public void populateTask() {
-
-        }
-
-        @Override
         public void getGoddessDiaryList(String limit, String skip) {
             mCompositeSubscription.add(NetRequestListManager.getGoddessDiary(limit,skip)
                     .subscribeOn(Schedulers.io())
@@ -143,9 +138,5 @@ public class GoddessDiaryListAdapter extends CommonAdapter<GoddessDiaryBean.Cont
             );
         }
 
-        @Override
-        public boolean isDataMissing() {
-            return false;
-        }
     }
 }

@@ -14,10 +14,6 @@ import rx.Observable;
 
 public class NetRequestListManager {
 
-    public static Observable<Book> getSearchBooks(String name, String tag, int start, int count) {
-        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getSearchBooks(name, tag, start, count);
-    }
-
     /**
      * 获取首页数据
      *

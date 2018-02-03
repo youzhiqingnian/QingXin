@@ -1,6 +1,7 @@
 package com.qingxin.medical.app.homepagetask;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,10 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.widget.indicator.view.RoundCornerImageView;
+
+import java.util.List;
 
 /**
  * Created by user on 2018-01-30.
@@ -18,11 +22,9 @@ import com.qingxin.medical.widget.indicator.view.RoundCornerImageView;
 
 public class RecyclerGridViewAdapter extends RecyclerView.Adapter<RecyclerGridViewAdapter.ViewHolder> {
     private Context mContext;
-    //    private String[] data;
-//    private int[] imgdata;
     private LayoutInflater mInflater;
     //子view是否充满了手机屏幕
-    private boolean isCompleteFill = false;
+    List<HomeBean.ContentBean.PreferrsBean> mPreferrsList;
 
     public interface OnRecyclerViewItemListener {
         public void onItemClickListener(View view, int position);
@@ -36,10 +38,9 @@ public class RecyclerGridViewAdapter extends RecyclerView.Adapter<RecyclerGridVi
         mOnRecyclerViewItemListener = listener;
     }
 
-    public RecyclerGridViewAdapter(Context mContext) {
+    public RecyclerGridViewAdapter(Context mContext,List<HomeBean.ContentBean.PreferrsBean> preferrsList) {
         this.mContext = mContext;
-//        this.data = data;
-//        this.imgdata = imgdata;
+        this.mPreferrsList = preferrsList;
         mInflater = LayoutInflater.from(mContext);
 
     }
@@ -63,14 +64,17 @@ public class RecyclerGridViewAdapter extends RecyclerView.Adapter<RecyclerGridVi
             itemOnClick(viewHolder);
             itemOnLongClick(viewHolder);
         }
-//        viewHolder.textView.setText(data[i]);
-//        viewHolder.imageView.setBackgroundResource(imgdata[i]);
+
+
+        viewHolder.mSelectionCoverSdv.setImageURI(Uri.parse(mPreferrsList.get(i).getThumbnail()));
+        viewHolder.mInstituteNameTv.setText(mPreferrsList.get(i).getName());
+        viewHolder.mInstituteIntroTv.setText(mPreferrsList.get(i).getSummary());
     }
 
     //RecyclerView显示数据条数
     @Override
     public int getItemCount() {
-        return 2;
+        return mPreferrsList.size();
     }
 
     //自定义的ViewHolder,减少findViewById调用次数
