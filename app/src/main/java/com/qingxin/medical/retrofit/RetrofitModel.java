@@ -1,9 +1,13 @@
 package com.qingxin.medical.retrofit;
 
 import android.support.annotation.NonNull;
+
+import com.qingxin.medical.base.QingXinApplication;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModel;
+
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -40,6 +44,7 @@ public class RetrofitModel extends VLModel {
             Request original = chain.request();
             Request request = original.newBuilder()
                     .header("citycode", "101")
+                    .header("token", null == QingXinApplication.getInstance().getLoginUser() ? "" : QingXinApplication.getInstance().getLoginUser().getToken())
                     .method(original.method(), original.body())
                     .build();
             return chain.proceed(request);
