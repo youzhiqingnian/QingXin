@@ -1,17 +1,20 @@
 package com.qingxin.medical.map;
 
+import android.util.Log;
+
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModel;
+import com.vlee78.android.vl.VLToast;
 
 /**
  * 高德的相关数据
  *
  * @author zhikuo
  */
-public class GaoDeMapModel extends VLModel {
+public class GaoDeMapModel extends VLModel implements LocationService{
 
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
@@ -53,13 +56,16 @@ public class GaoDeMapModel extends VLModel {
             } else {
                 //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
                 if (null != aMapLocation){
+                    Log.e("AmapError","citycode = " + aMapLocation.getErrorInfo());
+                    VLToast.makeText(getConcretApplication(),aMapLocation.getErrorInfo()).show();
                     VLDebug.logE("AmapError", "location Error, ErrCode:" + aMapLocation.getErrorCode() + ", errInfo:" + aMapLocation.getErrorInfo());
                 }
             }
         });
     }
 
-    public AMapLocation getAMapLocation() {
+    @Override
+    public AMapLocation getAMLocation() {
         return mAMapLocation;
     }
 }

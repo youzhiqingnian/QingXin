@@ -1,10 +1,14 @@
 package com.qingxin.medical.retrofit;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.amap.api.location.AMapLocation;
 import com.qingxin.medical.base.QingXinApplication;
+import com.qingxin.medical.map.LocationService;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModel;
+import com.vlee78.android.vl.VLToast;
 
 import java.util.concurrent.TimeUnit;
 
@@ -38,12 +42,19 @@ public class RetrofitModel extends VLModel {
     @Override
     protected void onCreate() {
         super.onCreate();
-        //TODO
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder().connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS).writeTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS).readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
+            String cityCode = "";
+            LocationService locationService = QingXinApplication.getInstance().getLocationService();
+            if (null != locationService && null != locationService.getAMLocation()) {
+                AMapLocation aMapLocation = locationService.getAMLocation();
+                cityCode = aMapLocation.getCityCode();
+            }
+            Log.e("RetrofitModel","cityCode = " + cityCode);
+            VLToast.makeText(getConcretApplication(),"cityCode =" + cityCode).show();
             Request request = original.newBuilder()
-                    .header("citycode", "101")
+                    .header("citycode", cityCode)
                     .header("token", null == QingXinApplication.getInstance().getLoginUser() ? "" : QingXinApplication.getInstance().getLoginUser().getToken())
                     .method(original.method(), original.body())
                     .build();
