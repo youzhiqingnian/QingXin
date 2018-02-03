@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.fresco.QingXinFrescoModel;
 import com.qingxin.medical.map.GaoDeMapModel;
+import com.qingxin.medical.map.LocationService;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.user.User;
 import com.qingxin.medical.user.UserModel;
@@ -50,9 +51,9 @@ public class QingXinApplication extends VLApplication {
     protected void onConfigModels() {
         super.onConfigModels();
         VLModelManager manager = getModelManager();
+        manager.registerModel(GaoDeMapModel.class);
         manager.registerModel(QingXinFrescoModel.class);
         manager.registerModel(RetrofitModel.class);
-        manager.registerModel(GaoDeMapModel.class);
         manager.registerModel(UserModel.class);
     }
 
@@ -112,6 +113,10 @@ public class QingXinApplication extends VLApplication {
      */
     public User getLoginUser() {
         return this.mUser;
+    }
+
+    public LocationService getLocationService() {
+        return this.getModel(GaoDeMapModel.class);
     }
 
 }

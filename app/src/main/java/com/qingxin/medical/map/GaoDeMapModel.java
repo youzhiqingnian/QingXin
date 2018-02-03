@@ -11,7 +11,7 @@ import com.vlee78.android.vl.VLModel;
  *
  * @author zhikuo
  */
-public class GaoDeMapModel extends VLModel {
+public class GaoDeMapModel extends VLModel implements LocationService{
 
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
@@ -59,7 +59,8 @@ public class GaoDeMapModel extends VLModel {
         });
     }
 
-    public AMapLocation getAMapLocation() {
+    @Override
+    public AMapLocation getAMLocation() {
         return mAMapLocation;
     }
 }
