@@ -14,6 +14,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
 import com.vlee78.android.vl.VLTitleBar;
 
@@ -204,9 +205,15 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     public void onClick(View view) {
         switch (view.getId()) {
 
-            case R.id.collectionCountTv:
+            case R.id.collectionTv:
                 // 收藏
+                if (QingXinApplication.getInstance().getLoginUser() != null) {
+                    // 如果登录过了
 
+                }else{
+                    // 如果没有登录就跳到登录页面
+
+                }
                 break;
 
             case R.id.scrollTopIv:
