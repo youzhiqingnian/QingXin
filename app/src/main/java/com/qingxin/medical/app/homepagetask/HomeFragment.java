@@ -25,6 +25,7 @@ import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.base.QingXinApplication;
+import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
@@ -402,49 +403,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                     outRect.top = spacing; // item top
                 }
             }
-        }
-    }
-
-    /**
-     * recyclerview  listview格式的间距
-     */
-    class SpaceItemDecoration extends RecyclerView.ItemDecoration {
-        int mSpace;
-
-        /**
-         * Retrieve any offsets for the given item. Each field of <code>outRect</code> specifies
-         * the number of pixels that the item view should be inset by, similar to padding or margin.
-         * The default implementation sets the bounds of outRect to 0 and returns.
-         * <p>
-         * <p>
-         * If this ItemDecoration does not affect the positioning of item views, it should set
-         * all four fields of <code>outRect</code> (left, top, right, bottom) to zero
-         * before returning.
-         * <p>
-         * <p>
-         * If you need to access Adapter for additional data, you can call
-         * {@link RecyclerView#getChildAdapterPosition(View)} to get the adapter position of the
-         * View.
-         *
-         * @param outRect Rect to receive the output.
-         * @param view    The child view to decorate
-         * @param parent  RecyclerView this ItemDecoration is decorating
-         * @param state   The current state of RecyclerView.
-         */
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-            outRect.left = 0;
-            outRect.right = 0;
-            outRect.bottom = mSpace;
-            if (parent.getChildAdapterPosition(view) == 0) {
-                outRect.top = VLUtils.dip2px(8);
-            }
-
-        }
-
-        public SpaceItemDecoration(int space) {
-            this.mSpace = space;
         }
     }
 }

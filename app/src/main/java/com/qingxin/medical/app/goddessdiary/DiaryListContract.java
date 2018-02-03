@@ -18,7 +18,7 @@ public class DiaryListContract {
 
     interface Presenter extends BasePresenter {
 
-        void getGoddessDiaryList(String limit,String skip);
+        void getGoddessDiaryList(int limit,int skip);
 
     }
 

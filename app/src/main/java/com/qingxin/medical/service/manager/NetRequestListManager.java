@@ -3,10 +3,11 @@ package com.qingxin.medical.service.manager;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
+import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.service.RetrofitService;
-import com.qingxin.medical.service.entity.Book;
 import com.vlee78.android.vl.VLApplication;
+
 import rx.Observable;
 /**
  * Created by user on 2018-01-22.
@@ -29,7 +30,7 @@ public class NetRequestListManager {
      * @param skip  跳过第几条数据 非必填   默认值 0
      * @return
      */
-    public static Observable<GoddessDiaryBean> getGoddessDiary(String limit, String skip) {
+    public static Observable<ContentBean<GoddessDiaryBean>> getGoddessDiary(int limit, int skip) {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getGoddessDiaryList(limit, skip);
     }
 

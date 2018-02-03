@@ -1,22 +1,19 @@
 package com.qingxin.medical.app.goddessdiary;
 
 import android.os.Bundle;
-import android.util.Log;
-
-import com.qingxin.medical.QingXinListView;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import com.qingxin.medical.base.QingXinActivity;
-import com.qingxin.medical.widget.indicator.view.RefreshListView;
-import com.vlee78.android.vl.VLAsyncHandler;
-import com.vlee78.android.vl.VLListView;
+import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLTitleBar;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.vlee78.android.vl.VLUtils;
 
 /**
  * 女神日记列表
@@ -24,28 +21,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author zhikuo1
  */
-public class GoddessDiaryListActivity extends QingXinActivity implements DiaryListContract.View {
+public class GoddessDiaryListActivity extends QingXinActivity implements DiaryListContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     private DiaryListContract.Presenter mPresenter;
-
-    private GoddessDiaryBean mDiary;
-
-    private String skip = "0";
-
-    private boolean isFirst = true;
-
-    private boolean hasMore = true;
-
-    private String limit = "2";
-
-    private RefreshListView mDiaryListRlv;
-
     private GoddessDiaryListAdapter mAdapter;
-
-    private List<GoddessDiaryBean.ContentBean.ItemsBean> mGoddessDiaryList = new ArrayList<>();
-
-    private QingXinListView mQingXinListView;
-    private VLListView mListView;
+    private SwipeRefreshLayout mRefreshLayout;
+    private boolean isClear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,101 +35,64 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
         VLTitleBar titleBar = findViewById(R.id.titleBar);
         QingXinTitleBar.init(titleBar, getResources().getString(R.string.goddess_diary));
         QingXinTitleBar.setLeftReturn(titleBar, this);
-        mPresenter = new GoddessDiaryListAdapter.GoddessDiaryPresenter( this);
-        mListView = findViewById(R.id.listView);
+        mPresenter = new GoddessDiaryPresenter(this);
 
+        mRefreshLayout = findViewById(R.id.swipeLayout);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mAdapter = new GoddessDiaryListAdapter(null);
+        mAdapter.setOnLoadMoreListener(() -> getDiaryList(false), recyclerView);
+        recyclerView.setAdapter(mAdapter);
 
-        mPresenter.getGoddessDiaryList("2", skip);
+        SpaceItemDecoration dividerDecoration = new SpaceItemDecoration(VLUtils.dip2px(18));
+        recyclerView.addItemDecoration(dividerDecoration);
 
-        updateListView();
-
+        ImageView imageView = new ImageView(this);
+        imageView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        imageView.setImageResource(R.mipmap.goddess_diary_top_cover);
+        mAdapter.addHeaderView(imageView);
+        mRefreshLayout.setOnRefreshListener(this);
+        mRefreshLayout.setRefreshing(true);
+        getDiaryList(true);
     }
 
-    private void updateListView(){
-        if (null == mQingXinListView){
-            mQingXinListView  = new QingXinListView(mListView, new QingXinListView.QingXinListViewDelegate() {
-                @Override
-                public void onLoadMore(VLListView listView, boolean isClear, VLAsyncHandler<Object> asyncHandler) {
-                    //TODO
-                }
-
-                @Override
-                public void onEmpty(VLListView listView) {
-
-                }
-            });
-        }else {
-            mQingXinListView.update();
+    private void getDiaryList(boolean isClear) {
+        this.isClear = isClear;
+        int skip = isClear ? 0 : mAdapter.getData().size();
+        if (isClear) {
+            mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
+        mPresenter.getGoddessDiaryList(QingXinConstants.ROWS, skip);
     }
 
     @Override
     public void setPresenter(DiaryListContract.Presenter presenter) {
-        mPresenter = checkNotNull(presenter);
     }
 
     @Override
     public void onSuccess(GoddessDiaryBean diary) {
-
-        mDiary = diary;
-
-        if (skip.equals("0") && mGoddessDiaryList.size() > 0) {
-            mGoddessDiaryList.clear();
-        }
-
-        mGoddessDiaryList.addAll(mDiary.getContent().getItems());
-
-        int count = mDiary.getContent().getCount();
-
-        if (mGoddessDiaryList.size() == count) {
-            hasMore = false;
-        }
-
-        Log.i("女神日记列表=", mDiary.toString());
-
-        if (isFirst) {
-            setData();
+        if (null == diary) return;
+        if (isClear) {
+            mRefreshLayout.setRefreshing(false);
+            mAdapter.setNewData(diary.getItems());
         } else {
-            if (mDiary.getContent().getItems() == null || mDiary.getContent().getItems().size() > 0) {
-                mAdapter.refresh(mGoddessDiaryList);
-            }
+            mAdapter.addData(diary.getItems());
         }
-
-        mDiaryListRlv.onRefreshComplete(true);
-
-    }
-
-    private void setData() {
-        //TODO
-        //mDiaryListRlv = findViewById(R.id.mDiaryListRlv);
-        mAdapter = new GoddessDiaryListAdapter(this, mDiary.getContent().getItems());
-        mDiaryListRlv.setAdapter(mAdapter);
-        isFirst = false;
-
-
-        mDiaryListRlv.setOnRefreshListener(new RefreshListView.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                hasMore = true;
-                skip = "0";
-                mPresenter.getGoddessDiaryList(limit, skip);
-            }
-
-            @Override
-            public void onLoadMore() {
-                if (hasMore) {
-                    skip = (Integer.valueOf(skip) + Integer.valueOf(limit)) + "";
-                    mPresenter.getGoddessDiaryList(limit, skip);
-                } else {
-                    mDiaryListRlv.onRefreshComplete(true);
-                }
-            }
-        });
+        if (diary.getItems().size() < QingXinConstants.ROWS) {
+            //第一页如果不够一页就不显示没有更多数据布局
+            mAdapter.loadMoreEnd(isClear);
+        } else {
+            mAdapter.loadMoreComplete();
+        }
     }
 
     @Override
     public void onError(String result) {
-
+        if (isClear) {
+            mRefreshLayout.setRefreshing(false);
+        } else {
+            mAdapter.loadMoreFail();
+        }
     }
 
     @Override
@@ -161,5 +105,10 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.unsubscribe();
+    }
+
+    @Override
+    public void onRefresh() {
+        getDiaryList(true);
     }
 }

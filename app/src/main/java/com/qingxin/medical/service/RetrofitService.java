@@ -3,7 +3,8 @@ package com.qingxin.medical.service;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
-import com.qingxin.medical.service.entity.Book;
+import com.qingxin.medical.base.ContentBean;
+
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -29,7 +30,7 @@ public interface RetrofitService {
      * @return
      */
     @GET("/diary")
-    Observable<GoddessDiaryBean> getGoddessDiaryList(@Query("limit") String limit, @Query("skip") String skip);
+    Observable<ContentBean<GoddessDiaryBean>> getGoddessDiaryList(@Query("limit") int limit, @Query("skip") int skip);
 
     /**
      * 获取女神日记详情

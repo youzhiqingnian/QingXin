@@ -4,23 +4,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <com.vlee78.android.vl.VLTitleBar
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
         android:layout_height="48dp" />
 
-    <ImageView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:src="@mipmap/goddess_diary_top_cover" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <com.vlee78.android.vl.VLListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </LinearLayout>
