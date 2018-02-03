@@ -105,7 +105,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
 
             return;
-        new HomePageTaskPresenter(this);
+        mPresenter = new HomePageTaskPresenter(this);
         if (getView() == null) {
             return;
         }
@@ -113,15 +113,9 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
 
         initView();
+
         initListener();
 
-        int screenWidth = VLUtils.getScreenWidth(getActivity());
-
-        String banner_size = screenWidth + "-" + VLUtils.dip2px(180);
-        String product_size = screenWidth * 325 / 750 + "-" + VLUtils.dip2px(180) + "," + screenWidth * 425 / 750 + "-" + VLUtils.dip2px(180);
-        String diary_size = (screenWidth - VLUtils.dip2px(40)) / 2 + "-" + VLUtils.dip2px(168);
-
-        mPresenter.getHomeData(banner_size, product_size, diary_size);
 
     }
 
@@ -248,6 +242,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     @Override
     public void onResume() {
         super.onResume();
+        mPresenter.subscribe();
 
     }
 
@@ -322,7 +317,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
         mSlectionRv.setLayoutManager(mLayoutManager);
         mSlectionRv.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
-        RecyclerGridViewAdapter strictSelctionAdapter = new RecyclerGridViewAdapter(getActivity(),preferrsList);
+        RecyclerGridViewAdapter strictSelctionAdapter = new RecyclerGridViewAdapter(getActivity(), preferrsList);
         mSlectionRv.setAdapter(strictSelctionAdapter);
         mSlectionRv.setNestedScrollingEnabled(false);
 
@@ -355,13 +350,20 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     @Override
     public void setPresenter(HomePageTaskContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
-        mPresenter.subscribe();
+        int screenWidth = VLUtils.getScreenWidth(getActivity());
+
+        String banner_size = screenWidth + "-" + VLUtils.dip2px(180);
+        String product_size = screenWidth * 325 / 750 + "-" + VLUtils.dip2px(180) + "," + screenWidth * 425 / 750 + "-" + VLUtils.dip2px(180);
+        String diary_size = (screenWidth - VLUtils.dip2px(40)) / 2 + "-" + VLUtils.dip2px(168);
+
+        mPresenter.getHomeData(banner_size, product_size, diary_size);
+
     }
 
     @Override
     public void onSuccess(HomeBean homeBean) {
         mHomeBean = homeBean;
-        Log.i("homeBean",homeBean.toString());
+        Log.i("homeBean", homeBean.toString());
         if (mHomeBean != null && mHomeBean.getCode().equals("200")) {
             setData();
         }

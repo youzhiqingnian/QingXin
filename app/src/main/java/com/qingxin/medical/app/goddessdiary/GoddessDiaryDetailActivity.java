@@ -1,11 +1,13 @@
 package com.qingxin.medical.app.goddessdiary;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -20,8 +22,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by zhikuo1 on 2018-02-02.
  */
-public class GoddessDiaryDetailActivity extends QingXinActivity implements DiaryDetailContract.View, ShareDialog.OnShareDialogListener {
+public class GoddessDiaryDetailActivity extends QingXinActivity implements DiaryDetailContract.View, ShareDialog.OnShareDialogListener, View.OnClickListener {
 
+
+    private ScrollView mScrollSv;
 
     private SimpleDraweeView mAuthoerHeadSdv,
             mBeforeCoverSdv,
@@ -29,8 +33,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
             mProductCoverSdv;
 
     private TextView mAuthorNameTv,
-            mBeforeCoverCountTv,
-            mAfterCoverCountTv,
+            mCollectionTv,
             mDiaryProductIntroTv,
             mReserveCountTv,
             mProductPriceTv,
@@ -54,22 +57,27 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         VLTitleBar titleBar = findViewById(R.id.titleBar);
         QingXinTitleBar.init(titleBar, getResources().getString(R.string.goddess_diary));
         QingXinTitleBar.setLeftReturn(titleBar, this);
-        QingXinTitleBar.setRightIcon(titleBar, R.mipmap.ic_top_right_share, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mShareDialog.show();
-            }
-        });
+        QingXinTitleBar.setRightIcon(titleBar, R.mipmap.ic_top_right_share, view -> mShareDialog.show());
 
-        new GoddessDiaryDetailPresenter(this);
+        mPresenter = new GoddessDiaryDetailPresenter(this);
 
         dealIntent();
 
         initView();
 
+        initListener();
+
         if (!TextUtils.isEmpty(id)) {
             mPresenter.getGoddessDiaryDetail(id);
         }
+
+    }
+
+    private void initListener() {
+
+        mCollectionTv.setOnClickListener(this);
+        mScrollTopIv.setOnClickListener(this);
+
 
     }
 
@@ -84,14 +92,15 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
 
     private void initView() {
 
+        mScrollSv = findViewById(R.id.scrollSv);
+
         mAuthoerHeadSdv = findViewById(R.id.authoerHeadSdv);
         mBeforeCoverSdv = findViewById(R.id.beforeCoverSdv);
         mAfterCoverSdv = findViewById(R.id.afterCoverSdv);
         mProductCoverSdv = findViewById(R.id.productCoverSdv);
 
         mAuthorNameTv = findViewById(R.id.authorNameTv);
-        mBeforeCoverCountTv = findViewById(R.id.beforeCoverCountTv);
-        mAfterCoverCountTv = findViewById(R.id.afterCoverCountTv);
+        mCollectionTv = findViewById(R.id.collectionTv);
         mDiaryProductIntroTv = findViewById(R.id.diaryProductIntroTv);
         mReserveCountTv = findViewById(R.id.reserveCountTv);
         mProductPriceTv = findViewById(R.id.productPriceTv);
@@ -111,7 +120,6 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     @Override
     public void setPresenter(DiaryDetailContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
-        mPresenter.subscribe();
     }
 
     @Override
@@ -122,9 +130,11 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private void setData(GoddessDiaryDetailBean diaryDetailBean) {
 
-        GoddessDiaryDetailBean.ContentBean.ItemBean itemBean = diaryDetailBean.getContent().getItem();
+        GoddessDiaryDetailBean.ContentBean.ItemBean itemBean;
+        itemBean = diaryDetailBean.getContent().getItem();
 
         mAuthoerHeadSdv.setImageURI(Uri.parse(itemBean.getMem().getCover()));
         mAuthorNameTv.setText(itemBean.getMem().getName());
@@ -134,8 +144,8 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
 //        mAfterCoverCountTv.setText();
         mProductCoverSdv.setImageURI(Uri.parse(itemBean.getProduct().getCover()));
         mDiaryProductIntroTv.setText(itemBean.getProduct().getName());
-        mReserveCountTv.setText(itemBean.getProduct().getOrder() + getString(R.string.book_times));
-        mProductPriceTv.setText(itemBean.getProduct().getPrice() + getString(R.string.gap) + itemBean.getProduct().getOld_price());
+        mReserveCountTv.setText(String.format("%d%s", itemBean.getProduct().getOrder(), getString(R.string.book_times)));
+        mProductPriceTv.setText(String.format("%d%s%d", itemBean.getProduct().getPrice(), getString(R.string.gap), itemBean.getProduct().getOld_price()));
         mDiaryDetailTv.setText(itemBean.getSummary());
         mDiaryPublishDateTv.setText(itemBean.getCreated_at());
         mScanCountTv.setText(String.valueOf(itemBean.getVisit_num()));
@@ -145,6 +155,12 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     @Override
     public void onError(String result) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.subscribe();
     }
 
     @Override
@@ -182,5 +198,29 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     @Override
     public void copyUrl() {
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+
+            case R.id.collectionCountTv:
+                // 收藏
+
+                break;
+
+            case R.id.scrollTopIv:
+
+                //设置默认滚动到顶部
+                mScrollSv.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mScrollSv.fullScroll(ScrollView.FOCUS_UP);
+                    }
+                });
+
+                break;
+
+        }
     }
 }
