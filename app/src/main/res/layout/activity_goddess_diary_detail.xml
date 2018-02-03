@@ -9,11 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="48dp" />
 
-    <android.support.v4.widget.NestedScrollView
+    <ScrollView
+        android:id="@+id/scrollSv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/titleBar"
         android:orientation="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:scrollbars="none">
 
         <LinearLayout
@@ -89,24 +92,10 @@
                         android:layout_alignParentBottom="true"
                         android:layout_marginBottom="7dp"
                         android:layout_marginLeft="10dp"
-                        android:text="Before相册"
+                        android:text="Before"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
-                    <TextView
-                        android:id="@+id/beforeCoverCountTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginBottom="7dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:drawablePadding="8dp"
-                        android:drawableRight="@mipmap/ic_diary_gallery"
-                        android:text="6"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -128,24 +117,10 @@
                         android:layout_alignParentBottom="true"
                         android:layout_marginBottom="7dp"
                         android:layout_marginLeft="10dp"
-                        android:text="After相册"
+                        android:text="After"
                         android:textColor="@color/white"
                         android:textSize="12sp" />
 
-                    <TextView
-                        android:id="@+id/afterCoverCountTv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginBottom="7dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:drawablePadding="8dp"
-                        android:drawableRight="@mipmap/ic_diary_gallery"
-                        android:text="6"
-                        android:textColor="@color/white"
-                        android:textSize="12sp" />
                 </RelativeLayout>
             </LinearLayout>
 
@@ -337,7 +312,7 @@
             </RelativeLayout>
 
         </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </ScrollView>
 
     <ImageView
         android:id="@+id/scrollTopIv"

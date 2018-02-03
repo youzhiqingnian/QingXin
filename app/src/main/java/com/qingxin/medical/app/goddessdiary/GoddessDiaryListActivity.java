@@ -54,7 +54,7 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
         VLTitleBar titleBar = findViewById(R.id.titleBar);
         QingXinTitleBar.init(titleBar, getResources().getString(R.string.goddess_diary));
         QingXinTitleBar.setLeftReturn(titleBar, this);
-        new GoddessDiaryListAdapter.GoddessDiaryPresenter( this);
+        mPresenter = new GoddessDiaryListAdapter.GoddessDiaryPresenter( this);
         mListView = findViewById(R.id.listView);
 
 
@@ -85,7 +85,6 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
     @Override
     public void setPresenter(DiaryListContract.Presenter presenter) {
         mPresenter = checkNotNull(presenter);
-        mPresenter.subscribe();
     }
 
     @Override
@@ -150,6 +149,12 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
     @Override
     public void onError(String result) {
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.subscribe();
     }
 
     @Override
