@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -43,14 +44,16 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
         mAdapter = new GoddessDiaryListAdapter(null);
         mAdapter.setOnLoadMoreListener(() -> getDiaryList(false), recyclerView);
         recyclerView.setAdapter(mAdapter);
-
+        //add padding
         SpaceItemDecoration dividerDecoration = new SpaceItemDecoration(VLUtils.dip2px(18));
         recyclerView.addItemDecoration(dividerDecoration);
-
+        //addheader
         ImageView imageView = new ImageView(this);
         imageView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         imageView.setImageResource(R.mipmap.goddess_diary_top_cover);
         mAdapter.addHeaderView(imageView);
+
+        mAdapter.setOnItemClickListener((adapter, view, position) -> GoddessDiaryDetailActivity.startSelf(GoddessDiaryListActivity.this,mAdapter.getData().get(position).getId()));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
         getDiaryList(true);

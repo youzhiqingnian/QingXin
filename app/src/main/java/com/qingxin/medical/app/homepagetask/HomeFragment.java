@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -56,11 +57,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             mSecondPrCoverSdv,
             mThirdPrCoverSdv;
 
-    private RelativeLayout mShareRl,
-            mDiaryRl,
-            mSelectionRl,
-            mEncyclopediasRl,
-            mSlectionMoreRl,
+    private RelativeLayout mSlectionMoreRl,
             mDiaryMoreRl;
 
     private VLStatedButtonBar mStatedBtnBar;
@@ -79,7 +76,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
-
     }
 
     @Override
@@ -112,10 +108,10 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         mSecondPrCoverSdv = mRootView.findViewById(R.id.secondPrCoverSdv);
         mThirdPrCoverSdv = mRootView.findViewById(R.id.thirdPrCoverSdv);
 
-        mShareRl = mRootView.findViewById(R.id.shareRl);
-        mDiaryRl = mRootView.findViewById(R.id.diaryRl);
-        mSelectionRl = mRootView.findViewById(R.id.selectionRl);
-        mEncyclopediasRl = mRootView.findViewById(R.id.encyclopediasRl);
+        LinearLayout shareRl = mRootView.findViewById(R.id.shareRl);
+        LinearLayout diaryRl = mRootView.findViewById(R.id.diaryRl);
+        LinearLayout selectionRl = mRootView.findViewById(R.id.selectionRl);
+        LinearLayout encyclopediasRl = mRootView.findViewById(R.id.encyclopediasRl);
         mSlectionMoreRl = mRootView.findViewById(R.id.slectionMoreRl);
         mDiaryMoreRl = mRootView.findViewById(R.id.diaryMoreRl);
 
@@ -124,13 +120,14 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         if (null != aMapLocation) {
             mCityTv.setText(aMapLocation.getCity());
         }
+
+        shareRl.setOnClickListener(this);
+        diaryRl.setOnClickListener(this);
+        selectionRl.setOnClickListener(this);
+        encyclopediasRl.setOnClickListener(this);
     }
 
     private void initListener() {
-        mShareRl.setOnClickListener(this);
-        mDiaryRl.setOnClickListener(this);
-        mSelectionRl.setOnClickListener(this);
-        mEncyclopediasRl.setOnClickListener(this);
         mSlectionMoreRl.setOnClickListener(this);
         mDiaryMoreRl.setOnClickListener(this);
     }
@@ -139,7 +136,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     public void onResume() {
         super.onResume();
         mPresenter.subscribe();
-
     }
 
     @Override
@@ -152,9 +148,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
      * 填充数据
      */
     private void setData() {
-
         List<HomeBean.ContentBean.BannersBean> bannerList = mHomeBean.getContent().getBanners();
-
         VLPagerView pagerView = mRootView.findViewById(R.id.viewpagerVp);
         BannerPagerAdapter adapter = new BannerPagerAdapter(getActivity(), bannerList);
         pagerView.getViewPager().setAdapter(adapter);
