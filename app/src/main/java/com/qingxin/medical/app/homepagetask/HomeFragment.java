@@ -1,18 +1,12 @@
 package com.qingxin.medical.app.homepagetask;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,20 +17,16 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.Constants;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
-import com.qingxin.medical.service.entity.Book;
+import com.qingxin.medical.base.QingXinApplication;
 import com.vlee78.android.vl.VLFragment;
+import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
 
@@ -51,8 +41,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
     private View mRootView;
 
-    private TextView mCityTv,
-            mFirstPrNameTv,
+    private TextView mFirstPrNameTv,
             mFirstPrPriceTv,
             mFirstPrOldPriceTv,
             mSecondPrNameTv,
@@ -79,13 +68,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
     private HomeBean mHomeBean;
 
-    //声明AMapLocationClient类对象
-    public AMapLocationClient mLocationClient = null;
-
-    //声明AMapLocationClientOption对象
-    public AMapLocationClientOption mLocationOption = null;
-
-
     public HomeFragment() {
     }
 
@@ -103,24 +85,18 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
-
             return;
         mPresenter = new HomePageTaskPresenter(this);
         if (getView() == null) {
             return;
         }
         mRootView = getView();
-
-
         initView();
-
         initListener();
-
-
     }
 
     private void initView() {
-        mCityTv = mRootView.findViewById(R.id.cityTv);
+        TextView mCityTv = mRootView.findViewById(R.id.cityTv);
         mFirstPrNameTv = mRootView.findViewById(R.id.firstPrNameTv);
         mFirstPrPriceTv = mRootView.findViewById(R.id.firstPrPriceTv);
         mFirstPrOldPriceTv = mRootView.findViewById(R.id.firstPrOldPriceTv);
@@ -143,91 +119,10 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         mDiaryMoreRl = mRootView.findViewById(R.id.diaryMoreRl);
 
         mStatedBtnBar = mRootView.findViewById(R.id.statedBtnBar);
-    }
-
-
-    private void requestGaodeLoction() {
-
-        //初始化定位
-        mLocationClient = new AMapLocationClient(getActivity());
-
-        //初始化AMapLocationClientOption对象
-        mLocationOption = new AMapLocationClientOption();
-
-        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-
-        //获取最近3s内精度最高的一次定位结果：
-        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
-//        mLocationOption.setOnceLocationLatest(true);
-
-        //获取一次定位结果：
-        //该方法默认为false
-        mLocationOption.setOnceLocation(true);
-
-//        //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
-//        mLocationOption.setInterval(1000);
-
-        //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption.setNeedAddress(true);
-
-
-        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
-        mLocationOption.setHttpTimeOut(20000);
-
-
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.READ_PHONE_STATE)
-                    != PackageManager.PERMISSION_GRANTED) {
-
-                //权限还没有授予，需要在这里写申请权限的代码
-                ActivityCompat.requestPermissions(getActivity(),
-                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE},
-                        Constants.GAODE_MAP_GRANTED_REQUEST_CODE);
-            } else {
-                //权限已经被授予，在这里直接写要执行的相应方法即可
-                //启动定位
-                mLocationClient.startLocation();
-            }
-
-        } else {
-            //启动定位
-            mLocationClient.startLocation();
+        AMapLocation aMapLocation = QingXinApplication.getInstance().getLocationService().getAMLocation();
+        if (null != aMapLocation) {
+            mCityTv.setText(aMapLocation.getCity());
         }
-
-
-        //设置定位回调监听
-        mLocationClient.setLocationListener(new AMapLocationListener() {
-            @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                if (aMapLocation != null) {
-                    if (aMapLocation.getErrorCode() == 0) {
-                        //可在其中解析amapLocation获取相应内容。
-                        Log.i("城市码", aMapLocation.getCityCode() + aMapLocation.getCity());
-                        String cityName = aMapLocation.getCity();
-                        if (cityName.endsWith(getStr(R.string.city_unit))) {
-                            cityName = cityName.substring(0, cityName.length() - 1);
-                        }
-                        mCityTv.setText(cityName);
-
-                    } else {
-                        //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                        Log.e("AmapError", "location Error, ErrCode:"
-                                + aMapLocation.getErrorCode() + ", errInfo:"
-                                + aMapLocation.getErrorInfo());
-                        // 提示定位失败
-                        Toast.makeText(getActivity(), getStr(R.string.location_failuer), Toast.LENGTH_LONG);
-                    }
-                }
-            }
-        });
     }
 
     private void initListener() {
@@ -259,31 +154,16 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
         List<HomeBean.ContentBean.BannersBean> bannerList = mHomeBean.getContent().getBanners();
 
-        ViewPager mViewpagerVp = mRootView.findViewById(R.id.viewpagerVp);
-        BannerPagerAdapter mAdapter = new BannerPagerAdapter(getActivity(), bannerList);
-        mViewpagerVp.setAdapter(mAdapter);
-
-        mViewpagerVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mStatedBtnBar.setChecked(position);
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        VLPagerView pagerView = mRootView.findViewById(R.id.viewpagerVp);
+        BannerPagerAdapter adapter = new BannerPagerAdapter(getActivity(), bannerList);
+        pagerView.getViewPager().setAdapter(adapter);
+        pagerView.setPageChangeListener(position -> mStatedBtnBar.setChecked(position));
         mStatedBtnBar.setStatedButtonBarDelegate(new DotBarDelegate(getActivity(), bannerList.size()));
-        mViewpagerVp.setCurrentItem(bannerList.size() * 1000);
-        mStatedBtnBar.setChecked(mViewpagerVp.getCurrentItem());
+        pagerView.setCurrentItem(bannerList.size() * 1000);
+        mStatedBtnBar.setChecked(pagerView.getCurrentItem());
+        pagerView.setAutoScroll(3000);
 
         List<HomeBean.ContentBean.ProductsBean> productList = mHomeBean.getContent().getProducts();
-
         if (productList.size() >= 1) {
             mFirstPrNameTv.setText(productList.get(0).getName());
             mFirstPrPriceTv.setText(productList.get(0).getPrice() + getStr(R.string.yuan));
@@ -339,12 +219,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             });
 
         }
-
-        /**
-         * 初始化定位
-         */
-        requestGaodeLoction();
-
     }
 
     @Override
@@ -573,20 +447,4 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             this.mSpace = space;
         }
     }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-        if (requestCode == Constants.GAODE_MAP_GRANTED_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mLocationClient.startLocation();
-            } else {
-            }
-        }
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-
 }

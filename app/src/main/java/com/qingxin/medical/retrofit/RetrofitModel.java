@@ -8,7 +8,6 @@ import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.map.LocationService;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModel;
-import com.vlee78.android.vl.VLToast;
 
 import java.util.concurrent.TimeUnit;
 
@@ -52,7 +51,6 @@ public class RetrofitModel extends VLModel {
                 cityCode = aMapLocation.getCityCode();
             }
             Log.e("RetrofitModel","cityCode = " + cityCode);
-            VLToast.makeText(getConcretApplication(),"cityCode =" + cityCode).show();
             Request request = original.newBuilder()
                     .header("citycode", cityCode)
                     .header("token", null == QingXinApplication.getInstance().getLoginUser() ? "" : QingXinApplication.getInstance().getLoginUser().getToken())
