@@ -122,20 +122,6 @@ public final class VLUtils {
         return (count - 1) / pageSize + 1;
     }
 
-    /**
-     * 获取主线程的handler
-     */
-    public static Handler getHandler() {
-        return QingXinApplication.getInstance().getmMainThreadHandler();
-    }
-
-    /**
-     * 延时在主线程执行runnable
-     */
-    public static boolean postDelayed(Runnable runnable, long delayMillis) {
-        return getHandler().postDelayed(runnable, delayMillis);
-    }
-
     public static int pageSize(int count, int pageSize, int pageIndex) {
         int pageCount = getPageCount(count, pageSize);
         if (pageIndex < 0 || pageIndex >= pageCount) return 0;
