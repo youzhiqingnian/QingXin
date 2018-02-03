@@ -30,9 +30,6 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
 
     @Override
     public void subscribe() {
-        if (isDataMissing()) {
-            populateTask();
-        }
     }
 
     @Override
@@ -40,11 +37,6 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
         if (mCompositeSubscription.hasSubscriptions()) {
             mCompositeSubscription.unsubscribe();
         }
-    }
-
-    @Override
-    public void populateTask() {
-
     }
 
     @Override
@@ -74,8 +66,4 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
         );
     }
 
-    @Override
-    public boolean isDataMissing() {
-        return false;
-    }
 }

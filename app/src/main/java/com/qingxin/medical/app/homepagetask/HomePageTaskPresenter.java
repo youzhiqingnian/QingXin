@@ -25,7 +25,6 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    private Book mBook;
 
     private HomeBean mHomeBean;
 
@@ -42,9 +41,6 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
 
     @Override
     public void subscribe() {
-        if (isDataMissing()) {
-            populateTask();
-        }
     }
 
     @Override
@@ -52,44 +48,6 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
         if (mCompositeSubscription.hasSubscriptions()) {
             mCompositeSubscription.unsubscribe();
         }
-    }
-
-
-    @Override
-    public void populateTask() {
-//        getSearchBooks(mOutState.getString("name",""),"",0,1);
-    }
-
-    @Override
-    public boolean isDataMissing() {
-        return false;
-    }
-
-    @Override
-    public void getSearchBooks(String name, String tag, int start, int count) {
-        mCompositeSubscription.add(NetRequestListManager.getSearchBooks(name, tag, start, count)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Book>() {
-                    @Override
-                    public void onCompleted() {
-                        if (mBook != null) {
-                            mHomePageTaskView.onSuccess(mBook);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mHomePageTaskView.onError("请求失败！！");
-                    }
-
-                    @Override
-                    public void onNext(Book book) {
-                        mBook = book;
-                    }
-                })
-        );
     }
 
     @Override

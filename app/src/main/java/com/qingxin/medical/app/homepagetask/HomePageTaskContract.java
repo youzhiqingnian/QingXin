@@ -12,8 +12,6 @@ public class HomePageTaskContract {
 
     interface View extends BaseView<Presenter> {
 
-        void onSuccess(Book mBook);
-
         void onSuccess(HomeBean homeBean);
 
         void onError(String result);
@@ -22,13 +20,7 @@ public class HomePageTaskContract {
 
     interface Presenter extends BasePresenter {
 
-        void populateTask();
-
-        void getSearchBooks(String name,String tag,int start,int count);
-
         void getHomeData(String banner_size, String product_size, String diary_size);
-
-        boolean isDataMissing();
 
     }
 

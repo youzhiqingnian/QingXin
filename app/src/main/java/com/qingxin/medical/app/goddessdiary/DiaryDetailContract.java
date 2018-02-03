@@ -20,11 +20,8 @@ public class DiaryDetailContract {
 
     interface Presenter extends BasePresenter {
 
-        void populateTask();
-
         void getGoddessDiaryDetail(String id);
 
-        boolean isDataMissing();
     }
 
 }

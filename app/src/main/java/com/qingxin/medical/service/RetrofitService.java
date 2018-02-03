@@ -14,11 +14,6 @@ import rx.Observable;
 
 public interface RetrofitService {
 
-    @GET("book/search")
-    Observable<Book> getSearchBooks(@Query("q") String name,
-                                    @Query("tag") String tag, @Query("start") int start,
-                                    @Query("count") int count);
-
     /**
      * @param banner_size  banner图的尺寸
      * @param product_size 产品图的尺寸

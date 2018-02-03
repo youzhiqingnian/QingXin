@@ -43,7 +43,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="9dp"
                     android:layout_toEndOf="@+id/authoerHeadSdv"
-                    android:layout_toRightOf="@+id/mAuthoerHeadSdv"
+                    android:layout_toRightOf="@+id/authoerHeadSdv"
                     android:text="在树上唱歌"
                     android:textColor="@color/text_color_hint"
                     android:textSize="14sp" />
