@@ -1,9 +1,11 @@
 package com.qingxin.medical.app.goddessdiary;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +29,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class GoddessDiaryDetailActivity extends QingXinActivity implements DiaryDetailContract.View, ShareDialog.OnShareDialogListener, View.OnClickListener {
 
+
+    public static void startSelf(@NonNull Context context, String diaryId) {
+        Intent intent = new Intent(context, GoddessDiaryDetailActivity.class);
+        intent.putExtra(DIARY_ID, diaryId);
+        context.startActivity(intent);
+    }
+
+    public static final String DIARY_ID  = "DIARY_ID";
 
     private ScrollView mScrollSv;
 
@@ -88,7 +98,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     private void dealIntent() {
 
         if (getIntent() != null) {
-            id = getIntent().getStringExtra("id");
+            id = getIntent().getStringExtra(DIARY_ID);
         }
 
     }

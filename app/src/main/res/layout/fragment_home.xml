@@ -88,119 +88,117 @@
 
             </RelativeLayout>
 
-            <!--<com.tmall.ultraviewpager.UltraViewPager
-                android:id="@+id/ultra_viewpager"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                />-->
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="30dp"
+                android:layout_height="127dp"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/shareRl"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#ffffff">
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/iv_new_only"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="@string/app_name"
                         android:src="@mipmap/new_only_logo" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/iv_new_only"
-                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
                         android:text="@string/share_only_by_new_person"
                         android:textColor="@color/light_text_color"
                         android:textSize="12sp" />
 
-                </RelativeLayout>
+                </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/diaryRl"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/iv_goddess_diary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="@string/app_name"
                         android:src="@mipmap/girl_god_diary_logo" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/iv_goddess_diary"
-                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
                         android:text="@string/goddess_diary"
                         android:textColor="@color/light_text_color"
                         android:textSize="12sp" />
+                </LinearLayout>
 
-                </RelativeLayout>
-
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/selectionRl"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/iv_local_strict_selection"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="@string/app_name"
                         android:src="@mipmap/local_strict_selection" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/iv_local_strict_selection"
-                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
                         android:text="@string/local_strict_selection"
                         android:textColor="@color/light_text_color"
                         android:textSize="12sp" />
+                </LinearLayout>
 
-                </RelativeLayout>
-
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/encyclopediasRl"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/iv_beauty_medical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="@string/app_name"
                         android:src="@mipmap/beauty_medical_encyclopedia" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/iv_beauty_medical"
-                        android:layout_centerHorizontal="true"
+                        android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
                         android:text="@string/encyclopedia_of_medical_beauty"
                         android:textColor="@color/light_text_color"
                         android:textSize="12sp" />
-
-                </RelativeLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <TextView

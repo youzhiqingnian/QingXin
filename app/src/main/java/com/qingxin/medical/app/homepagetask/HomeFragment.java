@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.base.QingXinApplication;
+import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
@@ -55,11 +57,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             mSecondPrCoverSdv,
             mThirdPrCoverSdv;
 
-    private RelativeLayout mShareRl,
-            mDiaryRl,
-            mSelectionRl,
-            mEncyclopediasRl,
-            mSlectionMoreRl,
+    private RelativeLayout mSlectionMoreRl,
             mDiaryMoreRl;
 
     private VLStatedButtonBar mStatedBtnBar;
@@ -78,7 +76,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
-
     }
 
     @Override
@@ -111,10 +108,10 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         mSecondPrCoverSdv = mRootView.findViewById(R.id.secondPrCoverSdv);
         mThirdPrCoverSdv = mRootView.findViewById(R.id.thirdPrCoverSdv);
 
-        mShareRl = mRootView.findViewById(R.id.shareRl);
-        mDiaryRl = mRootView.findViewById(R.id.diaryRl);
-        mSelectionRl = mRootView.findViewById(R.id.selectionRl);
-        mEncyclopediasRl = mRootView.findViewById(R.id.encyclopediasRl);
+        LinearLayout shareRl = mRootView.findViewById(R.id.shareRl);
+        LinearLayout diaryRl = mRootView.findViewById(R.id.diaryRl);
+        LinearLayout selectionRl = mRootView.findViewById(R.id.selectionRl);
+        LinearLayout encyclopediasRl = mRootView.findViewById(R.id.encyclopediasRl);
         mSlectionMoreRl = mRootView.findViewById(R.id.slectionMoreRl);
         mDiaryMoreRl = mRootView.findViewById(R.id.diaryMoreRl);
 
@@ -123,13 +120,14 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         if (null != aMapLocation) {
             mCityTv.setText(aMapLocation.getCity());
         }
+
+        shareRl.setOnClickListener(this);
+        diaryRl.setOnClickListener(this);
+        selectionRl.setOnClickListener(this);
+        encyclopediasRl.setOnClickListener(this);
     }
 
     private void initListener() {
-        mShareRl.setOnClickListener(this);
-        mDiaryRl.setOnClickListener(this);
-        mSelectionRl.setOnClickListener(this);
-        mEncyclopediasRl.setOnClickListener(this);
         mSlectionMoreRl.setOnClickListener(this);
         mDiaryMoreRl.setOnClickListener(this);
     }
@@ -138,7 +136,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     public void onResume() {
         super.onResume();
         mPresenter.subscribe();
-
     }
 
     @Override
@@ -151,9 +148,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
      * 填充数据
      */
     private void setData() {
-
         List<HomeBean.ContentBean.BannersBean> bannerList = mHomeBean.getContent().getBanners();
-
         VLPagerView pagerView = mRootView.findViewById(R.id.viewpagerVp);
         BannerPagerAdapter adapter = new BannerPagerAdapter(getActivity(), bannerList);
         pagerView.getViewPager().setAdapter(adapter);
@@ -402,49 +397,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                     outRect.top = spacing; // item top
                 }
             }
-        }
-    }
-
-    /**
-     * recyclerview  listview格式的间距
-     */
-    class SpaceItemDecoration extends RecyclerView.ItemDecoration {
-        int mSpace;
-
-        /**
-         * Retrieve any offsets for the given item. Each field of <code>outRect</code> specifies
-         * the number of pixels that the item view should be inset by, similar to padding or margin.
-         * The default implementation sets the bounds of outRect to 0 and returns.
-         * <p>
-         * <p>
-         * If this ItemDecoration does not affect the positioning of item views, it should set
-         * all four fields of <code>outRect</code> (left, top, right, bottom) to zero
-         * before returning.
-         * <p>
-         * <p>
-         * If you need to access Adapter for additional data, you can call
-         * {@link RecyclerView#getChildAdapterPosition(View)} to get the adapter position of the
-         * View.
-         *
-         * @param outRect Rect to receive the output.
-         * @param view    The child view to decorate
-         * @param parent  RecyclerView this ItemDecoration is decorating
-         * @param state   The current state of RecyclerView.
-         */
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            super.getItemOffsets(outRect, view, parent, state);
-            outRect.left = 0;
-            outRect.right = 0;
-            outRect.bottom = mSpace;
-            if (parent.getChildAdapterPosition(view) == 0) {
-                outRect.top = VLUtils.dip2px(8);
-            }
-
-        }
-
-        public SpaceItemDecoration(int space) {
-            this.mSpace = space;
         }
     }
 }

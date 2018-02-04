@@ -6,13 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
-import com.qingxin.medical.widget.indicator.view.RoundCornerImageView;
 
 import java.util.List;
 
