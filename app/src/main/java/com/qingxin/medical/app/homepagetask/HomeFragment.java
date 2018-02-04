@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
@@ -31,10 +30,7 @@ import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
-
 import java.util.List;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * 首界面
@@ -125,6 +121,14 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         diaryRl.setOnClickListener(this);
         selectionRl.setOnClickListener(this);
         encyclopediasRl.setOnClickListener(this);
+
+        int screenWidth = VLUtils.getScreenWidth(getActivity());
+
+        String banner_size = screenWidth + "-" + VLUtils.dip2px(180);
+        String product_size = screenWidth * 325 / 750 + "-" + VLUtils.dip2px(180) + "," + screenWidth * 425 / 750 + "-" + VLUtils.dip2px(180);
+        String diary_size = (screenWidth - VLUtils.dip2px(40)) / 2 + "-" + VLUtils.dip2px(168);
+
+        mPresenter.getHomeData(banner_size, product_size, diary_size);
     }
 
     private void initListener() {
@@ -204,13 +208,8 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             mDiaryRv.setAdapter(mGoddessDiaryAdapter);
             mDiaryRv.setNestedScrollingEnabled(false);
 
-            mGoddessDiaryAdapter.setOnItemClickListener(new HomeGoddessDiaryAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    Intent intent = new Intent(getActivity(), GoddessDiaryDetailActivity.class);
-                    intent.putExtra("id", mHomeBean.getContent().getDiarys().get(position).getId());
-                    startActivity(intent);
-                }
+            mGoddessDiaryAdapter.setOnItemClickListener((view, position) -> {
+                GoddessDiaryDetailActivity.startSelf(getActivity(),mHomeBean.getContent().getDiarys().get(position).getId());
             });
 
         }
@@ -218,15 +217,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
     @Override
     public void setPresenter(HomePageTaskContract.Presenter presenter) {
-        mPresenter = checkNotNull(presenter);
-        int screenWidth = VLUtils.getScreenWidth(getActivity());
-
-        String banner_size = screenWidth + "-" + VLUtils.dip2px(180);
-        String product_size = screenWidth * 325 / 750 + "-" + VLUtils.dip2px(180) + "," + screenWidth * 425 / 750 + "-" + VLUtils.dip2px(180);
-        String diary_size = (screenWidth - VLUtils.dip2px(40)) / 2 + "-" + VLUtils.dip2px(168);
-
-        mPresenter.getHomeData(banner_size, product_size, diary_size);
-
     }
 
     @Override
