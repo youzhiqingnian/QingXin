@@ -138,10 +138,10 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         Log.i("collectBean", mCollectBean.toString());
         if (mCollectBean.getContent() != null) {
             // 如果收藏的结果不为空
+            mCollectionCountTv.setText(String.valueOf(mCollectBean.getContent().getAmount()));
             if (mCollectBean.getContent().getIs_collect().equals("n")) {
                 mCollectionTv.setText(R.string.plus_collection);
                 showToast(getString(R.string.cancel_collect_ok));
-
             } else {
                 mCollectionTv.setText(R.string.cancel_collection);
                 showToast(getString(R.string.collect_ok));

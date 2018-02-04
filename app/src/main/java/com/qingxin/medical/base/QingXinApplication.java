@@ -10,6 +10,7 @@ import com.qingxin.medical.map.LocationService;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.user.User;
 import com.qingxin.medical.user.UserModel;
+import com.squareup.leakcanary.LeakCanary;
 import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModelManager;
@@ -43,6 +44,12 @@ public class QingXinApplication extends VLApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
         instance = this;
         this.mUser = loadPersistentUser();
     }

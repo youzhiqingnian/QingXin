@@ -51,6 +51,8 @@ public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDia
         holder.mAfterCoverSdv.setImageURI(Uri.parse(mDiaryList.get(position).getOper_after_photo()));
         holder.mDiaryContentTv.setText(mDiaryList.get(position).getSummary());
         holder.mDiaryTagTv.setText(mDiaryList.get(position).getTags());
+        holder.mScanCountTv.setText(String.valueOf(mDiaryList.get(position).getVisit_num()));
+        holder.mCollectionCountTv.setText(String.valueOf(mDiaryList.get(position).getCollect_num()));
 
         holder.itemView.setTag(position);
 
