@@ -1,19 +1,16 @@
 package com.qingxin.medical.app.goddessdiary;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -22,24 +19,28 @@ import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
 import com.vlee78.android.vl.VLActivity;
+import com.vlee78.android.vl.VLBlock;
+import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 
 /**
- *
  * Date 2018-02-02
+ *
  * @author zhikuo1
  */
 public class GoddessDiaryDetailActivity extends QingXinActivity implements DiaryDetailContract.View, ShareDialog.OnShareDialogListener, View.OnClickListener {
 
+    public static final int DIARY_DETAIL_REQUEST_CODE = 5; // 跳到日记详情里的请求码
 
-    public static void startSelf(VLActivity activity, String diaryId,VLActivityResultListener resultListener,int REQUESTCODE) {
+    public static void startSelf(VLActivity activity, String diaryId, VLActivityResultListener resultListener) {
         Intent intent = new Intent(activity, GoddessDiaryDetailActivity.class);
         intent.putExtra(DIARY_ID, diaryId);
         activity.setActivityResultListener(resultListener);
-        activity.startActivityForResult(intent,REQUESTCODE);
+        activity.startActivityForResult(intent, DIARY_DETAIL_REQUEST_CODE);
     }
 
     public static final String DIARY_ID = "DIARY_ID";
+    public static final String COLLECT_NUM = "COLLECT_NUM";
 
     private ScrollView mScrollSv;
 
@@ -66,26 +67,13 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
 
     private String id = "";
 
-    private boolean isChagedCollect;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goddess_diary_detail);
         VLTitleBar titleBar = findViewById(R.id.titleBar);
         QingXinTitleBar.init(titleBar, getResources().getString(R.string.goddess_diary));
-        QingXinTitleBar.setLeftReturnListener(titleBar, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(isChagedCollect){
-                    // 如果做过收藏操作
-                    setResult(RESULT_OK);
-                }
-                finish();
-            }
-        });
+        QingXinTitleBar.setLeftReturn(titleBar, this);
         QingXinTitleBar.setRightIcon(titleBar, R.mipmap.ic_top_right_share, view -> mShareDialog.show());
 
         mPresenter = new GoddessDiaryDetailPresenter(this);
@@ -99,35 +87,25 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         if (!TextUtils.isEmpty(id)) {
             mPresenter.getGoddessDiaryDetail(id);
         }
-
     }
 
     private void initListener() {
-
         mCollectionTv.setOnClickListener(this);
         mScrollTopIv.setOnClickListener(this);
-
-
     }
 
-
     private void dealIntent() {
-
         if (getIntent() != null) {
             id = getIntent().getStringExtra(DIARY_ID);
         }
-
     }
 
     private void initView() {
-
         mScrollSv = findViewById(R.id.scrollSv);
-
         mAuthoerHeadSdv = findViewById(R.id.authoerHeadSdv);
         mBeforeCoverSdv = findViewById(R.id.beforeCoverSdv);
         mAfterCoverSdv = findViewById(R.id.afterCoverSdv);
         mProductCoverSdv = findViewById(R.id.productCoverSdv);
-
         mAuthorNameTv = findViewById(R.id.authorNameTv);
         mCollectionTv = findViewById(R.id.collectionTv);
         mDiaryProductIntroTv = findViewById(R.id.diaryProductIntroTv);
@@ -137,18 +115,13 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         mDiaryPublishDateTv = findViewById(R.id.diaryPublishDateTv);
         mScanCountTv = findViewById(R.id.scanCountTv);
         mCollectionCountTv = findViewById(R.id.collectionCountTv);
-
         mScrollTopIv = findViewById(R.id.scrollTopIv);
-
         mShareDialog = new ShareDialog(this);
-
         mShareDialog.setOnShareDialogListener(this);
-
     }
 
     @Override
     public void setPresenter(DiaryDetailContract.Presenter presenter) {
-//        mPresenter = checkNotNull(presenter);
     }
 
     @Override
@@ -162,19 +135,19 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     @Override
     public void onSuccess(CollectBean mCollectBean) {
         Log.i("collectBean", mCollectBean.toString());
-        if (mCollectBean != null) {
-            // 如果收藏的结果不为空
-            mCollectionCountTv.setText(String.valueOf(mCollectBean.getAmount()));
-            isChagedCollect = true;
-            if (mCollectBean.getIs_collect().equals("n")) {
-                mCollectionTv.setText(R.string.plus_collection);
-                showToast(getString(R.string.cancel_collect_ok));
-            } else {
-                mCollectionTv.setText(R.string.cancel_collection);
-                showToast(getString(R.string.collect_ok));
-            }
-
+        // 如果收藏的结果不为空
+        mCollectionCountTv.setText(String.valueOf(mCollectBean.getAmount()));
+        if (mCollectBean.getIs_collect().equals("n")) {
+            mCollectionTv.setText(R.string.plus_collection);
+            showToast(getString(R.string.cancel_collect_ok));
+        } else {
+            mCollectionTv.setText(R.string.cancel_collection);
+            showToast(getString(R.string.collect_ok));
         }
+        Intent intent = new Intent();
+        intent.putExtra(DIARY_ID, id);
+        intent.putExtra(COLLECT_NUM, mCollectBean.getAmount());
+        setResult(Activity.RESULT_OK, intent);
     }
 
     @SuppressLint("DefaultLocale")
@@ -182,7 +155,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
 
         DiaryItemBean itemBean;
         itemBean = diaryDetailBean.getItem();
-        String collectState = "";
+        String collectState;
         if (itemBean.getIs_collect().equals("y")) {
             collectState = getString(R.string.cancel_collection);
         } else {
@@ -246,12 +219,10 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
 
     @Override
     public void weiboShare() {
-
     }
 
     @Override
     public void copyUrl() {
-
     }
 
     @Override
@@ -269,32 +240,17 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
                     startActivity(intent);
                 }
                 break;
-
             case R.id.scrollTopIv:
-
                 //设置默认滚动到顶部
-                mScrollSv.post(new Runnable() {
+                VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {
                     @Override
-                    public void run() {
+                    protected void process(boolean canceled) {
                         mScrollSv.fullScroll(ScrollView.FOCUS_UP);
                     }
                 });
-
                 break;
-
-        }
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            if(isChagedCollect){
-                setResult(RESULT_OK);
-            }
-            finish();
-            return false;
-        }else{
-            return super.onKeyDown(keyCode, event);
+            default:
+                break;
         }
     }
 }

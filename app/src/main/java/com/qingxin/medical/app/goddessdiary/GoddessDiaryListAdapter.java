@@ -19,7 +19,7 @@ import java.util.List;
 
 public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, BaseViewHolder> {
 
-    GoddessDiaryListAdapter(@Nullable List<DiaryItemBean> data) {
+    public GoddessDiaryListAdapter(@Nullable List<DiaryItemBean> data) {
         super(R.layout.layout_home_goddess_diary_item, data);
     }
 

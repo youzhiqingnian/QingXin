@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -19,6 +18,8 @@ import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
 
+import java.util.List;
+
 /**
  * 女神日记列表
  * Date 2018-01-31
@@ -31,7 +32,6 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
     private GoddessDiaryListAdapter mAdapter;
     private SwipeRefreshLayout mRefreshLayout;
     private boolean isClear;
-    public static final int DIARY_DETAIL_REQUEST_CODE = 5; // 跳到日记详情里的请求码
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +51,13 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
         //add padding
         SpaceItemDecoration dividerDecoration = new SpaceItemDecoration(VLUtils.dip2px(18));
         recyclerView.addItemDecoration(dividerDecoration);
-        //addheader
+        //add header
         ImageView imageView = new ImageView(this);
         imageView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         imageView.setImageResource(R.mipmap.goddess_diary_top_cover);
         mAdapter.addHeaderView(imageView);
 
-        mAdapter.setOnItemClickListener((adapter, view, position) -> GoddessDiaryDetailActivity.startSelf(GoddessDiaryListActivity.this, mAdapter.getData().get(position).getId(), mResultListener, DIARY_DETAIL_REQUEST_CODE));
+        mAdapter.setOnItemClickListener((adapter, view, position) -> GoddessDiaryDetailActivity.startSelf(GoddessDiaryListActivity.this, mAdapter.getData().get(position).getId(), mResultListener));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
         getDiaryList(true);
@@ -78,8 +78,6 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
 
     @Override
     public void onSuccess(GoddessDiaryBean diary) {
-        Log.i("diaryList", diary.toString());
-        if (null == diary) return;
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
             mAdapter.setNewData(diary.getItems());
@@ -124,12 +122,20 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
 
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-            if (requestCode == DIARY_DETAIL_REQUEST_CODE) {
-                if(resultCode == RESULT_OK){
-                    getDiaryList(true);
+            if (requestCode == GoddessDiaryDetailActivity.DIARY_DETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
+                String diaryId = intent.getStringExtra(GoddessDiaryDetailActivity.DIARY_ID);
+                int collectNum = intent.getIntExtra(GoddessDiaryDetailActivity.COLLECT_NUM, 0);
+                List<DiaryItemBean> diaryItemBeans = mAdapter.getData();
+                int index = 0;
+                for (DiaryItemBean diaryItemBean : diaryItemBeans) {
+                    if (diaryItemBean.getId().equals(diaryId)) {
+                        diaryItemBean.setCollect_num(collectNum);
+                        mAdapter.notifyItemChanged(index + mAdapter.getHeaderLayoutCount());
+                        break;
+                    }
+                    index++;
                 }
             }
         }
     };
-
 }

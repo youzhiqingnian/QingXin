@@ -1,12 +1,12 @@
 package com.qingxin.medical.app.homepagetask;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,10 +23,10 @@ import android.widget.TextView;
 import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.Constants;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
+import com.qingxin.medical.app.goddessdiary.GoddessDiaryListAdapter;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import com.qingxin.medical.base.QingXinApplication;
@@ -73,9 +73,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     private HomePageTaskContract.Presenter mPresenter;
 
     private HomeBean mHomeBean;
-
-    public static final int DIARY_DETAIL_REQUEST_CODE = 4; // 跳到日记详情里的请求码
-
+    private GoddessDiaryListAdapter mDiaryListAdapter;
 
     public HomeFragment() {
     }
@@ -240,20 +238,15 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         }
 
 
-        RecyclerView mDiaryRv = mRootView.findViewById(R.id.diaryRv);
-
+        RecyclerView diaryRv = mRootView.findViewById(R.id.diaryRv);
         List<DiaryItemBean> diaryList = mHomeBean.getDiarys();
         if (diaryList != null && diaryList.size() > 0) {
-            mDiaryRv.setLayoutManager(new LinearLayoutManager(getActivity()));
-            HomeGoddessDiaryAdapter mGoddessDiaryAdapter = new HomeGoddessDiaryAdapter(getActivity(), diaryList);
-            mDiaryRv.addItemDecoration(new SpaceItemDecoration(VLUtils.dip2px(18)));
-            mDiaryRv.setAdapter(mGoddessDiaryAdapter);
-            mDiaryRv.setNestedScrollingEnabled(false);
-
-            mGoddessDiaryAdapter.setOnItemClickListener((view, position) -> {
-                GoddessDiaryDetailActivity.startSelf((VLActivity) getActivity(), mHomeBean.getDiarys().get(position).getId(), mResultListener, DIARY_DETAIL_REQUEST_CODE);
-            });
-
+            diaryRv.setLayoutManager(new LinearLayoutManager(getActivity()));
+            mDiaryListAdapter = new GoddessDiaryListAdapter(diaryList);
+            diaryRv.addItemDecoration(new SpaceItemDecoration(VLUtils.dip2px(18)));
+            mDiaryListAdapter.setOnItemClickListener((adapter1, view, position) -> GoddessDiaryDetailActivity.startSelf((VLActivity) getActivity(), mHomeBean.getDiarys().get(position).getId(), mResultListener));
+            diaryRv.setAdapter(mDiaryListAdapter);
+            diaryRv.setNestedScrollingEnabled(false);
         }
     }
 
@@ -437,13 +430,20 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-            if (requestCode == DIARY_DETAIL_REQUEST_CODE) {
-                if (resultCode == getActivity().RESULT_OK) {
-                    getHomeData();
+            if (requestCode == GoddessDiaryDetailActivity.DIARY_DETAIL_REQUEST_CODE &&  resultCode == Activity.RESULT_OK) {
+                String diaryId = intent.getStringExtra(GoddessDiaryDetailActivity.DIARY_ID);
+                int collectNum = intent.getIntExtra(GoddessDiaryDetailActivity.COLLECT_NUM, 0);
+                List<DiaryItemBean> diaryItemBeans = mDiaryListAdapter.getData();
+                int index = 0;
+                for (DiaryItemBean diaryItemBean : diaryItemBeans) {
+                    if (diaryItemBean.getId().equals(diaryId)) {
+                        diaryItemBean.setCollect_num(collectNum);
+                        mDiaryListAdapter.notifyItemChanged(index);
+                        break;
+                    }
+                    index++;
                 }
             }
         }
     };
-
-
 }
