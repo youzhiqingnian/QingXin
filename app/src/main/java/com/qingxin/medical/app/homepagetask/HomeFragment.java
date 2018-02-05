@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,9 +19,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.Constants;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
@@ -28,15 +31,18 @@ import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
+import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
+
 import java.util.List;
 
 /**
- *  首页面
+ * 首页面
  * Date 2018-02-05
+ *
  * @author zhikuo1
  */
 public class HomeFragment extends VLFragment implements HomePageTaskContract.View, View.OnClickListener {
@@ -67,6 +73,9 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     private HomePageTaskContract.Presenter mPresenter;
 
     private HomeBean mHomeBean;
+
+    public static final int DIARY_DETAIL_REQUEST_CODE = 4; // 跳到日记详情里的请求码
+
 
     public HomeFragment() {
     }
@@ -130,13 +139,9 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         selectionRl.setOnClickListener(this);
         encyclopediasRl.setOnClickListener(this);
 
-        int screenWidth = VLUtils.getScreenWidth(getActivity());
 
-        String banner_size = screenWidth + "-" + VLUtils.dip2px(180);
-        String product_size = screenWidth * 325 / 750 + "-" + VLUtils.dip2px(180) + "," + screenWidth * 425 / 750 + "-" + VLUtils.dip2px(180);
-        String diary_size = (screenWidth - VLUtils.dip2px(40)) / 2 + "-" + VLUtils.dip2px(168);
+        getHomeData();
 
-        mPresenter.getHomeData(banner_size, product_size, diary_size);
     }
 
     private void initListener() {
@@ -156,6 +161,17 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         mPresenter.unsubscribe();
     }
 
+    private void getHomeData() {
+
+        int screenWidth = VLUtils.getScreenWidth(getActivity());
+
+        String banner_size = screenWidth + "-" + VLUtils.dip2px(180);
+        String product_size = screenWidth * 325 / 750 + "-" + VLUtils.dip2px(180) + "," + screenWidth * 425 / 750 + "-" + VLUtils.dip2px(180);
+        String diary_size = (screenWidth - VLUtils.dip2px(40)) / 2 + "-" + VLUtils.dip2px(168);
+
+        mPresenter.getHomeData(banner_size, product_size, diary_size);
+    }
+
     /**
      * 填充数据
      */
@@ -172,7 +188,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
         List<ProductBean> productList = mHomeBean.getProducts();
 
-        if(productList != null && productList.size() > 0){
+        if (productList != null && productList.size() > 0) {
             if (productList.size() >= 1) {
                 mFirstPrNameTv.setText(productList.get(0).getName());
                 mFirstPrPriceTv.setText(productList.get(0).getPrice() + getStr(R.string.yuan));
@@ -196,7 +212,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 mThirdPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 mThirdPrCoverSdv.setImageURI(Uri.parse(productList.get(2).getCover()));
             }
-        }else{
+        } else {
             TextView mProductTopLineTv = mRootView.findViewById(R.id.productTopLineTv);
             mProductTopLineTv.setVisibility(View.GONE);
             mProductListLl.setVisibility(View.GONE);
@@ -207,14 +223,14 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
         RecyclerView mSlectionRv = mRootView.findViewById(R.id.slectionRv);
 
-        if(preferrsList == null || preferrsList.size() == 0){
+        if (preferrsList == null || preferrsList.size() == 0) {
 
             TextView mSelectionGapTv = mRootView.findViewById(R.id.selectionGapTv);
 
             mSlectionMoreRl.setVisibility(View.GONE);
             mSelectionGapTv.setVisibility(View.GONE);
             mSlectionRv.setVisibility(View.GONE);
-        }else{
+        } else {
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
             mSlectionRv.setLayoutManager(mLayoutManager);
             mSlectionRv.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
@@ -235,11 +251,12 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             mDiaryRv.setNestedScrollingEnabled(false);
 
             mGoddessDiaryAdapter.setOnItemClickListener((view, position) -> {
-                GoddessDiaryDetailActivity.startSelf(getActivity(), mHomeBean.getDiarys().get(position).getId());
+                GoddessDiaryDetailActivity.startSelf((VLActivity) getActivity(), mHomeBean.getDiarys().get(position).getId(), mResultListener, DIARY_DETAIL_REQUEST_CODE);
             });
 
         }
     }
+
 
     @Override
     public void setPresenter(HomePageTaskContract.Presenter presenter) {
@@ -415,4 +432,18 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             }
         }
     }
+
+    private VLActivity.VLActivityResultListener mResultListener = new VLActivity.VLActivityResultListener() {
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+            if (requestCode == DIARY_DETAIL_REQUEST_CODE) {
+                if (resultCode == getActivity().RESULT_OK) {
+                    getHomeData();
+                }
+            }
+        }
+    };
+
+
 }

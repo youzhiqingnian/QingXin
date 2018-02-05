@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
@@ -20,6 +21,7 @@ import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
+import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLTitleBar;
 
 /**
@@ -30,10 +32,11 @@ import com.vlee78.android.vl.VLTitleBar;
 public class GoddessDiaryDetailActivity extends QingXinActivity implements DiaryDetailContract.View, ShareDialog.OnShareDialogListener, View.OnClickListener {
 
 
-    public static void startSelf(@NonNull Context context, String diaryId) {
-        Intent intent = new Intent(context, GoddessDiaryDetailActivity.class);
+    public static void startSelf(VLActivity activity, String diaryId,VLActivityResultListener resultListener,int REQUESTCODE) {
+        Intent intent = new Intent(activity, GoddessDiaryDetailActivity.class);
         intent.putExtra(DIARY_ID, diaryId);
-        context.startActivity(intent);
+        activity.setActivityResultListener(resultListener);
+        activity.startActivityForResult(intent,REQUESTCODE);
     }
 
     public static final String DIARY_ID = "DIARY_ID";
@@ -63,13 +66,26 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
 
     private String id = "";
 
+    private boolean isChagedCollect;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goddess_diary_detail);
         VLTitleBar titleBar = findViewById(R.id.titleBar);
         QingXinTitleBar.init(titleBar, getResources().getString(R.string.goddess_diary));
-        QingXinTitleBar.setLeftReturn(titleBar, this);
+        QingXinTitleBar.setLeftReturnListener(titleBar, new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isChagedCollect){
+                    // 如果做过收藏操作
+                    setResult(RESULT_OK);
+                }
+                finish();
+            }
+        });
         QingXinTitleBar.setRightIcon(titleBar, R.mipmap.ic_top_right_share, view -> mShareDialog.show());
 
         mPresenter = new GoddessDiaryDetailPresenter(this);
@@ -149,6 +165,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         if (mCollectBean != null) {
             // 如果收藏的结果不为空
             mCollectionCountTv.setText(String.valueOf(mCollectBean.getAmount()));
+            isChagedCollect = true;
             if (mCollectBean.getIs_collect().equals("n")) {
                 mCollectionTv.setText(R.string.plus_collection);
                 showToast(getString(R.string.cancel_collect_ok));
@@ -265,6 +282,19 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
 
                 break;
 
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            if(isChagedCollect){
+                setResult(RESULT_OK);
+            }
+            finish();
+            return false;
+        }else{
+            return super.onKeyDown(keyCode, event);
         }
     }
 }

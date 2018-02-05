@@ -3,15 +3,17 @@ package com.qingxin.medical.app.goddessdiary;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
+
 import java.util.List;
 
 /**
- *
  * Date 2018-02-03
+ *
  * @author zhikuo1
  */
 
@@ -39,6 +41,8 @@ public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, Bas
         beforeCoverSdv.setImageURI(Uri.parse(item.getOper_before_photo()));
         afterCoverSdv.setImageURI(Uri.parse(item.getOper_after_photo()));
         contentTv.setText(item.getSummary());
+        scanCountTv.setText(String.valueOf(item.getVisit_num()));
+        collectionCountTv.setText(String.valueOf(item.getCollect_num()));
         tagTv.setText(item.getTags());
     }
 }
