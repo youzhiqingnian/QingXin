@@ -15,14 +15,14 @@ import java.util.List;
 /**
  * @author zhikuo1 on 2018-01-31.
  */
-public class GoddessDiaryListAdapter extends BaseQuickAdapter<GoddessDiaryBean.ItemsBean, BaseViewHolder> {
+public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, BaseViewHolder> {
 
-    GoddessDiaryListAdapter(@Nullable List<GoddessDiaryBean.ItemsBean> data) {
+    GoddessDiaryListAdapter(@Nullable List<DiaryItemBean> data) {
         super(R.layout.layout_home_goddess_diary_item, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, GoddessDiaryBean.ItemsBean item) {
+    protected void convert(BaseViewHolder helper, DiaryItemBean item) {
         SimpleDraweeView authorHeadSdv = helper.getView(R.id.authoerHeadSdv);
         SimpleDraweeView beforeCoverSdv = helper.getView(R.id.beforeCoverSdv);
         SimpleDraweeView afterCoverSdv = helper.getView(R.id.afterCoverSdv);

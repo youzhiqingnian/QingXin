@@ -18,9 +18,9 @@ import java.util.List;
 public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDiaryAdapter.MyViewHolder> {
     private Context mContext;
     private OnItemClickListener mOnItemClickListener = null;
-    List<HomeBean.ContentBean.DiarysBean> mDiaryList;
+    List<HomeBean.DiarysBean> mDiaryList;
 
-    HomeGoddessDiaryAdapter(Context context, List<HomeBean.ContentBean.DiarysBean> diaryList) {
+    HomeGoddessDiaryAdapter(Context context, List<HomeBean.DiarysBean> diaryList) {
         this.mContext = context;
         this.mDiaryList = diaryList;
     }

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
@@ -21,7 +22,7 @@ public class RecyclerGridViewAdapter extends RecyclerView.Adapter<RecyclerGridVi
     private Context mContext;
     private LayoutInflater mInflater;
     //子view是否充满了手机屏幕
-    List<HomeBean.ContentBean.PreferrsBean> mPreferrsList;
+    List<HomeBean.PreferrsBean> mPreferrsList;
 
     public interface OnRecyclerViewItemListener {
         public void onItemClickListener(View view, int position);
@@ -35,7 +36,7 @@ public class RecyclerGridViewAdapter extends RecyclerView.Adapter<RecyclerGridVi
         mOnRecyclerViewItemListener = listener;
     }
 
-    public RecyclerGridViewAdapter(Context mContext,List<HomeBean.ContentBean.PreferrsBean> preferrsList) {
+    public RecyclerGridViewAdapter(Context mContext, List<HomeBean.PreferrsBean> preferrsList) {
         this.mContext = mContext;
         this.mPreferrsList = preferrsList;
         mInflater = LayoutInflater.from(mContext);

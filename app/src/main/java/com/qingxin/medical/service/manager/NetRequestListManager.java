@@ -21,7 +21,7 @@ public class NetRequestListManager {
      *
      * @return
      */
-    public static Observable<HomeBean> getHomeData(String banner_size, String product_size, String diary_size) {
+    public static Observable<ContentBean<HomeBean>> getHomeData(String banner_size, String product_size, String diary_size) {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getHomeData(banner_size, product_size, diary_size);
     }
 
@@ -36,11 +36,11 @@ public class NetRequestListManager {
     }
 
 
-    public static Observable<GoddessDiaryDetailBean> getGoddessDiaryDetail(String id) {
+    public static Observable<ContentBean<GoddessDiaryDetailBean>> getGoddessDiaryDetail(String id) {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getGoddessDiaryDetail(id);
     }
 
-    public static Observable<CollectBean> collectDiary(String id) {
+    public static Observable<ContentBean<CollectBean>> collectDiary(String id) {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).collectDiary(id);
     }
 

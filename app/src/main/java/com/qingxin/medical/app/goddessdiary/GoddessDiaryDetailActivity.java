@@ -22,8 +22,6 @@ import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
 import com.vlee78.android.vl.VLTitleBar;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Created by zhikuo1 on 2018-02-02.
  */
@@ -36,7 +34,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         context.startActivity(intent);
     }
 
-    public static final String DIARY_ID  = "DIARY_ID";
+    public static final String DIARY_ID = "DIARY_ID";
 
     private ScrollView mScrollSv;
 
@@ -132,13 +130,13 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
 
     @Override
     public void setPresenter(DiaryDetailContract.Presenter presenter) {
-        mPresenter = checkNotNull(presenter);
+//        mPresenter = checkNotNull(presenter);
     }
 
     @Override
     public void onSuccess(GoddessDiaryDetailBean diaryDetailBean) {
         Log.i("diaryDetailBean", diaryDetailBean.toString());
-        if (diaryDetailBean.getContent().getItem() != null) {
+        if (diaryDetailBean.getItem() != null) {
             setData(diaryDetailBean);
         }
     }
@@ -146,10 +144,10 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     @Override
     public void onSuccess(CollectBean mCollectBean) {
         Log.i("collectBean", mCollectBean.toString());
-        if (mCollectBean.getContent() != null) {
+        if (mCollectBean != null) {
             // 如果收藏的结果不为空
-            mCollectionCountTv.setText(String.valueOf(mCollectBean.getContent().getAmount()));
-            if (mCollectBean.getContent().getIs_collect().equals("n")) {
+            mCollectionCountTv.setText(String.valueOf(mCollectBean.getAmount()));
+            if (mCollectBean.getIs_collect().equals("n")) {
                 mCollectionTv.setText(R.string.plus_collection);
                 showToast(getString(R.string.cancel_collect_ok));
             } else {
@@ -163,8 +161,8 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     @SuppressLint("DefaultLocale")
     private void setData(GoddessDiaryDetailBean diaryDetailBean) {
 
-        GoddessDiaryDetailBean.ContentBean.ItemBean itemBean;
-        itemBean = diaryDetailBean.getContent().getItem();
+        DiaryItemBean itemBean;
+        itemBean = diaryDetailBean.getItem();
         String collectState = "";
         if (itemBean.getIs_collect().equals("y")) {
             collectState = getString(R.string.cancel_collection);

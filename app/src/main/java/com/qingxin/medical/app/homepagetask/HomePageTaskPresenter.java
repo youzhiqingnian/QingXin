@@ -3,6 +3,7 @@ package com.qingxin.medical.app.homepagetask;
 import android.support.annotation.NonNull;
 
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
+import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.service.entity.Book;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 
@@ -24,9 +25,6 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
 
     @NonNull
     private CompositeSubscription mCompositeSubscription;
-
-
-    private HomeBean mHomeBean;
 
     /**
      * Creates a presenter for the add/edit view.
@@ -55,12 +53,9 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
         mCompositeSubscription.add(NetRequestListManager.getHomeData(banner_size,product_size,diary_size)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HomeBean>() {
+                .subscribe(new Observer<ContentBean<HomeBean>>() {
                     @Override
                     public void onCompleted() {
-                        if (mHomeBean != null){
-                            mHomePageTaskView.onSuccess(mHomeBean);
-                        }
                     }
 
                     @Override
@@ -70,8 +65,8 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
                     }
 
                     @Override
-                    public void onNext(HomeBean homeBean) {
-                        mHomeBean = homeBean;
+                    public void onNext(ContentBean<HomeBean> homeBean) {
+                        mHomePageTaskView.onSuccess(homeBean.getContent());
                     }
                 })
         );

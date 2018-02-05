@@ -68,4 +68,16 @@ public class User extends BaseBean {
     public void setCoin(String coin) {
         this.coin = coin;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", id='" + id + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", cover='" + cover + '\'' +
+                ", coin='" + coin + '\'' +
+                ", token='" + token + '\'' +
+                '}';
+    }
 }

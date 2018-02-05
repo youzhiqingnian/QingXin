@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
@@ -30,6 +31,7 @@ import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
+
 import java.util.List;
 
 /**
@@ -152,7 +154,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
      * 填充数据
      */
     private void setData() {
-        List<HomeBean.ContentBean.BannersBean> bannerList = mHomeBean.getContent().getBanners();
+        List<HomeBean.BannersBean> bannerList = mHomeBean.getBanners();
         VLPagerView pagerView = mRootView.findViewById(R.id.viewpagerVp);
         BannerPagerAdapter adapter = new BannerPagerAdapter(getActivity(), bannerList);
         pagerView.getViewPager().setAdapter(adapter);
@@ -162,7 +164,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         mStatedBtnBar.setChecked(pagerView.getCurrentItem());
         pagerView.setAutoScroll(3000);
 
-        List<HomeBean.ContentBean.ProductsBean> productList = mHomeBean.getContent().getProducts();
+        List<HomeBean.ProductsBean> productList = mHomeBean.getProducts();
         if (productList.size() >= 1) {
             mFirstPrNameTv.setText(productList.get(0).getName());
             mFirstPrPriceTv.setText(productList.get(0).getPrice() + getStr(R.string.yuan));
@@ -188,7 +190,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         }
 
 
-        List<HomeBean.ContentBean.PreferrsBean> preferrsList = mHomeBean.getContent().getPreferrs();
+        List<HomeBean.PreferrsBean> preferrsList = mHomeBean.getPreferrs();
 
         RecyclerView mSlectionRv = mRootView.findViewById(R.id.slectionRv);
         RecyclerView mDiaryRv = mRootView.findViewById(R.id.diaryRv);
@@ -200,7 +202,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         mSlectionRv.setAdapter(strictSelctionAdapter);
         mSlectionRv.setNestedScrollingEnabled(false);
 
-        List<HomeBean.ContentBean.DiarysBean> diaryList = mHomeBean.getContent().getDiarys();
+        List<HomeBean.DiarysBean> diaryList = mHomeBean.getDiarys();
         if (diaryList != null && diaryList.size() > 0) {
             mDiaryRv.setLayoutManager(new LinearLayoutManager(getActivity()));
             HomeGoddessDiaryAdapter mGoddessDiaryAdapter = new HomeGoddessDiaryAdapter(getActivity(), diaryList);
@@ -209,7 +211,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             mDiaryRv.setNestedScrollingEnabled(false);
 
             mGoddessDiaryAdapter.setOnItemClickListener((view, position) -> {
-                GoddessDiaryDetailActivity.startSelf(getActivity(),mHomeBean.getContent().getDiarys().get(position).getId());
+                GoddessDiaryDetailActivity.startSelf(getActivity(), mHomeBean.getDiarys().get(position).getId());
             });
 
         }
@@ -223,7 +225,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     public void onSuccess(HomeBean homeBean) {
         mHomeBean = homeBean;
         Log.i("homeBean", homeBean.toString());
-        if (mHomeBean != null && mHomeBean.getCode().equals("200")) {
+        if (mHomeBean != null) {
             setData();
         }
 
@@ -267,10 +269,10 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
     private class BannerPagerAdapter extends PagerAdapter {
 
-        private List<HomeBean.ContentBean.BannersBean> mBannerList;
+        private List<HomeBean.BannersBean> mBannerList;
         private Context mContext;
 
-        BannerPagerAdapter(Context context, List<HomeBean.ContentBean.BannersBean> bannerList) {
+        BannerPagerAdapter(Context context, List<HomeBean.BannersBean> bannerList) {
             this.mContext = context;
             this.mBannerList = bannerList;
         }

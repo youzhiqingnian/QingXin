@@ -1,7 +1,10 @@
 package com.qingxin.medical.app.goddessdiary;
 
 import android.support.annotation.NonNull;
+
+import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -18,11 +21,6 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
 
     @NonNull
     private CompositeSubscription mCompositeSubscription;
-
-
-    private GoddessDiaryDetailBean mDiaryDetailBean;
-
-    private CollectBean mCollectBean;
 
     public GoddessDiaryDetailPresenter(DiaryDetailContract.View diaryDetailView) {
         mDiaryDetailView = diaryDetailView;
@@ -46,12 +44,9 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
         mCompositeSubscription.add(NetRequestListManager.getGoddessDiaryDetail(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<GoddessDiaryDetailBean>() {
+                .subscribe(new Observer<ContentBean<GoddessDiaryDetailBean>>() {
                     @Override
                     public void onCompleted() {
-                        if (mDiaryDetailBean != null) {
-                            mDiaryDetailView.onSuccess(mDiaryDetailBean);
-                        }
                     }
 
                     @Override
@@ -61,8 +56,8 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
                     }
 
                     @Override
-                    public void onNext(GoddessDiaryDetailBean diaryDetailBean) {
-                        mDiaryDetailBean = diaryDetailBean;
+                    public void onNext(ContentBean<GoddessDiaryDetailBean> diaryDetailBean) {
+                        mDiaryDetailView.onSuccess(diaryDetailBean.getContent());
                     }
                 })
         );
@@ -74,12 +69,9 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
         mCompositeSubscription.add(NetRequestListManager.collectDiary(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<CollectBean>() {
+                .subscribe(new Observer<ContentBean<CollectBean>>() {
                     @Override
                     public void onCompleted() {
-                        if (mCollectBean != null) {
-                            mDiaryDetailView.onSuccess(mCollectBean);
-                        }
                     }
 
                     @Override
@@ -89,8 +81,8 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
                     }
 
                     @Override
-                    public void onNext(CollectBean collectBean) {
-                        mCollectBean = collectBean;
+                    public void onNext(ContentBean<CollectBean> collectBean) {
+                        mDiaryDetailView.onSuccess(collectBean.getContent());
                     }
                 })
         );

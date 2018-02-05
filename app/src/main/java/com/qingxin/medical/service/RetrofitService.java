@@ -11,6 +11,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
+
 /**
  * Created by user on 2018-01-22.
  */
@@ -24,7 +25,7 @@ public interface RetrofitService {
      * @return
      */
     @GET("/home")
-    Observable<HomeBean> getHomeData(@Query("banner_size") String banner_size, @Query("product_size") String product_size, @Query("diary_size") String diary_size);
+    Observable<ContentBean<HomeBean>> getHomeData(@Query("banner_size") String banner_size, @Query("product_size") String product_size, @Query("diary_size") String diary_size);
 
     /**
      * @param limit 查询条数 非必填   默认值 10
@@ -36,18 +37,20 @@ public interface RetrofitService {
 
     /**
      * 获取女神日记详情
+     *
      * @param id 日记的id
      * @return
      */
     @GET("/diary/{id}")
-    Observable<GoddessDiaryDetailBean> getGoddessDiaryDetail(@Path("id") String id);
+    Observable<ContentBean<GoddessDiaryDetailBean>> getGoddessDiaryDetail(@Path("id") String id);
 
     /**
      * 获取女神日记详情
+     *
      * @param id 日记的id
      * @return
      */
     @PUT("/diary/{id}/collect")
-    Observable<CollectBean> collectDiary(@Path("id") String id);
+    Observable<ContentBean<CollectBean>> collectDiary(@Path("id") String id);
 
 }
