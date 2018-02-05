@@ -4,6 +4,7 @@ import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
+import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.base.ContentBean;
 
 import retrofit2.http.GET;
@@ -52,5 +53,17 @@ public interface RetrofitService {
      */
     @PUT("/diary/{id}/collect")
     Observable<ContentBean<CollectBean>> collectDiary(@Path("id") String id);
+
+
+    /**
+     * 获取歆人专享列表
+     * @param limit
+     * @param skip
+     * @param isvip
+     * @param order
+     * @return
+     */
+    @GET("/product")
+    Observable<ContentBean<VipListBean>> getVipList(@Query("limit") int limit, @Query("skip") int skip,@Query("isvip") String isvip, @Query("order")String order);
 
 }

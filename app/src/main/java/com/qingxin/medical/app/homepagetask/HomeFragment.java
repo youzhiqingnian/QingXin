@@ -29,6 +29,7 @@ import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListAdapter;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.ProductBean;
+import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLActivity;
@@ -276,7 +277,8 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
             case R.id.shareRl:
                 // 歆人专享
-
+                Intent vipIntent = new Intent(getActivity(), VipListActivity.class);
+                startActivity(vipIntent);
                 break;
 
             case R.id.selectionRl:
