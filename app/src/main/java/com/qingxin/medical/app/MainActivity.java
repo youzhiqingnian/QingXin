@@ -3,7 +3,11 @@ package com.qingxin.medical.app;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import com.qingxin.medical.R;
-
+/**
+ *
+ * Date 2018-02-02
+ * @author zhikuo1
+ */
 public class MainActivity extends AppCompatActivity {
 
     @Override

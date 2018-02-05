@@ -1,7 +1,9 @@
 package com.qingxin.medical.app;
 
 /**
- * Created by zhikuo1 on 2018-02-01.
+ *
+ * Date 2018-02-01
+ * @author zhikuo1
  */
 
 public class Constants {

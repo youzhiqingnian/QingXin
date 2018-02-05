@@ -12,7 +12,9 @@ import com.qingxin.medical.user.UserModel;
 import com.qingxin.medical.user.UserTokenBean;
 
 /**
- * Created by zhikuo1 on 2018-02-03.
+ *
+ * Date 2018-02-03
+ * @author zhikuo1
  */
 public class LoginActivity extends QingXinActivity implements View.OnClickListener, LoginContract.LoginView{
 

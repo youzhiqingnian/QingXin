@@ -4,7 +4,9 @@ import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import com.qingxin.medical.user.User;
 
 /**
- * Created by zhikuo1 on 2018-02-05.
+ *
+ * Date 2018-02-05
+ * @author zhikuo1
  */
 
 public class DiaryItemBean {
@@ -63,11 +65,11 @@ public class DiaryItemBean {
         this.name = name;
     }
 
-    public String getProduct_id() {
+    String getProduct_id() {
         return product_id;
     }
 
-    public void setProduct_id(String product_id) {
+    void setProduct_id(String product_id) {
         this.product_id = product_id;
     }
 
@@ -111,11 +113,11 @@ public class DiaryItemBean {
         this.tags = tags;
     }
 
-    public String getWords() {
+    String getWords() {
         return words;
     }
 
-    public void setWords(String words) {
+    void setWords(String words) {
         this.words = words;
     }
 

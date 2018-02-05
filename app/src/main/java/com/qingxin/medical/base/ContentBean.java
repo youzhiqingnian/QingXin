@@ -1,9 +1,9 @@
 package com.qingxin.medical.base;
 
 /**
- * 封装的请求javabean
- *
- * @author zhikuo
+ *  封装的请求javabean
+ * Date 2018-02-05
+ * @author zhikuo1
  */
 public class ContentBean<T> extends BaseBean {
 

@@ -10,11 +10,9 @@ import com.qingxin.medical.map.LocationService;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.user.User;
 import com.qingxin.medical.user.UserModel;
-import com.squareup.leakcanary.LeakCanary;
 import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModelManager;
-
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;

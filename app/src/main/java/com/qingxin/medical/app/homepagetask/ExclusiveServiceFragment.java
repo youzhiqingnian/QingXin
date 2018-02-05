@@ -9,7 +9,9 @@ import com.qingxin.medical.R;
 import com.vlee78.android.vl.VLFragment;
 
 /**
- * 首界面
+ * 歆人专享
+ * Date 2018-02-05
+ * @author zhikuo1
  */
 public class ExclusiveServiceFragment extends VLFragment{
 

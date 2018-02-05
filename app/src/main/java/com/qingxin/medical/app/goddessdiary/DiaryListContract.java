@@ -4,7 +4,9 @@ import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 /**
- * Created by zhikuo1 on 2018-01-31.
+ *
+ * Date 2018-01-31
+ * @author zhikuo1
  */
 public class DiaryListContract {
 

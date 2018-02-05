@@ -9,7 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.qingxin.medical.R;
 /**
- * Created by user on 2018-01-29.
+ *
+ * Date 2018-01-29
+ * @author zhikuo1
  */
 
 public class UltraPagerAdapter extends PagerAdapter{

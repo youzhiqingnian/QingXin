@@ -15,7 +15,9 @@ import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import java.util.List;
 
 /**
- * Created by user on 2018-01-30.
+ *
+ * Date 2018-01-30
+ * @author zhikuo1
  */
 
 public class RecyclerGridViewAdapter extends RecyclerView.Adapter<RecyclerGridViewAdapter.ViewHolder> {

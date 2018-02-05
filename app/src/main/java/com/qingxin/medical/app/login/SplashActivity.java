@@ -8,6 +8,8 @@ import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLScheduler;
 
 /**
+ * 启动页
+ * Date 2018-02-05
  * @author zhikuo1
  */
 public class SplashActivity extends QingXinActivity {

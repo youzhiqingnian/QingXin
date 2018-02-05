@@ -4,10 +4,12 @@ import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.service.entity.Book;
-/**
- * Created by user on 2018-01-23.
- */
 
+/**
+ *
+ * Date 2018-02-05
+ * @author zhikuo1
+ */
 public class HomePageTaskContract {
 
     interface View extends BaseView<Presenter> {

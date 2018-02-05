@@ -11,7 +11,9 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- * Created by zhikuo1 on 2018-02-02.
+ *
+ * Date 2018-02-02
+ * @author zhikuo1
  */
 
 public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presenter {

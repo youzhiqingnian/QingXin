@@ -3,18 +3,18 @@ package com.qingxin.medical.app.goddessdiary;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
-
 import java.util.List;
 
 /**
- * @author zhikuo1 on 2018-01-31.
+ *
+ * Date 2018-02-03
+ * @author zhikuo1
  */
+
 public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, BaseViewHolder> {
 
     GoddessDiaryListAdapter(@Nullable List<DiaryItemBean> data) {

@@ -1,9 +1,10 @@
 package com.qingxin.medical.app.goddessdiary;
 
 /**
- * Created by zhikuo1 on 2018-02-03.
+ * 收藏的bean
+ * Date 2018-02-03
+ * @author zhikuo1
  */
-
 public class CollectBean {
 
 
@@ -12,6 +13,12 @@ public class CollectBean {
      * msg : ok
      * content : {"is_collect":"n","amount":0}
      */
+
+    /**
+     * is_collect : n
+     * amount : 0
+     */
+
     private String is_collect;
     private int amount;
 

@@ -15,7 +15,9 @@ import rx.subscriptions.CompositeSubscription;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by user on 2018-01-23.
+ *
+ * Date 2018-01-23
+ * @author zhikuo1
  */
 
 public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{

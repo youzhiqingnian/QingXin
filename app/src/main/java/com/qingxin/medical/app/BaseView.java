@@ -1,7 +1,9 @@
 package com.qingxin.medical.app;
 
 /**
- * Created by user on 2018-01-23.
+ *
+ * Date 2018-01-23
+ * @author zhikuo1
  */
 
 public interface BaseView<T> {

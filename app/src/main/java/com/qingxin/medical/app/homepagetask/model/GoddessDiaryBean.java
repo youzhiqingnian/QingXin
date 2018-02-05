@@ -1,12 +1,13 @@
 package com.qingxin.medical.app.homepagetask.model;
 
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
-import com.qingxin.medical.user.User;
 
 import java.util.List;
 
 /**
- * Created by zhikuo1 on 2018-01-31.
+ *
+ * Date 2018-01-31
+ * @author zhikuo1
  */
 
 public class GoddessDiaryBean {
@@ -32,7 +33,7 @@ public class GoddessDiaryBean {
         return items;
     }
 
-    public void setItems(List<DiaryItemBean> items) {
+    void setItems(List<DiaryItemBean> items) {
         this.items = items;
     }
 

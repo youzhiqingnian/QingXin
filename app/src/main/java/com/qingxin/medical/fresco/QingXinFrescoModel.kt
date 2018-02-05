@@ -20,7 +20,9 @@ import okhttp3.OkHttpClient
 import java.util.*
 
 /**
- * @author zhikuo on 2017/12/29.
+ * Network fetcher that uses OkHttp 3 as a backend.
+ * Date 2017-12-29
+ * @author zhikuo
  */
 class QingXinFrescoModel : VLModel() {
 

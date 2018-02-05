@@ -1,9 +1,11 @@
 package com.qingxin.medical.app.homepagetask.model;
 
-/**
- * Created by zhikuo1 on 2018-02-05.
- */
 
+/**
+ *
+ * Date 2018-02-05
+ * @author zhikuo1
+ */
 public class ProductBean {
 
     /**

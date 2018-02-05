@@ -7,20 +7,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.homepagetask.model.HomeBean;
-
+import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import java.util.List;
 
-
+/**
+ * 首页女神日记列表
+ * Date 2018-02-05
+ * @author zhikuo1
+ */
 public class HomeGoddessDiaryAdapter extends RecyclerView.Adapter<HomeGoddessDiaryAdapter.MyViewHolder> {
     private Context mContext;
     private OnItemClickListener mOnItemClickListener = null;
-    List<HomeBean.DiarysBean> mDiaryList;
+    List<DiaryItemBean> mDiaryList;
 
-    HomeGoddessDiaryAdapter(Context context, List<HomeBean.DiarysBean> diaryList) {
+    HomeGoddessDiaryAdapter(Context context, List<DiaryItemBean> diaryList) {
         this.mContext = context;
         this.mDiaryList = diaryList;
     }

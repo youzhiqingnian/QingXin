@@ -34,6 +34,8 @@ import okhttp3.ResponseBody;
 
 /**
  * Network fetcher that uses OkHttp 3 as a backend.
+ * Date 2018-02-05
+ * @author zhikuo1
  */
 public class OkHttpNetworkFetcher extends BaseNetworkFetcher<OkHttpNetworkFetcher.OkHttpNetworkFetchState> {
 

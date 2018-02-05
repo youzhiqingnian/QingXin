@@ -3,7 +3,9 @@ package com.qingxin.medical.app.goddessdiary;
 import com.qingxin.medical.user.User;
 
 /**
- * Created by zhikuo1 on 2018-02-02.
+ *
+ * Date 2018-02-02
+ * @author zhikuo1
  */
 
 public class GoddessDiaryDetailBean {

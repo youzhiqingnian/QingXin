@@ -4,7 +4,9 @@ import android.content.Context;
 import android.widget.BaseAdapter;
 import java.util.List;
 /**
- * Created by zhikuo1 on 2018-01-31.
+ *
+ * Date 2018-01-31
+ * @author zhikuo1
  */
 
 public abstract class CommonAdapter<T> extends BaseAdapter

@@ -16,7 +16,9 @@ import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
 
 /**
- * @author zhikuo
+ * HomeActivity
+ * Date 2018-02-05
+ * @author zhikuo1
  */
 public class HomePageTaskActivity extends QingXinActivity {
 

@@ -8,21 +8,22 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+import static com.qingxin.medical.app.goddessdiary.DiaryListContract.*;
 
 /**
- * @author zhikuo on 2018/2/3.
+ *
+ * Date 2018-02-03
+ * @author zhikuo1
  */
-public class GoddessDiaryPresenter implements DiaryListContract.Presenter {
+public class GoddessDiaryPresenter implements Presenter {
 
     @NonNull
-    private final DiaryListContract.View mGoddessDiaryView;
+    private final View mGoddessDiaryView;
 
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    private GoddessDiaryBean mDiary;
-
-    GoddessDiaryPresenter(DiaryListContract.View goddessDiaryView) {
+    public GoddessDiaryPresenter(View goddessDiaryView) {
         mGoddessDiaryView = goddessDiaryView;
         mCompositeSubscription = new CompositeSubscription();
         mGoddessDiaryView.setPresenter(this);

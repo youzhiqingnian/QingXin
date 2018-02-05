@@ -22,9 +22,11 @@ import android.widget.TextView;
 import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
+import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLFragment;
@@ -35,7 +37,9 @@ import com.vlee78.android.vl.VLUtils;
 import java.util.List;
 
 /**
- * 首界面
+ *  首页面
+ * Date 2018-02-05
+ * @author zhikuo1
  */
 public class HomeFragment extends VLFragment implements HomePageTaskContract.View, View.OnClickListener {
 
@@ -164,7 +168,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         mStatedBtnBar.setChecked(pagerView.getCurrentItem());
         pagerView.setAutoScroll(3000);
 
-        List<HomeBean.ProductsBean> productList = mHomeBean.getProducts();
+        List<ProductBean> productList = mHomeBean.getProducts();
         if (productList.size() >= 1) {
             mFirstPrNameTv.setText(productList.get(0).getName());
             mFirstPrPriceTv.setText(productList.get(0).getPrice() + getStr(R.string.yuan));
@@ -202,7 +206,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         mSlectionRv.setAdapter(strictSelctionAdapter);
         mSlectionRv.setNestedScrollingEnabled(false);
 
-        List<HomeBean.DiarysBean> diaryList = mHomeBean.getDiarys();
+        List<DiaryItemBean> diaryList = mHomeBean.getDiarys();
         if (diaryList != null && diaryList.size() > 0) {
             mDiaryRv.setLayoutManager(new LinearLayoutManager(getActivity()));
             HomeGoddessDiaryAdapter mGoddessDiaryAdapter = new HomeGoddessDiaryAdapter(getActivity(), diaryList);
