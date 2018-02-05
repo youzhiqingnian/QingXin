@@ -9,6 +9,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import java.util.List;
+
 /**
  * Date 2018-02-05
  *
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class VipListAdapter extends BaseQuickAdapter<ProductBean, BaseViewHolder> {
 
-    public VipListAdapter(@Nullable List<ProductBean> data) {
+    VipListAdapter(@Nullable List<ProductBean> data) {
         super(R.layout.layout_vip_item, data);
     }
 
@@ -34,7 +35,7 @@ public class VipListAdapter extends BaseQuickAdapter<ProductBean, BaseViewHolder
         mNameTv.setText(item.getName());
         mHospitalNameTv.setText(item.getHospital());
         mPriceTv.setText(String.valueOf(item.getPrice()));
-        mOldpriceTv.setText(String.valueOf(item.getOld_price()));
-        mOrderCountTv.setText(item.getOrder() + mContext.getString(R.string.order_count));
+        mOldpriceTv.setText(String.format("¥%s", item.getOld_price()));
+        mOrderCountTv.setText(String.format("%s次预约", item.getOrder()));
     }
 }
