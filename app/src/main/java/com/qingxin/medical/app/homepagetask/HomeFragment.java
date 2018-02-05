@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
@@ -33,7 +32,6 @@ import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
-
 import java.util.List;
 
 /**
@@ -54,6 +52,8 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             mThirdPrNameTv,
             mThirdPrPriceTv,
             mThirdPrOldPriceTv;
+
+    private LinearLayout mProductListLl;
 
     private SimpleDraweeView mFirstPrCoverSdv,
             mSecondPrCoverSdv,
@@ -106,9 +106,11 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         mThirdPrPriceTv = mRootView.findViewById(R.id.thirdPrPriceTv);
         mThirdPrOldPriceTv = mRootView.findViewById(R.id.thirdPrOldPriceTv);
 
+
         mFirstPrCoverSdv = mRootView.findViewById(R.id.firstPrCoverSdv);
         mSecondPrCoverSdv = mRootView.findViewById(R.id.secondPrCoverSdv);
         mThirdPrCoverSdv = mRootView.findViewById(R.id.thirdPrCoverSdv);
+        mProductListLl = mRootView.findViewById(R.id.productListLl);
 
         LinearLayout shareRl = mRootView.findViewById(R.id.shareRl);
         LinearLayout diaryRl = mRootView.findViewById(R.id.diaryRl);
@@ -169,42 +171,60 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         pagerView.setAutoScroll(3000);
 
         List<ProductBean> productList = mHomeBean.getProducts();
-        if (productList.size() >= 1) {
-            mFirstPrNameTv.setText(productList.get(0).getName());
-            mFirstPrPriceTv.setText(productList.get(0).getPrice() + getStr(R.string.yuan));
-            mFirstPrOldPriceTv.setText(getStr(R.string.origin_price) + productList.get(0).getOld_price() + getStr(R.string.yuan));
-            mFirstPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            mFirstPrCoverSdv.setImageURI(Uri.parse(productList.get(0).getCover()));
-        }
 
-        if (productList.size() >= 2) {
-            mSecondPrNameTv.setText(productList.get(1).getName());
-            mSecondPrPriceTv.setText(productList.get(1).getPrice() + getStr(R.string.yuan));
-            mSecondPrOldPriceTv.setText(getStr(R.string.origin_price) + productList.get(1).getOld_price() + getStr(R.string.yuan));
-            mSecondPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            mSecondPrCoverSdv.setImageURI(Uri.parse(productList.get(1).getCover()));
-        }
+        if(productList != null && productList.size() > 0){
+            if (productList.size() >= 1) {
+                mFirstPrNameTv.setText(productList.get(0).getName());
+                mFirstPrPriceTv.setText(productList.get(0).getPrice() + getStr(R.string.yuan));
+                mFirstPrOldPriceTv.setText(getStr(R.string.origin_price) + productList.get(0).getOld_price() + getStr(R.string.yuan));
+                mFirstPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                mFirstPrCoverSdv.setImageURI(Uri.parse(productList.get(0).getCover()));
+            }
 
-        if (productList.size() >= 3) {
-            mThirdPrNameTv.setText(productList.get(2).getName());
-            mThirdPrPriceTv.setText(productList.get(2).getPrice() + getStr(R.string.yuan));
-            mThirdPrOldPriceTv.setText(getStr(R.string.origin_price) + productList.get(2).getOld_price() + getStr(R.string.yuan));
-            mThirdPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            mThirdPrCoverSdv.setImageURI(Uri.parse(productList.get(2).getCover()));
-        }
+            if (productList.size() >= 2) {
+                mSecondPrNameTv.setText(productList.get(1).getName());
+                mSecondPrPriceTv.setText(productList.get(1).getPrice() + getStr(R.string.yuan));
+                mSecondPrOldPriceTv.setText(getStr(R.string.origin_price) + productList.get(1).getOld_price() + getStr(R.string.yuan));
+                mSecondPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                mSecondPrCoverSdv.setImageURI(Uri.parse(productList.get(1).getCover()));
+            }
 
+            if (productList.size() >= 3) {
+                mThirdPrNameTv.setText(productList.get(2).getName());
+                mThirdPrPriceTv.setText(productList.get(2).getPrice() + getStr(R.string.yuan));
+                mThirdPrOldPriceTv.setText(getStr(R.string.origin_price) + productList.get(2).getOld_price() + getStr(R.string.yuan));
+                mThirdPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                mThirdPrCoverSdv.setImageURI(Uri.parse(productList.get(2).getCover()));
+            }
+        }else{
+            TextView mProductTopLineTv = mRootView.findViewById(R.id.productTopLineTv);
+            mProductTopLineTv.setVisibility(View.GONE);
+            mProductListLl.setVisibility(View.GONE);
+        }
 
         List<HomeBean.PreferrsBean> preferrsList = mHomeBean.getPreferrs();
 
-        RecyclerView mSlectionRv = mRootView.findViewById(R.id.slectionRv);
-        RecyclerView mDiaryRv = mRootView.findViewById(R.id.diaryRv);
 
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
-        mSlectionRv.setLayoutManager(mLayoutManager);
-        mSlectionRv.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
-        RecyclerGridViewAdapter strictSelctionAdapter = new RecyclerGridViewAdapter(getActivity(), preferrsList);
-        mSlectionRv.setAdapter(strictSelctionAdapter);
-        mSlectionRv.setNestedScrollingEnabled(false);
+        RecyclerView mSlectionRv = mRootView.findViewById(R.id.slectionRv);
+
+        if(preferrsList == null || preferrsList.size() == 0){
+
+            TextView mSelectionGapTv = mRootView.findViewById(R.id.selectionGapTv);
+
+            mSlectionMoreRl.setVisibility(View.GONE);
+            mSelectionGapTv.setVisibility(View.GONE);
+            mSlectionRv.setVisibility(View.GONE);
+        }else{
+            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
+            mSlectionRv.setLayoutManager(mLayoutManager);
+            mSlectionRv.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
+            RecyclerGridViewAdapter strictSelctionAdapter = new RecyclerGridViewAdapter(getActivity(), preferrsList);
+            mSlectionRv.setAdapter(strictSelctionAdapter);
+            mSlectionRv.setNestedScrollingEnabled(false);
+        }
+
+
+        RecyclerView mDiaryRv = mRootView.findViewById(R.id.diaryRv);
 
         List<DiaryItemBean> diaryList = mHomeBean.getDiarys();
         if (diaryList != null && diaryList.size() > 0) {

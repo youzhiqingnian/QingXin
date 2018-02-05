@@ -202,11 +202,13 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/productTopLineTv"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/line_color" />
 
             <LinearLayout
+                android:id="@+id/productListLl"
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:orientation="horizontal">
@@ -413,6 +415,7 @@
                 android:scrollbars="vertical" />
 
             <TextView
+                android:id="@+id/selectionGapTv"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:layout_marginTop="20dp"
