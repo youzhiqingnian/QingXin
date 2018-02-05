@@ -80,12 +80,8 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     compile 'com.android.support:multidex:1.0.2'
-<<<<<<< HEAD
-
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-=======
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
->>>>>>> a37db040b21fe51af8afc876c8aea6caf3b55bf9
 }
