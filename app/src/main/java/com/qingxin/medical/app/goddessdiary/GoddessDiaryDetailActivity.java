@@ -167,8 +167,6 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         mAuthorNameTv.setText(itemBean.getMem().getName());
         mBeforeCoverSdv.setImageURI(Uri.parse(itemBean.getOper_before_photo()));
         mAfterCoverSdv.setImageURI(Uri.parse(itemBean.getOper_after_photo()));
-//        mBeforeCoverCountTv.setText(itemBean.);
-//        mAfterCoverCountTv.setText();
         mProductCoverSdv.setImageURI(Uri.parse(itemBean.getProduct().getCover()));
         mDiaryProductIntroTv.setText(itemBean.getProduct().getName());
         mReserveCountTv.setText(String.format("%d%s", itemBean.getProduct().getOrder(), getString(R.string.book_times)));
