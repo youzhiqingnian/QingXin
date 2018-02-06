@@ -14,7 +14,6 @@ import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
-
 /**
  * 歆人专享列表
  * Date 2018-02-05
