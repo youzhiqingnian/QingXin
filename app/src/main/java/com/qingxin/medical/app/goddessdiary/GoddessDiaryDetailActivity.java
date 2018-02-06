@@ -22,7 +22,6 @@ import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
-
 /**
  * Date 2018-02-02
  *

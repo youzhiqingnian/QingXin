@@ -11,6 +11,7 @@
     <color name="text_color_hint">#8D8E90</color>
     <color name="text_color_origin_price">#B2B3B4</color>
     <color name="line_color">#DFE3E5</color>
+    <color name="c_line_color">#CCCCCC</color>
     <color name="gap_color_gray">#ECF0F3</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>

@@ -1,0 +1,357 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <ScrollView
+        android:id="@+id/scrollSv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:layout_marginBottom="49dp"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.vlee78.android.vl.VLPagerView
+                android:id="@+id/viewpagerVp"
+                android:layout_width="match_parent"
+                android:layout_height="376dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="#123456"
+                android:orientation="horizontal" />
+
+            <com.vlee78.android.vl.VLStatedButtonBar
+                android:id="@+id/statedBtnBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="20dp" />
+
+            <TextView
+                android:id="@+id/productNameTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/viewpagerVp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:ellipsize="end"
+                android:lineSpacingExtra="2dp"
+                android:maxLines="2"
+                android:text="啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦啦"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/pinkRmbIconTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/priceTv"
+                android:layout_alignLeft="@+id/productNameTv"
+                android:layout_below="@+id/productNameTv"
+                android:layout_marginBottom="3dp"
+                android:gravity="bottom"
+                android:text="@string/rmb_icon"
+                android:textColor="@color/price_pink"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/priceTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/productNameTv"
+                android:layout_marginTop="10dp"
+                android:layout_toRightOf="@+id/pinkRmbIconTv"
+                android:text="888"
+                android:textColor="@color/price_pink"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/grayRmbIconTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/priceTv"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@+id/priceTv"
+                android:text="￥12800"
+                android:textColor="@color/text_color_origin_price"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/cityNameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/pinkRmbIconTv"
+                android:layout_below="@+id/grayRmbIconTv"
+                android:layout_marginTop="4dp"
+                android:text="成都"
+                android:textColor="@color/text_color_origin_price"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/orderCountTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/cityNameTv"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:text="2335次预约"
+                android:textColor="@color/text_color_origin_price"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/introLineTv"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/orderCountTv"
+                android:layout_marginTop="9dp"
+                android:background="@color/line_color" />
+
+            <LinearLayout
+                android:id="@+id/vipUniqueLl"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_below="@+id/introLineTv"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="15dp"
+                    android:layout_weight="1"
+                    android:drawableLeft="@mipmap/vip_unique_logo"
+                    android:drawablePadding="4dp"
+                    android:text="@string/vip_unique_price"
+                    android:textColor="@color/text_color_origin_price"
+                    android:textSize="12sp" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerHorizontal="true"
+                        android:drawableLeft="@mipmap/vip_unique_logo"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/safe_guarrentee"
+                        android:textColor="@color/text_color_origin_price"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="15dp"
+                        android:drawableLeft="@mipmap/vip_unique_logo"
+                        android:drawablePadding="4dp"
+                        android:gravity="center_vertical"
+                        android:text="@string/vip_unique_escort"
+                        android:textColor="@color/text_color_origin_price"
+                        android:textSize="12sp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/productGapTv"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/vipUniqueLl"
+                android:background="@color/gap_color_gray" />
+
+            <RelativeLayout
+                android:id="@+id/hospitalInfoRl"
+                android:layout_width="match_parent"
+                android:layout_height="99dp"
+                android:layout_below="@+id/productGapTv">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/hospitalCoverSdv"
+                    style="@style/SimpleDraweeViewStroke"
+                    android:layout_width="49dp"
+                    android:layout_height="49dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:scaleType="centerCrop"
+                    app:roundAsCircle="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toRightOf="@+id/hospitalCoverSdv"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/hospitalNameTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="成都奕后激光整形医院"
+                        android:textColor="@color/text_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/hospitalCityNameTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:drawableLeft="@mipmap/vip_hospital_city_name_logo"
+                        android:drawablePadding="5dp"
+                        android:text="四川省成都市"
+                        android:textColor="@color/text_color_origin_price"
+                        android:textSize="12sp"
+
+                        />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/hospitalGapTv"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/hospitalInfoRl"
+                android:background="@color/gap_color_gray" />
+
+            <TextView
+                android:id="@+id/productDetailTitle"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_below="@+id/hospitalGapTv"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:text="@string/product_detail"
+                android:textColor="@color/text_color"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/productDetailLineTv"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_below="@+id/productDetailTitle"
+                android:background="@color/line_color" />
+
+            <TextView
+                android:id="@+id/productDetailTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/productDetailLineTv"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:lineSpacingExtra="6dp"
+                android:text="我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你"
+                android:textColor="@color/text_color"
+                android:textSize="14sp" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+
+
+    <ImageView
+        android:id="@+id/topReturnIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:paddingBottom="25dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="15dp"
+        android:paddingTop="25dp"
+        android:src="@mipmap/vip_detail_top_return_logo" />
+
+    <ImageView
+        android:id="@+id/topShareIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:paddingBottom="25dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="10dp"
+        android:paddingTop="25dp"
+        android:src="@mipmap/vip_top_share_logo" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/collectRl"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/c_line_color" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                >
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/vip_unique_collect_logo"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_hint"
+                    android:textSize="14sp"
+                    android:text="@string/collect"
+                    android:layout_marginLeft="7dp"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/orderNowTv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@color/price_pink"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:text="@string/order_now"
+            android:gravity="center"
+            />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/scrollTopIv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="90dp"
+        android:layout_marginRight="15dp"
+        android:src="@mipmap/ic_scrll_top" />
+
+</RelativeLayout>

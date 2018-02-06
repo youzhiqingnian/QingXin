@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SimpleDraweeViewStroke">
+
+        <item name="android:strokeColor">@color/line_color</item>
+        <item name="android:strokeWidth">1</item>
+
+    </style>
+</resources>
