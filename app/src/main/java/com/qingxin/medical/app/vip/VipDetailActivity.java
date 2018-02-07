@@ -10,9 +10,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.fresco.DoubleTapGestureListener;
+import com.qingxin.medical.fresco.ZoomableDraweeView;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLPagerView;
@@ -47,6 +52,7 @@ public class VipDetailActivity extends QingXinActivity implements View.OnClickLi
             mOrderNowTv;
     private RelativeLayout mCollectRl;
     private SimpleDraweeView mHospitalCoverSdv;
+    private ZoomableDraweeView mVipDetailImgZdv;
 
     private List<Integer> bannerList = new ArrayList<>();
 
@@ -101,6 +107,16 @@ public class VipDetailActivity extends QingXinActivity implements View.OnClickLi
         mOrderNowTv = findViewById(R.id.orderNowTv);
         mCollectRl = findViewById(R.id.collectRl);
         mHospitalCoverSdv = findViewById(R.id.hospitalCoverSdv);
+        mVipDetailImgZdv = findViewById(R.id.vipDetailImgZdv);
+        mVipDetailImgZdv.setAllowTouchInterceptionWhileZoomed(true);
+        // needed for double tap to zoom
+        mVipDetailImgZdv.setIsLongpressEnabled(false);
+        mVipDetailImgZdv.setTapListener(new DoubleTapGestureListener(mVipDetailImgZdv));
+        DraweeController controller = Fresco.newDraweeControllerBuilder()
+//                .setUri(SAMPLE_URIS[position % SAMPLE_URIS.length])
+                .setCallerContext("ZoomableApp-MyPagerAdapter")
+                .build();
+        mVipDetailImgZdv.setController(controller);
         mShareDialog = new ShareDialog(this);
     }
 
