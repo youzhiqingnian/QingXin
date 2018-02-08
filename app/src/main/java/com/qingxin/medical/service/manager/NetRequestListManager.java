@@ -4,6 +4,7 @@ import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
+import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.service.RetrofitService;
@@ -42,6 +43,10 @@ public class NetRequestListManager {
 
     public static Observable<ContentBean<CollectBean>> collectDiary(String id) {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).collectDiary(id);
+    }
+
+    public static Observable<ContentBean<VipListBean>> getVipList(int limit, int skip, String isvip, String order) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getVipList(limit, skip, isvip, order);
     }
 
 }

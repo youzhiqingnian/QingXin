@@ -39,4 +39,12 @@
     <string name="cancel_collect_ok">已取消收藏</string>
     <string name="agency">机构</string>
     <string name="doctor">医生</string>
+
+    <!--歆人专享-->
+    <string name="vip_unique_price">歆人独享专价</string>
+    <string name="safe_guarrentee">安全保证</string>
+    <string name="vip_unique_escort">歆人专享陪护</string>
+    <string name="product_detail">产品详情</string>
+    <string name="collect">收藏</string>
+    <string name="order_now">立即预约</string>
 </resources>

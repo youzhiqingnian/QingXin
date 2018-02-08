@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="128dp"
+    android:background="?attr/selectableItemBackground">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/coverSdv"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginStart="15dp"
+        android:scaleType="centerCrop"
+        app:roundedCornerRadius="4dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/coverSdv"
+        android:layout_alignStart="@id/coverSdv"
+        android:layout_alignTop="@id/coverSdv"
+        android:contentDescription="@string/app_name"
+        android:src="@mipmap/vip_list_item_logo" />
+
+    <TextView
+        android:id="@+id/nameTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/coverSdv"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_toEndOf="@id/coverSdv"
+        android:layout_toRightOf="@id/coverSdv"
+        android:ellipsize="end"
+        android:lineSpacingExtra="5dp"
+        android:maxLines="2"
+        android:text="小气泡美颜@全面部逐层净斑，赋活新生，圣诞大促"
+        android:textColor="@color/text_color"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/hospitalNameTv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/nameTv"
+        android:layout_alignStart="@id/nameTv"
+        android:layout_below="@+id/nameTv"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:maxLines="1"
+        android:text="成都奕后激光整形医院"
+        android:textColor="@color/text_color_origin_price"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/rmbIconTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/coverSdv"
+        android:layout_alignLeft="@id/hospitalNameTv"
+        android:layout_alignStart="@id/hospitalNameTv"
+        android:text="@string/rmb_icon"
+        android:textColor="@color/price_pink"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/priceTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/rmbIconTv"
+        android:layout_marginBottom="-3dp"
+        android:layout_toEndOf="@id/rmbIconTv"
+        android:layout_toRightOf="@id/rmbIconTv"
+        android:text="888"
+        android:textColor="@color/price_pink"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/orderCountTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/coverSdv"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:text="2235次预约"
+        android:textColor="@color/text_color_origin_price"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/oldpriceTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/coverSdv"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@id/priceTv"
+        android:layout_toLeftOf="@id/orderCountTv"
+        android:layout_toRightOf="@id/priceTv"
+        android:layout_toStartOf="@id/orderCountTv"
+        android:ellipsize="end"
+        android:text="@string/rmb_icon"
+        android:textColor="@color/text_color_origin_price"
+        android:textSize="12sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gap_color_gray" />
+
+</RelativeLayout>

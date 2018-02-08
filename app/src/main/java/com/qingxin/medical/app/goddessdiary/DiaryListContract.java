@@ -10,7 +10,7 @@ import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
  */
 public class DiaryListContract {
 
-    interface View extends BaseView<Presenter> {
+    public interface View extends BaseView<Presenter> {
 
         void onSuccess(GoddessDiaryBean mDiary);
 
@@ -18,7 +18,7 @@ public class DiaryListContract {
 
     }
 
-    interface Presenter extends BasePresenter {
+    public interface Presenter extends BasePresenter {
 
         void getGoddessDiaryList(int limit,int skip);
 
