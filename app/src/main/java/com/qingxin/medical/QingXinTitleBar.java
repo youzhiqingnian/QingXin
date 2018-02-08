@@ -81,12 +81,7 @@ public class QingXinTitleBar {
 
     public static void setLeftReturn(VLTitleBar titleBar, final Activity activity) {
         titleBar.clear(VLTitleBarPos.TitleBarLeft);
-        setLeftIcon(titleBar, ICON_RETURN_RESID, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activity.finish();
-            }
-        });
+        setLeftIcon(titleBar, ICON_RETURN_RESID, v -> activity.finish());
     }
 
     public static View setLeftReturnListener(VLTitleBar titleBar, View.OnClickListener listener) {

@@ -30,6 +30,7 @@ import com.qingxin.medical.app.goddessdiary.GoddessDiaryListAdapter;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import com.qingxin.medical.base.QingXinApplication;
+import com.qingxin.medical.home.districtsel.StrictSelListActivity;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLFragment;
@@ -279,12 +280,10 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
                 break;
 
-            case R.id.selectionRl:
+            case R.id.selectionRl: // 本地严选
             case R.id.slectionMoreRl:
-                // 本地严选
-
+                StrictSelListActivity.startSelf(getActivity());
                 break;
-
             case R.id.encyclopediasRl:
                 // 医美百科
 

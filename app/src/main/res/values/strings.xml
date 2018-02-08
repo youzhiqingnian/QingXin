@@ -37,5 +37,6 @@
     <string name="cancel">取消</string>
     <string name="collect_ok">收藏成功</string>
     <string name="cancel_collect_ok">已取消收藏</string>
-
+    <string name="agency">机构</string>
+    <string name="doctor">医生</string>
 </resources>
