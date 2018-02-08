@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -14,6 +15,7 @@ import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
+
 /**
  * 歆人专享列表
  * Date 2018-02-05
@@ -52,7 +54,7 @@ public class VipListActivity extends QingXinActivity implements VipListContract.
         imageView.setImageResource(R.mipmap.vip_top_banner);
         mAdapter.addHeaderView(imageView);
 
-//        mAdapter.setOnItemClickListener((adapter, view, position) -> GoddessDiaryDetailActivity.startSelf(GoddessDiaryListActivity.this, mAdapter.getData().get(position).getId(), mResultListener));
+        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(VipListActivity.this, mAdapter.getData().get(position).getId()));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
         getVipList(true);
