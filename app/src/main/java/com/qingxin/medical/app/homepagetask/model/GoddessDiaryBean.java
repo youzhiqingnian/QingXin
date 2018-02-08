@@ -33,7 +33,7 @@ public class GoddessDiaryBean {
         return items;
     }
 
-    void setItems(List<DiaryItemBean> items) {
+    public void setItems(List<DiaryItemBean> items) {
         this.items = items;
     }
 

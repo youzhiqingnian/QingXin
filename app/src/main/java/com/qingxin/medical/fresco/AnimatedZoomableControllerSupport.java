@@ -15,12 +15,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Matrix;
+import android.support.annotation.Nullable;
 import android.view.animation.DecelerateInterpolator;
 import com.facebook.common.internal.Preconditions;
 import com.facebook.common.logging.FLog;
-
-import org.jetbrains.annotations.Nullable;
-
 /**
  * ZoomableController that adds animation capabilities to DefaultZoomableController using
  * nineoldandroid library
@@ -41,10 +39,7 @@ public class AnimatedZoomableControllerSupport extends AbstractAnimatedZoomableC
     mValueAnimator.setInterpolator(new DecelerateInterpolator());
   }
 
-  public void setTransformAnimated(
-      final Matrix newTransform,
-      long durationMs,
-      @Nullable final Runnable onAnimationComplete) {
+  public void setTransformAnimated(final Matrix newTransform, long durationMs, @Nullable final Runnable onAnimationComplete) {
     FLog.v(getLogTag(), "setTransformAnimated: duration %d ms", durationMs);
     stopAnimation();
     Preconditions.checkArgument(durationMs > 0);

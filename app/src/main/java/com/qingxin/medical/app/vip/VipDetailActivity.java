@@ -11,12 +11,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.fresco.DoubleTapGestureListener;
 import com.qingxin.medical.fresco.ZoomableDraweeView;
@@ -29,7 +27,6 @@ import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * 歆人专享详情
  * Date 2018-02-06
