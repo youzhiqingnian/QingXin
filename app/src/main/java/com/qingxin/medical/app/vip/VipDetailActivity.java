@@ -1,6 +1,7 @@
 package com.qingxin.medical.app.vip;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -15,10 +16,12 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.fresco.DoubleTapGestureListener;
 import com.qingxin.medical.fresco.ZoomableDraweeView;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
+import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLScheduler;
@@ -58,13 +61,30 @@ public class VipDetailActivity extends QingXinActivity implements View.OnClickLi
 
     private ShareDialog mShareDialog;
 
+    public static void startSelf(VLActivity activity, String vipId) {
+        Intent intent = new Intent(activity, VipDetailActivity.class);
+        intent.putExtra(VIP_ID, vipId);
+        activity.startActivity(intent);
+    }
+
+    public static final String VIP_ID = "VIP_ID";
+
+    private String id = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vip_detail);
+        dealIntent();
         initView();
         initListener();
         initViewPager();
+    }
+
+    private void dealIntent() {
+        if (getIntent() != null) {
+            id = getIntent().getStringExtra(VIP_ID);
+        }
     }
 
     private void initViewPager() {
@@ -113,8 +133,8 @@ public class VipDetailActivity extends QingXinActivity implements View.OnClickLi
         mVipDetailImgZdv.setIsLongpressEnabled(false);
         mVipDetailImgZdv.setTapListener(new DoubleTapGestureListener(mVipDetailImgZdv));
         DraweeController controller = Fresco.newDraweeControllerBuilder()
-//                .setUri(SAMPLE_URIS[position % SAMPLE_URIS.length])
-                .setCallerContext("ZoomableApp-MyPagerAdapter")
+                .setUri("http://p36zly2vu.bkt.clouddn.com/product/eff1b140-0b55-11e8-9a80-a72b786a38c9.jpeg")
+                .setCallerContext(this)
                 .build();
         mVipDetailImgZdv.setController(controller);
         mShareDialog = new ShareDialog(this);

@@ -19,8 +19,8 @@ import android.graphics.Matrix;
 import android.view.animation.DecelerateInterpolator;
 import com.facebook.common.internal.Preconditions;
 import com.facebook.common.logging.FLog;
-import com.facebook.samples.gestures.TransformGestureDetector;
-import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * ZoomableController that adds animation capabilities to DefaultZoomableController using standard
