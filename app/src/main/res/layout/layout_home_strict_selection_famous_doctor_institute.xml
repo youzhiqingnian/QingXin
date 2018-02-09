@@ -1,54 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_famous_doctor"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/rl_famous_doctor"
+        android:id="@+id/rl_top_pic"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="100dp">
 
-        <RelativeLayout
-            android:id="@+id/rl_top_pic"
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/selectionCoverSdv"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            app:roundedCornerRadius="4dp" />
 
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/selectionCoverSdv"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:scaleType="centerCrop"
-              />
-
-
-            <ImageView
-                android:id="@+id/iv_doctor_play"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@mipmap/btn_play_logo" />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/instituteNameTv"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_top_pic"
-            android:layout_marginTop="15dp"
-            android:text="成都铜雀台"
-            android:textColor="@color/text_color"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/instituteIntroTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/instituteNameTv"
-            android:layout_marginTop="8dp"
-            android:text="打造你的专属之美"
-            android:textColor="@color/text_color_origin_price"
-            android:textSize="12sp" />
+            android:layout_centerInParent="true"
+            android:contentDescription="@string/app_name"
+            android:src="@mipmap/btn_play_logo" />
     </RelativeLayout>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/nameTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_top_pic"
+        android:layout_marginTop="15dp"
+        android:textColor="@color/text_color"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/descrTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nameTv"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/text_color_origin_price"
+        android:textSize="12sp" />
+</RelativeLayout>

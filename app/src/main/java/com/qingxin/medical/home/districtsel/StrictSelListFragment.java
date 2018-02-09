@@ -38,8 +38,8 @@ public class StrictSelListFragment extends QingXinFragment implements SwipeRefre
     private StrictSelPresenter mPresenter;
     private String mType;
     private static final String STRICTSEL_TYEP = "STRICTSEL_TYEP";
-    public static final String STRICTSEL_TYEP_AGENCIES = "STRICTSEL_TYEP_AGENCIES";
-    public static final String STRICTSEL_TYEP_DOCTORS = "STRICTSEL_TYEP_DOCTORS";
+    public static final String STRICTSEL_TYEP_HOSPITALS = "hospital";
+    public static final String STRICTSEL_TYEP_DOCTORS = "doctor";
 
     @Override
     protected View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,6 +61,7 @@ public class StrictSelListFragment extends QingXinFragment implements SwipeRefre
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
         getDiaryList(true);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> StrictSelDetailActivity.startSelf(getActivity(), (StrictSelBean) adapter.getData().get(position)));
     }
 
     private void getDiaryList(boolean isClear) {

@@ -3,12 +3,10 @@ package com.qingxin.medical.home.districtsel;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.widget.TextView;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
-
 import java.util.List;
 
 /**

@@ -35,11 +35,11 @@ public class StrictSelListActivity extends QingXinActivity implements View.OnCli
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_local_strictsel);
+        setContentView(R.layout.activity_strictsel_list);
         findViewById(R.id.backIv).setOnClickListener(this);
 
         MagicIndicator indicator = findViewById(R.id.magicIndicator);
-        final QingXinFragment[] fragments = new QingXinFragment[]{StrictSelListFragment.newInstance(StrictSelListFragment.STRICTSEL_TYEP_AGENCIES), StrictSelListFragment.newInstance(StrictSelListFragment.STRICTSEL_TYEP_DOCTORS)};
+        final QingXinFragment[] fragments = new QingXinFragment[]{StrictSelListFragment.newInstance(StrictSelListFragment.STRICTSEL_TYEP_HOSPITALS), StrictSelListFragment.newInstance(StrictSelListFragment.STRICTSEL_TYEP_DOCTORS)};
         final String[] titles = new String[]{getResources().getString(R.string.agency), getResources().getString(R.string.doctor)};
         QingXinAdapter adapter = new QingXinAdapter(getSupportFragmentManager(), fragments, titles);
         final ViewPager viewPager = findViewById(R.id.viewPager);

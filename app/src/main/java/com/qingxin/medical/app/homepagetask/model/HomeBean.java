@@ -1,7 +1,7 @@
 package com.qingxin.medical.app.homepagetask.model;
 
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
-import com.qingxin.medical.user.User;
+import com.qingxin.medical.home.districtsel.StrictSelBean;
 
 import java.util.List;
 
@@ -21,7 +21,15 @@ public class HomeBean {
     private List<ProductBean> products;
     private List<DiaryItemBean> diarys;
     private List<OpencitysBean> opencitys;
-    private List<PreferrsBean> preferrs;
+    private List<StrictSelBean> preferrs;
+
+    public List<StrictSelBean> getPreferrs() {
+        return preferrs;
+    }
+
+    public void setPreferrs(List<StrictSelBean> preferrs) {
+        this.preferrs = preferrs;
+    }
 
     public List<BannersBean> getBanners() {
         return banners;
@@ -53,14 +61,6 @@ public class HomeBean {
 
     public void setOpencitys(List<OpencitysBean> opencitys) {
         this.opencitys = opencitys;
-    }
-
-    public List<PreferrsBean> getPreferrs() {
-        return preferrs;
-    }
-
-    public void setPreferrs(List<PreferrsBean> preferrs) {
-        this.preferrs = preferrs;
     }
 
     public static class BannersBean {
@@ -140,117 +140,6 @@ public class HomeBean {
                     "citycode='" + citycode + '\'' +
                     ", name='" + name + '\'' +
                     ", province='" + province + '\'' +
-                    '}';
-        }
-    }
-
-    public static class PreferrsBean {
-        /**
-         * id : 603ea43a-cf15-4ead-86a2-61053a03def1
-         * type : hospital
-         * name : 成都铜雀台
-         * video : xxxxx
-         * thumbnail : http://p36zly2vu.bkt.clouddn.com/product/2520ecc0-082f-11e8-960c-591dc0e0fd80.jpeg
-         * summary : 打造你的专属之美
-         * order : 76
-         * created_at : 2018-2-2 23:38:42
-         * updated_at : 2018-2-2 23:38:42
-         */
-
-        private String id;
-        private String type;
-        private String name;
-        private String video;
-        private String thumbnail;
-        private String summary;
-        private int order;
-        private String created_at;
-        private String updated_at;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getVideo() {
-            return video;
-        }
-
-        public void setVideo(String video) {
-            this.video = video;
-        }
-
-        public String getThumbnail() {
-            return thumbnail;
-        }
-
-        public void setThumbnail(String thumbnail) {
-            this.thumbnail = thumbnail;
-        }
-
-        public String getSummary() {
-            return summary;
-        }
-
-        public void setSummary(String summary) {
-            this.summary = summary;
-        }
-
-        public int getOrder() {
-            return order;
-        }
-
-        public void setOrder(int order) {
-            this.order = order;
-        }
-
-        public String getCreated_at() {
-            return created_at;
-        }
-
-        public void setCreated_at(String created_at) {
-            this.created_at = created_at;
-        }
-
-        public String getUpdated_at() {
-            return updated_at;
-        }
-
-        public void setUpdated_at(String updated_at) {
-            this.updated_at = updated_at;
-        }
-
-        @Override
-        public String toString() {
-            return "PreferrsBean{" +
-                    "id='" + id + '\'' +
-                    ", type='" + type + '\'' +
-                    ", name='" + name + '\'' +
-                    ", video='" + video + '\'' +
-                    ", thumbnail='" + thumbnail + '\'' +
-                    ", summary='" + summary + '\'' +
-                    ", order=" + order +
-                    ", created_at='" + created_at + '\'' +
-                    ", updated_at='" + updated_at + '\'' +
                     '}';
         }
     }

@@ -15,9 +15,7 @@ import rx.Observable;
 
 public interface StrictSelService {
 
-    /*@GET("/preferr/{type}")
-    Observable<ContentBean<ListBean<StrictSelBean>>> getStrictSelList(@Path("type") String type, int limit, int skip);*/
-
     @GET("/preferr")
-    Observable<ContentBean<ListBean<StrictSelBean>>> getStrictSelList(@Query("limit") int limit, @Query("skip") int skip);
+    Observable<ContentBean<ListBean<StrictSelBean>>> getStrictSelList(@Query("type") String type, @Query("limit") int limit, @Query("skip") int skip);
+
 }

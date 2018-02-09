@@ -84,6 +84,13 @@
         <activity
             android:name=".home.districtsel.StrictSelListActivity"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".home.medicalbeauty.MedicalBeautyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".home.districtsel.StrictSelDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

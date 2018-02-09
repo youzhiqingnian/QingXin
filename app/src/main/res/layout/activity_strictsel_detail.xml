@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <VideoView
+        android:id="@+id/videoView"
+        android:layout_width="match_parent"
+        android:layout_height="211dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/nameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#464a4c"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/locationTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/nameTv"
+                android:layout_alignStart="@id/nameTv"
+                android:layout_below="@id/nameTv"
+                android:layout_marginBottom="20dp"
+                android:drawableLeft="@mipmap/vip_hospital_city_name_logo"
+                android:drawablePadding="1dp"
+                android:drawableStart="@mipmap/vip_hospital_city_name_logo"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="#b2b3b4"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/countTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/locationTv"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="12sp"
+                android:layout_marginRight="12sp"
+                android:textColor="#b2b3b4"
+                android:textSize="12sp" />
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@id/locationTv"
+                android:background="#ECF1F2" />
+
+            <TextView
+                android:id="@+id/descrTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/divider"
+                android:lineSpacingExtra="9dp"
+                android:padding="15dp"
+                android:textColor="#464a4c"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </ScrollView>
+</LinearLayout>

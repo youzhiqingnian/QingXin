@@ -31,7 +31,10 @@ import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.base.QingXinApplication;
+import com.qingxin.medical.home.districtsel.StrictSelBean;
+import com.qingxin.medical.home.districtsel.StrictSelDetailActivity;
 import com.qingxin.medical.home.districtsel.StrictSelListActivity;
+import com.qingxin.medical.home.medicalbeauty.MedicalBeautyActivity;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLFragment;
@@ -133,15 +136,11 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         if (null != aMapLocation) {
             mCityTv.setText(aMapLocation.getCity());
         }
-
         shareRl.setOnClickListener(this);
         diaryRl.setOnClickListener(this);
         selectionRl.setOnClickListener(this);
         encyclopediasRl.setOnClickListener(this);
-
-
         getHomeData();
-
     }
 
     private void initListener() {
@@ -218,27 +217,23 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             mProductListLl.setVisibility(View.GONE);
         }
 
-        List<HomeBean.PreferrsBean> preferrsList = mHomeBean.getPreferrs();
-
-
-        RecyclerView mSlectionRv = mRootView.findViewById(R.id.slectionRv);
+        List<StrictSelBean> preferrsList = mHomeBean.getPreferrs();
+        RecyclerView slectionRv = mRootView.findViewById(R.id.slectionRv);
 
         if (preferrsList == null || preferrsList.size() == 0) {
-
             TextView mSelectionGapTv = mRootView.findViewById(R.id.selectionGapTv);
-
             mSlectionMoreRl.setVisibility(View.GONE);
             mSelectionGapTv.setVisibility(View.GONE);
-            mSlectionRv.setVisibility(View.GONE);
+            slectionRv.setVisibility(View.GONE);
         } else {
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
-            mSlectionRv.setLayoutManager(mLayoutManager);
-            mSlectionRv.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
-            RecyclerGridViewAdapter strictSelctionAdapter = new RecyclerGridViewAdapter(getActivity(), preferrsList);
-            mSlectionRv.setAdapter(strictSelctionAdapter);
-            mSlectionRv.setNestedScrollingEnabled(false);
+            slectionRv.setLayoutManager(mLayoutManager);
+            slectionRv.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
+            RecyclerGridViewAdapter strictSelctionAdapter = new RecyclerGridViewAdapter(preferrsList);
+            slectionRv.setAdapter(strictSelctionAdapter);
+            slectionRv.setNestedScrollingEnabled(false);
+            strictSelctionAdapter.setOnItemClickListener((adapter12, view, position) -> StrictSelDetailActivity.startSelf(getActivity(), (StrictSelBean) adapter12.getData().get(position)));
         }
-
 
         RecyclerView diaryRv = mRootView.findViewById(R.id.diaryRv);
         List<DiaryItemBean> diaryList = mHomeBean.getDiarys();
@@ -275,28 +270,26 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-
             case R.id.shareRl:
                 // 歆人专享
                 Intent vipIntent = new Intent(getActivity(), VipListActivity.class);
                 startActivity(vipIntent);
                 break;
-
             case R.id.selectionRl: // 本地严选
             case R.id.slectionMoreRl:
                 StrictSelListActivity.startSelf(getActivity());
                 break;
             case R.id.encyclopediasRl:
                 // 医美百科
-
+                MedicalBeautyActivity.startSelf(getActivity());
                 break;
-
             case R.id.diaryRl:
             case R.id.diaryMoreRl:
                 // 女神日记
                 Intent intent = new Intent(getActivity(), GoddessDiaryListActivity.class);
                 startActivity(intent);
-
+                break;
+            default:
                 break;
         }
     }
@@ -431,7 +424,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-            if (requestCode == GoddessDiaryDetailActivity.DIARY_DETAIL_REQUEST_CODE &&  resultCode == Activity.RESULT_OK) {
+            if (requestCode == GoddessDiaryDetailActivity.DIARY_DETAIL_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
                 String diaryId = intent.getStringExtra(GoddessDiaryDetailActivity.DIARY_ID);
                 int collectNum = intent.getIntExtra(GoddessDiaryDetailActivity.COLLECT_NUM, 0);
                 List<DiaryItemBean> diaryItemBeans = mDiaryListAdapter.getData();
