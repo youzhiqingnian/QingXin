@@ -29,6 +29,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
+import android.graphics.drawable.Animatable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -41,6 +42,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
@@ -54,6 +56,7 @@ import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
@@ -66,7 +69,15 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.controller.ControllerListener;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.image.ImageInfo;
 import com.qingxin.medical.base.QingXinApplication;
+import com.qingxin.medical.fresco.zoomable.DoubleTapGestureListener;
+import com.qingxin.medical.fresco.zoomable.ZoomableDraweeView;
 import com.vlee78.android.vl.VLAsyncHandler.VLAsyncRes;
 
 import org.json.JSONArray;
@@ -117,6 +128,42 @@ import java.util.regex.Pattern;
 public final class VLUtils {
     public static final int WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT;
     public static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
+
+
+    public static void setControllerListener(final ZoomableDraweeView simpleDraweeView, String imagePath) {
+        final ViewGroup.LayoutParams layoutParams = simpleDraweeView.getLayoutParams();
+        final int imageWidth = getScreenWidth(QingXinApplication.getInstance());
+        ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
+            @Override
+            public void onFinalImageSet(String id, @Nullable ImageInfo imageInfo, @Nullable Animatable anim) {
+                if (imageInfo == null) {
+                    return;
+                }
+                int height = imageInfo.getHeight();
+                int width = imageInfo.getWidth();
+                layoutParams.width = imageWidth;
+                layoutParams.height = (int) ((float) (imageWidth * height) / (float) width);
+                simpleDraweeView.setLayoutParams(layoutParams);
+            }
+
+            @Override
+            public void onIntermediateImageSet(String id, @Nullable ImageInfo imageInfo) {
+                Log.d("TAG", "Intermediate image received");
+            }
+
+            @Override
+            public void onFailure(String id, Throwable throwable) {
+                throwable.printStackTrace();
+            }
+        };
+        simpleDraweeView.setAllowTouchInterceptionWhileZoomed(true);
+        // needed for double tap to zoom
+        simpleDraweeView.setIsLongpressEnabled(false);
+        simpleDraweeView.setTapListener(new DoubleTapGestureListener(simpleDraweeView));
+        DraweeController controller = Fresco.newDraweeControllerBuilder().setControllerListener(controllerListener).setUri(Uri.parse(imagePath)).build();
+        simpleDraweeView.setController(controller);
+    }
+
 
     public static int getPageCount(int count, int pageSize) {
         return (count - 1) / pageSize + 1;

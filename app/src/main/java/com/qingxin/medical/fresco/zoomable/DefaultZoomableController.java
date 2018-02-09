@@ -10,14 +10,17 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package com.qingxin.medical.fresco;
+package com.qingxin.medical.fresco.zoomable;
 
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.graphics.RectF;
 import android.support.annotation.IntDef;
 import android.view.MotionEvent;
+
 import com.facebook.common.logging.FLog;
+import com.qingxin.medical.fresco.gestures.TransformGestureDetector;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -613,9 +616,5 @@ public class DefaultZoomableController
   @Override
   public int computeVerticalScrollExtent() {
     return (int)mViewBounds.height();
-  }
-
-  public Listener getListener() {
-    return mListener;
   }
 }

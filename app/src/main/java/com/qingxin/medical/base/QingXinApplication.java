@@ -3,6 +3,10 @@ package com.qingxin.medical.base;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.facebook.imagepipeline.listener.RequestListener;
+import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.fresco.QingXinFrescoModel;
 import com.qingxin.medical.map.GaoDeMapModel;
@@ -13,9 +17,12 @@ import com.qingxin.medical.user.UserModel;
 import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModelManager;
+
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * QingXinApplication
@@ -54,6 +61,10 @@ public class QingXinApplication extends VLApplication {
         manager.registerModel(QingXinFrescoModel.class);
         manager.registerModel(RetrofitModel.class);
         manager.registerModel(UserModel.class);
+
+        // 初始化fresco
+        Fresco.initialize(this);
+
     }
 
     @Override

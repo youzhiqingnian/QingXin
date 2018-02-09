@@ -9,7 +9,8 @@
  * ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package com.qingxin.medical.fresco;
+package com.qingxin.medical.fresco.zoomable;
+
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -20,6 +21,8 @@ import android.support.annotation.Nullable;
 import android.view.animation.DecelerateInterpolator;
 import com.facebook.common.internal.Preconditions;
 import com.facebook.common.logging.FLog;
+import com.qingxin.medical.fresco.gestures.TransformGestureDetector;
+
 /**
  * ZoomableController that adds animation capabilities to DefaultZoomableController using standard
  * Android animation classes

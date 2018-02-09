@@ -265,7 +265,7 @@
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
-            <com.qingxin.medical.fresco.ZoomableDraweeView
+            <com.qingxin.medical.fresco.zoomable.ZoomableDraweeView
                 android:id="@+id/vipDetailImgZdv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
