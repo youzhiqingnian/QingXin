@@ -23,6 +23,26 @@ public class StrictSelBean extends BaseBean {
     private String created_at;
     //视频地址
     private String video;
+    //次数
+    private String order;
+    //城市
+    private String citycode;
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
+
+    public String getCitycode() {
+        return citycode;
+    }
+
+    public void setCitycode(String citycode) {
+        this.citycode = citycode;
+    }
 
     public String getId() {
         return id;

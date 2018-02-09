@@ -81,4 +81,5 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
     compile 'com.android.support:multidex:1.0.2'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
+    compile 'com.google.android:flexbox:0.2.6'
 }

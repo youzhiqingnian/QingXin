@@ -1,4 +1,4 @@
-package com.qingxin.medical.home.districtsel;
+package com.qingxin.medical.home.medicalbeauty;
 
 import android.support.annotation.NonNull;
 import com.qingxin.medical.base.ContentBean;
@@ -15,15 +15,15 @@ import rx.subscriptions.CompositeSubscription;
  *
  * @author zhikuo1
  */
-public class StrictSelPresenter implements StrictSelContract.Presenter {
+public class MedicalBeautyPresenter implements MedicalBeautyContract.Presenter {
 
     @NonNull
-    private final StrictSelContract.View mStrictSelView;
+    private final MedicalBeautyContract.View mStrictSelView;
 
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    StrictSelPresenter(@NonNull StrictSelContract.View goddessDiaryView) {
+    MedicalBeautyPresenter(@NonNull MedicalBeautyContract.View goddessDiaryView) {
         mStrictSelView = goddessDiaryView;
         mCompositeSubscription = new CompositeSubscription();
         mStrictSelView.setPresenter(this);
@@ -41,11 +41,11 @@ public class StrictSelPresenter implements StrictSelContract.Presenter {
     }
 
     @Override
-    public void getStrictSelList(String type, int limit, int skip) {
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(StrictSelService.class).getStrictSelList(type, limit, skip)
+    public void getMedicalBeautyList(String id) {
+        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(MedicalStrictService.class).getMedicalBeautyList(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ContentBean<ListBean<StrictSelBean>>>() {
+                .subscribe(new Observer<ContentBean<ListBean<MedicalBeautyListBean>>>() {
                     @Override
                     public void onCompleted() {
 
@@ -57,8 +57,8 @@ public class StrictSelPresenter implements StrictSelContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(ContentBean<ListBean<StrictSelBean>> contentBean) {
-                        mStrictSelView.onSuccess(contentBean.getContent());
+                    public void onNext(ContentBean<ListBean<MedicalBeautyListBean>> contentBean) {
+                        mStrictSelView.onSucess(contentBean.getContent());
                     }
                 })
         );

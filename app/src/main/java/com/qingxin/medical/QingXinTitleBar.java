@@ -10,7 +10,7 @@ import com.vlee78.android.vl.VLUtils;
 
 public class QingXinTitleBar {
     private static final int BAR_HEIGHT = 44;
-    private static final int BAR_BGCOLOR = 0xE6FAFAFA;
+    private static final int BAR_BGCOLOR = 0xffffff;
 
     private static final int TITLE_SIZE = 20;
     private static final int RIGHT_TEXT_SIZE = 14;
