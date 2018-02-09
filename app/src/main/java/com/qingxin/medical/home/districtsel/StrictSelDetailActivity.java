@@ -2,9 +2,13 @@ package com.qingxin.medical.home.districtsel;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.amap.api.location.AMapLocation;
 import com.qingxin.medical.R;
@@ -47,5 +51,17 @@ public class StrictSelDetailActivity extends QingXinActivity {
                 locationTv.setText(String.format("%s%s",aMapLocation.getProvince(),aMapLocation.getCity()));
             }
         }
+
+        VideoView videoView = findViewById(R.id.videoView);
+        videoView.setMediaController(new MediaController(this));
+        videoView.setVideoURI(Uri.parse("http://alcdn.hls.xiaoka.tv/2017427/14b/7b3/Jzq08Sl8BbyELNTo/index.m3u8"));
+        videoView.start();
+
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                //Toast.makeText(VideoPlayerActivity.this, "播放完成了", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
