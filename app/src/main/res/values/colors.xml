@@ -19,4 +19,7 @@
     <color name="price_pink">#F565A2</color>
 
 
+    <!--videocolor-->
+    <color name="theme_bg_color">#fff8f7f5</color>
+
 </resources>

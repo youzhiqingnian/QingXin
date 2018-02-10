@@ -36,4 +36,13 @@ public class ContentBean<T> extends BaseBean {
     public void setContent(T content) {
         this.content = content;
     }
+
+    @Override
+    public String toString() {
+        return "ContentBean{" +
+                "code='" + code + '\'' +
+                ", msg='" + msg + '\'' +
+                ", content=" + content +
+                '}';
+    }
 }

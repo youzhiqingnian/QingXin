@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/news_titlebar_rl"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/titlebar_height"
+    android:background="@drawable/shape_titlebar_shadow"
+    android:gravity="center_vertical" >
+
+    <ImageButton
+        android:id="@+id/back_iv"
+        android:layout_width="@dimen/titlebar_height"
+        android:layout_height="@dimen/titlebar_height"
+        android:layout_alignParentLeft="true"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/ic_back" />
+
+    <ImageButton
+        android:id="@+id/share_iv"
+        android:layout_width="@dimen/titlebar_height"
+        android:layout_height="@dimen/titlebar_height"
+        android:layout_alignParentRight="true"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/share" />
+
+    <ImageButton
+        android:id="@+id/write_iv"
+        android:layout_width="@dimen/titlebar_height"
+        android:layout_height="@dimen/titlebar_height"
+        android:layout_toLeftOf="@id/share_iv"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/write" />
+
+    <ImageButton
+        android:id="@+id/favorite_iv"
+        android:layout_width="@dimen/titlebar_height"
+        android:layout_height="@dimen/titlebar_height"
+        android:layout_toLeftOf="@id/write_iv"
+        android:background="@android:color/transparent"
+        android:src="@mipmap/favorite_normal" />
+
+</RelativeLayout>

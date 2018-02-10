@@ -1,10 +1,19 @@
 package com.qingxin.medical.app.vip;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.NestedScrollingChild;
+import android.support.v4.view.NestedScrollingParent;
+import android.support.v4.view.NestedScrollingParentHelper;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.widget.NestedScrollView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +21,13 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.interfaces.DraweeController;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.goddessdiary.CollectBean;
+import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinActivity;
-import com.qingxin.medical.fresco.zoomable.DoubleTapGestureListener;
+import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.fresco.zoomable.ZoomableDraweeView;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
 import com.vlee78.android.vl.VLActivity;
@@ -26,23 +36,28 @@ import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
+
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * 歆人专享详情
  * Date 2018-02-06
  *
  * @author zhikuo1
  */
-public class VipDetailActivity extends QingXinActivity implements View.OnClickListener, ShareDialog.OnShareDialogListener {
+public class VipDetailActivity extends QingXinActivity implements VipDetailContract.View, View.OnClickListener, ShareDialog.OnShareDialogListener {
 
-    private ScrollView mScrollSv;
+    private CoordinatorLayout mWholeLayoutCdl;
+    private AppBarLayout mAppBarLayout;
+    private NestedScrollView mScrollSv;
     private ImageView mTopReturnIv,
             mTopShareIv,
             mScrollTopIv;
     private VLPagerView mViewpagerVp;
     private VLStatedButtonBar mStatedBtnBar;
-    private TextView mProductNameTv,
+    private TextView mTopTitleNameTv,
+            mProductNameTv,
             mPriceTv,
             mGrayRmbIconTv,
             mCityNameTv,
@@ -50,6 +65,7 @@ public class VipDetailActivity extends QingXinActivity implements View.OnClickLi
             mHospitalNameTv,
             mHospitalCityNameTv,
             mProductDetailTv,
+            mCollectTabTv,
             mOrderNowTv;
     private RelativeLayout mCollectRl;
     private SimpleDraweeView mHospitalCoverSdv;
@@ -59,24 +75,36 @@ public class VipDetailActivity extends QingXinActivity implements View.OnClickLi
 
     private ShareDialog mShareDialog;
 
-    public static void startSelf(VLActivity activity, String vipId) {
+    private VipDetailContract.Presenter mPresenter;
+
+    public static final String BOOK_NUM = "BOOK_NUM";
+
+    public static void startSelf(VLActivity activity, String vipId, VLActivityResultListener resultListener) {
         Intent intent = new Intent(activity, VipDetailActivity.class);
         intent.putExtra(VIP_ID, vipId);
-        activity.startActivity(intent);
+        activity.setActivityResultListener(resultListener);
+        activity.startActivityForResult(intent, VIP_DETAIL_REQUEST_CODE);
     }
 
     public static final String VIP_ID = "VIP_ID";
 
     private String id = "";
 
+    public static final int VIP_DETAIL_REQUEST_CODE = 6; // 跳到歆人专享详情里的请求码
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vip_detail);
+        mPresenter = new VipDetailPresenter(this);
         dealIntent();
         initView();
         initListener();
         initViewPager();
+
+        if (!TextUtils.isEmpty(id)) {
+            mPresenter.getVipDetail(id);
+        }
     }
 
     private void dealIntent() {
@@ -105,15 +133,47 @@ public class VipDetailActivity extends QingXinActivity implements View.OnClickLi
         mCollectRl.setOnClickListener(this);
         mOrderNowTv.setOnClickListener(this);
         mShareDialog.setOnShareDialogListener(this);
+        RelativeLayout mTitleBarRl = findViewById(R.id.titleBarRl);
+        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+
+                float percent = Float.valueOf(Math.abs(verticalOffset)) / Float.valueOf(appBarLayout.getTotalScrollRange());
+
+                //第一种
+                int toolbarHeight = appBarLayout.getTotalScrollRange();
+
+                int dy = Math.abs(verticalOffset);
+
+
+                if (dy <= toolbarHeight) {
+                    float scale = (float) dy / toolbarHeight;
+                    float alpha = scale * 255;
+                    mTitleBarRl.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
+                    mTopTitleNameTv.setTextColor(Color.argb((int) alpha, 70, 74, 76));
+
+//                    mTextView.setText("setBackgroundColor(Color.argb((int) "+(int) alpha+", 255, 255, 255))\n"+"mFLayout.setAlpha("+percent+")");
+                }
+
+                //第二种
+
+                // mFLayout.setAlpha(percent);
+
+
+            }
+        });
     }
 
     private void initView() {
+        mWholeLayoutCdl = findViewById(R.id.wholeLayoutCdl);
+        mAppBarLayout = findViewById(R.id.appbar);
         mScrollSv = findViewById(R.id.scrollSv);
         mTopReturnIv = findViewById(R.id.topReturnIv);
         mTopShareIv = findViewById(R.id.topShareIv);
         mScrollTopIv = findViewById(R.id.scrollTopIv);
         mViewpagerVp = findViewById(R.id.viewpagerVp);
         mStatedBtnBar = findViewById(R.id.statedBtnBar);
+        mTopTitleNameTv = findViewById(R.id.topTitleNameTv);
         mProductNameTv = findViewById(R.id.productNameTv);
         mPriceTv = findViewById(R.id.priceTv);
         mGrayRmbIconTv = findViewById(R.id.grayRmbIconTv);
@@ -123,11 +183,14 @@ public class VipDetailActivity extends QingXinActivity implements View.OnClickLi
         mHospitalCityNameTv = findViewById(R.id.hospitalCityNameTv);
         mProductDetailTv = findViewById(R.id.productDetailTv);
         mOrderNowTv = findViewById(R.id.orderNowTv);
+        mCollectTabTv = findViewById(R.id.collectTabTv);
         mCollectRl = findViewById(R.id.collectRl);
         mHospitalCoverSdv = findViewById(R.id.hospitalCoverSdv);
         mVipDetailImgZdv = findViewById(R.id.vipDetailImgZdv);
-      VLUtils.setControllerListener(mVipDetailImgZdv,"http://p36zly2vu.bkt.clouddn.com/product/46acb4c0-0cce-11e8-9a80-a72b786a38c9.jpg");
+//      VLUtils.setControllerListener(mVipDetailImgZdv,"http://p36zly2vu.bkt.clouddn.com/product/46acb4c0-0cce-11e8-9a80-a72b786a38c9.jpg");
         mShareDialog = new ShareDialog(this);
+
+        mTopTitleNameTv.setText(getString(R.string.product_detail));
     }
 
     @Override
@@ -144,15 +207,36 @@ public class VipDetailActivity extends QingXinActivity implements View.OnClickLi
                 VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {
                     @Override
                     protected void process(boolean canceled) {
-                        mScrollSv.fullScroll(ScrollView.FOCUS_UP);
+//                        android.support.design.widget.CoordinatorLayout.Behavior behavior = ((android.support.design.widget.CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams()).getBehavior();
+//
+//
+//                        behavior.onNestedPreScroll(mWholeLayoutCdl, mAppBarLayout, mScrollSv, 0, 10000, new int[]{0, 0});
+
+
                     }
                 });
                 break;
             case R.id.collectRl:
-
+                // 切换收藏
+                if (QingXinApplication.getInstance().getLoginUser() != null) {
+                    // 如果登录过了
+                    mPresenter.collect(id);
+                } else {
+                    // 如果没有登录就跳到登录页面
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
             case R.id.orderNowTv:
-
+                // 立即预定
+                if (QingXinApplication.getInstance().getLoginUser() != null) {
+                    // 如果登录过了
+                    mPresenter.book(id);
+                } else {
+                    // 如果没有登录就跳到登录页面
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startActivity(intent);
+                }
                 break;
         }
     }
@@ -184,6 +268,72 @@ public class VipDetailActivity extends QingXinActivity implements View.OnClickLi
 
     @Override
     public void copyUrl() {
+
+    }
+
+    @Override
+    public void onSuccess(VipDetailBean vipDetailBean) {
+        Log.i("专享详情==", vipDetailBean.toString());
+        setData(vipDetailBean);
+    }
+
+    @Override
+    public void onSuccess(CollectBean collectBean) {
+        if (collectBean.getIs_collect().equals("n")) {
+            mCollectTabTv.setText(R.string.collect);
+            showToast(getString(R.string.cancel_collect_ok));
+        } else {
+            mCollectTabTv.setText(R.string.cancel_collection);
+            showToast(getString(R.string.collect_ok));
+        }
+    }
+
+    @Override
+    public void onSuccess(AmountBean amountBean) {
+        Log.i("立即预定==", amountBean.toString());
+        mOrderNowTv.setEnabled(false);
+        mOrderNowTv.setBackgroundColor(getResources().getColor(R.color.line_color));
+        mOrderCountTv.setText(getString(amountBean.getAmount()));
+        Intent intent = new Intent();
+        intent.putExtra(VIP_ID, id);
+        intent.putExtra(BOOK_NUM, amountBean.getAmount());
+        setResult(Activity.RESULT_OK, intent);
+    }
+
+    @Override
+    public void onError(String result) {
+
+    }
+
+    @Override
+    public void setPresenter(VipDetailContract.Presenter presenter) {
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.subscribe();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.unsubscribe();
+    }
+
+    private void setData(VipDetailBean vipDetailBean) {
+
+        VipDetailItemBean itemBean = vipDetailBean.getItems();
+
+        mProductNameTv.setText(itemBean.getName());
+        mPriceTv.setText(String.valueOf(itemBean.getPrice()));
+        mGrayRmbIconTv.setText(getString(R.string.rmb_icon) + itemBean.getOld_price());
+//        mCityNameTv.setText();
+        mOrderCountTv.setText(String.valueOf(itemBean.getOrder()) + getString(R.string.order_count));
+        mHospitalNameTv.setText(itemBean.getHospital());
+//        mProductDetailTv.setText(itemBean.get);
+        VLUtils.setControllerListener(mVipDetailImgZdv, "http://p36zly2vu.bkt.clouddn.com/" + itemBean.getCover());
 
     }
 

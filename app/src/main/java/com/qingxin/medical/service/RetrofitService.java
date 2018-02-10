@@ -4,6 +4,8 @@ import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
+import com.qingxin.medical.app.vip.AmountBean;
+import com.qingxin.medical.app.vip.VipDetailBean;
 import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.base.ContentBean;
 
@@ -46,7 +48,7 @@ public interface RetrofitService {
     Observable<ContentBean<GoddessDiaryDetailBean>> getGoddessDiaryDetail(@Path("id") String id);
 
     /**
-     * 获取女神日记详情
+     * 收藏女神日记
      *
      * @param id 日记的id
      * @return
@@ -57,6 +59,7 @@ public interface RetrofitService {
 
     /**
      * 获取歆人专享列表
+     *
      * @param limit
      * @param skip
      * @param isvip
@@ -64,6 +67,34 @@ public interface RetrofitService {
      * @return
      */
     @GET("/product")
-    Observable<ContentBean<VipListBean>> getVipList(@Query("limit") int limit, @Query("skip") int skip,@Query("isvip") String isvip, @Query("order")String order);
+    Observable<ContentBean<VipListBean>> getVipList(@Query("limit") int limit, @Query("skip") int skip, @Query("isvip") String isvip, @Query("order") String order);
+
+    /**
+     * 获取歆人专享详情
+     *
+     * @param id
+     * @return
+     */
+    @GET("/product/{id}")
+    Observable<ContentBean<VipDetailBean>> getVipDetail(@Path("id") String id);
+
+
+    /**
+     * 收藏歆人专享
+     *
+     * @param id 日记的id
+     * @return
+     */
+    @PUT("/product/{id}/collect")
+    Observable<ContentBean<CollectBean>> collectVip(@Path("id") String id);
+
+    /**
+     * 预定歆人专享
+     *
+     * @param id 日记的id
+     * @return
+     */
+    @PUT("/product/{id}/book")
+    Observable<ContentBean<AmountBean>> bookVip(@Path("id") String id);
 
 }

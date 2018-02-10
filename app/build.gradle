@@ -18,6 +18,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
     }
     buildTypes {
         release {
@@ -82,4 +84,5 @@ dependencies {
     compile 'com.android.support:multidex:1.0.2'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     compile 'com.google.android:flexbox:0.2.6'
+    compile 'com.jakewharton:butterknife:7.0.1'
 }

@@ -1,120 +1,86 @@
-package com.qingxin.medical.home.districtsel;
+package com.qingxin.medical.app;
 
-import android.content.Context;
-import android.content.Intent;
+import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.ImageView;
+import android.webkit.WebViewClient;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.VideoView;
 
-import com.amap.api.location.AMapLocation;
 import com.qingxin.medical.R;
-import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.home.districtsel.video.VideoViewHolderControl;
 import com.qingxin.medical.home.districtsel.video.tools.CommonTools;
 import com.qingxin.medical.home.districtsel.video.tools.DebugTools;
 import com.qingxin.medical.home.districtsel.video.tools.DisplayUtil;
-import com.qingxin.medical.map.GaoDeMapModel;
-import com.qingxin.medical.widget.indicator.view.ShareDialog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-/**
- * 严选详情界面
- * Date 2018/2/8
- *
- * @author zhikuo
- */
-public class StrictSelDetailActivity extends QingXinActivity implements OnClickListener, ShareDialog.OnShareDialogListener {
-
-    public static final String STRICTSEL_BEAN = "STRICTSEL_BEAN";
-
-    private ImageView mTopReturnIv, mTopShareIv;
-
-    private ShareDialog mShareDialog;
-
-    public static void startSelf(@NonNull Context context, @NonNull StrictSelBean strictSelBean) {
-        Intent intent = new Intent(context, StrictSelDetailActivity.class);
-        intent.putExtra(STRICTSEL_BEAN, strictSelBean);
-        context.startActivity(intent);
-    }
+public class MainActivity3 extends Activity {
 
     public static final String URL_VIDEO = "http://static.wezeit.com/o_1a9jjk9021fkt7vs1mlo16i91gvn9.mp4";
+    @Bind(R.id.webview)
+    public WebView mWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_strictsel_detail);
+        setContentView(R.layout.activity_main3);
+
         initView();
+        initWidget();
+        setupListener();
         loadData();
-        initListener();
     }
 
-    private void initListener() {
-        mTopReturnIv.setOnClickListener(this);
-        mTopShareIv.setOnClickListener(this);
-        mShareDialog.setOnShareDialogListener(this);
-    }
-
-    private void initView() {
-
-        mTopReturnIv = findViewById(R.id.topReturnIv);
-        mTopShareIv = findViewById(R.id.topShareIv);
-        TextView nameTv = findViewById(R.id.nameTv);
-        TextView locationTv = findViewById(R.id.locationTv);
-        TextView countTv = findViewById(R.id.countTv);
-        TextView descrTv = findViewById(R.id.descrTv);
-        StrictSelBean strictSelBean = (StrictSelBean) getIntent().getSerializableExtra(STRICTSEL_BEAN);
-        nameTv.setText(strictSelBean.getName());
-        descrTv.setText(strictSelBean.getSummary());
-        countTv.setText(String.format("%s 次播放", strictSelBean.getOrder()));
-        AMapLocation aMapLocation = getModel(GaoDeMapModel.class).getAMLocation();
-        if (null != aMapLocation) {
-            if (aMapLocation.getProvince().equals(aMapLocation.getCity())) {
-                locationTv.setText(String.format("%s", aMapLocation.getProvince()));
-            } else {
-                locationTv.setText(String.format("%s%s", aMapLocation.getProvince(), aMapLocation.getCity()));
-            }
-        }
-        mShareDialog = new ShareDialog(this);
-
+    private void initView(){
         ButterKnife.bind(this);
         initFakeStatusBarHeight(true);
     }
 
-
-    private void loadData() {
-        View view = findViewById(R.id.activity_video_rl);
-        initVideoMode(view);
+    private void initWidget(){
+        initWebViewSetting(mWebView);
     }
 
+    private void setupListener(){
+        setupWebViewListener();
+    }
+
+    private void loadData(){
+        View view = findViewById(R.id.activity_video_rl);
+        initVideoMode(view);
+        String url = "http://www.wezeit.com/wap/297121.html";
+        loadWebviewUrl(url);
+    }
+    protected void loadWebviewUrl(String url){
+        DebugTools.d("js2 discovery2 jump3 vote2 news2 current url: " + url);
+        if(!TextUtils.isEmpty(url)){
+            mWebView.loadUrl(url);
+        }
+    }
 
     protected int mPixelInsetTop;
-
-    protected void initFakeStatusBarHeight(boolean isNewsPage) {
-        View statusbarBgLayout = (View) findViewById(R.id.statusbar_bg_layout);
-        if (statusbarBgLayout == null) {
+    protected void initFakeStatusBarHeight(boolean isNewsPage){
+        View statusbarBgLayout = (View)findViewById(R.id.statusbar_bg_layout);
+        if(statusbarBgLayout == null){
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             mPixelInsetTop = CommonTools.getStatusbarHeight(this);
-            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) statusbarBgLayout.getLayoutParams();
+            LayoutParams params = (LayoutParams)statusbarBgLayout.getLayoutParams();
             params.height = mPixelInsetTop;
             statusbarBgLayout.setLayoutParams(params);
             statusbarBgLayout.setBackgroundResource(R.color.black);
-        } else {
+        }else{
             mPixelInsetTop = 0;
             statusbarBgLayout.setVisibility(View.GONE);
         }
@@ -124,8 +90,7 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
     private VideoViewHolderControl.VideoViewHolder mVideoHolder;
     private VideoView mVideoView;
     private VideoViewHolderControl mVideoControl;
-
-    private void initVideoMode(View view) {
+    private void initVideoMode(View view){
         showFullScreen(false);
         mVideoView = (VideoView) view.findViewById(R.id.videoview);
         mVideoHolder = new VideoViewHolderControl.VideoViewHolder(view);
@@ -136,7 +101,7 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
         setVideoViewLayout(false);
     }
 
-    private void setupVideoControlListener(VideoViewHolderControl control) {
+    private void setupVideoControlListener(VideoViewHolderControl control){
         control.setOnVideoControlListener(new VideoViewHolderControl.OnVideoControlProxy() {
             @Override
             public void onCompletion() {
@@ -168,7 +133,7 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
         }
     }
 
-    private void initHalfFullState(boolean isFull) {
+    private void initHalfFullState(boolean isFull){
         DebugTools.d("video2 initHalfFullState isFull: " + isFull);
         setVideoViewLayout(isFull);
         showFullScreen(isFull);
@@ -176,35 +141,32 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
 
 
     //---------videoview fullscreen---------
-    private void showFullScreen(boolean isFullScreen) {
-        if (isFullScreen) {
+    private void showFullScreen(boolean isFullScreen){
+        if(isFullScreen){
 //		      //不显示程序的标题栏
             hideNavigationBar();
-        } else {
+        }else{
             showNavigationBar();
         }
     }
 
-    protected void setFullScreen(boolean isFull) {
-        if (isFull) {
-            mTopShareIv.setVisibility(View.GONE);
+    protected void setFullScreen(boolean isFull){
+        if(isFull){
             if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             }
-        } else {
-            mTopShareIv.setVisibility(View.VISIBLE);
+        }else{
             if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
         }
     }
 
-    protected boolean isFullScreen() {
+    protected boolean isFullScreen(){
         return getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
-    private void showNavigationBar() {
-        mTopShareIv.setVisibility(View.VISIBLE);
+    private void showNavigationBar(){
         View decorView = getWindow().getDecorView();
         decorView.setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -212,7 +174,6 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
     }
 
     public void hideNavigationBar() {
-        mTopShareIv.setVisibility(View.GONE);
         int uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 | View.SYSTEM_UI_FLAG_FULLSCREEN; // hide status bar
@@ -220,22 +181,22 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
         getWindow().getDecorView().setSystemUiVisibility(uiFlags);
     }
 
-    private void setVideoViewLayout(boolean isFull) {
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mVideoHolder.videoRl.getLayoutParams();
-        RelativeLayout.LayoutParams controlParams = (RelativeLayout.LayoutParams) mVideoHolder.mediaControl.getLayoutParams();
-        RelativeLayout.LayoutParams indexImageParams = (RelativeLayout.LayoutParams) mVideoHolder.imgIv.getLayoutParams();
+    private void setVideoViewLayout(boolean isFull){
+        LayoutParams params = (LayoutParams)mVideoHolder.videoRl.getLayoutParams();
+        LayoutParams controlParams = (LayoutParams)mVideoHolder.mediaControl.getLayoutParams();
+        LayoutParams indexImageParams = (LayoutParams)mVideoHolder.imgIv.getLayoutParams();
 
-        int videoMarginTop = (int) getResources().getDimension(R.dimen.library_video_video_margin_top) + mPixelInsetTop;
-        if (isFull) {
-            params.height = RelativeLayout.LayoutParams.MATCH_PARENT;
+        int videoMarginTop = (int)getResources().getDimension(R.dimen.library_video_video_margin_top) + mPixelInsetTop;
+        if(isFull){
+            params.height = LayoutParams.MATCH_PARENT;
             params.addRule(RelativeLayout.CENTER_IN_PARENT);
             params.setMargins(0, 0, 0, 0);
 
             controlParams.setMargins(0, 0, 0, 0);
 
-            indexImageParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;
+            indexImageParams.height = LayoutParams.MATCH_PARENT;
             indexImageParams.setMargins(0, 0, 0, 0);
-        } else {
+        }else{
             params.height = DisplayUtil.dip2px(this, 202);
             params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             params.setMargins(0, videoMarginTop, 0, 0);
@@ -252,19 +213,61 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
     }
 
 
+    //--------------webview--------------
+    protected void initWebViewStorage(WebView webview){
+        webview.getSettings().setDomStorageEnabled(true);
+        webview.getSettings().setAppCacheMaxSize(1024*1024*8);
+        String appCachePath = getApplicationContext().getCacheDir().getAbsolutePath();
+        webview.getSettings().setAllowFileAccess(true);
+        webview.getSettings().setAppCacheEnabled(true);
+
+        webview.getSettings().setDatabaseEnabled(true);
+        webview.getSettings().setDatabasePath(appCachePath);
+    }
+
+    protected void initWebViewSetting(WebView webview){
+        WebSettings webseting = webview.getSettings();
+//        webseting.setRenderPriority(RenderPriority.HIGH);
+        webseting.setJavaScriptEnabled(true);
+//		webseting.setPluginsEnabled(true);
+        webseting.setSupportZoom(true);
+        webview.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+
+        webseting.setUseWideViewPort(true);
+        webseting.setLoadWithOverviewMode(true);
+
+
+        initWebViewStorage(webview);
+    }
+
+    protected void setupWebViewListener(){
+        mWebView.setWebViewClient(new WebViewClient() {
+
+        });
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+            }
+        });
+    }
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
             handleClickBack();
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    protected void handleClickBack() {
-        if (isFullScreen()) {
+    protected void handleClickBack(){
+        if(isFullScreen()){
             setFullScreen(false);
             return;
+        }
+        if (mWebView != null){
+            mWebView.onPause();
         }
         finish();
     }
@@ -273,51 +276,5 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
     protected void onDestroy() {
         ButterKnife.unbind(this);
         super.onDestroy();
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-
-            case R.id.topReturnIv:
-                // 返回键
-                handleClickBack();
-                break;
-
-            case R.id.topShareIv:
-                // 分享键
-                mShareDialog.show();
-                break;
-        }
-    }
-
-    @Override
-    public void wxFriendShare() {
-
-    }
-
-    @Override
-    public void wxCircleShare() {
-
-    }
-
-    @Override
-    public void qqFriendsShare() {
-
-    }
-
-    @Override
-    public void qqZoneShare() {
-
-    }
-
-    @Override
-    public void weiboShare() {
-
-    }
-
-    @Override
-    public void copyUrl() {
-
     }
 }

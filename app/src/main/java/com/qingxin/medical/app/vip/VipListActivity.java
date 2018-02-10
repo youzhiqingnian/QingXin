@@ -1,5 +1,6 @@
 package com.qingxin.medical.app.vip;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,10 +12,14 @@ import android.widget.ImageView;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
+import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
+
+import java.util.List;
 
 /**
  * 歆人专享列表
@@ -54,7 +59,7 @@ public class VipListActivity extends QingXinActivity implements VipListContract.
         imageView.setImageResource(R.mipmap.vip_top_banner);
         mAdapter.addHeaderView(imageView);
 
-        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(VipListActivity.this, mAdapter.getData().get(position).getId()));
+        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(VipListActivity.this, mAdapter.getData().get(position).getId(), mResultListener));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
         getVipList(true);
@@ -118,18 +123,18 @@ public class VipListActivity extends QingXinActivity implements VipListContract.
         getVipList(true);
     }
 
-    /*private VLActivity.VLActivityResultListener mResultListener = new VLActivity.VLActivityResultListener() {
+    private VLActivity.VLActivityResultListener mResultListener = new VLActivity.VLActivityResultListener() {
 
         @Override
         public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-            if (requestCode == GoddessDiaryDetailActivity.DIARY_DETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
-                String diaryId = intent.getStringExtra(GoddessDiaryDetailActivity.DIARY_ID);
-                int collectNum = intent.getIntExtra(GoddessDiaryDetailActivity.COLLECT_NUM, 0);
-                List<ProductBean> diaryItemBeans = mAdapter.getData();
+            if (requestCode == VipDetailActivity.VIP_DETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
+                String vipId = intent.getStringExtra(VipDetailActivity.VIP_ID);
+                int bookNum = intent.getIntExtra(VipDetailActivity.BOOK_NUM, 0);
+                List<ProductBean> vipItemBeans = mAdapter.getData();
                 int index = 0;
-                for (ProductBean diaryItemBean : diaryItemBeans) {
-                    if (diaryItemBean.getId().equals(diaryId)) {
-                        diaryItemBean.setCollect_num(collectNum);
+                for (ProductBean vipItemBean : vipItemBeans) {
+                    if (vipItemBean.getId().equals(vipId)) {
+                        vipItemBean.setOrder(bookNum);
                         mAdapter.notifyItemChanged(index + mAdapter.getHeaderLayoutCount());
                         break;
                     }
@@ -137,6 +142,6 @@ public class VipListActivity extends QingXinActivity implements VipListContract.
                 }
             }
         }
-    };*/
+    };
 
 }

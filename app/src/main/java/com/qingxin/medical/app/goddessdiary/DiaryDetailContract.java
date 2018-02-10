@@ -12,7 +12,7 @@ import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 
 public class DiaryDetailContract {
 
-    interface View extends BaseView<DiaryDetailContract.Presenter> {
+    public interface View extends BaseView<DiaryDetailContract.Presenter> {
 
         void onSuccess(GoddessDiaryDetailBean mDiary);
 
@@ -22,7 +22,7 @@ public class DiaryDetailContract {
 
     }
 
-    interface Presenter extends BasePresenter {
+    public interface Presenter extends BasePresenter {
 
         void getGoddessDiaryDetail(String id);
 
