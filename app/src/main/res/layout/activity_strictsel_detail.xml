@@ -35,7 +35,7 @@
             android:visibility="gone" />
     </RelativeLayout>
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/video_image_iv"
         android:layout_width="match_parent"
         android:layout_height="202dp"

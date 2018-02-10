@@ -22,6 +22,7 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.home.districtsel.video.tools.Constants;
 import com.qingxin.medical.home.districtsel.video.tools.DebugTools;
@@ -489,7 +490,7 @@ public class VideoViewHolderControl {
 		public ImageView playPauseIb;
 		public SeekBar seekBar;
 		public ProgressBar pb;
-		public ImageView imgIv;
+		public SimpleDraweeView imgIv;
 		public ImageView playSymbolIv;
 		public RelativeLayout videoRl;
 		public ImageButton halfFullIb;
@@ -497,12 +498,12 @@ public class VideoViewHolderControl {
 		public TextView currentTimeTv,totalTimeTv;
 		
 		public VideoViewHolder(View convertView){
-			mediaControl = (WylMediaControl) convertView.findViewById(R.id.media_control);
-//			shareIv = (ImageView) convertView.findViewById(R.id.topShareIv);
-			playPauseIb = (ImageView) convertView.findViewById(R.id.mediacontroller_play_pause);
-			seekBar = (SeekBar) convertView.findViewById(R.id.mediacontroller_seekbar);
-			pb = (ProgressBar) convertView.findViewById(R.id.loading_pb);
-			imgIv = (ImageView) convertView.findViewById(R.id.video_image_iv);
+			mediaControl = convertView.findViewById(R.id.media_control);
+//			shareIv = convertView.findViewById(R.id.topShareIv);
+			playPauseIb = convertView.findViewById(R.id.mediacontroller_play_pause);
+			seekBar =  convertView.findViewById(R.id.mediacontroller_seekbar);
+			pb =  convertView.findViewById(R.id.loading_pb);
+			imgIv = convertView.findViewById(R.id.video_image_iv);
 			
 			playSymbolIv = (ImageView) convertView.findViewById(R.id.play_symbol_iv);
 			videoRl = (RelativeLayout) convertView.findViewById(R.id.video_rl);

@@ -4,15 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,7 +26,6 @@ import com.qingxin.medical.home.districtsel.video.tools.DisplayUtil;
 import com.qingxin.medical.map.GaoDeMapModel;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -58,7 +55,7 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_strictsel_detail);
         initView();
-        loadData();
+
         initListener();
     }
 
@@ -92,12 +89,14 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
 
         ButterKnife.bind(this);
         initFakeStatusBarHeight(true);
+
+        loadData(strictSelBean.getThumbnail());
     }
 
 
-    private void loadData() {
+    private void loadData(String videoCover) {
         View view = findViewById(R.id.activity_video_rl);
-        initVideoMode(view);
+        initVideoMode(view, videoCover);
     }
 
 
@@ -125,11 +124,11 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
     private VideoView mVideoView;
     private VideoViewHolderControl mVideoControl;
 
-    private void initVideoMode(View view) {
+    private void initVideoMode(View view, String videoCover) {
         showFullScreen(false);
         mVideoView = (VideoView) view.findViewById(R.id.videoview);
         mVideoHolder = new VideoViewHolderControl.VideoViewHolder(view);
-        mVideoHolder.imgIv.setImageResource(R.mipmap.index);
+        mVideoHolder.imgIv.setImageURI(Uri.parse(videoCover));
         mVideoControl = new VideoViewHolderControl(mVideoHolder, mVideoView, URL_VIDEO);
         setupVideoControlListener(mVideoControl);
         mVideoControl.setup();
