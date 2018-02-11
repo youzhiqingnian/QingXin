@@ -4,6 +4,7 @@ import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
+import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import com.qingxin.medical.app.vip.AmountBean;
 import com.qingxin.medical.app.vip.VipDetailBean;
 import com.qingxin.medical.app.vip.VipListBean;
@@ -98,4 +99,12 @@ public interface RetrofitService {
     @PUT("/product/{id}/book")
     Observable<ContentBean<AmountBean>> bookVip(@Path("id") String id);
 
+
+    /**
+     * @param limit 查询条数 非必填   默认值 10
+     * @param skip  跳过第几条数据 非必填   默认值 0
+     * @return
+     */
+    @GET("/escort")
+    Observable<ContentBean<ListBean<ServiceBean>>> getExclusiveService(@Query("limit") int limit, @Query("skip") int skip);
 }

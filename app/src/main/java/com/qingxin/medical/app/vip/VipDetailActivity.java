@@ -7,9 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.NestedScrollingChild;
-import android.support.v4.view.NestedScrollingParent;
-import android.support.v4.view.NestedScrollingParentHelper;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
@@ -19,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -28,7 +24,6 @@ import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
-import com.qingxin.medical.fresco.zoomable.ZoomableDraweeView;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
@@ -69,7 +64,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
             mOrderNowTv;
     private RelativeLayout mCollectRl;
     private SimpleDraweeView mHospitalCoverSdv;
-    private ZoomableDraweeView mVipDetailImgZdv;
+    private SimpleDraweeView mVipDetailImgZdv;
 
     private List<Integer> bannerList = new ArrayList<>();
 
@@ -134,33 +129,24 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         mOrderNowTv.setOnClickListener(this);
         mShareDialog.setOnShareDialogListener(this);
         RelativeLayout mTitleBarRl = findViewById(R.id.titleBarRl);
-        mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        mAppBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
 
-                float percent = Float.valueOf(Math.abs(verticalOffset)) / Float.valueOf(appBarLayout.getTotalScrollRange());
+            //第一种
+            int toolbarHeight = appBarLayout.getTotalScrollRange();
 
-                //第一种
-                int toolbarHeight = appBarLayout.getTotalScrollRange();
-
-                int dy = Math.abs(verticalOffset);
+            int dy = Math.abs(verticalOffset);
 
 
-                if (dy <= toolbarHeight) {
-                    float scale = (float) dy / toolbarHeight;
-                    float alpha = scale * 255;
-                    mTitleBarRl.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
-                    mTopTitleNameTv.setTextColor(Color.argb((int) alpha, 70, 74, 76));
+            if (dy <= toolbarHeight) {
+                float scale = (float) dy / toolbarHeight;
+                float alpha = scale * 255;
+                mTitleBarRl.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
+                mTopTitleNameTv.setTextColor(Color.argb((int) alpha, 70, 74, 76));
 
 //                    mTextView.setText("setBackgroundColor(Color.argb((int) "+(int) alpha+", 255, 255, 255))\n"+"mFLayout.setAlpha("+percent+")");
-                }
-
-                //第二种
-
-                // mFLayout.setAlpha(percent);
-
-
             }
+            //第二种
+            // mFLayout.setAlpha(percent);
         });
     }
 
@@ -207,12 +193,10 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
                 VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {
                     @Override
                     protected void process(boolean canceled) {
-//                        android.support.design.widget.CoordinatorLayout.Behavior behavior = ((android.support.design.widget.CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams()).getBehavior();
-//
-//
-//                        behavior.onNestedPreScroll(mWholeLayoutCdl, mAppBarLayout, mScrollSv, 0, 10000, new int[]{0, 0});
-
-
+                        //android.support.design.widget.CoordinatorLayout.Behavior behavior = ((android.support.design.widget.CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams()).getBehavior();
+                        //behavior.onNestedPreScroll(mWholeLayoutCdl, mAppBarLayout, mScrollSv, 0, 10000, new int[]{0, 0});
+                        //behavior.onNestedFling(mWholeLayoutCdl, mAppBarLayout, mScrollSv, 0, 10000, true);
+                        mAppBarLayout.scrollTo(0,0);
                     }
                 });
                 break;
@@ -328,13 +312,12 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
 
         mProductNameTv.setText(itemBean.getName());
         mPriceTv.setText(String.valueOf(itemBean.getPrice()));
-        mGrayRmbIconTv.setText(getString(R.string.rmb_icon) + itemBean.getOld_price());
+        mGrayRmbIconTv.setText(String.format("￥%s", itemBean.getOld_price()));
 //        mCityNameTv.setText();
-        mOrderCountTv.setText(String.valueOf(itemBean.getOrder()) + getString(R.string.order_count));
+        mOrderCountTv.setText(String.format("%s次预约", itemBean.getOrder()));
         mHospitalNameTv.setText(itemBean.getHospital());
 //        mProductDetailTv.setText(itemBean.get);
         VLUtils.setControllerListener(mVipDetailImgZdv, "http://p36zly2vu.bkt.clouddn.com/" + itemBean.getCover());
-
     }
 
     private class BannerPagerAdapter extends PagerAdapter {

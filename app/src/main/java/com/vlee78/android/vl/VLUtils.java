@@ -1,6 +1,5 @@
 package com.vlee78.android.vl;
 
-import android.Manifest;
 import android.Manifest.permission;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -30,20 +29,14 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.Animatable;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
@@ -130,7 +123,7 @@ public final class VLUtils {
     public static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
 
 
-    public static void setControllerListener(final ZoomableDraweeView simpleDraweeView, String imagePath) {
+    public static void setControllerListener(final SimpleDraweeView simpleDraweeView, String imagePath) {
         final ViewGroup.LayoutParams layoutParams = simpleDraweeView.getLayoutParams();
         final int imageWidth = getScreenWidth(QingXinApplication.getInstance());
         ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
@@ -156,10 +149,10 @@ public final class VLUtils {
                 throwable.printStackTrace();
             }
         };
-        simpleDraweeView.setAllowTouchInterceptionWhileZoomed(true);
+        /*simpleDraweeView.setAllowTouchInterceptionWhileZoomed(true);
         // needed for double tap to zoom
         simpleDraweeView.setIsLongpressEnabled(false);
-        simpleDraweeView.setTapListener(new DoubleTapGestureListener(simpleDraweeView));
+        simpleDraweeView.setTapListener(new DoubleTapGestureListener(simpleDraweeView));*/
         DraweeController controller = Fresco.newDraweeControllerBuilder().setControllerListener(controllerListener).setUri(Uri.parse(imagePath)).build();
         simpleDraweeView.setController(controller);
     }

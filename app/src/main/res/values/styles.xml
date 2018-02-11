@@ -1,12 +1,6 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Light.NoTitleBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
 
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light">
         <!-- customize the color palette -->
@@ -38,7 +32,6 @@
         <item name="android:textColor">#ffffffff</item>
         <item name="android:textSize">11sp</item>
     </style>
-    <style name="VideoStyle" parent="android:Theme.Light.NoTitleBar"></style>
 
 
 </resources>

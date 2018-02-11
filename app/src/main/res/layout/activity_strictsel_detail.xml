@@ -49,7 +49,6 @@
         android:layout_alignBottom="@id/video_rl" >
 
         <RelativeLayout
-            android:id="@+id/video_control_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/shape_video_play_shadow" >
@@ -152,7 +151,6 @@
             android:src="@mipmap/vip_top_share_logo" />
     </RelativeLayout>
     <WebView
-        android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:background="@color/white"

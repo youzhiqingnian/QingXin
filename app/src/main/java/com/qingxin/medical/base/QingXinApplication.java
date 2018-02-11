@@ -4,9 +4,6 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.facebook.imagepipeline.listener.RequestListener;
-import com.facebook.imagepipeline.listener.RequestLoggingListener;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.fresco.QingXinFrescoModel;
 import com.qingxin.medical.map.GaoDeMapModel;
@@ -21,8 +18,6 @@ import com.vlee78.android.vl.VLModelManager;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * QingXinApplication

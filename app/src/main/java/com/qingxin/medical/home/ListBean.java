@@ -30,4 +30,12 @@ public class ListBean<T> extends BaseBean {
     public void setItems(List<T> items) {
         this.items = items;
     }
+
+    @Override
+    public String toString() {
+        return "ListBean{" +
+                "count=" + count +
+                ", items=" + items +
+                '}';
+    }
 }

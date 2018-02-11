@@ -4,6 +4,7 @@ import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
+import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import com.qingxin.medical.app.vip.AmountBean;
 import com.qingxin.medical.app.vip.VipDetailBean;
 import com.qingxin.medical.app.vip.VipListBean;
@@ -64,6 +65,17 @@ public class NetRequestListManager {
 
     public static Observable<ContentBean<AmountBean>> bookVip(String id) {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).bookVip(id);
+    }
+
+    /**
+     * 获取女神日记列表
+     *
+     * @param limit 查询条数 非必填   默认值 10
+     * @param skip  跳过第几条数据 非必填   默认值 0
+     * @return
+     */
+    public static Observable<ContentBean<ListBean<ServiceBean>>> getExclusiveService(int limit, int skip) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getExclusiveService(limit, skip);
     }
 
 }

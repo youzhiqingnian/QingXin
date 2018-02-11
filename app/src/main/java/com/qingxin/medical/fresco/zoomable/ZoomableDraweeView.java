@@ -29,8 +29,7 @@ import com.facebook.drawee.view.DraweeView;
  * Email : idisfkj@gmail.com.
  */
 
-public class ZoomableDraweeView extends DraweeView<GenericDraweeHierarchy>
-        implements ScrollingView {
+public class ZoomableDraweeView extends DraweeView<GenericDraweeHierarchy> implements ScrollingView {
 
     private static final Class<?> TAG = ZoomableDraweeView.class;
 
@@ -45,8 +44,7 @@ public class ZoomableDraweeView extends DraweeView<GenericDraweeHierarchy>
     private DraweeController mHugeImageController;
     private ZoomableController mZoomableController;
     private GestureDetector mTapGestureDetector;
-    private boolean mAllowTouchInterceptionWhileZoomed =
-            DEFAULT_ALLOW_TOUCH_INTERCEPTION_WHILE_ZOOMED;
+    private boolean mAllowTouchInterceptionWhileZoomed = DEFAULT_ALLOW_TOUCH_INTERCEPTION_WHILE_ZOOMED;
 
     private final ControllerListener mControllerListener = new BaseControllerListener<Object>() {
         @Override
