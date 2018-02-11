@@ -46,6 +46,7 @@
     <string name="attention">注意</string>
     <string name="program_intro">项目介绍</string>
     <string name="tips_before_operation">术前锦囊</string>
+    <string name="tips_after_operation">术后锦囊</string>
 
 
 </resources>
