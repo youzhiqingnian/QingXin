@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">青歆</string>
-
-
     <!--首页-->
     <string name="home_search_text_hint">大家在搜:自体脂肪填充</string>
     <string name="share_only_by_new_person">歆人专享</string>
