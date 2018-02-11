@@ -6,7 +6,6 @@
     android:orientation="horizontal" >
 
     <ProgressBar
-        android:id="@+id/pb_pull_list_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -24,7 +23,6 @@
         <!--android:indeterminateDrawable="@drawable/common_progressbar" />-->
 
     <TextView
-        android:id="@+id/tv_pull_list_header_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="正在加载更多"

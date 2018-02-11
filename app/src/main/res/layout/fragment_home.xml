@@ -48,7 +48,6 @@
             android:src="@mipmap/home_search" />
 
         <EditText
-            android:id="@+id/searchEt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
@@ -166,7 +165,6 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/iv_local_strict_selection"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -243,7 +241,6 @@
                         android:textStyle="bold" />
 
                     <LinearLayout
-                        android:id="@+id/ll_free_program_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -300,7 +297,6 @@
                             android:textSize="14sp" />
 
                         <LinearLayout
-                            android:id="@+id/ll_right_top_program_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="13dp"
@@ -351,7 +347,6 @@
                             android:textColor="@color/text_color" />
 
                         <LinearLayout
-                            android:id="@+id/ll_right_bottom_program_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="13dp"

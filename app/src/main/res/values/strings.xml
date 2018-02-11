@@ -1,16 +1,8 @@
 <resources>
     <string name="app_name">青歆</string>
-    <string name="action_settings">Settings</string>
-
-    <string name="home_index_name">首页</string>
-    <string name="welfare_service">福利社</string>
-    <string name="exclusie_service">专属服务</string>
-    <string name="my">我的</string>
 
 
     <!--首页-->
-    <string name="origin_price">原价</string>
-    <string name="yuan">元</string>
     <string name="home_search_text_hint">大家在搜:自体脂肪填充</string>
     <string name="share_only_by_new_person">歆人专享</string>
     <string name="goddess_diary">女神日记</string>
@@ -18,8 +10,6 @@
     <string name="encyclopedia_of_medical_beauty">医美百科</string>
     <string name="strict_selection_famous_doctor_institute">严选名医机构</string>
     <string name="more">更多</string>
-    <string name="location_failuer">定位失败</string>
-    <string name="city_unit">市</string>
 
     <!--女神日记-->
     <string name="plus_collection">+收藏</string>
@@ -55,7 +45,6 @@
     <string name="characteristic">特点</string>
     <string name="attention">注意</string>
     <string name="program_intro">项目介绍</string>
-    <string name="expand_all">展开全部</string>
     <string name="tips_before_operation">术前锦囊</string>
 
 

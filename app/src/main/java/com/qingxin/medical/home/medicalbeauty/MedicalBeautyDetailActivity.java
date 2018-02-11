@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
-import com.qingxin.medical.base.QingXinApplication;
 
 /**
  * Date 2018-02-11

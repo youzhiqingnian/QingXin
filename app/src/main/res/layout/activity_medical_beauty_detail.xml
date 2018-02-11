@@ -25,7 +25,6 @@
             android:orientation="vertical">
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/medicalBeautyCoverSdv"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
                 android:layout_marginLeft="15dp"
@@ -69,7 +68,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/categoryTv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -83,7 +81,6 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/painLevelTv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -97,7 +94,6 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/takeEffectDurationTv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -111,7 +107,6 @@
                     android:textSize="12sp" />
 
                 <TextView
-                    android:id="@+id/recoveryDurationTv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -146,7 +141,6 @@
                 android:background="@color/line_color" />
 
             <TextView
-                android:id="@+id/characteristicTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="7sp"
@@ -179,7 +173,6 @@
                 android:background="@color/line_color" />
 
             <TextView
-                android:id="@+id/attentionTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="7sp"
@@ -212,7 +205,6 @@
                 android:background="@color/line_color" />
 
             <TextView
-                android:id="@+id/programIntroTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="7sp"
@@ -229,19 +221,16 @@
                 android:layout_height="wrap_content">
 
                 <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/programIntroSdv"
                     android:layout_width="match_parent"
                     android:layout_height="64dp" />
 
                 <RelativeLayout
-                    android:id="@+id/expandAllRl"
                     android:layout_width="match_parent"
                     android:layout_alignParentBottom="true"
                     android:layout_height="44dp"
                     android:background="@color/apha_text_color_hint">
 
                     <TextView
-                        android:id="@+id/expand"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -272,7 +261,6 @@
                 android:background="@color/line_color" />
 
             <TextView
-                android:id="@+id/tipsBeforeperationTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="7sp"
