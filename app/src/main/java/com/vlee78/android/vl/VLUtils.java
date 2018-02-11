@@ -2164,48 +2164,21 @@ public final class VLUtils {
         return context.getCacheDir();
     }
 
-    public static Location getBestLocation(Context context, Criteria criteria) {
-        Location location;
-        LocationManager manager = getLocationManager(context);
-        if (criteria == null) {
-            criteria = new Criteria();
+    @SuppressLint("PrivateApi")
+    public static int getStatusbarHeight(Context context) {
+        Class<?> c;
+        Object obj;
+        Field field;
+        int x, sbar = 38;
+        try {
+            c = Class.forName("com.android.internal.R$dimen");
+            obj = c.newInstance();
+            field = c.getField("status_bar_height");
+            x = Integer.parseInt(field.get(obj).toString());
+            sbar = context.getResources().getDimensionPixelSize(x);
+        } catch (Exception e1) {
+            e1.printStackTrace();
         }
-        String provider = manager.getBestProvider(criteria, true);
-        if (TextUtils.isEmpty(provider)) {
-            //如果找不到最适合的定位，使用network定位
-            location = getNetWorkLocation(context);
-        } else {
-            //高版本的权限检查
-            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return null;
-            }
-            //获取最适合的定位方式的最后的定位权限
-            location = manager.getLastKnownLocation(provider);
-        }
-        return location;
+        return sbar;
     }
-
-    private static LocationManager getLocationManager(@NonNull Context context) {
-        return (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-    }
-
-
-    /**
-     * network获取定位方式
-     */
-    public static Location getNetWorkLocation(Context context) {
-        Location location = null;
-        LocationManager manager = getLocationManager(context);
-        //高版本的权限检查
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return null;
-        }
-        if (manager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {//是否支持Network定位
-            //获取最后的network定位信息
-            location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        }
-        return location;
-    }
-
 }

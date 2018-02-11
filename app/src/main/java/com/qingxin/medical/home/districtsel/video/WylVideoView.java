@@ -6,9 +6,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.VideoView;
-
 import com.qingxin.medical.R;
-import com.qingxin.medical.home.districtsel.video.tools.DebugTools;
 
 public class WylVideoView extends VideoView {
 
@@ -43,11 +41,9 @@ public class WylVideoView extends VideoView {
 	
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		
-		int width = MeasureSpec.getSize(widthMeasureSpec);
-		int height = MeasureSpec.getSize(heightMeasureSpec);
+		int width;
+		int height;
 		if(mIsFullScreenMode){
-
 			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		}else{
 			if(mIsFullScreen){
@@ -58,7 +54,6 @@ public class WylVideoView extends VideoView {
 				super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 			}	
 		}
-
 	}
 	
     private void initAttrs(Context context, AttributeSet attrs){
@@ -89,13 +84,11 @@ public class WylVideoView extends VideoView {
 		return true;
 	}
 	
-	
     private GestureDetector gestureDetector;
 	private void initGesture(Context context){
         gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
         	@Override
         	public boolean onDoubleTap(MotionEvent e) {
-        		DebugTools.d("video2 double2 onDoubleTap");
         		if(mGestureListener != null){
         			mGestureListener.onDoubleTap();
         		}
@@ -104,7 +97,6 @@ public class WylVideoView extends VideoView {
         	
         	@Override
         	public boolean onSingleTapConfirmed(MotionEvent e) {
-        		DebugTools.d("video2 double2 onSingleTapConfirmed, flag: " + (mGestureListener != null));
         		if(mGestureListener != null){
         			mGestureListener.onSingleTapConfirmed();
         		}
@@ -115,12 +107,11 @@ public class WylVideoView extends VideoView {
 	
 	private OnGestureListener mGestureListener;
 	public void setOnGestureListener(OnGestureListener listener){
-		DebugTools.d("video2 double2 setOnGestureListener");
 		mGestureListener = listener;
 	}
 	
 	public interface OnGestureListener{
-		public void onDoubleTap();
-		public void onSingleTapConfirmed();
+		void onDoubleTap();
+		void onSingleTapConfirmed();
 	}
 }

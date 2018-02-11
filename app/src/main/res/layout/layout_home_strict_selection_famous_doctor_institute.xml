@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rl_famous_doctor"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/rl_top_pic"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
@@ -20,16 +20,15 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_gravity="center"
             android:contentDescription="@string/app_name"
             android:src="@mipmap/btn_play_logo" />
-    </RelativeLayout>
+    </FrameLayout>
 
     <TextView
         android:id="@+id/nameTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rl_top_pic"
         android:layout_marginTop="15dp"
         android:textColor="@color/text_color"
         android:textSize="14sp" />
@@ -38,10 +37,9 @@
         android:id="@+id/descrTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/nameTv"
         android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/text_color_origin_price"
         android:textSize="12sp" />
-</RelativeLayout>
+</LinearLayout>

@@ -20,11 +20,9 @@ import com.amap.api.location.AMapLocation;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.home.districtsel.video.VideoViewHolderControl;
-import com.qingxin.medical.home.districtsel.video.tools.CommonTools;
-import com.qingxin.medical.home.districtsel.video.tools.DebugTools;
-import com.qingxin.medical.home.districtsel.video.tools.DisplayUtil;
 import com.qingxin.medical.map.GaoDeMapModel;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
+import com.vlee78.android.vl.VLUtils;
 
 import butterknife.ButterKnife;
 
@@ -37,10 +35,10 @@ import butterknife.ButterKnife;
 public class StrictSelDetailActivity extends QingXinActivity implements OnClickListener, ShareDialog.OnShareDialogListener {
 
     public static final String STRICTSEL_BEAN = "STRICTSEL_BEAN";
-
-    private ImageView mTopReturnIv, mTopShareIv;
-
+    private ImageView mTopShareIv;
     private ShareDialog mShareDialog;
+    private VideoViewHolderControl.VideoViewHolder mVideoHolder;
+    private int mPixelInsetTop;
 
     public static void startSelf(@NonNull Context context, @NonNull StrictSelBean strictSelBean) {
         Intent intent = new Intent(context, StrictSelDetailActivity.class);
@@ -48,6 +46,7 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
         context.startActivity(intent);
     }
 
+    //TODO
     public static final String URL_VIDEO = "http://static.wezeit.com/o_1a9jjk9021fkt7vs1mlo16i91gvn9.mp4";
 
     @Override
@@ -55,24 +54,15 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_strictsel_detail);
         initView();
-
-        initListener();
-    }
-
-    private void initListener() {
-        mTopReturnIv.setOnClickListener(this);
-        mTopShareIv.setOnClickListener(this);
-        mShareDialog.setOnShareDialogListener(this);
     }
 
     private void initView() {
-
-        mTopReturnIv = findViewById(R.id.topReturnIv);
-        mTopShareIv = findViewById(R.id.topShareIv);
         TextView nameTv = findViewById(R.id.nameTv);
         TextView locationTv = findViewById(R.id.locationTv);
         TextView countTv = findViewById(R.id.countTv);
         TextView descrTv = findViewById(R.id.descrTv);
+        ImageView backIv = findViewById(R.id.topReturnIv);
+        mTopShareIv = findViewById(R.id.topShareIv);
         StrictSelBean strictSelBean = (StrictSelBean) getIntent().getSerializableExtra(STRICTSEL_BEAN);
         nameTv.setText(strictSelBean.getName());
         descrTv.setText(strictSelBean.getSummary());
@@ -86,29 +76,27 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
             }
         }
         mShareDialog = new ShareDialog(this);
-
         ButterKnife.bind(this);
-        initFakeStatusBarHeight(true);
-
+        initFakeStatusBarHeight();
         loadData(strictSelBean.getThumbnail());
-    }
 
+        backIv.setOnClickListener(this);
+        mTopShareIv.setOnClickListener(this);
+        mShareDialog.setOnShareDialogListener(this);
+    }
 
     private void loadData(String videoCover) {
         View view = findViewById(R.id.activity_video_rl);
         initVideoMode(view, videoCover);
     }
 
-
-    protected int mPixelInsetTop;
-
-    protected void initFakeStatusBarHeight(boolean isNewsPage) {
-        View statusbarBgLayout = (View) findViewById(R.id.statusbar_bg_layout);
+    protected void initFakeStatusBarHeight() {
+        View statusbarBgLayout = findViewById(R.id.statusbar_bg_layout);
         if (statusbarBgLayout == null) {
             return;
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mPixelInsetTop = CommonTools.getStatusbarHeight(this);
+            mPixelInsetTop = VLUtils.getStatusbarHeight(this);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) statusbarBgLayout.getLayoutParams();
             params.height = mPixelInsetTop;
             statusbarBgLayout.setLayoutParams(params);
@@ -119,19 +107,14 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
         }
     }
 
-    //----------videoview----------------
-    private VideoViewHolderControl.VideoViewHolder mVideoHolder;
-    private VideoView mVideoView;
-    private VideoViewHolderControl mVideoControl;
-
     private void initVideoMode(View view, String videoCover) {
         showFullScreen(false);
-        mVideoView = (VideoView) view.findViewById(R.id.videoview);
+        VideoView videoView = view.findViewById(R.id.videoview);
         mVideoHolder = new VideoViewHolderControl.VideoViewHolder(view);
         mVideoHolder.imgIv.setImageURI(Uri.parse(videoCover));
-        mVideoControl = new VideoViewHolderControl(mVideoHolder, mVideoView, URL_VIDEO);
-        setupVideoControlListener(mVideoControl);
-        mVideoControl.setup();
+        VideoViewHolderControl videoControl = new VideoViewHolderControl(mVideoHolder, videoView, URL_VIDEO);
+        setupVideoControlListener(videoControl);
+        videoControl.setup();
         setVideoViewLayout(false);
     }
 
@@ -139,7 +122,6 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
         control.setOnVideoControlListener(new VideoViewHolderControl.OnVideoControlProxy() {
             @Override
             public void onCompletion() {
-                DebugTools.d("video2 onCompletion");
                 setFullScreen(false);
             }
 
@@ -153,7 +135,6 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
             public void onError(int code, String msg) {
 
             }
-
         });
     }
 
@@ -168,16 +149,13 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
     }
 
     private void initHalfFullState(boolean isFull) {
-        DebugTools.d("video2 initHalfFullState isFull: " + isFull);
         setVideoViewLayout(isFull);
         showFullScreen(isFull);
     }
 
-
-    //---------videoview fullscreen---------
     private void showFullScreen(boolean isFullScreen) {
         if (isFullScreen) {
-//		      //不显示程序的标题栏
+            //不显示程序的标题栏
             hideNavigationBar();
         } else {
             showNavigationBar();
@@ -205,17 +183,18 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
     private void showNavigationBar() {
         mTopShareIv.setVisibility(View.VISIBLE);
         View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        }
     }
 
     public void hideNavigationBar() {
+        // hide status bar
         mTopShareIv.setVisibility(View.GONE);
-        int uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_FULLSCREEN; // hide status bar
-
+        int uiFlags = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+            uiFlags = View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_FULLSCREEN;
+        }
         getWindow().getDecorView().setSystemUiVisibility(uiFlags);
     }
 
@@ -229,21 +208,16 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
             params.height = RelativeLayout.LayoutParams.MATCH_PARENT;
             params.addRule(RelativeLayout.CENTER_IN_PARENT);
             params.setMargins(0, 0, 0, 0);
-
             controlParams.setMargins(0, 0, 0, 0);
-
             indexImageParams.height = RelativeLayout.LayoutParams.MATCH_PARENT;
             indexImageParams.setMargins(0, 0, 0, 0);
         } else {
-            params.height = DisplayUtil.dip2px(this, 202);
+            params.height = VLUtils.dip2px(202);
             params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
             params.setMargins(0, videoMarginTop, 0, 0);
-
             controlParams.setMargins(0, 0, 0, 0);
-
-            indexImageParams.height = DisplayUtil.dip2px(this, 202);
+            indexImageParams.height = VLUtils.dip2px(202);
             indexImageParams.setMargins(0, 0, 0, 0);
-
         }
         mVideoHolder.videoRl.setLayoutParams(params);
         mVideoHolder.mediaControl.setLayoutParams(controlParams);
@@ -277,15 +251,15 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-
             case R.id.topReturnIv:
                 // 返回键
                 handleClickBack();
                 break;
-
             case R.id.topShareIv:
                 // 分享键
                 mShareDialog.show();
+                break;
+            default:
                 break;
         }
     }
