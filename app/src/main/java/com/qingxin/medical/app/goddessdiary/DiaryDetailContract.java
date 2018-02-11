@@ -2,7 +2,6 @@ package com.qingxin.medical.app.goddessdiary;
 
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
-import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 
 /**
  *

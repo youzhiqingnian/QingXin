@@ -1,7 +1,5 @@
 package com.qingxin.medical.app.goddessdiary;
 
-import com.qingxin.medical.user.User;
-
 /**
  *
  * Date 2018-02-02

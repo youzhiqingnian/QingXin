@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLTitleBar;
@@ -83,7 +83,7 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
     }
 
     @Override
-    public void onSuccess(GoddessDiaryBean diary) {
+    public void onSuccess(ListBean<DiaryItemBean> diary) {
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
             mAdapter.setNewData(diary.getItems());

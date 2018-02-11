@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class RecyclerGridViewAdapter extends BaseQuickAdapter<StrictSelBean,BaseViewHolder> {
 
-    public RecyclerGridViewAdapter(@Nullable List<StrictSelBean> data) {
-        super(R.layout.layout_home_strict_selection_famous_doctor_institute, data);
+    RecyclerGridViewAdapter(@Nullable List<StrictSelBean> data) {
+        super(R.layout.group_home_strictsel, data);
     }
 
     @Override
@@ -26,7 +26,6 @@ public class RecyclerGridViewAdapter extends BaseQuickAdapter<StrictSelBean,Base
         SimpleDraweeView mSelectionCoverSdv = helper.getView(R.id.selectionCoverSdv);
         TextView nameTv = helper.getView(R.id.nameTv);
         TextView descrTv = helper.getView(R.id.descrTv);
-
         mSelectionCoverSdv.setImageURI(Uri.parse(item.getThumbnail()));
         nameTv.setText(item.getName());
         descrTv.setText(item.getSummary());
