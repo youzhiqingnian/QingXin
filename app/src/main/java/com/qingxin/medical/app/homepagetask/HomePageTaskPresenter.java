@@ -1,17 +1,13 @@
 package com.qingxin.medical.app.homepagetask;
 
 import android.support.annotation.NonNull;
-
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.base.ContentBean;
-import com.qingxin.medical.service.entity.Book;
 import com.qingxin.medical.service.manager.NetRequestListManager;
-
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -28,16 +24,11 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    /**
-     * Creates a presenter for the add/edit view.
-     * @param homePageTaskView
-     */
-    public HomePageTaskPresenter(HomePageTaskContract.View homePageTaskView) {
+    HomePageTaskPresenter(HomePageTaskContract.View homePageTaskView) {
         mHomePageTaskView = checkNotNull(homePageTaskView);
         mCompositeSubscription = new CompositeSubscription();
         mHomePageTaskView.setPresenter(this);
     }
-
 
     @Override
     public void subscribe() {
@@ -73,6 +64,4 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
                 })
         );
     }
-
-
 }

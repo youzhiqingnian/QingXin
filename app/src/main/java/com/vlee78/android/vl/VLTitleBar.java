@@ -16,49 +16,6 @@ public class VLTitleBar extends FrameLayout {
     private LinearLayout mRightContainer;
     private LinearLayout mCenterContainer;
 
-    public interface VLTitleBarListener {
-        void onTitleBarClicked(VLTitleBarPos pos, int index);
-    }
-
-    public interface VLTitleBarDelegate {
-        void onTitleBarInit(VLTitleBar titleBar, Class<?> cls);
-    }
-
-    public interface VLOnDoubleClickListener {
-        void onDoubleClick(View view);
-    }
-
-    VLOnDoubleClickListener mVLOnDoubleClickListener;
-
-    public VLOnDoubleClickListener getVLOnDoubleClickListener() {
-        return mVLOnDoubleClickListener;
-    }
-
-    long mLastClickTime;
-    final int DOUBLE_CLICK_INTERVAL = 1000;
-
-    /**
-     * 为了能够效应双击事件，此方法会消费掉单击事件
-     */
-    public void setVLOnDoubleClickListener(VLOnDoubleClickListener vlOnDoubleClickListener) {
-        this.mVLOnDoubleClickListener = vlOnDoubleClickListener;
-        if (null != mVLOnDoubleClickListener) {
-            setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (System.currentTimeMillis() - mLastClickTime < DOUBLE_CLICK_INTERVAL) {
-                        mLastClickTime = 0;
-                        mVLOnDoubleClickListener.onDoubleClick(v);
-                    } else {
-                        mLastClickTime = System.currentTimeMillis();
-                    }
-                }
-            });
-        } else {
-            setOnClickListener(null);
-        }
-    }
-
     public enum VLTitleBarPos {
         TitleBarLeft,
         TitleBarCenter,
@@ -96,6 +53,10 @@ public class VLTitleBar extends FrameLayout {
         mCenterContainer.setLayoutParams(VLUtils.paramsFrame(VLUtils.WRAP_CONTENT, VLUtils.MATCH_PARENT, Gravity.CENTER | Gravity.CENTER_VERTICAL));
         addView(mCenterContainer);
 
+        View view = new View(mContext);
+        view.setLayoutParams(VLUtils.paramsFrame(VLUtils.MATCH_PARENT, VLUtils.dip2px(0.5f),Gravity.BOTTOM));
+        view.setBackgroundColor(0xffDFE3E5);
+        addView(view);
     }
 
     public LinearLayout getContainer(VLTitleBarPos pos) {

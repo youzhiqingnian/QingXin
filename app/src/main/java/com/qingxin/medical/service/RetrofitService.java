@@ -1,13 +1,14 @@
 package com.qingxin.medical.service;
 
 import com.qingxin.medical.app.goddessdiary.CollectBean;
+import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
-import com.qingxin.medical.app.homepagetask.model.GoddessDiaryBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.vip.AmountBean;
 import com.qingxin.medical.app.vip.VipDetailBean;
 import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.home.ListBean;
 
 import retrofit2.http.GET;
 import retrofit2.http.PUT;
@@ -36,7 +37,7 @@ public interface RetrofitService {
      * @return
      */
     @GET("/diary")
-    Observable<ContentBean<GoddessDiaryBean>> getGoddessDiaryList(@Query("limit") int limit, @Query("skip") int skip);
+    Observable<ContentBean<ListBean<DiaryItemBean>>> getGoddessDiaryList(@Query("limit") int limit, @Query("skip") int skip);
 
     /**
      * 获取女神日记详情

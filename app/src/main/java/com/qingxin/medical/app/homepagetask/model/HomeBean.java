@@ -6,9 +6,10 @@ import com.qingxin.medical.home.districtsel.StrictSelBean;
 import java.util.List;
 
 /**
- * Created by zhikuo1 on 2018-01-31.
+ * Date 2018-01-31
+ *
+ * @author zhikuo
  */
-
 public class HomeBean {
 
     /**
@@ -98,7 +99,6 @@ public class HomeBean {
     }
 
 
-
     public static class OpencitysBean {
         /**
          * citycode : 028
@@ -154,5 +154,4 @@ public class HomeBean {
                 ", preferrs=" + preferrs +
                 '}';
     }
-
 }
