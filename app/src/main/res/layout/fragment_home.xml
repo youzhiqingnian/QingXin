@@ -1,73 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="32dp"
+    <TextView
+        android:id="@+id/cityTv"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:orientation="horizontal">
+        android:drawableEnd="@mipmap/home_city_arrow_down"
+        android:drawablePadding="10dp"
+        android:drawableRight="@mipmap/home_city_arrow_down"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textColor="@color/text_color"
+        app:layout_constraintBottom_toTopOf="@+id/nestedScrollView"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/cityTv"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="32dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/home_search_bg"
+        app:layout_constraintBottom_toTopOf="@+id/nestedScrollView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/cityTv"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:drawablePadding="10dp"
-            android:drawableRight="@mipmap/home_city_arrow_down"
-            android:gravity="center_vertical"
+            android:contentDescription="@string/app_name"
+            android:paddingEnd="8dp"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:text="成都"
-            android:textColor="@color/text_color" />
+            android:paddingRight="8dp"
+            android:paddingStart="15dp"
+            android:src="@mipmap/home_search" />
 
-        <RelativeLayout
+        <EditText
+            android:id="@+id/searchEt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/home_search_bg">
-
-            <ImageView
-                android:id="@+id/searchIv"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:paddingLeft="15dp"
-                android:paddingRight="8dp"
-                android:src="@mipmap/home_search" />
-
-            <EditText
-                android:id="@+id/searchEt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/searchIv"
-                android:background="@null"
-                android:hint="@string/home_search_text_hint"
-                android:paddingRight="15dp"
-                android:singleLine="true"
-                android:textColor="@color/text_color"
-                android:textColorHint="@color/text_color_hint"
-                android:textSize="12sp" />
-        </RelativeLayout>
-
+            android:background="@null"
+            android:hint="@string/home_search_text_hint"
+            android:paddingEnd="15dp"
+            android:paddingLeft="0dp"
+            android:paddingRight="15dp"
+            android:paddingStart="0dp"
+            android:singleLine="true"
+            android:textColor="@color/text_color"
+            android:textColorHint="@color/text_color_hint"
+            android:textSize="12sp" />
     </LinearLayout>
 
     <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/nestedScrollView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="180dp">
 
@@ -82,11 +94,9 @@
                     android:id="@+id/statedBtnBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="bottom|center_horizontal"
                     android:layout_marginBottom="20dp" />
-
-            </RelativeLayout>
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -118,7 +128,6 @@
                         android:text="@string/share_only_by_new_person"
                         android:textColor="@color/light_text_color"
                         android:textSize="12sp" />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -201,10 +210,10 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
+            <View
                 android:id="@+id/productTopLineTv"
                 android:layout_width="match_parent"
-                android:layout_height="1px"
+                android:layout_height="0.5dp"
                 android:background="@color/line_color" />
 
             <LinearLayout
@@ -212,7 +221,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="180dp"
                 android:orientation="horizontal">
-
 
                 <FrameLayout
                     android:layout_width="0dp"
@@ -238,7 +246,6 @@
                         android:id="@+id/ll_free_program_price"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/mFirstPrNameTv"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="44dp"
                         android:orientation="horizontal">
@@ -255,15 +262,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
+                            android:layout_marginStart="8dp"
                             android:textColor="@color/text_color_origin_price"
                             android:textSize="12sp" />
                     </LinearLayout>
-
-
                 </FrameLayout>
 
-                <TextView
-                    android:layout_width="1px"
+                <View
+                    android:layout_width="0.5dp"
                     android:layout_height="match_parent"
                     android:background="@color/line_color" />
 
@@ -288,6 +294,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="13dp"
+                            android:layout_marginStart="13dp"
                             android:layout_marginTop="25dp"
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
@@ -296,8 +303,8 @@
                             android:id="@+id/ll_right_top_program_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/mSecondPrNameTv"
                             android:layout_marginLeft="13dp"
+                            android:layout_marginStart="13dp"
                             android:layout_marginTop="47dp"
                             android:orientation="horizontal">
 
@@ -313,16 +320,15 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
+                                android:layout_marginStart="8dp"
                                 android:textColor="@color/text_color_origin_price"
                                 android:textSize="12sp" />
                         </LinearLayout>
-
-
                     </FrameLayout>
 
-                    <TextView
+                    <View
                         android:layout_width="match_parent"
-                        android:layout_height="1px"
+                        android:layout_height="0.5dp"
                         android:background="@color/line_color" />
 
                     <FrameLayout
@@ -340,6 +346,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="13dp"
+                            android:layout_marginStart="13dp"
                             android:layout_marginTop="25dp"
                             android:textColor="@color/text_color" />
 
@@ -347,8 +354,8 @@
                             android:id="@+id/ll_right_bottom_program_price"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/mThirdPrNameTv"
                             android:layout_marginLeft="13dp"
+                            android:layout_marginStart="13dp"
                             android:layout_marginTop="47dp"
                             android:orientation="horizontal">
 
@@ -364,11 +371,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
+                                android:layout_marginStart="8dp"
                                 android:textColor="@color/text_color_origin_price"
                                 android:textSize="12sp" />
                         </LinearLayout>
-
-
                     </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -378,7 +384,7 @@
                 android:layout_height="10dp"
                 android:background="@color/gap_color_gray" />
 
-            <RelativeLayout
+            <FrameLayout
                 android:id="@+id/slectionMoreRl"
                 android:layout_width="match_parent"
                 android:layout_height="40dp">
@@ -386,8 +392,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     android:text="@string/strict_selection_famous_doctor_institute"
                     android:textColor="@color/text_color_blue"
                     android:textSize="16sp"
@@ -396,15 +403,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="15dp"
                     android:layout_marginRight="15dp"
+                    android:drawableEnd="@mipmap/arrow_right_more"
                     android:drawablePadding="6dp"
                     android:drawableRight="@mipmap/arrow_right_more"
                     android:text="@string/more"
                     android:textColor="@color/text_color_hint"
                     android:textSize="14sp" />
-            </RelativeLayout>
+            </FrameLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/slectionRv"
@@ -421,16 +429,18 @@
                 android:layout_marginTop="20dp"
                 android:background="@color/gap_color_gray" />
 
-            <RelativeLayout
+            <FrameLayout
                 android:id="@+id/diaryMoreRl"
                 android:layout_width="match_parent"
-                android:layout_height="40dp">
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackground">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     android:text="@string/goddess_diary"
                     android:textColor="@color/text_color_blue"
                     android:textSize="16sp"
@@ -439,22 +449,22 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginEnd="15dp"
                     android:layout_marginRight="15dp"
+                    android:drawableEnd="@mipmap/arrow_right_more"
                     android:drawablePadding="6dp"
                     android:drawableRight="@mipmap/arrow_right_more"
                     android:text="@string/more"
                     android:textColor="@color/text_color_hint"
                     android:textSize="14sp" />
-            </RelativeLayout>
+            </FrameLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/diaryRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="31dp" />
-
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

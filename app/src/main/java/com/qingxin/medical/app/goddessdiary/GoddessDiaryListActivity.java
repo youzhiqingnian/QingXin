@@ -1,13 +1,14 @@
 package com.qingxin.medical.app.goddessdiary;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -17,7 +18,6 @@ import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
-
 import java.util.List;
 
 /**
@@ -27,6 +27,11 @@ import java.util.List;
  * @author zhikuo1
  */
 public class GoddessDiaryListActivity extends QingXinActivity implements DiaryListContract.View, SwipeRefreshLayout.OnRefreshListener {
+
+    public static void startSelf(@NonNull Context context){
+        Intent intent = new Intent(context, GoddessDiaryListActivity.class);
+        context.startActivity(intent);
+    }
 
     private DiaryListContract.Presenter mPresenter;
     private GoddessDiaryListAdapter mAdapter;
@@ -60,6 +65,7 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
         mAdapter.setOnItemClickListener((adapter, view, position) -> GoddessDiaryDetailActivity.startSelf(GoddessDiaryListActivity.this, mAdapter.getData().get(position).getId(), mResultListener));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
+        mAdapter.setEmptyView(R.layout.group_empty);
         getDiaryList(true);
     }
 

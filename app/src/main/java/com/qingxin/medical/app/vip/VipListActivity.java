@@ -1,7 +1,9 @@
 package com.qingxin.medical.app.vip;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +31,11 @@ import java.util.List;
  */
 
 public class VipListActivity extends QingXinActivity implements VipListContract.View, SwipeRefreshLayout.OnRefreshListener {
+
+    public static void startSelf(@NonNull Context context){
+        Intent intent = new Intent(context, VipListActivity.class);
+        context.startActivity(intent);
+    }
 
     private VipListContract.Presenter mPresenter;
     private VipListAdapter mAdapter;
