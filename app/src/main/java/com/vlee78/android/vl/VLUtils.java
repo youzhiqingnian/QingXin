@@ -66,6 +66,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.controller.ControllerListener;
 import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.fresco.zoomable.DoubleTapGestureListener;
@@ -122,7 +123,7 @@ public final class VLUtils {
     public static final int MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT;
 
 
-    public static void setControllerListener(final ZoomableDraweeView simpleDraweeView, String imagePath) {
+    public static void setControllerListener(final SimpleDraweeView simpleDraweeView, String imagePath) {
         final ViewGroup.LayoutParams layoutParams = simpleDraweeView.getLayoutParams();
         final int imageWidth = getScreenWidth(QingXinApplication.getInstance());
         ControllerListener controllerListener = new BaseControllerListener<ImageInfo>() {
@@ -148,10 +149,10 @@ public final class VLUtils {
                 throwable.printStackTrace();
             }
         };
-        simpleDraweeView.setAllowTouchInterceptionWhileZoomed(true);
+        /*simpleDraweeView.setAllowTouchInterceptionWhileZoomed(true);
         // needed for double tap to zoom
         simpleDraweeView.setIsLongpressEnabled(false);
-        simpleDraweeView.setTapListener(new DoubleTapGestureListener(simpleDraweeView));
+        simpleDraweeView.setTapListener(new DoubleTapGestureListener(simpleDraweeView));*/
         DraweeController controller = Fresco.newDraweeControllerBuilder().setControllerListener(controllerListener).setUri(Uri.parse(imagePath)).build();
         simpleDraweeView.setController(controller);
     }
