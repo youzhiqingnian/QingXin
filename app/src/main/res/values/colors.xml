@@ -9,6 +9,7 @@
     <color name="stroke_blue">#2CCCEE</color>
     <color name="text_color_pink">#F0488F</color>
     <color name="text_color_hint">#8D8E90</color>
+    <color name="apha_text_color_hint">#0C8D8E90</color>
     <color name="text_color_origin_price">#B2B3B4</color>
     <color name="line_color">#DFE3E5</color>
     <color name="c_line_color">#CCCCCC</color>
