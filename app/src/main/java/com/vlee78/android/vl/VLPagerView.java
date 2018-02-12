@@ -82,6 +82,10 @@ public class VLPagerView extends RelativeLayout {
         });
     }
 
+    public void stopAutoScroll() {
+        this.mAutoScrollMs = 0;
+    }
+
     private void init(Context context) {
         mAutoScrollMs = 0;
         mAutoScrolling = false;

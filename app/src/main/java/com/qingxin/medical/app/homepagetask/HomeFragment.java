@@ -54,16 +54,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
     private View mRootView;
 
-    private TextView mFirstPrNameTv,
-            mFirstPrPriceTv,
-            mFirstPrOldPriceTv,
-            mSecondPrNameTv,
-            mSecondPrPriceTv,
-            mSecondPrOldPriceTv,
-            mThirdPrNameTv,
-            mThirdPrPriceTv,
-            mThirdPrOldPriceTv;
-
+    private VLPagerView mPagerView;
     private LinearLayout mProductListLl;
 
     private SimpleDraweeView mFirstPrCoverSdv,
@@ -104,17 +95,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     }
 
     private void initView() {
-        TextView mCityTv = mRootView.findViewById(R.id.cityTv);
-        mFirstPrNameTv = mRootView.findViewById(R.id.firstPrNameTv);
-        mFirstPrPriceTv = mRootView.findViewById(R.id.firstPrPriceTv);
-        mFirstPrOldPriceTv = mRootView.findViewById(R.id.firstPrOldPriceTv);
-        mSecondPrNameTv = mRootView.findViewById(R.id.secondPrNameTv);
-        mSecondPrPriceTv = mRootView.findViewById(R.id.secondPrPriceTv);
-        mSecondPrOldPriceTv = mRootView.findViewById(R.id.secondPrOldPriceTv);
-        mThirdPrNameTv = mRootView.findViewById(R.id.thirdPrNameTv);
-        mThirdPrPriceTv = mRootView.findViewById(R.id.thirdPrPriceTv);
-        mThirdPrOldPriceTv = mRootView.findViewById(R.id.thirdPrOldPriceTv);
-
+        TextView cityTv = mRootView.findViewById(R.id.cityTv);
         mFirstPrCoverSdv = mRootView.findViewById(R.id.firstPrCoverSdv);
         mSecondPrCoverSdv = mRootView.findViewById(R.id.secondPrCoverSdv);
         mThirdPrCoverSdv = mRootView.findViewById(R.id.thirdPrCoverSdv);
@@ -126,18 +107,17 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         LinearLayout encyclopediasRl = mRootView.findViewById(R.id.encyclopediasRl);
         FrameLayout diaryMoreRl = mRootView.findViewById(R.id.diaryMoreRl);
         mSlectionMoreRl = mRootView.findViewById(R.id.slectionMoreRl);
-
         mStatedBtnBar = mRootView.findViewById(R.id.statedBtnBar);
+
         AMapLocation aMapLocation = QingXinApplication.getInstance().getLocationService().getAMLocation();
         if (null != aMapLocation) {
-            mCityTv.setText(aMapLocation.getCity());
+            cityTv.setText(aMapLocation.getCity());
         }
         shareRl.setOnClickListener(this);
         diaryRl.setOnClickListener(this);
         selectionRl.setOnClickListener(this);
         encyclopediasRl.setOnClickListener(this);
         diaryMoreRl.setOnClickListener(this);
-
         mSlectionMoreRl.setOnClickListener(this);
         getHomeData();
     }
@@ -152,6 +132,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     public void onDestroy() {
         super.onDestroy();
         mPresenter.unsubscribe();
+        mPagerView.stopAutoScroll();
     }
 
     private void getHomeData() {
@@ -166,39 +147,49 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
      * 填充数据
      */
     private void setData() {
+        TextView firstPrNameTv = mRootView.findViewById(R.id.firstPrNameTv);
+        TextView firstPrPriceTv = mRootView.findViewById(R.id.firstPrPriceTv);
+        TextView firstPrOldPriceTv = mRootView.findViewById(R.id.firstPrOldPriceTv);
+        TextView secondPrNameTv = mRootView.findViewById(R.id.secondPrNameTv);
+        TextView secondPrPriceTv = mRootView.findViewById(R.id.secondPrPriceTv);
+        TextView secondPrOldPriceTv = mRootView.findViewById(R.id.secondPrOldPriceTv);
+        TextView thirdPrNameTv = mRootView.findViewById(R.id.thirdPrNameTv);
+        TextView thirdPrPriceTv = mRootView.findViewById(R.id.thirdPrPriceTv);
+        TextView thirdPrOldPriceTv = mRootView.findViewById(R.id.thirdPrOldPriceTv);
+
         List<HomeBean.BannersBean> bannerList = mHomeBean.getBanners();
-        VLPagerView pagerView = mRootView.findViewById(R.id.viewpagerVp);
+        mPagerView = mRootView.findViewById(R.id.viewpagerVp);
         BannerPagerAdapter adapter = new BannerPagerAdapter(getActivity(), bannerList);
-        pagerView.getViewPager().setAdapter(adapter);
-        pagerView.setPageChangeListener(position -> mStatedBtnBar.setChecked(position));
+        mPagerView.getViewPager().setAdapter(adapter);
+        mPagerView.setPageChangeListener(position -> mStatedBtnBar.setChecked(position));
         mStatedBtnBar.setStatedButtonBarDelegate(new DotBarDelegate(getActivity(), bannerList.size()));
-        pagerView.setCurrentItem(bannerList.size() * 1000);
-        mStatedBtnBar.setChecked(pagerView.getCurrentItem());
-        pagerView.setAutoScroll(3000);
+        mPagerView.setCurrentItem(bannerList.size() * 1000);
+        mStatedBtnBar.setChecked(mPagerView.getCurrentItem());
+        mPagerView.setAutoScroll(3000);
 
         List<ProductBean> productList = mHomeBean.getProducts();
         if (productList != null && productList.size() > 0) {
             if (productList.size() >= 1) {
-                mFirstPrNameTv.setText(productList.get(0).getName());
-                mFirstPrPriceTv.setText(String.format("%s元", productList.get(0).getPrice()));
-                mFirstPrOldPriceTv.setText(String.format("原价%s元", productList.get(0).getOld_price()));
-                mFirstPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                firstPrNameTv.setText(productList.get(0).getName());
+                firstPrPriceTv.setText(String.format("%s元", productList.get(0).getPrice()));
+                firstPrOldPriceTv.setText(String.format("原价%s元", productList.get(0).getOld_price()));
+                firstPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 mFirstPrCoverSdv.setImageURI(Uri.parse(productList.get(0).getCover()));
             }
 
             if (productList.size() >= 2) {
-                mSecondPrNameTv.setText(productList.get(1).getName());
-                mSecondPrPriceTv.setText(String.format("%s元", productList.get(1).getPrice()));
-                mSecondPrOldPriceTv.setText(String.format("原价%s元", productList.get(1).getOld_price()));
-                mSecondPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                secondPrNameTv.setText(productList.get(1).getName());
+                secondPrPriceTv.setText(String.format("%s元", productList.get(1).getPrice()));
+                secondPrOldPriceTv.setText(String.format("原价%s元", productList.get(1).getOld_price()));
+                secondPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 mSecondPrCoverSdv.setImageURI(Uri.parse(productList.get(1).getCover()));
             }
 
             if (productList.size() >= 3) {
-                mThirdPrNameTv.setText(productList.get(2).getName());
-                mThirdPrPriceTv.setText(String.format("%s元", productList.get(2).getPrice()));
-                mThirdPrOldPriceTv.setText(String.format("原价%s元", productList.get(2).getOld_price()));
-                mThirdPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                thirdPrNameTv.setText(productList.get(2).getName());
+                thirdPrPriceTv.setText(String.format("%s元", productList.get(2).getPrice()));
+                thirdPrOldPriceTv.setText(String.format("原价%s元", productList.get(2).getOld_price()));
+                thirdPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 mThirdPrCoverSdv.setImageURI(Uri.parse(productList.get(2).getCover()));
             }
         } else {

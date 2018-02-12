@@ -53,12 +53,13 @@
                         android:id="@+id/topReturnIv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="15dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="15dp"
-                        android:layout_marginStart="10dp"
+                        android:layout_centerVertical="true"
                         android:contentDescription="@string/app_name"
                         android:paddingBottom="8dp"
+                        android:paddingEnd="15dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingStart="15dp"
                         android:paddingTop="8dp"
                         android:src="@mipmap/vip_detail_top_return_logo" />
 
@@ -78,9 +79,11 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="@dimen/dp_10"
                         android:contentDescription="@string/app_name"
+                        android:paddingEnd="15dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="15dp"
+                        android:paddingStart="15dp"
                         android:src="@mipmap/vip_top_share_logo" />
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
@@ -334,12 +337,12 @@
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
-        <!--    <com.qingxin.medical.fresco.zoomable.ZoomableDraweeView
-                android:id="@+id/vipDetailImgZdv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/productDetailTv"
-                android:layout_marginTop="20dp" />-->
+            <!--    <com.qingxin.medical.fresco.zoomable.ZoomableDraweeView
+                    android:id="@+id/vipDetailImgZdv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/productDetailTv"
+                    android:layout_marginTop="20dp" />-->
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/vipDetailImgZdv"

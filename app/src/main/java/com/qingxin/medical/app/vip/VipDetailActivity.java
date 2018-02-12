@@ -49,7 +49,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
     private ImageView mTopReturnIv,
             mTopShareIv,
             mScrollTopIv;
-    private VLPagerView mViewpagerVp;
+    private VLPagerView mPagerView;
     private VLStatedButtonBar mStatedBtnBar;
     private TextView mTopTitleNameTv,
             mProductNameTv,
@@ -113,12 +113,12 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         bannerList.add(R.mipmap.fake2);
         bannerList.add(R.mipmap.fake3);
         BannerPagerAdapter adapter = new BannerPagerAdapter(this, bannerList);
-        mViewpagerVp.getViewPager().setAdapter(adapter);
-        mViewpagerVp.setPageChangeListener(position -> mStatedBtnBar.setChecked(position));
+        mPagerView.getViewPager().setAdapter(adapter);
+        mPagerView.setPageChangeListener(position -> mStatedBtnBar.setChecked(position));
         mStatedBtnBar.setStatedButtonBarDelegate(new DotBarDelegate(this, bannerList.size()));
-        mViewpagerVp.setCurrentItem(bannerList.size() * 1000);
-        mStatedBtnBar.setChecked(mViewpagerVp.getCurrentItem());
-        mViewpagerVp.setAutoScroll(3000);
+        mPagerView.setCurrentItem(bannerList.size() * 1000);
+        mStatedBtnBar.setChecked(mPagerView.getCurrentItem());
+        mPagerView.setAutoScroll(3000);
     }
 
     private void initListener() {
@@ -128,25 +128,23 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         mCollectRl.setOnClickListener(this);
         mOrderNowTv.setOnClickListener(this);
         mShareDialog.setOnShareDialogListener(this);
-        RelativeLayout mTitleBarRl = findViewById(R.id.titleBarRl);
+        RelativeLayout titleBarRl = findViewById(R.id.titleBarRl);
         mAppBarLayout.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
-
-            //第一种
             int toolbarHeight = appBarLayout.getTotalScrollRange();
-
             int dy = Math.abs(verticalOffset);
-
-
             if (dy <= toolbarHeight) {
                 float scale = (float) dy / toolbarHeight;
                 float alpha = scale * 255;
-                mTitleBarRl.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
+                titleBarRl.setBackgroundColor(Color.argb((int) alpha, 255, 255, 255));
                 mTopTitleNameTv.setTextColor(Color.argb((int) alpha, 70, 74, 76));
-
-//                    mTextView.setText("setBackgroundColor(Color.argb((int) "+(int) alpha+", 255, 255, 255))\n"+"mFLayout.setAlpha("+percent+")");
+                if (dy >= toolbarHeight / 2) {
+                    mTopReturnIv.setImageResource(R.mipmap.ic_title_left_return);
+                    mTopShareIv.setImageResource(R.mipmap.ic_top_right_share);
+                } else {
+                    mTopReturnIv.setImageResource(R.mipmap.vip_detail_top_return_logo);
+                    mTopShareIv.setImageResource(R.mipmap.vip_top_share_logo);
+                }
             }
-            //第二种
-            // mFLayout.setAlpha(percent);
         });
     }
 
@@ -157,7 +155,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         mTopReturnIv = findViewById(R.id.topReturnIv);
         mTopShareIv = findViewById(R.id.topShareIv);
         mScrollTopIv = findViewById(R.id.scrollTopIv);
-        mViewpagerVp = findViewById(R.id.viewpagerVp);
+        mPagerView = findViewById(R.id.viewpagerVp);
         mStatedBtnBar = findViewById(R.id.statedBtnBar);
         mTopTitleNameTv = findViewById(R.id.topTitleNameTv);
         mProductNameTv = findViewById(R.id.productNameTv);
@@ -193,10 +191,8 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
                 VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {
                     @Override
                     protected void process(boolean canceled) {
-                        //android.support.design.widget.CoordinatorLayout.Behavior behavior = ((android.support.design.widget.CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams()).getBehavior();
-                        //behavior.onNestedPreScroll(mWholeLayoutCdl, mAppBarLayout, mScrollSv, 0, 10000, new int[]{0, 0});
-                        //behavior.onNestedFling(mWholeLayoutCdl, mAppBarLayout, mScrollSv, 0, 10000, true);
-                        mAppBarLayout.scrollTo(0,0);
+                        android.support.design.widget.CoordinatorLayout.Behavior behavior = ((android.support.design.widget.CoordinatorLayout.LayoutParams) mAppBarLayout.getLayoutParams()).getBehavior();
+                        behavior.onNestedPreScroll(mWholeLayoutCdl, mAppBarLayout, null, 0, 10000, new int[]{0, 0});
                     }
                 });
                 break;
@@ -304,6 +300,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.unsubscribe();
+        mPagerView.stopAutoScroll();
     }
 
     private void setData(VipDetailBean vipDetailBean) {
