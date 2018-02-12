@@ -8,7 +8,7 @@ package com.qingxin.medical;
 public class QingXinConstants {
     public static final String KEY_PREFERENCES_USER = "loginUser";
 
-    public static final int ROWS = 2;
+    public static final int ROWS = 10;
 
     public static final int MSG_SET_VIDEO_VIEW_TRANSPARENT = 500;
     public static final int MSG_DISMISS_VIDEO_CONTROL_BAR = 501;

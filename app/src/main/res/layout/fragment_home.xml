@@ -221,9 +221,11 @@
                 android:orientation="horizontal">
 
                 <FrameLayout
+                    android:id="@+id/firstFl"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="325">
+                    android:layout_weight="325"
+                    android:background="?attr/selectableItemBackground">
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/firstPrCoverSdv"
@@ -244,7 +246,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="44dp"
+                        android:layout_marginTop="48dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -277,9 +279,10 @@
                     android:orientation="vertical">
 
                     <FrameLayout
+                        android:id="@+id/secondFl"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1">
+                        android:layout_height="90dp"
+                        android:background="?attr/selectableItemBackground">
 
                         <com.facebook.drawee.view.SimpleDraweeView
                             android:id="@+id/secondPrCoverSdv"
@@ -293,6 +296,8 @@
                             android:layout_marginLeft="13dp"
                             android:layout_marginStart="13dp"
                             android:layout_marginTop="25dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:textColor="@color/text_color"
                             android:textSize="14sp" />
 
@@ -328,9 +333,10 @@
                         android:background="@color/line_color" />
 
                     <FrameLayout
+                        android:id="@+id/thirdFl"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1">
+                        android:layout_height="90dp"
+                        android:background="?attr/selectableItemBackground">
 
                         <com.facebook.drawee.view.SimpleDraweeView
                             android:id="@+id/thirdPrCoverSdv"
@@ -344,6 +350,8 @@
                             android:layout_marginLeft="13dp"
                             android:layout_marginStart="13dp"
                             android:layout_marginTop="25dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:textColor="@color/text_color" />
 
                         <LinearLayout

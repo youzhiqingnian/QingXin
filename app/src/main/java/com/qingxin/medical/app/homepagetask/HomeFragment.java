@@ -19,7 +19,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
@@ -29,6 +28,7 @@ import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListAdapter;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.ProductBean;
+import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
@@ -41,7 +41,6 @@ import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
-
 import java.util.List;
 
 /**
@@ -156,6 +155,12 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         TextView thirdPrNameTv = mRootView.findViewById(R.id.thirdPrNameTv);
         TextView thirdPrPriceTv = mRootView.findViewById(R.id.thirdPrPriceTv);
         TextView thirdPrOldPriceTv = mRootView.findViewById(R.id.thirdPrOldPriceTv);
+        FrameLayout secondFl = mRootView.findViewById(R.id.secondFl);
+        FrameLayout firstFl = mRootView.findViewById(R.id.firstFl);
+        FrameLayout thirdFl = mRootView.findViewById(R.id.thirdFl);
+        secondFl.setOnClickListener(this);
+        firstFl.setOnClickListener(this);
+        thirdFl.setOnClickListener(this);
 
         List<HomeBean.BannersBean> bannerList = mHomeBean.getBanners();
         mPagerView = mRootView.findViewById(R.id.viewpagerVp);
@@ -175,6 +180,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 firstPrOldPriceTv.setText(String.format("原价%s元", productList.get(0).getOld_price()));
                 firstPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 mFirstPrCoverSdv.setImageURI(Uri.parse(productList.get(0).getCover()));
+                firstFl.setTag(productList.get(0).getId());
             }
 
             if (productList.size() >= 2) {
@@ -183,6 +189,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 secondPrOldPriceTv.setText(String.format("原价%s元", productList.get(1).getOld_price()));
                 secondPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 mSecondPrCoverSdv.setImageURI(Uri.parse(productList.get(1).getCover()));
+                secondFl.setTag(productList.get(1).getId());
             }
 
             if (productList.size() >= 3) {
@@ -191,6 +198,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 thirdPrOldPriceTv.setText(String.format("原价%s元", productList.get(2).getOld_price()));
                 thirdPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 mThirdPrCoverSdv.setImageURI(Uri.parse(productList.get(2).getCover()));
+                thirdFl.setTag(productList.get(2).getId());
             }
         } else {
             View productTopLineTv = mRootView.findViewById(R.id.productTopLineTv);
@@ -262,6 +270,13 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             case R.id.diaryRl: //女神日记
             case R.id.diaryMoreRl:
                 GoddessDiaryListActivity.startSelf(getActivity());
+                break;
+            case R.id.secondFl:
+            case R.id.firstFl:
+            case R.id.thirdFl:
+                String vid = (String) view.getTag();
+                if (null == vid) return;
+                VipDetailActivity.startSelf(getVLActivity(), vid, null);
                 break;
             default:
                 break;

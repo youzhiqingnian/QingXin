@@ -48,7 +48,6 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
             return;
-        if (getView() == null) return;
         initView();
     }
 
