@@ -280,12 +280,12 @@ public class VLFragment extends Fragment implements VLMessageManager.VLMessageHa
             return;
         }
         if (VLUtils.threadInMain()) {
-            VLToast.makeText(getActivity(), msg, 2000).show();
+            VLToast.makeText(getVLApplication(), msg, 2000).show();
         } else {
             VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {
                 @Override
                 protected void process(boolean canceled) {
-                    VLToast.makeText(getActivity(), msg, 2000).show();
+                    VLToast.makeText(getVLApplication(), msg, 2000).show();
                 }
             });
         }

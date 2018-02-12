@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +17,11 @@ import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
+
 /**
  * 歆人专享
  * Date 2018-02-05
+ *
  * @author zhikuo1
  */
 public class ExclusiveServiceFragment extends VLFragment implements ServiceListContract.View, SwipeRefreshLayout.OnRefreshListener {
@@ -29,7 +30,6 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
     private ExclusiveServiceListAdapter mAdapter;
     private SwipeRefreshLayout mRefreshLayout;
     private boolean isClear;
-
 
     public ExclusiveServiceFragment() {
     }
@@ -50,45 +50,38 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
             return;
         if (getView() == null) return;
         initView();
-
     }
 
     private void initView() {
         mPresenter = new ExclusiveServicePresenter(this);
-        View mView = getView();
-        VLTitleBar titleBar = null;
-        RecyclerView recyclerView = null;
-        if (mView != null) {
-            titleBar = mView.findViewById(R.id.titleBar);
-            mRefreshLayout = mView.findViewById(R.id.swipeLayout);
-            recyclerView = mView.findViewById(R.id.recyclerView);
-        }
+        if (null == getView()) return;
+        VLTitleBar titleBar = getView().findViewById(R.id.titleBar);
+        RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
+        mRefreshLayout = getView().findViewById(R.id.swipeLayout);
         QingXinTitleBar.init(titleBar, getResources().getString(R.string.exclusive_service));
-        QingXinTitleBar.setLeftReturn(titleBar, getActivity());
-
-
-        if (recyclerView != null) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mAdapter = new ExclusiveServiceListAdapter(null,getActivity());
-            mAdapter.setOnLoadMoreListener(() -> getServiceList(false), recyclerView);
-            recyclerView.setAdapter(mAdapter);
-            //add padding
-            SpaceItemDecoration dividerDecoration = new SpaceItemDecoration(VLUtils.dip2px(18));
-            recyclerView.addItemDecoration(dividerDecoration);
-        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mAdapter = new ExclusiveServiceListAdapter(null, moblile -> VLUtils.gotoDail(getActivity(), moblile));
+        mAdapter.setOnLoadMoreListener(() -> getServiceList(false), recyclerView);
+        recyclerView.setAdapter(mAdapter);
+        //add padding
+        SpaceItemDecoration dividerDecoration = new SpaceItemDecoration(VLUtils.dip2px(18));
+        recyclerView.addItemDecoration(dividerDecoration);
 
         //add header
         ImageView imageView = new ImageView(getActivity());
         imageView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         imageView.setImageResource(R.mipmap.goddess_diary_top_cover);
         mAdapter.addHeaderView(imageView);
-
-//        mAdapter.setOnItemClickListener((adapter, view, position) -> GoddessDiaryDetailActivity.startSelf(getActivity(), mAdapter.getData().get(position).getId(), mResultListener));
         mRefreshLayout.setOnRefreshListener(this);
-        mRefreshLayout.setRefreshing(true);
-        mAdapter.setEmptyView(R.layout.group_empty);
-        getServiceList(true);
+    }
 
+    @Override
+    protected void onVisible(boolean first) {
+        super.onVisible(first);
+        if (first) {
+            mRefreshLayout.setRefreshing(true);
+            getServiceList(true);
+        }
     }
 
     private void getServiceList(boolean isClear) {
@@ -102,7 +95,7 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
 
     @Override
     public void onRefresh() {
-
+        getServiceList(true);
     }
 
     @Override
@@ -112,9 +105,6 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
 
     @Override
     public void onSuccess(ListBean<ServiceBean> service) {
-
-        Log.i("专属服务列表",service.toString());
-
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
             mAdapter.setNewData(service.getItems());

@@ -36,6 +36,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Looper;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.TelephonyManager;
@@ -68,9 +69,8 @@ import com.facebook.drawee.controller.ControllerListener;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
+import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinApplication;
-import com.qingxin.medical.fresco.zoomable.DoubleTapGestureListener;
-import com.qingxin.medical.fresco.zoomable.ZoomableDraweeView;
 import com.vlee78.android.vl.VLAsyncHandler.VLAsyncRes;
 
 import org.json.JSONArray;
@@ -562,6 +562,14 @@ public final class VLUtils {
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + phoneNum));
         context.startActivity(intent);
         return true;
+    }
+
+    public static void gotoDail(@NonNull Context context, String phoneNum) {
+        TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (null != telephonyManager && telephonyManager.getSimState() != TelephonyManager.SIM_STATE_ABSENT) {
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(String.format("tel:%s", phoneNum)));
+            context.startActivity(intent);
+        }
     }
 
     public static final String androidExternalHome(Context context) {

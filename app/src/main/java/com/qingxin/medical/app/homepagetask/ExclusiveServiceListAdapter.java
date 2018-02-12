@@ -1,9 +1,9 @@
 package com.qingxin.medical.app.homepagetask;
 
-import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.view.View;
+import android.text.TextUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -11,19 +11,19 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import java.util.List;
+
 /**
  * Date 2018-02-03
  *
  * @author zhikuo1
  */
-
 public class ExclusiveServiceListAdapter extends BaseQuickAdapter<ServiceBean, BaseViewHolder> {
 
-    private Context mContext;
+    private OnClickConsultListener mClickListener;
 
-    public ExclusiveServiceListAdapter(@Nullable List<ServiceBean> data,Context context) {
+    ExclusiveServiceListAdapter(@Nullable List<ServiceBean> data,OnClickConsultListener onClickConsultListener) {
         super(R.layout.layout_service_item, data);
-        mContext = context;
+        this.mClickListener = onClickConsultListener;
     }
 
     @Override
@@ -31,17 +31,21 @@ public class ExclusiveServiceListAdapter extends BaseQuickAdapter<ServiceBean, B
         SimpleDraweeView headSdv = helper.getView(R.id.headSdv);
         TextView nameTv = helper.getView(R.id.nameTv);
         TextView goodAtTv = helper.getView(R.id.goodAtTv);
-        TextView consultTv = helper.getView(R.id.consultTv);
-
-        headSdv.setImageURI(Uri.parse(item.getThumbnail()));
+        ImageView consultTv = helper.getView(R.id.consultTv);
+        if (!TextUtils.isEmpty(item.getCover())) {
+            headSdv.setImageURI(Uri.parse(item.getCover()));
+        }
         nameTv.setText(item.getName());
-        goodAtTv.setText(mContext.getResources().getString(R.string.good_at) + item.getSummary());
+        goodAtTv.setText(String.format("擅长:%s", item.getGood_at()));
 
-        consultTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
+        consultTv.setOnClickListener(view -> {
+            if (null != mClickListener){
+                mClickListener.onClickConsult(item.getMobile());
             }
         });
+    }
+
+    public interface OnClickConsultListener{
+        void onClickConsult(String moblile);
     }
 }

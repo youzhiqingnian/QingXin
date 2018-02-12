@@ -1,40 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="157dp">
 
     <FrameLayout
+        android:id="@+id/portraitFl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginRight="20dp"
         android:layout_marginStart="15dp"
-        android:orientation="vertical"
-        tools:ignore="UselessParent">
+        android:layout_marginTop="15dp"
+        android:orientation="vertical">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/headSdv"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp" />
+            android:scaleType="centerCrop"
+            app:roundAsCircle="true" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="73dp"
-            android:src="@mipmap/professional_escort_logo"
-            tools:ignore="ContentDescription" />
+            android:layout_gravity="bottom"
+            android:contentDescription="@string/app_name"
+            android:src="@mipmap/professional_escort_logo" />
     </FrameLayout>
 
     <TextView
         android:id="@+id/nameTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="115dp"
-        android:layout_marginStart="115dp"
-        android:layout_marginTop="17dp"
-        android:text="张鑫"
+        android:layout_alignTop="@id/portraitFl"
+        android:layout_toEndOf="@id/portraitFl"
+        android:layout_toRightOf="@id/portraitFl"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="@color/text_color"
         android:textSize="16sp" />
 
@@ -42,34 +47,34 @@
         android:id="@+id/goodAtTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="115dp"
-        android:layout_marginStart="115dp"
-        android:layout_marginTop="47dp"
-        android:lineSpacingExtra="6dp"
+        android:layout_alignLeft="@id/nameTv"
+        android:layout_alignStart="@id/nameTv"
+        android:layout_below="@id/nameTv"
+        android:layout_marginEnd="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:lineSpacingExtra="8dp"
         android:maxLines="2"
-        android:text="擅长：眼部，鼻部，多次陪护经验，多次陪护经验多次陪护经验多次陪护经验多次陪护经验"
         android:textColor="@color/text_color_origin_price"
         android:textSize="12sp" />
 
-    <LinearLayout
+    <View
+        android:id="@+id/divider"
         android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gap_color_gray" />
+
+    <ImageView
+        android:id="@+id/consultTv"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/consultTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="115dp"
-            android:layout_marginStart="115dp"
-            android:layout_marginTop="107dp"
-            android:src="@mipmap/consult_logo"
-            tools:ignore="ContentDescription" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/gap_color_gray" />
-    </LinearLayout>
-</FrameLayout>
+        android:layout_above="@id/divider"
+        android:layout_alignLeft="@id/nameTv"
+        android:layout_alignStart="@id/nameTv"
+        android:layout_marginBottom="20dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/app_name"
+        android:src="@mipmap/ic_consult" />
+</RelativeLayout>
