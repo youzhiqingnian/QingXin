@@ -238,6 +238,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="22dp"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:textColor="@color/text_color_blue"
                         android:textSize="16sp"
                         android:textStyle="bold" />

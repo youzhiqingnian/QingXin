@@ -26,6 +26,7 @@ public class MedicalBeautyActivity extends QingXinActivity implements MedicalBea
     private MedicalBeautyListAdapter mListAdapter;
     private MedicalBeautyPresenter mMedicalBeautyPresenter;
     private MedicalBeautyListBean mCurrentSelItem;
+    private MedicalBeautyDetailAdapter mMedicalBeautyDetailAdapter;
 
     public static void startSelf(@NonNull Context context) {
         Intent intent = new Intent(context, MedicalBeautyActivity.class);
@@ -55,7 +56,11 @@ public class MedicalBeautyActivity extends QingXinActivity implements MedicalBea
             mCurrentSelItem = (MedicalBeautyListBean) adapter.getData().get(position);
             mCurrentSelItem.setSelect(true);
             adapter.notifyItemChanged(mCurrentSelItem.getPosition());
+            mMedicalBeautyPresenter.getMedicalBeautySecondList(mCurrentSelItem.getId());
         });
+
+        mMedicalBeautyDetailAdapter = new MedicalBeautyDetailAdapter(id -> MedicalBeautyDetailActivity.startSelf(MedicalBeautyActivity.this, id));
+        itemRecyclerView.setAdapter(mMedicalBeautyDetailAdapter);
     }
 
     @Override
@@ -82,11 +87,17 @@ public class MedicalBeautyActivity extends QingXinActivity implements MedicalBea
             if (index == 0) {
                 medicalBeautyListBean.setSelect(true);
                 mCurrentSelItem = medicalBeautyListBean;
+                mMedicalBeautyPresenter.getMedicalBeautySecondList(mCurrentSelItem.getId());
             }
             medicalBeautyListBean.setPosition(index);
             index++;
         }
         mListAdapter.addData(medicalBeautyListBeans);
+    }
+
+    @Override
+    public void onGetSecondarySuccess(ListBean<MedicalBeautyDetailBean> medicalBeautyDetailBeen) {
+        mMedicalBeautyDetailAdapter.setNewData(medicalBeautyDetailBeen.getItems());
     }
 
     @Override

@@ -88,11 +88,15 @@
         <activity
             android:name=".home.medicalbeauty.MedicalBeautyActivity"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".home.districtsel.StrictSelDetailActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:windowSoftInputMode="adjustPan"
-            />
+            android:windowSoftInputMode="adjustPan" />
+
+        <activity
+            android:name=".home.medicalbeauty.MedicalBeautyDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -18,4 +18,6 @@ public interface MedicalStrictService {
     @GET("/wiki")
     Observable<ContentBean<ListBean<MedicalBeautyListBean>>> getMedicalBeautyList(@Query("parent") String parent);
 
+    @GET("/wiki")
+    Observable<ContentBean<ListBean<MedicalBeautyDetailBean>>> getMedicalBeautySecondaryList(@Query("parent") String parent, @Query("with") String children);
 }
