@@ -4,6 +4,7 @@ import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.home.ListBean;
 
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -17,5 +18,8 @@ public interface MedicalStrictService {
 
     @GET("/wiki")
     Observable<ContentBean<ListBean<MedicalBeautyListBean>>> getMedicalBeautyList(@Query("parent") String parent);
+
+    @GET("/wiki/{id}")
+    Observable<ContentBean<MedicalBeautyDetailBean>> getMedicalBeautyDetail(@Path("id") String id);
 
 }
