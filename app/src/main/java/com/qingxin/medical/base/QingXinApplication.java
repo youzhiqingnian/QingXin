@@ -3,9 +3,9 @@ package com.qingxin.medical.base;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.fresco.QingXinFrescoModel;
+import com.qingxin.medical.home.medicalbeauty.MedicalBeautyModel;
 import com.qingxin.medical.map.GaoDeMapModel;
 import com.qingxin.medical.map.LocationService;
 import com.qingxin.medical.retrofit.RetrofitModel;
@@ -56,10 +56,7 @@ public class QingXinApplication extends VLApplication {
         manager.registerModel(QingXinFrescoModel.class);
         manager.registerModel(RetrofitModel.class);
         manager.registerModel(UserModel.class);
-
-        // 初始化fresco
-        Fresco.initialize(this);
-
+        manager.registerModel(MedicalBeautyModel.class);
     }
 
     @Override

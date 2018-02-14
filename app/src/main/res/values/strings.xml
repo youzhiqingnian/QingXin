@@ -43,6 +43,7 @@
     <!--医美百科-->
     <string name="characteristic">特点</string>
     <string name="attention">注意</string>
+    <string name="expand_all">展开全部</string>
     <string name="program_intro">项目介绍</string>
     <string name="tips_before_operation">术前锦囊</string>
     <string name="tips_after_operation">术后锦囊</string>

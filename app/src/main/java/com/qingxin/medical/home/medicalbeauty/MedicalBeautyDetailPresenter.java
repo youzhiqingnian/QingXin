@@ -2,6 +2,7 @@ package com.qingxin.medical.home.medicalbeauty;
 
 import android.support.annotation.NonNull;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.home.ItemBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.vlee78.android.vl.VLApplication;
 import rx.Observer;
@@ -43,7 +44,7 @@ public class MedicalBeautyDetailPresenter implements MedicalBeautyDetailContract
         mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(MedicalStrictService.class).getMedicalBeautyDetail(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ContentBean<MedicalBeautyDetailBean>>() {
+                .subscribe(new Observer<ContentBean<ItemBean<MedicalBeautyRealDetailBean>>>() {
                     @Override
                     public void onCompleted() {
 
@@ -55,7 +56,7 @@ public class MedicalBeautyDetailPresenter implements MedicalBeautyDetailContract
                     }
 
                     @Override
-                    public void onNext(ContentBean<MedicalBeautyDetailBean> contentBean) {
+                    public void onNext(ContentBean<ItemBean<MedicalBeautyRealDetailBean>> contentBean) {
                         mMedicalBeautyDetailView.onSucess(contentBean.getContent());
                     }
                 })

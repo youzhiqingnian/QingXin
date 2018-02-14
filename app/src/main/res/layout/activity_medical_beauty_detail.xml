@@ -25,30 +25,32 @@
             android:orientation="vertical">
 
             <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/coverSdv"
                 android:layout_width="match_parent"
                 android:layout_height="140dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
                 app:roundedCornerRadius="4dp" />
 
             <TextView
+                android:id="@+id/nameTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="18dp"
-                android:text="水光针"
                 android:textColor="@color/text_color"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/productIntroTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="13dp"
                 android:lineSpacingExtra="6dp"
-                android:text="我想要吃东西吃点东西吃好多好多东西，吃美食，吃想的喝辣的"
                 android:textColor="@color/text_color"
                 android:textSize="14sp"
 
@@ -68,6 +70,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/categoryTv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -76,11 +79,11 @@
                     android:gravity="center_horizontal"
                     android:paddingBottom="28dp"
                     android:paddingTop="28dp"
-                    android:text="注射类"
                     android:textColor="@color/text_color_hint"
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/painLevel"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -89,11 +92,11 @@
                     android:gravity="center_horizontal"
                     android:paddingBottom="28dp"
                     android:paddingTop="28dp"
-                    android:text="疼痛1星"
                     android:textColor="@color/text_color_hint"
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/takeEffectDurationTv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -102,11 +105,11 @@
                     android:gravity="center_horizontal"
                     android:paddingBottom="28dp"
                     android:paddingTop="28dp"
-                    android:text="3天见效"
                     android:textColor="@color/text_color_hint"
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/recoveryDurationTv"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -115,7 +118,6 @@
                     android:gravity="center_horizontal"
                     android:paddingBottom="28dp"
                     android:paddingTop="28dp"
-                    android:text="3天恢复"
                     android:textColor="@color/text_color_hint"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -141,6 +143,7 @@
                 android:background="@color/line_color" />
 
             <TextView
+                android:id="@+id/characteristicsTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="7sp"
@@ -148,7 +151,6 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:paddingTop="14dp"
-                android:text="我爱你，塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
@@ -173,6 +175,7 @@
                 android:background="@color/line_color" />
 
             <TextView
+                android:id="@+id/attentionsTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="7sp"
@@ -180,7 +183,6 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:paddingTop="14dp"
-                android:text="我爱你，塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
@@ -205,6 +207,7 @@
                 android:background="@color/line_color" />
 
             <TextView
+                android:id="@+id/programIntroTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="7sp"
@@ -212,7 +215,6 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:paddingTop="14dp"
-                android:text="我爱你，塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
@@ -221,10 +223,12 @@
                 android:layout_height="wrap_content">
 
                 <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/programCoverSdv"
                     android:layout_width="match_parent"
                     android:layout_height="64dp" />
 
                 <LinearLayout
+                    android:id="@+id/expandOrShrinkLl"
                     android:layout_width="match_parent"
                     android:layout_height="44dp"
                     android:layout_alignParentBottom="true"
@@ -236,7 +240,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawableRight="@mipmap/expand_arrow_down"
-                        android:text="展开全部"
+                        android:text="@string/expand_all"
                         android:textColor="@color/text_color_hint"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -271,7 +275,6 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:paddingTop="14dp"
-                android:text="我爱你，塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪塞北的雪"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 

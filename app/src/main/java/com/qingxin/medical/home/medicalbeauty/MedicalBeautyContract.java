@@ -15,10 +15,14 @@ class MedicalBeautyContract {
     interface View extends BaseView<Presenter> {
         void onSucess(ListBean<MedicalBeautyListBean> medicalBeautyListBeen);
 
+        void onGetSecondarySuccess(ListBean<MedicalBeautyDetailBean> medicalBeautyDetailBeen);
+
         void onError(String result);
     }
 
     interface Presenter extends BasePresenter {
         void getMedicalBeautyList(String id);
+
+        void getMedicalBeautySecondList(String id);
     }
 }

@@ -2,7 +2,7 @@ package com.qingxin.medical.home.medicalbeauty;
 
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
-import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.home.ItemBean;
 
 /**
  * 医美百科详情Presenter
@@ -14,7 +14,7 @@ class MedicalBeautyDetailContract {
 
     interface View extends BaseView<Presenter> {
 
-        void onSucess(MedicalBeautyDetailBean medicalBeautyDetailBeen);
+        void onSucess(ItemBean<MedicalBeautyRealDetailBean> medicalBeautyDetailBeen);
 
         void onError(String result);
     }
