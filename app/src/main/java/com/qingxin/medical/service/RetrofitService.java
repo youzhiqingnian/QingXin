@@ -98,12 +98,10 @@ public interface RetrofitService {
     /**
      * @param limit 查询条数 非必填   默认值 10
      * @param skip  跳过第几条数据 非必填   默认值 0
-     * @param actions 类型（增加的（+） 减少的（-）
-     * @param use 用途 管理员操作的（admin）签到（checkin）
      * @return
      */
     @GET("/mem/coinlogs")
-    Observable<ContentBean<ListBean<CoinLogBean>>> getCoinLogList(@Query("limit") int limit, @Query("skip") int skip, @Query("actions") String actions, @Query("use") String use);
+    Observable<ContentBean<ListBean<CoinLogBean>>> getCoinLogList(@Query("limit") int limit, @Query("skip") int skip);
 
     /**
      * 每日签到

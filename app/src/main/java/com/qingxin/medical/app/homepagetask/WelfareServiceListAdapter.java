@@ -21,10 +21,22 @@ public class WelfareServiceListAdapter extends BaseQuickAdapter<CoinLogBean, Bas
 
     @Override
     protected void convert(BaseViewHolder helper, CoinLogBean item) {
-        TextView coinProgramTv = helper.getView(R.id.coinProgramTv);
-        TextView dateTimeTv = helper.getView(R.id.dateTimeTv);
-        TextView coinCountTv = helper.getView(R.id.coinCountTv);
-//        nameTv.setText(item.getName());
+        TextView mCoinProgramTv = helper.getView(R.id.coinProgramTv);
+        TextView mDateTimeTv = helper.getView(R.id.dateTimeTv);
+        TextView mCoinCountTv = helper.getView(R.id.coinCountTv);
+        mCoinProgramTv.setText(item.getRemark());
+
+        mDateTimeTv.setText(item.getCreated_at());
+
+        int coinCountColor = mContext.getResources().getColor(R.color.text_color_blue);
+
+        if("-".equals(item.getAction())){
+            coinCountColor = mContext.getResources().getColor(R.color.text_color_blue);
+        }
+
+        mCoinCountTv.setTextColor(coinCountColor);
+
+        mCoinCountTv.setText(item.getAction()+item.getAmount());
 
     }
 

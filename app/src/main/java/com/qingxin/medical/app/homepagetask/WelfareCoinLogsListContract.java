@@ -25,7 +25,7 @@ public class WelfareCoinLogsListContract {
 
     public interface Presenter extends BasePresenter {
 
-        void getCoinLogList(int limit, int skip, String actions, String use);
+        void getCoinLogList(int limit, int skip);
 
         void checkIn();
     }

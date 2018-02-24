@@ -42,8 +42,8 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
     }
 
     @Override
-    public void getCoinLogList(int limit, int skip, String actions, String use) {
-        mCompositeSubscription.add(NetRequestListManager.getCoinLogList(limit, skip, actions, use)
+    public void getCoinLogList(int limit, int skip) {
+        mCompositeSubscription.add(NetRequestListManager.getCoinLogList(limit, skip)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<ListBean<CoinLogBean>>>() {

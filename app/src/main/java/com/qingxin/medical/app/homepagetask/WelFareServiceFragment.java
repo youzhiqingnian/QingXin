@@ -104,7 +104,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         if (isClear) {
             mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
-        mPresenter.getCoinLogList(QingXinConstants.ROWS, skip, "", "");
+        mPresenter.getCoinLogList(QingXinConstants.ROWS, skip);
     }
 
     @Override
@@ -129,6 +129,11 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     @Override
     public void onSuccess(ListBean<CoinLogBean> coinLog) {
         Log.i("福利社的bean", coinLog.toString());
+
+        if(coinLog != null && coinLog.getCount() > 0){
+            mQingxinCoinAmountTv.setText(String.valueOf(coinLog.getItems().get(coinLog.getCount() - 1).getBalance()));
+        }
+
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
             mAdapter.setNewData(coinLog.getItems());
@@ -141,6 +146,8 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         } else {
             mAdapter.loadMoreComplete();
         }
+
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)

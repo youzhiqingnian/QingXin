@@ -11,6 +11,8 @@ public class ContentBean<T> extends BaseBean {
 
     private String msg;
 
+    private String error;
+
     private T content;
 
     public String getCode() {
@@ -29,6 +31,14 @@ public class ContentBean<T> extends BaseBean {
         this.msg = msg;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
     public T getContent() {
         return content;
     }
@@ -42,6 +52,7 @@ public class ContentBean<T> extends BaseBean {
         return "ContentBean{" +
                 "code='" + code + '\'' +
                 ", msg='" + msg + '\'' +
+                ", error='" + error + '\'' +
                 ", content=" + content +
                 '}';
     }
