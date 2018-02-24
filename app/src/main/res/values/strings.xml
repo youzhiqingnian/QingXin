@@ -48,5 +48,22 @@
     <string name="tips_before_operation">术前锦囊</string>
     <string name="tips_after_operation">术后锦囊</string>
 
+    <!--福利社-->
+    <string name="welfare_home">福利社</string>
+    <string name="my_qingxin_coin">我的青歆币</string>
+    <string name="qingxin_coin_rule">青歆币规则</string>
+    <string name="apply_withdrawals">申请提现</string>
+    <string name="sign_in_every_day">每日签到</string>
+    <string name="share_dairy">分享日记</string>
+    <string name="invite_new_user">邀请歆人</string>
+    <string name="recommend_user">推荐用户</string>
+    <string name="click_to_sign">点击签到</string>
+    <string name="already_signed">已签到</string>
+    <string name="release_dairy">发布日记</string>
+    <string name="click_to_invite">点击邀请</string>
+    <string name="click_to_recommend">点击推荐</string>
+    <string name="qingxin_coin_detail">青歆币明细</string>
+    <string name="plus_300">+300</string>
+    <string name="plus_1000">+1000</string>
 
 </resources>
