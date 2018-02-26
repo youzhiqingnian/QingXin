@@ -1,8 +1,12 @@
 package com.qingxin.medical.app.login;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
@@ -12,19 +16,25 @@ import com.qingxin.medical.user.UserModel;
 import com.qingxin.medical.user.UserTokenBean;
 
 /**
- *
  * Date 2018-02-03
+ *
  * @author zhikuo1
  */
-public class LoginActivity extends QingXinActivity implements View.OnClickListener, LoginContract.LoginView{
+public class LoginActivity extends QingXinActivity implements View.OnClickListener, LoginContract.LoginView {
 
     public boolean isLogin;
     public LoginPresenter mLoginPresenter;
     public Button mLoginTv;
 
+    public static final String LOGIN_ACTION = "com.archie.action.LOGIN_ACTION";
+    private boolean homeFlag;
+    private int currentFgPosition = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        dealIntent();
 
         setContentView(R.layout.activity_login);
 
@@ -36,9 +46,31 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
 
     }
 
-    private void initLoginStatus(){
+    private void dealIntent() {
+
+        homeFlag = getIntent().getBooleanExtra("home", false);
+        currentFgPosition = getIntent().getIntExtra("position", 0);
+
+    }
+
+    private void initLoginStatus() {
         isLogin = QingXinApplication.getInstance().getLoginUser() != null;
         mLoginTv.setText(isLogin ? "退出登陆" : "登陆");
+    }
+
+    private void sendBroadCast(int flag) {
+        Intent intent = new Intent(LOGIN_ACTION);
+        if(flag == 1){
+            intent.putExtra("refresh", true);
+            intent.putExtra("position", 1);
+        }else{
+            intent.putExtra("position", currentFgPosition);
+        }
+
+        LocalBroadcastManager.getInstance(this).sendBroadcast(
+                intent
+        );
+        finish();
     }
 
     @Override
@@ -69,7 +101,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
         getModel(UserModel.class).onLoginSuccess(userTokenBean.getMem());
         initLoginStatus();
         showToast("登陆成功");
-        finish();
+        sendBroadCast(1);
     }
 
     @Override
@@ -81,6 +113,19 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
     public void onDestroy() {
         super.onDestroy();
         mLoginPresenter.unsubscribe();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (homeFlag) {
+                sendBroadCast(0);
+            } else {
+                finish();
+            }
+
+        }
+        return true;
     }
 
 }

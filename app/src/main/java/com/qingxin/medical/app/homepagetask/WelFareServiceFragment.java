@@ -1,9 +1,14 @@
 package com.qingxin.medical.app.homepagetask;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +24,7 @@ import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.DiaryPublishActivity;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
+import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.home.ListBean;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLFragment;
@@ -40,6 +46,8 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
     private TextView mQingxinCoinAmountTv;
     private TextView mClickToSignTv;
+    private LoginBroadcastReceiver mReceiver;
+
 
     public WelFareServiceFragment() {
     }
@@ -61,7 +69,19 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         if (getView() == null) return;
 
         initView();
+        initBroadcastReceiver();
     }
+
+    /**
+     * 初始化广播接收者
+     */
+    private void initBroadcastReceiver() {
+        mReceiver = new LoginBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(LoginActivity.LOGIN_ACTION);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
+
+    }
+
 
     private void initView() {
         mPresenter = new WelfareCoinLogPresenter(this);
@@ -179,6 +199,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     public void onDestroy() {
         super.onDestroy();
         mPresenter.unsubscribe();
+        unRegisterLoginBroadcast();
     }
 
     @Override
@@ -223,4 +244,25 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
         }
     };
+
+    //取消注册
+    private void unRegisterLoginBroadcast() {
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReceiver);
+    }
+
+    /**
+     * 自定义广播接受器,用来处理登录广播
+     */
+    private class LoginBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //处理我们具体的逻辑,更新UI
+            boolean isRefresh = intent.getBooleanExtra("refresh", false);
+            if (isRefresh) {
+                getServiceList(true);
+            }
+        }
+    }
+
 }

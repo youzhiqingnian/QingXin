@@ -1,8 +1,11 @@
 package com.qingxin.medical.app.homepagetask;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,7 +37,10 @@ public class HomePageTaskActivity extends QingXinActivity {
 
     private VLPagerView mFragmentPager;
     private VLStatedButtonBar mButtonBar;
+    private LoginBroadcastReceiver mReceiver;
     private static final String INDEX = "INDEX";
+
+    private int mCurrentFgPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +57,18 @@ public class HomePageTaskActivity extends QingXinActivity {
         mButtonBar.setStatedButtonBarDelegate(new MainBottomBarDelegate(this));
         mFragmentPager.setPageChangeListener(position -> mButtonBar.setChecked(position));
         mButtonBar.setChecked(getIntent().getIntExtra(INDEX, 0));
+
+        initBroadcastReceiver();
+    }
+
+    /**
+     * 初始化广播接收者
+     */
+    private void initBroadcastReceiver() {
+        mReceiver = new LoginBroadcastReceiver();
+        IntentFilter intentFilter = new IntentFilter(LoginActivity.LOGIN_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver,intentFilter);
+
     }
 
 
@@ -133,9 +151,41 @@ public class HomePageTaskActivity extends QingXinActivity {
             if (position == 1 && QingXinApplication.getInstance().getLoginUser() == null) {
                 // 没登录
                 Intent intent = new Intent(HomePageTaskActivity.this, LoginActivity.class);
+                intent.putExtra("home",true);
+                intent.putExtra("position",mCurrentFgPosition);
                 startActivity(intent);
             } else {
+                mCurrentFgPosition = position;
                 mFragmentPager.gotoPage(position, true);
+            }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unRegisterLoginBroadcast();
+    }
+
+    //取消注册
+    private void unRegisterLoginBroadcast(){
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
+    }
+
+    /**
+     * 自定义广播接受器,用来处理登录广播
+     */
+    private class LoginBroadcastReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //处理我们具体的逻辑,更新UI
+            int currentFgPosition = intent.getIntExtra("position",-1);
+            if(currentFgPosition != -1){
+                mButtonBar.setChecked(currentFgPosition);
+                if(currentFgPosition == 1){
+                    mFragmentPager.gotoPage(1, true);
+                }
             }
         }
     }
