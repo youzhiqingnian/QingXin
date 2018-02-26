@@ -3,6 +3,8 @@ package com.qingxin.medical.service.manager;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
+import com.qingxin.medical.app.homepagetask.model.CheckInBean;
+import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import com.qingxin.medical.app.vip.AmountBean;
@@ -76,6 +78,26 @@ public class NetRequestListManager {
      */
     public static Observable<ContentBean<ListBean<ServiceBean>>> getExclusiveService(int limit, int skip) {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getExclusiveService(limit, skip);
+    }
+
+    /**
+     * 获取青歆币操作记录
+     *
+     * @param limit 查询条数 非必填   默认值 10
+     * @param skip  跳过第几条数据 非必填   默认值 0
+     * @return
+     */
+    public static Observable<ContentBean<ListBean<CoinLogBean>>> getCoinLogList(int limit, int skip) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getCoinLogList(limit, skip);
+    }
+
+    /**
+     * 每日签到
+     *
+     * @return
+     */
+    public static Observable<ContentBean<CheckInBean>> checkIn() {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).checkIn();
     }
 
 }

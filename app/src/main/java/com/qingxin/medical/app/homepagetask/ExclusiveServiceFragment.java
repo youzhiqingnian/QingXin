@@ -69,7 +69,7 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
         //add header
         ImageView imageView = new ImageView(getActivity());
         imageView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        imageView.setImageResource(R.mipmap.goddess_diary_top_cover);
+        imageView.setImageResource(R.mipmap.exclusive_service_top_cover);
         mAdapter.addHeaderView(imageView);
         mRefreshLayout.setOnRefreshListener(this);
     }
