@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class AgencyAdapter extends BaseQuickAdapter<StrictSelBean,BaseViewHolder>{
 
-    public AgencyAdapter(@Nullable List<StrictSelBean> data) {
+    AgencyAdapter(@Nullable List<StrictSelBean> data) {
         super(R.layout.adapter_agency, data);
     }
 
@@ -29,8 +29,7 @@ public class AgencyAdapter extends BaseQuickAdapter<StrictSelBean,BaseViewHolder
         TextView descrTv = helper.getView(R.id.descrTv);
 
         simpleDraweeView.setImageURI(Uri.parse(item.getThumbnail()));
-        //TODO 设置播放次数
-        //playCountTv.setText();
+        playCountTv.setText(String.format("%s 次播放", item.getOrder()));
         nameTv.setText(item.getName());
         descrTv.setText(item.getSummary());
     }

@@ -25,15 +25,9 @@ public class VLToast {
     private int duration = 10;
     private int animStyleId = android.R.style.Animation_Toast;
 
-    private final Runnable timerRunnable = new Runnable() {
+    private final Runnable timerRunnable = this::removeView;
 
-        @Override
-        public void run() {
-            removeView();
-        }
-    };
-
-    private VLToast(Context context) {
+    private VLToast() {
         this.mContext = VLApplication.instance();
         mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         init();
@@ -144,28 +138,28 @@ public class VLToast {
     }
 
     public static VLToast makeText(Context context, String content, int duration) {
-        VLToast helper = new VLToast(context);
+        VLToast helper = new VLToast();
         helper.setDuration(duration);
         helper.setContent(content);
         return helper;
     }
 
     public static VLToast makeText(Context context, String content) {
-        VLToast helper = new VLToast(context);
+        VLToast helper = new VLToast();
         helper.setDuration(1000);
         helper.setContent(content);
         return helper;
     }
 
     public static VLToast makeText(Context context, View view, int duration) {
-        VLToast helper = new VLToast(context);
+        VLToast helper = new VLToast();
         helper.setDuration(duration);
         helper.setView(view);
         return helper;
     }
 
     public static VLToast makeText(Context context, int strId, int duration) {
-        VLToast helper = new VLToast(context);
+        VLToast helper = new VLToast();
         helper.setDuration(duration);
         helper.setContent(context.getString(strId));
         return helper;

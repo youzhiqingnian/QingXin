@@ -17,6 +17,7 @@ import com.vlee78.android.vl.VLModelManager;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -121,4 +122,16 @@ public class QingXinApplication extends VLApplication {
         return this.getModel(GaoDeMapModel.class);
     }
 
+    public String getCachePath() {
+        File cacheDir;
+        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+            cacheDir = getExternalCacheDir();
+        else
+            cacheDir = getCacheDir();
+        if (cacheDir != null) {
+            if (!cacheDir.exists()) cacheDir.mkdirs();
+            return cacheDir.getAbsolutePath();
+        }
+        return "";
+    }
 }
