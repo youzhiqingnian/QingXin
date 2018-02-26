@@ -1,29 +1,28 @@
 package com.qingxin.medical.app.homepagetask;
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.LoginFilter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.goddessdiary.DiaryPublishActivity;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.home.ListBean;
-import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
+import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLTitleBar;
-import com.vlee78.android.vl.VLUtils;
 
 /**
  * 福利
@@ -130,7 +129,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     public void onSuccess(ListBean<CoinLogBean> coinLog) {
         Log.i("福利社的bean", coinLog.toString());
 
-        if(coinLog != null && coinLog.getCount() > 0){
+        if (coinLog != null && coinLog.getCount() > 0) {
             mQingxinCoinAmountTv.setText(String.valueOf(coinLog.getItems().get(coinLog.getCount() - 1).getBalance()));
         }
 
@@ -153,7 +152,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onSuccess(CheckInBean checkIn) {
-        Log.i("每日签到",checkIn.toString());
+        Log.i("每日签到", checkIn.toString());
         mClickToSignTv.setText(getActivity().getString(R.string.already_signed));
         mClickToSignTv.setBackground(getActivity().getResources().getDrawable(R.drawable.gray_button));
         mClickToSignTv.setTextColor(getActivity().getResources().getColor(R.color.text_color_origin_price));
@@ -211,6 +210,17 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
 
                 break;
+            case R.id.releaseDairyTv:
+                DiaryPublishActivity.startSelf(getVLActivity(), mActivityResultListener);
+                break;
+            default:
+                break;
         }
     }
+
+    private VLActivity.VLActivityResultListener mActivityResultListener = (requestCode, resultCode, intent) -> {
+        if (requestCode == DiaryPublishActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {//发布日记成功
+
+        }
+    };
 }

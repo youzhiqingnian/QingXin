@@ -97,6 +97,14 @@
         <activity
             android:name=".home.medicalbeauty.MedicalBeautyDetailActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".app.goddessdiary.DiaryPublishActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".album.LocalAlbumActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".album.LocalAlbumDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
-
 </manifest>

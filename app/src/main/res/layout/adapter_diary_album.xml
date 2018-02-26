@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="88dp"
+    android:layout_height="88dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginStart="5dp">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/simpleDraweeView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/deleteIv"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:contentDescription="@string/app_name"
+        android:src="@mipmap/ic_diary_album_delete" />
+
+    <TextView
+        android:id="@+id/titleTv"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:layout_gravity="bottom"
+        android:background="#59000000"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_12" />
+
+</FrameLayout>
