@@ -7,8 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.mine.MineFragment;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
@@ -18,6 +21,7 @@ import com.vlee78.android.vl.VLUtils;
 /**
  * HomeActivity
  * Date 2018-02-05
+ *
  * @author zhikuo1
  */
 public class HomePageTaskActivity extends QingXinActivity {
@@ -126,7 +130,13 @@ public class HomePageTaskActivity extends QingXinActivity {
 
         @Override
         public void onStatedButtonBarChanged(VLStatedButtonBar buttonBar, int position) {
-            mFragmentPager.gotoPage(position, true);
+            if (position == 1 && QingXinApplication.getInstance().getLoginUser() == null) {
+                // 没登录
+                Intent intent = new Intent(HomePageTaskActivity.this, LoginActivity.class);
+                startActivity(intent);
+            } else {
+                mFragmentPager.gotoPage(position, true);
+            }
         }
     }
 }

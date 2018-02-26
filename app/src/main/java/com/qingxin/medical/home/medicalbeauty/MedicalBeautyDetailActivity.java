@@ -93,7 +93,7 @@ public class MedicalBeautyDetailActivity extends QingXinActivity implements Medi
 
     public void setData(ItemBean<MedicalBeautyRealDetailBean> data) {
         SimpleDraweeView mCoverSdv = findViewById(R.id.coverSdv);
-        SimpleDraweeView mProgramCoverSdv = findViewById(R.id.programCoverSdv);
+//        SimpleDraweeView mProgramCoverSdv = findViewById(R.id.programCoverSdv);
         TextView mNameTv = findViewById(R.id.nameTv);
         TextView mProductIntroTv = findViewById(R.id.productIntroTv);
         TextView mCategoryTv = findViewById(R.id.categoryTv);
@@ -105,13 +105,12 @@ public class MedicalBeautyDetailActivity extends QingXinActivity implements Medi
         TextView mProgramIntroTv = findViewById(R.id.programIntroTv);
         TextView mTipsBeforeOperationTv = findViewById(R.id.tipsBeforeOperationTv);
         TextView mTipsAfterOperationTv = findViewById(R.id.tipsAfterOperationTv);
-        LinearLayout mExpandOrShrinkLl = findViewById(R.id.expandOrShrinkLl);
+//        LinearLayout mExpandOrShrinkLl = findViewById(R.id.expandOrShrinkLl);
 
         MedicalBeautyRealDetailBean.DetailBean detailBean = data.getItem().getDetail();
         mCoverSdv.setImageURI(Uri.parse(detailBean.getCover()));
         mNameTv.setText(data.getItem().getName());
-//        mProductIntroTv.setText(detailBean.getIcontxt());
-//        mCategoryTv.setText(detailBean.get);
+//        mProductIntroTv.setText(Html.fromHtml(detailBean.getIcontxt()));
 
 
         if (!TextUtils.isEmpty(detailBean.getIcontxt()) && detailBean.getIcontxt().contains(",")) {

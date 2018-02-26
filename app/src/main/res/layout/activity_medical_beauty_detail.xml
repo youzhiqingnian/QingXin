@@ -218,7 +218,7 @@
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
-            <FrameLayout
+            <!--<FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -244,7 +244,7 @@
                         android:textColor="@color/text_color_hint"
                         android:textSize="12sp" />
                 </LinearLayout>
-            </FrameLayout>
+            </FrameLayout>-->
 
             <View
                 android:layout_width="match_parent"
