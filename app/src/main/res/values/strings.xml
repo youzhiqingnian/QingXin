@@ -71,4 +71,19 @@
     <string name="plus_300">+300</string>
     <string name="plus_1000">+1000</string>
 
+    <!--推荐用户-->
+    <string name="star_tag">*</string>
+    <string name="user_name">用户姓名</string>
+    <string name="please_input_username">请输入用户姓名</string>
+    <string name="cellphone_num">手机号码</string>
+    <string name="please_input_cellphone_num">请输入手机号码</string>
+    <string name="intention_program">意向项目</string>
+    <string name="please_choose_intention_program">请选择意向项目</string>
+    <string name="intention_hospital">意向医院</string>
+    <string name="please_choose_intention_hospital">请选择意向医院</string>
+    <string name="remark_gap">备&#160;&#160;&#160;&#8201;&#160;&#160;&#160;&#8201;注</string>
+    <string name="please_input_remark_gap">请输入备注</string>
+    <string name="ensure_submit">确定提交</string>
+    <string name="recommend_success">推荐成功</string>
+
 </resources>

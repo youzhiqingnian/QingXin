@@ -6,6 +6,7 @@ import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
+import com.qingxin.medical.app.homepagetask.model.RecommendResultBean;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import com.qingxin.medical.app.vip.AmountBean;
 import com.qingxin.medical.app.vip.VipDetailBean;
@@ -13,7 +14,10 @@ import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.home.ListBean;
 
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -111,5 +115,17 @@ public interface RetrofitService {
     @GET("/mem/checkin")
     Observable<ContentBean<CheckInBean>> checkIn();
 
+    /**
+     * 推荐用户
+     * @param name 用户姓名
+     * @param mobile 用户手机号
+     * @param product_id 意向产品id
+     * @param inthos 意向医院
+     * @param remark 备注
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/mem/recomem")
+    Observable<ContentBean<RecommendResultBean>> submitRecommendUser(@Field("name")String name, @Field("mobile")String mobile, @Field("product_id")String product_id, @Field("inthos")String inthos, @Field("remark")String remark);
 
 }

@@ -26,6 +26,7 @@ import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.home.ListBean;
+import com.qingxin.medical.service.MyBroadCastReceiver;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLTitleBar;
@@ -36,7 +37,7 @@ import com.vlee78.android.vl.VLTitleBar;
  *
  * @author zhikuo1
  */
-public class WelFareServiceFragment extends VLFragment implements WelfareCoinLogsListContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class WelFareServiceFragment extends VLFragment implements WelfareCoinLogsListContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, MyBroadCastReceiver.OnReceiverCallbackListener  {
 
 
     private WelfareCoinLogsListContract.Presenter mPresenter;
@@ -46,7 +47,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
     private TextView mQingxinCoinAmountTv;
     private TextView mClickToSignTv;
-    private LoginBroadcastReceiver mReceiver;
+    private MyBroadCastReceiver mReceiver;
 
 
     public WelFareServiceFragment() {
@@ -76,9 +77,10 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
      * 初始化广播接收者
      */
     private void initBroadcastReceiver() {
-        mReceiver = new LoginBroadcastReceiver();
+        mReceiver = new MyBroadCastReceiver();
         IntentFilter intentFilter = new IntentFilter(LoginActivity.LOGIN_ACTION);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
+        mReceiver.setReceiverListener(this);
 
     }
 
@@ -224,12 +226,10 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
             case R.id.clickToInviteTv:
                 // 点击邀请
 
-
                 break;
             case R.id.clickToRecommendTv:
                 // 点击推荐
-
-
+                RecommendUserActivity.startSelf(getVLActivity(),mActivityResultListener);
                 break;
             case R.id.releaseDairyTv:
                 DiaryPublishActivity.startSelf(getVLActivity(), mActivityResultListener);
@@ -250,18 +250,11 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReceiver);
     }
 
-    /**
-     * 自定义广播接受器,用来处理登录广播
-     */
-    private class LoginBroadcastReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            //处理我们具体的逻辑,更新UI
-            boolean isRefresh = intent.getBooleanExtra("refresh", false);
-            if (isRefresh) {
-                getServiceList(true);
-            }
+    @Override
+    public void receiverUpdata(Intent intent) {
+        boolean isRefresh = intent.getBooleanExtra("refresh", false);
+        if (isRefresh) {
+            getServiceList(true);
         }
     }
 
