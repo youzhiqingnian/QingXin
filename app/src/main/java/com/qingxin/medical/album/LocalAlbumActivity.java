@@ -5,21 +5,31 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.Display;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.common.ResizeOptions;
+import com.facebook.imagepipeline.common.RotationOptions;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.listener.OnItemClickListener;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
+import com.vlee78.android.vl.VLUtils;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,16 +40,15 @@ import java.util.Map;
  */
 public class LocalAlbumActivity extends QingXinActivity {
 
-    public static void startSelf(@NonNull Context context){
-        Intent intent = new Intent(context,LocalAlbumActivity.class);
+    public static void startSelf(@NonNull Context context) {
+        Intent intent = new Intent(context, LocalAlbumActivity.class);
         context.startActivity(intent);
     }
 
-    private ListView mListView;
+    private RecyclerView mRecyclerView;
     private LocalImageHelper helper;
     private List<String> folderNames;
     public static final String LOCAL_FOLDER_NAME = "local_folder_name";//跳转到相册页的文件夹名称
-    private boolean isDestroy;
     private int mMaxChoose = 3;
 
     @Override
@@ -49,18 +58,17 @@ public class LocalAlbumActivity extends QingXinActivity {
         if (getIntent().hasExtra(AlbumUtils.MAX_CHOOSE_PIC_NUM)) {
             mMaxChoose = getIntent().getIntExtra(AlbumUtils.MAX_CHOOSE_PIC_NUM, 3);//默认给3
         }
-        isDestroy = false;
-        mListView = findViewById(R.id.local_album_list);
-        VLTitleBar mLocalAlbumTitleBar = findViewById(R.id.titleBar);
-        QingXinTitleBar.init(mLocalAlbumTitleBar, "选择相册");
-        QingXinTitleBar.setLeftReturn(mLocalAlbumTitleBar, this);
+        mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        VLTitleBar titleBar = findViewById(R.id.titleBar);
+        QingXinTitleBar.init(titleBar, "选择相册");
+        QingXinTitleBar.setLeftReturn(titleBar, this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         helper = LocalImageHelper.getInstance();
-        mListView.setAdapter(null);
         loadImages();
     }
 
@@ -73,9 +81,8 @@ public class LocalAlbumActivity extends QingXinActivity {
                         VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {
                             @Override
                             protected void process(boolean canceled) {
-                                if (!isDestroy) {
+                                if (!isFinishing()) {
                                     initAdapter();
-                                    mListView.setVisibility(View.VISIBLE);
                                 }
                             }
                         });
@@ -86,31 +93,26 @@ public class LocalAlbumActivity extends QingXinActivity {
 
 
     public void initAdapter() {
-        mListView.setAdapter(new FolderAdapter(this, helper.getFolderMap()));
-        mListView.setOnItemClickListener((adapterView, view, i, l) -> {
+        mRecyclerView.setAdapter(new FolderAdapter(this, helper.getFolderMap(), (localFile, position) -> {
             Intent intent = new Intent(LocalAlbumActivity.this, LocalAlbumDetailActivity.class);
-            intent.putExtra(LOCAL_FOLDER_NAME, folderNames.get(i));
-            /**----------------add by qingshan--------------**/
+            intent.putExtra(LOCAL_FOLDER_NAME, folderNames.get(position));
             intent.putExtra(AlbumUtils.MAX_CHOOSE_PIC_NUM, mMaxChoose);
             intent.setFlags(Intent.FLAG_ACTIVITY_FORWARD_RESULT);
             startActivity(intent);
-        });
+        }));
     }
 
-    @SuppressWarnings("rawtypes")
-    public class FolderAdapter extends BaseAdapter {
-        Map<String, List<LocalImageHelper.LocalFile>> folders;
-        Context context;
-        Display display;
+    public class FolderAdapter extends RecyclerView.Adapter<FolderAdapter.ViewHolder> {
 
-        FolderAdapter(Context context, Map<String, List<LocalImageHelper.LocalFile>> folders) {
+        private Map<String, List<LocalImageHelper.LocalFile>> folders;
+        private Context mContext;
+        private OnItemClickListener<LocalImageHelper.LocalFile> mListener;
+
+        FolderAdapter(Context context, Map<String, List<LocalImageHelper.LocalFile>> folders, OnItemClickListener<LocalImageHelper.LocalFile> listener) {
             this.folders = folders;
-            this.context = context;
+            this.mContext = context;
+            this.mListener = listener;
             folderNames = new ArrayList<>();
-            if (display == null) {
-                WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-                display = windowManager.getDefaultDisplay();
-            }
 
             for (Object o : folders.entrySet()) {
                 Map.Entry entry = (Map.Entry) o;
@@ -126,51 +128,55 @@ public class LocalAlbumActivity extends QingXinActivity {
         }
 
         @Override
-        public int getCount() {
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.adapter_album_folder, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(FolderAdapter.ViewHolder holder, int position) {
+            String name = folderNames.get(position);
+            List<LocalImageHelper.LocalFile> files = folders.get(name);
+            holder.titleTv.setText(String.format("%s(%s)", name, files.size()));
+            if (files.size() > 0) {
+                Uri uri1 = Uri.fromFile(new File(files.get(0).getOriginalUri()));
+                setController(holder.imageView, uri1);
+            }
+        }
+
+        @Override
+        public int getItemCount() {
             return folders.size();
         }
 
-        @Override
-        public Object getItem(int i) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int i) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
-            if (convertView == null || convertView.getTag() == null) {
-                viewHolder = new ViewHolder();
-                convertView = LayoutInflater.from(context).inflate(R.layout.adapter_album_folder, parent, false);
-                viewHolder.imageView = convertView.findViewById(R.id.simpleDraweeView);
-                viewHolder.titleTv = convertView.findViewById(R.id.titleTv);
-                convertView.setTag(viewHolder);
-            } else {
-                viewHolder = (ViewHolder) convertView.getTag();
-            }
-            String name = folderNames.get(position);
-            List<LocalImageHelper.LocalFile> files = folders.get(name);
-            viewHolder.titleTv.setText(String.format("%s(%s)", name, files.size()));
-            if (files.size() > 0) {
-                String uri = files.get(0).getOriginalUri();
-                viewHolder.imageView.setImageURI(Uri.parse(uri));
-            }
-            return convertView;
-        }
-
-        private class ViewHolder {
+        class ViewHolder extends RecyclerView.ViewHolder {
             SimpleDraweeView imageView;
             TextView titleTv;
-        }
-    }
+            LinearLayout albumLl;
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        isDestroy = true;
+            ViewHolder(View itemView) {
+                super(itemView);
+                imageView = itemView.findViewById(R.id.simpleDraweeView);
+                titleTv = itemView.findViewById(R.id.titleTv);
+                albumLl = itemView.findViewById(R.id.albumLl);
+                albumLl.setOnClickListener(v -> {
+                    if (null != mListener) {
+                        mListener.onItemClick(null, getAdapterPosition());
+                    }
+                });
+            }
+        }
+
+        private void setController(@NonNull SimpleDraweeView imageView, @NonNull Uri uri) {
+            int width = VLUtils.dip2px(80), height = VLUtils.dip2px(80);
+            ImageRequest request = ImageRequestBuilder
+                    .newBuilderWithSource(uri)
+                    .setRotationOptions(RotationOptions.autoRotate())//是否可以缩放和旋转图片
+                    .setLocalThumbnailPreviewsEnabled(true)//是否启动本地图片预览
+                    .setResizeOptions(new ResizeOptions(width, height))
+                    .build();
+            PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder().setOldController(imageView.getController())
+                    .setImageRequest(request).build();
+            imageView.setController(controller);
+        }
     }
 }
