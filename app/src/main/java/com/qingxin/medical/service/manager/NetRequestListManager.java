@@ -6,6 +6,7 @@ import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
+import com.qingxin.medical.app.homepagetask.model.RecommendResultBean;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import com.qingxin.medical.app.vip.AmountBean;
 import com.qingxin.medical.app.vip.VipDetailBean;
@@ -98,6 +99,19 @@ public class NetRequestListManager {
      */
     public static Observable<ContentBean<CheckInBean>> checkIn() {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).checkIn();
+    }
+
+    /**
+     * 推荐用户
+     * @param name 用户姓名
+     * @param mobile 用户手机号
+     * @param product_id 意向产品id
+     * @param inthos 意向医院
+     * @param remark 备注
+     * @return
+     */
+    public static Observable<ContentBean<RecommendResultBean>> submitRecommendUser(String name, String mobile, String product_id, String inthos, String remark) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).submitRecommendUser(name, mobile, product_id, inthos, remark);
     }
 
 }
