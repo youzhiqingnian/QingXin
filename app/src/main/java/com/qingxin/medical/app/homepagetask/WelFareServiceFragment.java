@@ -25,9 +25,11 @@ import com.qingxin.medical.app.goddessdiary.DiaryPublishActivity;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.login.LoginActivity;
+import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.MyBroadCastReceiver;
 import com.vlee78.android.vl.VLActivity;
+import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLTitleBar;
 
@@ -59,7 +61,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_goddess_diary_list, container, false);
+        return inflater.inflate(R.layout.fragment_welfareservice, container, false);
     }
 
     @Override
@@ -106,6 +108,10 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         TextView mClickToInviteTv = mHeaderView.findViewById(R.id.clickToInviteTv);
         TextView mClickToRecommendTv = mHeaderView.findViewById(R.id.clickToRecommendTv);
 
+        if(QingXinApplication.getInstance().getLoginUser() != null){
+            mQingxinCoinAmountTv.setText(QingXinApplication.getInstance().getLoginUser().getCoin());
+        }
+
         mQingxinCoinRuleTv.setOnClickListener(this);
         mApplyWithDrawalsTv.setOnClickListener(this);
         mClickToSignTv.setOnClickListener(this);
@@ -151,9 +157,9 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     public void onSuccess(ListBean<CoinLogBean> coinLog) {
         Log.i("福利社的bean", coinLog.toString());
 
-        if (coinLog != null && coinLog.getCount() > 0) {
-            mQingxinCoinAmountTv.setText(String.valueOf(coinLog.getItems().get(coinLog.getCount() - 1).getBalance()));
-        }
+//        if (coinLog != null && coinLog.getCount() > 0) {
+//            mQingxinCoinAmountTv.setText(String.valueOf(coinLog.getItems().get(coinLog.getCount() - 1).getBalance()));
+//        }
 
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
@@ -241,7 +247,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
     private VLActivity.VLActivityResultListener mActivityResultListener = (requestCode, resultCode, intent) -> {
         if (requestCode == DiaryPublishActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {//发布日记成功
-
+            getServiceList(true);
         }
     };
 
@@ -252,6 +258,9 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
     @Override
     public void receiverUpdata(Intent intent) {
+        if(QingXinApplication.getInstance().getLoginUser() != null){
+            mQingxinCoinAmountTv.setText(QingXinApplication.getInstance().getLoginUser().getCoin());
+        }
         boolean isRefresh = intent.getBooleanExtra("refresh", false);
         if (isRefresh) {
             getServiceList(true);

@@ -16,8 +16,11 @@ import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.RecommendResultBean;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLActivity;
+import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLTitleBar;
+import com.vlee78.android.vl.VLToast;
 import com.vlee78.android.vl.VLUtils;
 /**
  * Date 2018-02-27
@@ -131,8 +134,8 @@ public class RecommendUserActivity extends QingXinActivity implements RecommendU
     @Override
     public void onSuccess(RecommendResultBean result) {
         Log.i("推荐用户的bean",result.toString());
-        if(VLUtils.stringIsEmpty(result.getId())){
-            Toast.makeText(this,getResources().getString(R.string.already_signed),Toast.LENGTH_LONG);
+        if(!VLUtils.stringIsEmpty(result.getId())){
+            ToastUtils.showToast(getResources().getString(R.string.recommend_success));
         }
     }
 
