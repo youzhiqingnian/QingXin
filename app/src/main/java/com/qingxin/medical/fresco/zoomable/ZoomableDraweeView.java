@@ -61,12 +61,7 @@ public class ZoomableDraweeView extends DraweeView<GenericDraweeHierarchy> imple
         }
     };
 
-    private final ZoomableController.Listener mZoomableListener = new ZoomableController.Listener() {
-        @Override
-        public void onTransformChanged(Matrix transform) {
-            ZoomableDraweeView.this.onTransformChanged(transform);
-        }
-    };
+    private final ZoomableController.Listener mZoomableListener = transform -> ZoomableDraweeView.this.onTransformChanged(transform);
 
     private final GestureListenerWrapper mTapListenerWrapper = new GestureListenerWrapper();
 
@@ -175,8 +170,7 @@ public class ZoomableDraweeView extends DraweeView<GenericDraweeHierarchy> imple
      *
      * @param allowTouchInterceptionWhileZoomed true if the parent needs to intercept touches
      */
-    public void setAllowTouchInterceptionWhileZoomed(
-            boolean allowTouchInterceptionWhileZoomed) {
+    public void setAllowTouchInterceptionWhileZoomed(boolean allowTouchInterceptionWhileZoomed) {
         mAllowTouchInterceptionWhileZoomed = allowTouchInterceptionWhileZoomed;
     }
 
@@ -214,17 +208,13 @@ public class ZoomableDraweeView extends DraweeView<GenericDraweeHierarchy> imple
      * @param controller          controller to be initially used
      * @param hugeImageController controller to be used after the client starts zooming-in
      */
-    public void setControllers(
-            @Nullable DraweeController controller,
-            @Nullable DraweeController hugeImageController) {
+    public void setControllers(@Nullable DraweeController controller, @Nullable DraweeController hugeImageController) {
         setControllersInternal(null, null);
         mZoomableController.setEnabled(false);
         setControllersInternal(controller, hugeImageController);
     }
 
-    private void setControllersInternal(
-            @Nullable DraweeController controller,
-            @Nullable DraweeController hugeImageController) {
+    private void setControllersInternal(@Nullable DraweeController controller, @Nullable DraweeController hugeImageController) {
         removeControllerListener(getController());
         addControllerListener(controller);
         mHugeImageController = hugeImageController;
@@ -240,15 +230,13 @@ public class ZoomableDraweeView extends DraweeView<GenericDraweeHierarchy> imple
 
     private void removeControllerListener(DraweeController controller) {
         if (controller instanceof AbstractDraweeController) {
-            ((AbstractDraweeController) controller)
-                    .removeControllerListener(mControllerListener);
+            ((AbstractDraweeController) controller).removeControllerListener(mControllerListener);
         }
     }
 
     private void addControllerListener(DraweeController controller) {
         if (controller instanceof AbstractDraweeController) {
-            ((AbstractDraweeController) controller)
-                    .addControllerListener(mControllerListener);
+            ((AbstractDraweeController) controller).addControllerListener(mControllerListener);
         }
     }
 
@@ -265,11 +253,7 @@ public class ZoomableDraweeView extends DraweeView<GenericDraweeHierarchy> imple
         int a = event.getActionMasked();
         FLog.v(getLogTag(), "onTouchEvent: %d, view %x, received", a, this.hashCode());
         if (mTapGestureDetector.onTouchEvent(event)) {
-            FLog.v(
-                    getLogTag(),
-                    "onTouchEvent: %d, view %x, handled by tap gesture detector",
-                    a,
-                    this.hashCode());
+            FLog.v(getLogTag(), "onTouchEvent: %d, view %x, handled by tap gesture detector", a, this.hashCode());
             return true;
         }
 
@@ -285,11 +269,7 @@ public class ZoomableDraweeView extends DraweeView<GenericDraweeHierarchy> imple
                     (!mAllowTouchInterceptionWhileZoomed && !mZoomableController.wasTransformCorrected())) {
                 getParent().requestDisallowInterceptTouchEvent(true);
             }
-            FLog.v(
-                    getLogTag(),
-                    "onTouchEvent: %d, view %x, handled by zoomable controller",
-                    a,
-                    this.hashCode());
+            FLog.v(getLogTag(), "onTouchEvent: %d, view %x, handled by zoomable controller", a, this.hashCode());
             return true;
         }
         if (super.onTouchEvent(event)) {
