@@ -25,6 +25,7 @@ public class CoinLogBean {
     private int amount;
     private String action;
     private String use;
+    private String use_alia;
     private String remark;
     private int balance;
     private String created_at;
@@ -102,6 +103,14 @@ public class CoinLogBean {
         this.updated_at = updated_at;
     }
 
+    public String getUse_alia() {
+        return use_alia;
+    }
+
+    public void setUse_alia(String use_alia) {
+        this.use_alia = use_alia;
+    }
+
     @Override
     public String toString() {
         return "CoinLogBean{" +
@@ -110,6 +119,7 @@ public class CoinLogBean {
                 ", amount=" + amount +
                 ", action='" + action + '\'' +
                 ", use='" + use + '\'' +
+                ", use_alia='" + use_alia + '\'' +
                 ", remark='" + remark + '\'' +
                 ", balance=" + balance +
                 ", created_at='" + created_at + '\'' +

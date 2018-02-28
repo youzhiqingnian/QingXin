@@ -12,6 +12,7 @@ import com.qingxin.medical.app.vip.AmountBean;
 import com.qingxin.medical.app.vip.VipDetailBean;
 import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.home.ListBean;
 
 import retrofit2.http.Field;
@@ -116,16 +117,24 @@ public interface RetrofitService {
     Observable<ContentBean<CheckInBean>> checkIn();
 
     /**
+     * 今日是否签到
+     *
+     * @return
+     */
+    @GET("/session")
+    Observable<ContentBean<MemBean>> isChcekIn();
+
+    /**
      * 推荐用户
      * @param name 用户姓名
      * @param mobile 用户手机号
-     * @param product_id 意向产品id
+     * @param product 意向产品
      * @param inthos 意向医院
      * @param remark 备注
      * @return
      */
     @FormUrlEncoded
     @POST("/mem/recomem")
-    Observable<ContentBean<RecommendResultBean>> submitRecommendUser(@Field("name")String name, @Field("mobile")String mobile, @Field("product_id")String product_id, @Field("inthos")String inthos, @Field("remark")String remark);
+    Observable<ContentBean<RecommendResultBean>> submitRecommendUser(@Field("name")String name, @Field("mobile")String mobile, @Field("product")String product, @Field("inthos")String inthos, @Field("remark")String remark);
 
 }

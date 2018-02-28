@@ -4,7 +4,10 @@ import android.support.annotation.NonNull;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
+import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLApplication;
+import com.vlee78.android.vl.VLUtils;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -58,7 +61,11 @@ public class StrictSelPresenter implements StrictSelContract.Presenter {
 
                     @Override
                     public void onNext(ContentBean<ListBean<StrictSelBean>> contentBean) {
-                        mStrictSelView.onSuccess(contentBean.getContent());
+                        if(!VLUtils.isError(contentBean.getCode())){
+                            mStrictSelView.onSuccess(contentBean.getContent());
+                        }else{
+                            ToastUtils.showToast(contentBean.getMsg());
+                        }
                     }
                 })
         );

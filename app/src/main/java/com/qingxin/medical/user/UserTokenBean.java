@@ -25,4 +25,12 @@ public class UserTokenBean extends BaseBean {
     public void setToken(String token) {
         this.token = token;
     }
+
+    @Override
+    public String toString() {
+        return "UserTokenBean{" +
+                "mem=" + mem +
+                ", token='" + token + '\'' +
+                '}';
+    }
 }
