@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/wholeLayoutCdl"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -70,7 +71,8 @@
                         android:layout_centerInParent="true"
                         android:textColor="@color/text_color"
                         android:textSize="20sp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        tools:ignore="RelativeOverlap" />
 
                     <ImageView
                         android:id="@+id/topShareIv"
@@ -324,7 +326,7 @@
                 android:layout_below="@id/productDetailTitle"
                 android:background="@color/line_color" />
 
-            <TextView
+        <!--    <TextView
                 android:id="@+id/productDetailTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -337,19 +339,24 @@
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
 
-            <!--    <com.qingxin.medical.fresco.zoomable.ZoomableDraweeView
+            &lt;!&ndash;    <com.qingxin.medical.fresco.zoomable.ZoomableDraweeView
                     android:id="@+id/vipDetailImgZdv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/productDetailTv"
-                    android:layout_marginTop="20dp" />-->
+                    android:layout_marginTop="20dp" />&ndash;&gt;
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/vipDetailImgZdv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/productDetailTv"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp" />-->
+            <WebView
+                android:id="@+id/webview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:ignore="WebViewLayout" />
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 
@@ -386,7 +393,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
 
                 <ImageView
                     android:id="@+id/collectionIv"

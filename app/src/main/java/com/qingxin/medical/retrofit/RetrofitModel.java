@@ -25,7 +25,7 @@ public class RetrofitModel extends VLModel {
 
     private static final String TAG = RetrofitModel.class.getSimpleName();
 
-    private static final String BASE_URL = "http://47.93.119.225:3030/";
+    private static final String BASE_URL = "http://47.93.101.229:3030/";
 
     private Retrofit mRetrofit;
 

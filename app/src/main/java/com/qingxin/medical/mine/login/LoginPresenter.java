@@ -6,7 +6,9 @@ import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.user.UserService;
 import com.qingxin.medical.user.UserTokenBean;
+import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLApplication;
+import com.vlee78.android.vl.VLUtils;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -60,7 +62,12 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                     @Override
                     public void onNext(ContentBean<UserTokenBean> userTokenBeanContentBean) {
                         if (null != mLoginView) {
-                            mLoginView.onSuccess(userTokenBeanContentBean.getContent());
+                            if(!VLUtils.isError(userTokenBeanContentBean.getCode())){
+                                mLoginView.onSuccess(userTokenBeanContentBean.getContent());
+                            }else{
+                                ToastUtils.showToast(userTokenBeanContentBean.getMsg());
+                            }
+
                         }
                     }
                 }));

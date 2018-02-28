@@ -18,6 +18,8 @@ public class User extends BaseBean {
     private String cover;
     //青歆币
     private String coin;
+    // 今天是否签到
+    private String has_checkin;
 
     public String getToken() {
         return token;
@@ -69,6 +71,14 @@ public class User extends BaseBean {
         this.coin = coin;
     }
 
+    public String getHas_checkin() {
+        return has_checkin;
+    }
+
+    public void setHas_checkin(String has_checkin) {
+        this.has_checkin = has_checkin;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -77,7 +87,9 @@ public class User extends BaseBean {
                 ", mobile='" + mobile + '\'' +
                 ", cover='" + cover + '\'' +
                 ", coin='" + coin + '\'' +
+                ", has_checkin='" + has_checkin + '\'' +
                 ", token='" + token + '\'' +
                 '}';
     }
+
 }

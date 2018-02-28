@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -59,12 +60,14 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
             mOrderCountTv,
             mHospitalNameTv,
             mHospitalCityNameTv,
-            mProductDetailTv,
+//            mProductDetailTv,
             mCollectTabTv,
             mOrderNowTv;
     private RelativeLayout mCollectRl;
     private SimpleDraweeView mHospitalCoverSdv;
-    private SimpleDraweeView mVipDetailImgZdv;
+
+    private WebView mWebview;
+//    private SimpleDraweeView mVipDetailImgZdv;
 
     private List<Integer> bannerList = new ArrayList<>();
 
@@ -165,12 +168,13 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         mOrderCountTv = findViewById(R.id.orderCountTv);
         mHospitalNameTv = findViewById(R.id.hospitalNameTv);
         mHospitalCityNameTv = findViewById(R.id.hospitalCityNameTv);
-        mProductDetailTv = findViewById(R.id.productDetailTv);
+//        mProductDetailTv = findViewById(R.id.productDetailTv);
         mOrderNowTv = findViewById(R.id.orderNowTv);
         mCollectTabTv = findViewById(R.id.collectTabTv);
         mCollectRl = findViewById(R.id.collectRl);
         mHospitalCoverSdv = findViewById(R.id.hospitalCoverSdv);
-        mVipDetailImgZdv = findViewById(R.id.vipDetailImgZdv);
+        mWebview = findViewById(R.id.webview);
+//        mVipDetailImgZdv = findViewById(R.id.vipDetailImgZdv);
 //      VLUtils.setControllerListener(mVipDetailImgZdv,"http://p36zly2vu.bkt.clouddn.com/product/46acb4c0-0cce-11e8-9a80-a72b786a38c9.jpg");
         mShareDialog = new ShareDialog(this);
 
@@ -314,7 +318,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         mOrderCountTv.setText(String.format("%s次预约", itemBean.getOrder()));
         mHospitalNameTv.setText(itemBean.getHospital());
 //        mProductDetailTv.setText(itemBean.get);
-        VLUtils.setControllerListener(mVipDetailImgZdv, "http://p36zly2vu.bkt.clouddn.com/" + itemBean.getCover());
+//        VLUtils.setControllerListener(mVipDetailImgZdv, "http://p36zly2vu.bkt.clouddn.com/" + itemBean.getCover());
     }
 
     private class BannerPagerAdapter extends PagerAdapter {

@@ -3,6 +3,7 @@ package com.qingxin.medical.app.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -82,7 +83,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
                     initLoginStatus();
                     showToast("退出登陆");
                 } else {//登陆
-                    mLoginPresenter.login("17090117341", "1111");
+                    mLoginPresenter.login("18311370117", "1111");
                 }
                 break;
             default:
@@ -97,6 +98,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
 
     @Override
     public void onSuccess(UserTokenBean userTokenBean) {
+        Log.i("登录成功的bean",userTokenBean.toString());
         userTokenBean.getMem().setToken(userTokenBean.getToken());
         getModel(UserModel.class).onLoginSuccess(userTokenBean.getMem());
         initLoginStatus();

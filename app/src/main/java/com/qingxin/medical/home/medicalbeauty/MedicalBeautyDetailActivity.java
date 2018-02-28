@@ -19,6 +19,8 @@ import com.qingxin.medical.home.ItemBean;
 import com.qingxin.medical.home.ListBean;
 import com.vlee78.android.vl.VLTitleBar;
 
+import java.util.List;
+
 /**
  * Date 2018-02-11
  *
@@ -113,7 +115,7 @@ public class MedicalBeautyDetailActivity extends QingXinActivity implements Medi
 //        mProductIntroTv.setText(Html.fromHtml(detailBean.getIcontxt()));
 
 
-        if (!TextUtils.isEmpty(detailBean.getIcontxt()) && detailBean.getIcontxt().contains(",")) {
+        /*if (!TextUtils.isEmpty(detailBean.getIcontxt()) && detailBean.getIcontxt().contains(",")) {
             String[] iconText = detailBean.getIcontxt().split(",");
             if (iconText.length >= 4) {
                 mCategoryTv.setText(iconText[0]);
@@ -121,6 +123,13 @@ public class MedicalBeautyDetailActivity extends QingXinActivity implements Medi
                 mTakeEffectDurationTv.setText(iconText[2]);
                 mRecoveryDurationTv.setText(iconText[3]);
             }
+       }*/
+        List<String> iconText = detailBean.getIcontxt();
+        if (iconText.size() >= 4) {
+            mCategoryTv.setText(iconText.get(0));
+            mPainLevel.setText(iconText.get(1));
+            mTakeEffectDurationTv.setText(iconText.get(2));
+            mRecoveryDurationTv.setText(iconText.get(3));
         }
 
         mCharacteristicsTv.setText(Html.fromHtml(detailBean.getFeature()));

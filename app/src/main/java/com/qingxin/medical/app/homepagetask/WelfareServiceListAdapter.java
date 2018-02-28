@@ -24,7 +24,7 @@ public class WelfareServiceListAdapter extends BaseQuickAdapter<CoinLogBean, Bas
         TextView mCoinProgramTv = helper.getView(R.id.coinProgramTv);
         TextView mDateTimeTv = helper.getView(R.id.dateTimeTv);
         TextView mCoinCountTv = helper.getView(R.id.coinCountTv);
-        mCoinProgramTv.setText(item.getRemark());
+        mCoinProgramTv.setText(item.getUse_alia());
 
         mDateTimeTv.setText(item.getCreated_at());
 

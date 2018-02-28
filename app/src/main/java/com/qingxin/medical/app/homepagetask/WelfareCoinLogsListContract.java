@@ -5,6 +5,7 @@ import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
+import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.home.ListBean;
 
 /**
@@ -20,6 +21,8 @@ public class WelfareCoinLogsListContract {
 
         void onSuccess(CheckInBean checkIn);
 
+        void onSuccess(MemBean memBean);
+
         void onError(String result);
     }
 
@@ -28,5 +31,7 @@ public class WelfareCoinLogsListContract {
         void getCoinLogList(int limit, int skip);
 
         void checkIn();
+
+        void isChcekIn();
     }
 }

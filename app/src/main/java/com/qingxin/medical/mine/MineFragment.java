@@ -1,6 +1,7 @@
 package com.qingxin.medical.mine;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,7 @@ public class MineFragment extends QingXinFragment implements View.OnClickListene
                     initLoginStatus();
                     showToast("退出登陆");
                 } else {//登陆
-                    mLoginPresenter.login("17090117341", "1111");
+                    mLoginPresenter.login("18311370117", "1111");
                 }
                 break;
             default:
@@ -79,6 +80,7 @@ public class MineFragment extends QingXinFragment implements View.OnClickListene
 
     @Override
     public void onSuccess(UserTokenBean userTokenBean) {
+        Log.i("登录成功的bean",userTokenBean.toString());
         userTokenBean.getMem().setToken(userTokenBean.getToken());
         getModel(UserModel.class).onLoginSuccess(userTokenBean.getMem());
         initLoginStatus();

@@ -12,6 +12,7 @@ import com.qingxin.medical.app.vip.AmountBean;
 import com.qingxin.medical.app.vip.VipDetailBean;
 import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.service.RetrofitService;
@@ -102,16 +103,25 @@ public class NetRequestListManager {
     }
 
     /**
+     * 今日是否签到
+     *
+     * @return
+     */
+    public static Observable<ContentBean<MemBean>> isChcekIn() {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).isChcekIn();
+    }
+
+    /**
      * 推荐用户
      * @param name 用户姓名
      * @param mobile 用户手机号
-     * @param product_id 意向产品id
+     * @param product 意向产品
      * @param inthos 意向医院
      * @param remark 备注
      * @return
      */
-    public static Observable<ContentBean<RecommendResultBean>> submitRecommendUser(String name, String mobile, String product_id, String inthos, String remark) {
-        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).submitRecommendUser(name, mobile, product_id, inthos, remark);
+    public static Observable<ContentBean<RecommendResultBean>> submitRecommendUser(String name, String mobile, String product, String inthos, String remark) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).submitRecommendUser(name, mobile, product, inthos, remark);
     }
 
 }

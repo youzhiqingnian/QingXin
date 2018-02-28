@@ -19,6 +19,6 @@ public class RecommendUserContract {
     }
 
     public interface Presenter extends BasePresenter {
-        void submitRecommendUser(String name, String mobile, String product_id, String inthos, String remark);
+        void submitRecommendUser(String name, String mobile, String product, String inthos, String remark);
     }
 }

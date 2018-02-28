@@ -6,6 +6,8 @@ import android.util.Log;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
+import com.qingxin.medical.utils.ToastUtils;
+import com.vlee78.android.vl.VLUtils;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -61,7 +63,12 @@ public class VipDetailPresenter implements VipDetailContract.Presenter {
 
                     @Override
                     public void onNext(ContentBean<VipDetailBean> vipDetail) {
-                        mVipDetailView.onSuccess(vipDetail.getContent());
+                        if(!VLUtils.isError(vipDetail.getCode())){
+                            mVipDetailView.onSuccess(vipDetail.getContent());
+                        }else{
+                            ToastUtils.showToast(vipDetail.getMsg());
+                        }
+
                     }
                 })
         );

@@ -12,6 +12,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.qingxin.medical.app.goddessdiary.DiaryPublishActivity;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.login.LoginActivity;
+import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.MyBroadCastReceiver;
@@ -122,6 +124,8 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
         mAdapter.addHeaderView(mHeaderView);
         mRefreshLayout.setOnRefreshListener(this);
+
+        mPresenter.isChcekIn();
     }
 
 
@@ -157,9 +161,9 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     public void onSuccess(ListBean<CoinLogBean> coinLog) {
         Log.i("福利社的bean", coinLog.toString());
 
-//        if (coinLog != null && coinLog.getCount() > 0) {
-//            mQingxinCoinAmountTv.setText(String.valueOf(coinLog.getItems().get(coinLog.getCount() - 1).getBalance()));
-//        }
+        if (coinLog != null && !TextUtils.isEmpty(coinLog.getBalance())) {
+            mQingxinCoinAmountTv.setText(coinLog.getBalance());
+        }
 
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
@@ -181,11 +185,18 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     @Override
     public void onSuccess(CheckInBean checkIn) {
         Log.i("每日签到", checkIn.toString());
-        mClickToSignTv.setText(getActivity().getString(R.string.already_signed));
-        mClickToSignTv.setBackground(getActivity().getResources().getDrawable(R.drawable.gray_button));
-        mClickToSignTv.setTextColor(getActivity().getResources().getColor(R.color.text_color_origin_price));
-        mClickToSignTv.setEnabled(false);
+        setCheckinUnable();
         getServiceList(true);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onSuccess(MemBean memBean) {
+        Log.i("是否签到的bean",memBean.toString());
+        if(!memBean.getMem().getHas_checkin().equals("n")){
+            // 如果已经签到
+            setCheckinUnable();
+        }
     }
 
     @Override
@@ -243,6 +254,14 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
             default:
                 break;
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private void setCheckinUnable(){
+        mClickToSignTv.setText(getActivity().getString(R.string.already_signed));
+        mClickToSignTv.setBackground(getActivity().getResources().getDrawable(R.drawable.gray_button));
+        mClickToSignTv.setTextColor(getActivity().getResources().getColor(R.color.text_color_origin_price));
+        mClickToSignTv.setEnabled(false);
     }
 
     private VLActivity.VLActivityResultListener mActivityResultListener = (requestCode, resultCode, intent) -> {

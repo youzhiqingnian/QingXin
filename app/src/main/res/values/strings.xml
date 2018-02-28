@@ -1,5 +1,19 @@
 <resources>
     <string name="app_name">青歆</string>
+
+    <!--错误信息-->
+    <string name="e1000">用户未登陆</string>
+    <string name="e1001">登陆失败，手机号验证码不匹配</string>
+    <string name="e1002">登陆失败，该用户已被禁用</string>
+    <string name="e1020">未开启签到功能</string>
+    <string name="e1021">今天已经签到过了</string>
+    <string name="e1030">类型参数错误</string>
+    <string name="e1040">参数不全</string>
+    <string name="e1100">wiki不存在</string>
+    <string name="e1110">日记不存在</string>
+    <string name="e1200">已经预约过该产品</string>
+
+
     <!--首页-->
     <string name="home_search_text_hint">大家在搜:自体脂肪填充</string>
     <string name="share_only_by_new_person">歆人专享</string>
@@ -78,9 +92,9 @@
     <string name="cellphone_num">手机号码</string>
     <string name="please_input_cellphone_num">请输入手机号码</string>
     <string name="intention_program">意向项目</string>
-    <string name="please_choose_intention_program">请选择意向项目</string>
+    <string name="please_input_intention_program">请输入意向项目</string>
     <string name="intention_hospital">意向医院</string>
-    <string name="please_choose_intention_hospital">请选择意向医院</string>
+    <string name="please_input_intention_hospital">请输入意向医院</string>
     <string name="remark_gap">备&#160;&#160;&#160;&#8201;&#160;&#160;&#160;&#8201;注</string>
     <string name="please_input_remark_gap">请输入备注</string>
     <string name="ensure_submit">确定提交</string>

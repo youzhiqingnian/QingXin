@@ -13,6 +13,8 @@ public class ListBean<T> extends BaseBean {
 
     private int count;
 
+    private String balance;
+
     private List<T> items;
 
     public int getCount() {
@@ -29,6 +31,14 @@ public class ListBean<T> extends BaseBean {
 
     public void setItems(List<T> items) {
         this.items = items;
+    }
+
+    public String getBalance() {
+        return balance;
+    }
+
+    public void setBalance(String balance) {
+        this.balance = balance;
     }
 
     @Override
