@@ -1,9 +1,11 @@
 package com.qingxin.medical.album;
 
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.MediaStore;
+
 import com.qingxin.medical.base.QingXinApplication;
-import com.vlee78.android.vl.VLUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -96,10 +98,9 @@ public class LocalImageHelper {
             File file = new File(path);
             // 判断大图是否存在
             if (file.exists()) {
-                String uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                        .buildUpon().appendPath(Integer.toString(id)).build()
-                        .toString();
-                if (VLUtils.stringIsEmpty(uri)) {
+                Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                        .buildUpon().appendPath(Integer.toString(id)).build();
+                if (null == uri) {
                     continue;
                 }
 
@@ -176,42 +177,41 @@ public class LocalImageHelper {
     }
 
     public static class LocalFile {
-        private String originalUri;// 原图URI
-        private String thumbnailUri;// 缩略图URI
+        private Uri originalUri;// 原图URI
+        private Uri thumbnailUri;// 缩略图URI
         private int orientation;// 图片旋转角度
         private int mId;
 
-        private String getThumbnail(int id) {
+        private Uri getThumbnail(int id) {
             // 获取大图的缩略图
             Cursor cursor = QingXinApplication.getInstance().getContentResolver().query(
                     MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
                     THUMBNAIL_STORE_IMAGE,
                     MediaStore.Images.Thumbnails.IMAGE_ID + " = ?",
                     new String[]{id + ""}, null);
-            if (cursor.getCount() > 0) {
+            if (null != cursor && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 int thumId = cursor.getInt(0);
-                String uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI
-                        .buildUpon().appendPath(Integer.toString(thumId)).build()
-                        .toString();
+                Uri uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI
+                        .buildUpon().appendPath(Integer.toString(thumId)).build();
                 cursor.close();
                 return uri;
             }
-            cursor.close();
             return null;
         }
 
         public LocalFile(int id) {
             mId = id;
         }
-        public void setThumbnailUri(String thumbnailUri) {
+
+        public void setThumbnailUri(Uri thumbnailUri) {
             this.thumbnailUri = thumbnailUri;
         }
 
-        public String getThumbnailUri() {
+        public Uri getThumbnailUri() {
             if (thumbnailUri == null) {
                 thumbnailUri = getThumbnail(mId);
-                if (VLUtils.stringIsEmpty(thumbnailUri)) {
+                if (null == thumbnailUri) {
                     thumbnailUri = originalUri;
                 }
             }
@@ -219,11 +219,11 @@ public class LocalImageHelper {
         }
 
 
-        public String getOriginalUri() {
+        public Uri getOriginalUri() {
             return originalUri;
         }
 
-        public void setOriginalUri(String originalUri) {
+        public void setOriginalUri(Uri originalUri) {
             this.originalUri = originalUri;
         }
 

@@ -17,7 +17,6 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.common.ResizeOptions;
-import com.facebook.imagepipeline.common.RotationOptions;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.qingxin.medical.QingXinTitleBar;
@@ -29,7 +28,6 @@ import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -138,8 +136,7 @@ public class LocalAlbumActivity extends QingXinActivity {
             List<LocalImageHelper.LocalFile> files = folders.get(name);
             holder.titleTv.setText(String.format("%s(%s)", name, files.size()));
             if (files.size() > 0) {
-                Uri uri1 = Uri.fromFile(new File(files.get(0).getOriginalUri()));
-                setController(holder.imageView, uri1);
+                setController(holder.imageView, files.get(0).getThumbnailUri());
             }
         }
 
@@ -167,12 +164,10 @@ public class LocalAlbumActivity extends QingXinActivity {
         }
 
         private void setController(@NonNull SimpleDraweeView imageView, @NonNull Uri uri) {
-            int width = VLUtils.dip2px(80), height = VLUtils.dip2px(80);
+            int size = VLUtils.dip2px(80);
             ImageRequest request = ImageRequestBuilder
                     .newBuilderWithSource(uri)
-                    .setRotationOptions(RotationOptions.autoRotate())//是否可以缩放和旋转图片
-                    .setLocalThumbnailPreviewsEnabled(true)//是否启动本地图片预览
-                    .setResizeOptions(new ResizeOptions(width, height))
+                    .setResizeOptions(ResizeOptions.forSquareSize(size))
                     .build();
             PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder().setOldController(imageView.getController())
                     .setImageRequest(request).build();
