@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLUtils;
 
@@ -62,7 +63,7 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
 
                     @Override
                     public void onNext(ContentBean<HomeBean> homeBean) {
-                        if(!VLUtils.isError(homeBean.getCode())){
+                        if(!HandErrorUtils.isError(homeBean.getCode())){
                             mHomePageTaskView.onSuccess(homeBean.getContent());
                         }else{
                             ToastUtils.showToast(homeBean.getMsg());

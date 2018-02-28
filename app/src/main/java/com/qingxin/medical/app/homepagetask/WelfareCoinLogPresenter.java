@@ -7,6 +7,7 @@ import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLUtils;
 
@@ -63,7 +64,12 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
 
                     @Override
                     public void onNext(ContentBean<ListBean<CoinLogBean>> coinLogs) {
-                        mWelfareCoinLogView.onSuccess(coinLogs.getContent());
+                        if(!HandErrorUtils.isError(coinLogs.getCode())){
+                            mWelfareCoinLogView.onSuccess(coinLogs.getContent());
+                        }else{
+                            ToastUtils.showToast(coinLogs.getMsg());
+                        }
+
                     }
                 })
         );
@@ -88,7 +94,11 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
                     @Override
                     public void onNext(ContentBean<CheckInBean> checkInBean) {
                         if(null != checkInBean.getMsg()){
-                            mWelfareCoinLogView.onSuccess(checkInBean.getContent());
+                            if(!HandErrorUtils.isError(checkInBean.getCode())){
+                                mWelfareCoinLogView.onSuccess(checkInBean.getContent());
+                            }else{
+                                ToastUtils.showToast(checkInBean.getMsg());
+                            }
                         }
 
                     }
@@ -114,7 +124,7 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
 
                     @Override
                     public void onNext(ContentBean<MemBean> memBean) {
-                        if(!VLUtils.isError(memBean.getCode())){
+                        if(!HandErrorUtils.isError(memBean.getCode())){
                             mWelfareCoinLogView.onSuccess(memBean.getContent());
                         }else{
                             ToastUtils.showToast(memBean.getMsg());

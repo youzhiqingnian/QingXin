@@ -4,9 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
-import com.vlee78.android.vl.VLUtils;
-
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -61,7 +60,7 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
 
                     @Override
                     public void onNext(ContentBean<GoddessDiaryDetailBean> diaryDetailBean) {
-                        if(!VLUtils.isError(diaryDetailBean.getCode())){
+                        if(!HandErrorUtils.isError(diaryDetailBean.getCode())){
                             mDiaryDetailView.onSuccess(diaryDetailBean.getContent());
                         }else{
                             ToastUtils.showToast(diaryDetailBean.getMsg());
@@ -91,7 +90,7 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
 
                     @Override
                     public void onNext(ContentBean<CollectBean> collectBean) {
-                        if(!VLUtils.isError(collectBean.getCode())){
+                        if(!HandErrorUtils.isError(collectBean.getCode())){
                             mDiaryDetailView.onSuccess(collectBean.getContent());
                         }else{
                             ToastUtils.showToast(collectBean.getMsg());

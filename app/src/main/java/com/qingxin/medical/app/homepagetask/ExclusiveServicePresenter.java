@@ -5,9 +5,8 @@ import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
-import com.vlee78.android.vl.VLUtils;
-
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -61,7 +60,7 @@ public class ExclusiveServicePresenter implements ServiceListContract.Presenter 
 
                     @Override
                     public void onNext(ContentBean<ListBean<ServiceBean>> diary) {
-                        if(!VLUtils.isError(diary.getCode())){
+                        if(!HandErrorUtils.isError(diary.getCode())){
                             mExclusiveServiceView.onSuccess(diary.getContent());
                         }else{
                             ToastUtils.showToast(diary.getMsg());

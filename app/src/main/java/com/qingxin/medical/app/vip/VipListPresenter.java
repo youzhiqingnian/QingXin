@@ -3,9 +3,8 @@ package com.qingxin.medical.app.vip;
 import android.support.annotation.NonNull;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
-import com.vlee78.android.vl.VLUtils;
-
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -60,7 +59,7 @@ public class VipListPresenter implements VipListContract.Presenter {
 
                     @Override
                     public void onNext(ContentBean<VipListBean> vipList) {
-                        if(!VLUtils.isError(vipList.getCode())){
+                        if(!HandErrorUtils.isError(vipList.getCode())){
                             mVipListryView.onSuccess(vipList.getContent());
                         }else{
                             ToastUtils.showToast(vipList.getMsg());

@@ -6,9 +6,8 @@ import android.util.Log;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
-import com.vlee78.android.vl.VLUtils;
-
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -63,7 +62,7 @@ public class VipDetailPresenter implements VipDetailContract.Presenter {
 
                     @Override
                     public void onNext(ContentBean<VipDetailBean> vipDetail) {
-                        if(!VLUtils.isError(vipDetail.getCode())){
+                        if(!HandErrorUtils.isError(vipDetail.getCode())){
                             mVipDetailView.onSuccess(vipDetail.getContent());
                         }else{
                             ToastUtils.showToast(vipDetail.getMsg());
@@ -93,7 +92,11 @@ public class VipDetailPresenter implements VipDetailContract.Presenter {
 
                     @Override
                     public void onNext(ContentBean<CollectBean> collectBean) {
-                        mVipDetailView.onSuccess(collectBean.getContent());
+                        if(!HandErrorUtils.isError(collectBean.getCode())){
+                            mVipDetailView.onSuccess(collectBean.getContent());
+                        }else{
+                            ToastUtils.showToast(collectBean.getMsg());
+                        }
                     }
                 })
         );
@@ -119,7 +122,11 @@ public class VipDetailPresenter implements VipDetailContract.Presenter {
                     @Override
                     public void onNext(ContentBean<AmountBean> amountBean) {
                         Log.i("预定",amountBean.toString());
-                        mVipDetailView.onSuccess(amountBean.getContent());
+                        if(!HandErrorUtils.isError(amountBean.getCode())){
+                            mVipDetailView.onSuccess(amountBean.getContent());
+                        }else{
+                            ToastUtils.showToast(amountBean.getMsg());
+                        }
                     }
                 })
         );

@@ -1,13 +1,11 @@
 package com.qingxin.medical.app.homepagetask;
 
 import android.support.annotation.NonNull;
-
 import com.qingxin.medical.app.homepagetask.model.RecommendResultBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
-import com.vlee78.android.vl.VLUtils;
-
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -63,7 +61,7 @@ public class RecommendUserPresenter implements RecommendUserContract.Presenter {
 
                     @Override
                     public void onNext(ContentBean<RecommendResultBean> recommendResultBean) {
-                        if(!VLUtils.isError(recommendResultBean.getCode())){
+                        if(!HandErrorUtils.isError(recommendResultBean.getCode())){
                             mRecommendUserView.onSuccess(recommendResultBean.getContent());
                         }else{
                             ToastUtils.showToast(recommendResultBean.getMsg());
