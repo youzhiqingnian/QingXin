@@ -125,7 +125,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         mAdapter.addHeaderView(mHeaderView);
         mRefreshLayout.setOnRefreshListener(this);
 
-        mPresenter.isChcekIn();
+
     }
 
 
@@ -143,7 +143,9 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         super.onVisible(first);
         if (first) {
             mRefreshLayout.setRefreshing(true);
+            Log.i("还没露面就请求","还没露面就请求");
             getServiceList(true);
+            mPresenter.isChcekIn();
         }
     }
 

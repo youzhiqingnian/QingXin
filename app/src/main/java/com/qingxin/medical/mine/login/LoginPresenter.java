@@ -1,6 +1,7 @@
 package com.qingxin.medical.mine.login;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
@@ -60,6 +61,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                     @Override
                     public void onNext(ContentBean<UserTokenBean> userTokenBeanContentBean) {
+                        Log.i("登录",userTokenBeanContentBean.toString());
                         if (null != mLoginView) {
                             if(!HandErrorUtils.isError(userTokenBeanContentBean.getCode())){
                                 mLoginView.onSuccess(userTokenBeanContentBean.getContent());

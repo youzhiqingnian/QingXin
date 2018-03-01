@@ -1,6 +1,8 @@
 package com.qingxin.medical.app.homepagetask;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.home.ListBean;
@@ -62,6 +64,7 @@ public class ExclusiveServicePresenter implements ServiceListContract.Presenter 
 
                     @Override
                     public void onNext(ContentBean<ListBean<ServiceBean>> diary) {
+                        Log.i("专属服务",diary.toString());
                         if(!HandErrorUtils.isError(diary.getCode())){
                             mExclusiveServiceView.onSuccess(diary.getContent());
                         }else{

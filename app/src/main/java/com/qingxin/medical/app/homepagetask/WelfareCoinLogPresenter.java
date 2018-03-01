@@ -1,6 +1,8 @@
 package com.qingxin.medical.app.homepagetask;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.base.ContentBean;
@@ -63,6 +65,7 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
 
                     @Override
                     public void onNext(ContentBean<ListBean<CoinLogBean>> coinLogs) {
+                        Log.i("清新比列表", "youfanhui"+ coinLogs.toString());
                         if(!HandErrorUtils.isError(coinLogs.getCode())){
                             mWelfareCoinLogView.onSuccess(coinLogs.getContent());
                         }else{
