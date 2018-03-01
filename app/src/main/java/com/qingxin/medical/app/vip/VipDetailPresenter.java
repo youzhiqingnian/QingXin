@@ -56,8 +56,7 @@ public class VipDetailPresenter implements VipDetailContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mVipDetailView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override
@@ -86,8 +85,7 @@ public class VipDetailPresenter implements VipDetailContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mVipDetailView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override
@@ -115,8 +113,7 @@ public class VipDetailPresenter implements VipDetailContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mVipDetailView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override

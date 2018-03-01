@@ -55,7 +55,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        //TODO
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override

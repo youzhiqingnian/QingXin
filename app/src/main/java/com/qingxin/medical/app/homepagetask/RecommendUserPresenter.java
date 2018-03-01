@@ -55,8 +55,7 @@ public class RecommendUserPresenter implements RecommendUserContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mRecommendUserView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override

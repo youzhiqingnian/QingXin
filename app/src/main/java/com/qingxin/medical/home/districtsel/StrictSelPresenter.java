@@ -55,7 +55,7 @@ public class StrictSelPresenter implements StrictSelContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mStrictSelView.onError(e.getMessage());
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override

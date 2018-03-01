@@ -17,6 +17,7 @@ import com.qingxin.medical.R;
 import com.qingxin.medical.app.Constants;
 import com.qingxin.medical.app.homepagetask.HomePageTaskActivity;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLScheduler;
 
@@ -37,7 +38,7 @@ public class SplashActivity extends QingXinActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        requestGaodeLoction();
+//        requestGaodeLoction();
         VLScheduler.instance.schedule(3000, VLScheduler.THREAD_MAIN, new VLBlock() {
             @Override
             protected void process(boolean canceled) {
@@ -132,7 +133,7 @@ public class SplashActivity extends QingXinActivity {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 mLocationClient.startLocation();
             } else {
-
+                ToastUtils.showToast("没有获取到定位权限");
             }
         }
 

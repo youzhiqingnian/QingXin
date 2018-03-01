@@ -48,14 +48,16 @@ public class ExclusiveServicePresenter implements ServiceListContract.Presenter 
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<ListBean<ServiceBean>>>() {
+
+
+
                     @Override
                     public void onCompleted() {
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mExclusiveServiceView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override

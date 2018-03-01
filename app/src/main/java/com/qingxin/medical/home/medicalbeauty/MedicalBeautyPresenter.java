@@ -58,7 +58,7 @@ public class MedicalBeautyPresenter implements MedicalBeautyContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mStrictSelView.onError(e.getMessage());
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override
@@ -91,7 +91,7 @@ public class MedicalBeautyPresenter implements MedicalBeautyContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        mStrictSelView.onError(e.getMessage());
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override

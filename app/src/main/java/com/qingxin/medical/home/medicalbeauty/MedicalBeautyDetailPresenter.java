@@ -54,7 +54,7 @@ public class MedicalBeautyDetailPresenter implements MedicalBeautyDetailContract
 
                     @Override
                     public void onError(Throwable e) {
-                        mMedicalBeautyDetailView.onError(e.getMessage());
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override

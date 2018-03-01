@@ -54,8 +54,7 @@ public class GoddessDiaryPresenter implements DiaryListContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mGoddessDiaryView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override

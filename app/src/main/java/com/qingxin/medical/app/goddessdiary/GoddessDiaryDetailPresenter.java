@@ -54,8 +54,7 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mDiaryDetailView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override
@@ -84,8 +83,7 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mDiaryDetailView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override

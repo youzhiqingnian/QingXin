@@ -56,6 +56,9 @@ public class RetrofitModel extends VLModel {
                     .header("token", null == QingXinApplication.getInstance().getLoginUser() ? "" : QingXinApplication.getInstance().getLoginUser().getToken())
                     .method(original.method(), original.body())
                     .build();
+
+
+
             return chain.proceed(request);
         });
 

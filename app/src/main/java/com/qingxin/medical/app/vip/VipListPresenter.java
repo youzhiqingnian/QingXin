@@ -53,8 +53,7 @@ public class VipListPresenter implements VipListContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mVipListryView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override

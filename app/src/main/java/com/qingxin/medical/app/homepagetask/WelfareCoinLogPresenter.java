@@ -58,8 +58,7 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mWelfareCoinLogView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override
@@ -87,8 +86,7 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mWelfareCoinLogView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override
@@ -118,8 +116,7 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mWelfareCoinLogView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override

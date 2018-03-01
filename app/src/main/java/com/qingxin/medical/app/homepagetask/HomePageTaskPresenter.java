@@ -57,8 +57,7 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        mHomePageTaskView.onError("请求失败！！");
+                        HandErrorUtils.handleError(e);
                     }
 
                     @Override
