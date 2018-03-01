@@ -14,7 +14,9 @@ import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
+import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
+import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
 
@@ -30,6 +32,7 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
     private ExclusiveServiceListAdapter mAdapter;
     private SwipeRefreshLayout mRefreshLayout;
     private boolean isClear;
+    private VLTitleBar mTitleBar;
 
     public ExclusiveServiceFragment() {
     }
@@ -39,7 +42,7 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.activity_goddess_diary_list, container, false);
     }
 
@@ -54,10 +57,10 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
     private void initView() {
         mPresenter = new ExclusiveServicePresenter(this);
         if (null == getView()) return;
-        VLTitleBar titleBar = getView().findViewById(R.id.titleBar);
+        mTitleBar = getView().findViewById(R.id.titleBar);
         RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
         mRefreshLayout = getView().findViewById(R.id.swipeLayout);
-        QingXinTitleBar.init(titleBar, getResources().getString(R.string.exclusive_service));
+        QingXinTitleBar.init(mTitleBar, getResources().getString(R.string.exclusive_service));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new ExclusiveServiceListAdapter(null, moblile -> VLUtils.gotoDail(getActivity(), moblile));
         mAdapter.setOnLoadMoreListener(() -> getServiceList(false), recyclerView);
@@ -78,8 +81,15 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
     protected void onVisible(boolean first) {
         super.onVisible(first);
         if (first) {
+            showViewBelowActionBar(R.layout.layout_loading,QingXinTitleBar.fixActionBarHeight(mTitleBar));
             mRefreshLayout.setRefreshing(true);
-            getServiceList(true);
+            VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
+                @Override
+                protected void process(boolean canceled) {
+                    getServiceList(true);
+                }
+            });
+
         }
     }
 
@@ -104,6 +114,7 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
 
     @Override
     public void onSuccess(ListBean<ServiceBean> service) {
+        hideView(R.layout.layout_loading);
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
             mAdapter.setNewData(service.getItems());
@@ -120,6 +131,7 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
 
     @Override
     public void onError(String result) {
+        hideView(R.layout.layout_loading);
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
         } else {

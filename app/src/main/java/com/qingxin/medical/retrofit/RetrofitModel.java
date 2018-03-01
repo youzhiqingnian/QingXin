@@ -6,8 +6,11 @@ import android.util.Log;
 import com.amap.api.location.AMapLocation;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.map.LocationService;
+import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModel;
+import com.vlee78.android.vl.VLScheduler;
+import com.vlee78.android.vl.VLUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -41,39 +44,36 @@ public class RetrofitModel extends VLModel {
     @Override
     protected void onCreate() {
         super.onCreate();
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder().connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS).writeTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS).readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
-        httpClient.addInterceptor(chain -> {
-            Request original = chain.request();
-            String cityCode = "";
-            LocationService locationService = QingXinApplication.getInstance().getLocationService();
-            if (null != locationService && null != locationService.getAMLocation()) {
-                AMapLocation aMapLocation = locationService.getAMLocation();
-                cityCode = aMapLocation.getCityCode();
-            }
-            Log.e("RetrofitModel","cityCode = " + cityCode);
-            Request request = original.newBuilder()
-                    .header("citycode", cityCode)
-                    .header("token", null == QingXinApplication.getInstance().getLoginUser() ? "" : QingXinApplication.getInstance().getLoginUser().getToken())
-                    .method(original.method(), original.body())
-                    .build();
+                OkHttpClient.Builder httpClient = new OkHttpClient.Builder().connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS).writeTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS).readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
+                httpClient.addInterceptor(chain -> {
+                    Request original = chain.request();
+                    String cityCode = "";
+                    LocationService locationService = QingXinApplication.getInstance().getLocationService();
+                    if (null != locationService && null != locationService.getAMLocation()) {
+                        AMapLocation aMapLocation = locationService.getAMLocation();
+                        cityCode = aMapLocation.getCityCode();
+                    }
+                    Log.e("RetrofitModel", "cityCode = " + cityCode);
+                    Request request = original.newBuilder()
+                            .header("citycode", cityCode)
+                            .header("token", null == QingXinApplication.getInstance().getLoginUser() ? "" : QingXinApplication.getInstance().getLoginUser().getToken())
+                            .method(original.method(), original.body())
+                            .build();
+                    return chain.proceed(request);
+                });
+                HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(message -> {
+                    //打印retrofit日志
+                    VLDebug.logE(TAG, "retrofitBack = " + message);
+                });
+                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                httpClient.addInterceptor(loggingInterceptor);
+                mRetrofit = new Retrofit.Builder()
+                        .client(httpClient.build())
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                        .baseUrl(BASE_URL)
+                        .build();
 
-
-
-            return chain.proceed(request);
-        });
-
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(message -> {
-            //打印retrofit日志
-            VLDebug.logE(TAG, "retrofitBack = " + message);
-        });
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        httpClient.addInterceptor(loggingInterceptor);
-        mRetrofit = new Retrofit.Builder()
-                .client(httpClient.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(BASE_URL)
-                .build();
     }
 
     public Retrofit getRetrofit() {
