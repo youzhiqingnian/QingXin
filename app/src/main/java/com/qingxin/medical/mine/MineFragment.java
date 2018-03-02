@@ -1,26 +1,40 @@
 package com.qingxin.medical.mine;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.design.widget.AppBarLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
+import com.qingxin.medical.QingXinAdapter;
 import com.qingxin.medical.R;
-import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
-import com.qingxin.medical.mine.login.LoginContract;
-import com.qingxin.medical.mine.login.LoginPresenter;
-import com.qingxin.medical.user.UserModel;
-import com.qingxin.medical.user.UserTokenBean;
+import com.qingxin.medical.home.districtsel.StrictSelListFragment;
+import com.qingxin.medical.widget.indicator.CommonNavigator;
+import com.qingxin.medical.widget.indicator.CommonNavigatorAdapter;
+import com.qingxin.medical.widget.indicator.IPagerIndicator;
+import com.qingxin.medical.widget.indicator.IPagerTitleView;
+import com.qingxin.medical.widget.indicator.LinePagerIndicator;
+import com.qingxin.medical.widget.indicator.MagicIndicator;
+import com.qingxin.medical.widget.indicator.SimplePagerTitleView;
+import com.qingxin.medical.widget.indicator.ViewPagerHelper;
+import com.vlee78.android.vl.VLUtils;
 
 /**
  * 首页我的界面
  *
  * @author zhikuo
  */
-public class MineFragment extends QingXinFragment implements View.OnClickListener, LoginContract.LoginView {
+public class MineFragment extends QingXinFragment {
+
+    private View mRootView;
+
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+
+    private AppBarLayout mAppbar;
 
     public MineFragment() {
     }
@@ -30,13 +44,10 @@ public class MineFragment extends QingXinFragment implements View.OnClickListene
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_mine, container, false);
     }
 
-    public boolean isLogin;
-    public LoginPresenter mLoginPresenter;
-    public Button mLoginTv;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -44,58 +55,73 @@ public class MineFragment extends QingXinFragment implements View.OnClickListene
         if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
             return;
         if (getView() == null) return;
-        mLoginTv = getView().findViewById(R.id.loginTv);
-        mLoginTv.setOnClickListener(this);
+        mRootView = getView();
 
-        mLoginPresenter = new LoginPresenter(this);
-        initLoginStatus();
+        initView();
+
     }
 
-    private void initLoginStatus(){
-        isLogin = QingXinApplication.getInstance().getLoginUser() != null;
-        mLoginTv.setText(isLogin ? "退出登陆" : "登陆");
-    }
+    private void initView() {
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.loginTv:
-                if (isLogin) {
-                    getModel(UserModel.class).onLogout();
-                    initLoginStatus();
-                    showToast("退出登陆");
-                } else {//登陆
-                    mLoginPresenter.login("18311370117", "1111");
+        MagicIndicator indicator = mRootView.findViewById(R.id.magicIndicator);
+        final QingXinFragment[] fragments = new QingXinFragment[]{new MyAppointmengListFragment(), new MyDiaryListFragment(), new MyCollectionListFragment()};
+        final String[] titles = new String[]{getResources().getString(R.string.agency), getResources().getString(R.string.doctor), getResources().getString(R.string.doctor)};
+        QingXinAdapter adapter = new QingXinAdapter(getActivity().getSupportFragmentManager(), fragments, titles);
+        final ViewPager viewPager = mRootView.findViewById(R.id.viewPager);
+        viewPager.setAdapter(adapter);
+        CommonNavigator navigator = new CommonNavigator(getActivity());
+        navigator.setAdapter(new CommonNavigatorAdapter() {
+            @Override
+            public int getCount() {
+                return fragments.length;
+            }
+
+            @Override
+            public IPagerTitleView getTitleView(Context context, final int index) {
+                SimplePagerTitleView titleView = new SimplePagerTitleView(context);
+                titleView.setTextNormalColor(0xffb2b3b4);
+                titleView.setTextSelectedColor(0xff3bc5e8);
+                titleView.setText(titles[index]);
+                titleView.setTextSize(16);
+                titleView.setOnClickListener(v -> viewPager.setCurrentItem(index));
+                return titleView;
+            }
+
+            @Override
+            public IPagerIndicator getIndicator(Context context) {
+                LinePagerIndicator lineIndicator = new LinePagerIndicator(context);
+                lineIndicator.setMode(LinePagerIndicator.MODE_EXACTLY);
+                lineIndicator.setLineHeight(VLUtils.dip2px(2));
+                lineIndicator.setRoundRadius(VLUtils.dip2px(2));
+                lineIndicator.setLineWidth(VLUtils.dip2px(16));
+                lineIndicator.setColors(0xff3bc5e8);
+                lineIndicator.setYOffset(VLUtils.dip2px(5));
+                return lineIndicator;
+            }
+        });
+        indicator.setNavigator(navigator);
+        ViewPagerHelper.bind(indicator, viewPager);
+
+        mSwipeRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
+        mAppbar = mRootView.findViewById(R.id.appbar);
+
+        mAppbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset >= 0) {
+                    mSwipeRefreshLayout.setEnabled(true);
+                }else{
+                    mSwipeRefreshLayout.setEnabled(false);
                 }
-                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void setPresenter(LoginContract.LoginPresenter presenter) {
+            }
+        });
 
     }
 
-    @Override
-    public void onSuccess(UserTokenBean userTokenBean) {
-        Log.i("登录成功的bean",userTokenBean.toString());
-        userTokenBean.getMem().setToken(userTokenBean.getToken());
-        getModel(UserModel.class).onLoginSuccess(userTokenBean.getMem());
-        initLoginStatus();
-        showToast("登陆成功");
-    }
-
-    @Override
-    public void onError(String errorCode, String message) {
-
-    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mLoginPresenter.unsubscribe();
     }
 
 }

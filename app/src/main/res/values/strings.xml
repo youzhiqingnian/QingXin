@@ -100,4 +100,13 @@
     <string name="ensure_submit">确定提交</string>
     <string name="recommend_success">推荐成功</string>
 
+    <!--我的-->
+    <string name="mine">我的</string>
+    <string name="my_wish_list">我的心愿单</string>
+    <string name="contact_us">联系我们</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
+    <string name="mine_product">#产品</string>
+    <string name="mine_diary">#日记</string>
+
 </resources>

@@ -5,6 +5,7 @@
     <color name="light_text_color">#8D8E90</color>
     <color name="text_color_blue">#3BC5E8</color>
     <color name="stroke_blue">#2CCCEE</color>
+    <color name="ring_blue">#58CEEB</color>
     <color name="deep_blue">#39B2D1</color>
     <color name="text_color_pink">#F0488F</color>
     <color name="text_color_hint">#8D8E90</color>
@@ -18,5 +19,6 @@
     <color name="black">#000000</color>
     <color name="price_pink">#F565A2</color>
     <color name="unfill_gray">#DFE3E5</color>
+    <color name="mine_collection_gray">#ECF0F3</color>
 
 </resources>

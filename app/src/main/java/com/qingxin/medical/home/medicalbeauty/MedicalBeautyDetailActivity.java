@@ -34,6 +34,8 @@ public class MedicalBeautyDetailActivity extends QingXinActivity implements Medi
     private static final String MEDICAL_BEAUTY_ID = "MEDICAL_BEAUTY_ID";
     private String mMedicalId;
 
+    private VLTitleBar mTitleBar;
+
     public static void startSelf(@NonNull Context context, @NonNull String id) {
         Intent intent = new Intent(context, MedicalBeautyDetailActivity.class);
         intent.putExtra(MEDICAL_BEAUTY_ID, id);
@@ -45,9 +47,8 @@ public class MedicalBeautyDetailActivity extends QingXinActivity implements Medi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medical_beauty_detail);
 
-        VLTitleBar titleBar = findViewById(R.id.titleBar);
-        QingXinTitleBar.init(titleBar, getResources().getString(R.string.medical_beauty));
-        QingXinTitleBar.setLeftReturn(titleBar, this);
+        mTitleBar = findViewById(R.id.titleBar);
+        QingXinTitleBar.setLeftReturn(mTitleBar, this);
 
 
         mMedicalId = getIntent().getStringExtra(MEDICAL_BEAUTY_ID);
@@ -94,6 +95,7 @@ public class MedicalBeautyDetailActivity extends QingXinActivity implements Medi
 
 
     public void setData(ItemBean<MedicalBeautyRealDetailBean> data) {
+        QingXinTitleBar.init(mTitleBar, data.getItem().getName());
         SimpleDraweeView mCoverSdv = findViewById(R.id.coverSdv);
 //        SimpleDraweeView mProgramCoverSdv = findViewById(R.id.programCoverSdv);
         TextView mNameTv = findViewById(R.id.nameTv);
