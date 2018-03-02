@@ -41,16 +41,18 @@ public class MyAppointmengListFragment extends QingXinFragment{
     public static final String STRICTSEL_TYEP_HOSPITALS = "hospital";
     public static final String STRICTSEL_TYEP_DOCTORS = "doctor";
 
+
     @Override
     protected View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_mine_tab, container, false);
+//        return inflater.inflate(R.layout.fragment_mine_tab, container, false);
+        return inflater.inflate(R.layout.fake_1, container, false);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-    /*    if (null == getView()) return;
-        mRefreshLayout = getView().findViewById(R.id.swipeRefreshLayout);
+        if (null == getView()) return;
+       /* mRefreshLayout = getView().findViewById(R.id.swipeRefreshLayout);
         RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new AgencyAdapter(null);

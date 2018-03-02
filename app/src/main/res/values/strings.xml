@@ -108,5 +108,8 @@
     <string name="edit">编辑</string>
     <string name="mine_product">#产品</string>
     <string name="mine_diary">#日记</string>
+    <string name="appointment_count">预约 · 0</string>
+    <string name="diary_count">日记 · 0</string>
+    <string name="collection_count">收藏 · 0</string>
 
 </resources>

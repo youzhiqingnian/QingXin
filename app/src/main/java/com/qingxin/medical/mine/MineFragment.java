@@ -65,7 +65,8 @@ public class MineFragment extends QingXinFragment {
 
         MagicIndicator indicator = mRootView.findViewById(R.id.magicIndicator);
         final QingXinFragment[] fragments = new QingXinFragment[]{new MyAppointmengListFragment(), new MyDiaryListFragment(), new MyCollectionListFragment()};
-        final String[] titles = new String[]{getResources().getString(R.string.agency), getResources().getString(R.string.doctor), getResources().getString(R.string.doctor)};
+//        final QingXinFragment[] fragments = new QingXinFragment[]{StrictSelListFragment.newInstance(StrictSelListFragment.STRICTSEL_TYEP_HOSPITALS), StrictSelListFragment.newInstance(StrictSelListFragment.STRICTSEL_TYEP_DOCTORS), StrictSelListFragment.newInstance(StrictSelListFragment.STRICTSEL_TYEP_DOCTORS)};
+        final String[] titles = new String[]{getResources().getString(R.string.appointment_count), getResources().getString(R.string.diary_count), getResources().getString(R.string.collection_count)};
         QingXinAdapter adapter = new QingXinAdapter(getActivity().getSupportFragmentManager(), fragments, titles);
         final ViewPager viewPager = mRootView.findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
