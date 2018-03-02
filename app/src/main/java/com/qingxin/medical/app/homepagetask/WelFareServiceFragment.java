@@ -1,8 +1,6 @@
 package com.qingxin.medical.app.homepagetask;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
@@ -18,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -31,8 +28,9 @@ import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.MyBroadCastReceiver;
 import com.vlee78.android.vl.VLActivity;
-import com.vlee78.android.vl.VLApplication;
+import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
+import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 
 /**
@@ -52,6 +50,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     private TextView mQingxinCoinAmountTv;
     private TextView mClickToSignTv;
     private MyBroadCastReceiver mReceiver;
+    private VLTitleBar mTitleBar;
 
 
     public WelFareServiceFragment() {
@@ -62,7 +61,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_welfareservice, container, false);
     }
 
@@ -92,10 +91,10 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     private void initView() {
         mPresenter = new WelfareCoinLogPresenter(this);
         if (null == getView()) return;
-        VLTitleBar titleBar = getView().findViewById(R.id.titleBar);
+        mTitleBar = getView().findViewById(R.id.titleBar);
         RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
         mRefreshLayout = getView().findViewById(R.id.swipeLayout);
-        QingXinTitleBar.init(titleBar, getResources().getString(R.string.welfare_home));
+        QingXinTitleBar.init(mTitleBar, getResources().getString(R.string.welfare_home));
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new WelfareServiceListAdapter(null);
         mAdapter.setOnLoadMoreListener(() -> getServiceList(false), recyclerView);
@@ -125,9 +124,8 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         mAdapter.addHeaderView(mHeaderView);
         mRefreshLayout.setOnRefreshListener(this);
 
-        mPresenter.isChcekIn();
-    }
 
+    }
 
     private void getServiceList(boolean isClear) {
         this.isClear = isClear;
@@ -143,7 +141,16 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         super.onVisible(first);
         if (first) {
             mRefreshLayout.setRefreshing(true);
-            getServiceList(true);
+            Log.i("还没露面就请求","还没露面就请求");
+            showViewBelowActionBar(R.layout.layout_loading,QingXinTitleBar.fixActionBarHeight(mTitleBar));
+            VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
+                @Override
+                protected void process(boolean canceled) {
+                    getServiceList(true);
+                    mPresenter.isChcekIn();
+                }
+            });
+
         }
     }
 
@@ -159,6 +166,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
     @Override
     public void onSuccess(ListBean<CoinLogBean> coinLog) {
+        hideView(R.layout.layout_loading);
         Log.i("福利社的bean", coinLog.toString());
 
         if (coinLog != null && !TextUtils.isEmpty(coinLog.getBalance())) {
@@ -184,6 +192,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onSuccess(CheckInBean checkIn) {
+        hideView(R.layout.layout_loading);
         Log.i("每日签到", checkIn.toString());
         setCheckinUnable();
         getServiceList(true);
@@ -192,6 +201,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onSuccess(MemBean memBean) {
+        hideView(R.layout.layout_loading);
         Log.i("是否签到的bean",memBean.toString());
         if(!memBean.getMem().getHas_checkin().equals("n")){
             // 如果已经签到
@@ -201,6 +211,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
     @Override
     public void onError(String result) {
+        hideView(R.layout.layout_loading);
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
         } else {
@@ -237,6 +248,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
                 break;
             case R.id.clickToSignTv:
                 // 点击签到
+                showViewBelowActionBar(R.layout.layout_loading,QingXinTitleBar.fixActionBarHeight(mTitleBar));
                 mPresenter.checkIn();
 
                 break;

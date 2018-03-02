@@ -83,6 +83,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
                     initLoginStatus();
                     showToast("退出登陆");
                 } else {//登陆
+                    showView(R.layout.layout_loading);
                     mLoginPresenter.login("18311370117", "1111");
                 }
                 break;
@@ -98,6 +99,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
 
     @Override
     public void onSuccess(UserTokenBean userTokenBean) {
+        hideView(R.layout.layout_loading);
         Log.i("登录成功的bean",userTokenBean.toString());
         userTokenBean.getMem().setToken(userTokenBean.getToken());
         getModel(UserModel.class).onLoginSuccess(userTokenBean.getMem());
@@ -108,7 +110,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
 
     @Override
     public void onError(String errorCode, String message) {
-
+        hideView(R.layout.layout_loading);
     }
 
     @Override

@@ -19,8 +19,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
@@ -37,10 +39,13 @@ import com.qingxin.medical.home.districtsel.StrictSelListActivity;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyActivity;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLActivity;
+import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
+import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
+
 import java.util.List;
 
 /**
@@ -76,7 +81,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
@@ -118,7 +123,15 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         encyclopediasRl.setOnClickListener(this);
         diaryMoreRl.setOnClickListener(this);
         mSlectionMoreRl.setOnClickListener(this);
-        getHomeData();
+        showView(R.layout.layout_loading);
+        VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
+            @Override
+            protected void process(boolean canceled) {
+                getHomeData();
+            }
+        });
+
+
     }
 
     @Override
@@ -243,6 +256,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
     @Override
     public void onSuccess(HomeBean homeBean) {
+        hideView(R.layout.layout_loading);
         mHomeBean = homeBean;
         Log.i("homeBean", homeBean.toString());
         if (mHomeBean != null) {
@@ -252,6 +266,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
     @Override
     public void onError(String result) {
+        hideView(R.layout.layout_loading);
     }
 
     @Override
