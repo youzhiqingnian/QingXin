@@ -41,4 +41,9 @@
         <item name="android:maxHeight">45dip</item>
     </style>
 
+    <!-- 底部弹出层 -->
+    <style name="ChooseAlbumPopupAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/anim_push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_push_bottom_out</item>
+    </style>
 </resources>
