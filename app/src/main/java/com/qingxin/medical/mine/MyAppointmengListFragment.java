@@ -24,13 +24,6 @@ import com.qingxin.medical.home.districtsel.StrictSelPresenter;
 public class MyAppointmengListFragment extends QingXinFragment{
 
 
- /*public static MyAppointmengListFragment newInstance() {
-        MyAppointmengListFragment myAppointmengListFragment = new MyAppointmengListFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(STRICTSEL_TYEP, type);
-        myAppointmengListFragment.setArguments(bundle);
-        return myAppointmengListFragment;
-    }*/
 
     private AgencyAdapter mAdapter;
     private SwipeRefreshLayout mRefreshLayout;
@@ -44,8 +37,7 @@ public class MyAppointmengListFragment extends QingXinFragment{
 
     @Override
     protected View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.fragment_mine_tab, container, false);
-        return inflater.inflate(R.layout.fake_1, container, false);
+        return inflater.inflate(R.layout.fragment_mine_tab, container, false);
     }
 
     @Override
