@@ -1,29 +1,33 @@
 package com.qingxin.medical.mine;
 
 import android.support.annotation.NonNull;
+
+import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+
 /**
- *
  * Date 2018-02-05
+ *
  * @author zhikuo1
  */
-public class MyCollectListPresenter implements MyCollectListContract.Presenter {
+public class MyCollectProductListPresenter implements MyCollectProductListContract.Presenter {
 
     @NonNull
-    private final MyCollectListContract.View mCollectListryView;
+    private final MyCollectProductListContract.View mCollectListryView;
 
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    public MyCollectListPresenter(MyCollectListContract.View vipListView) {
+    public MyCollectProductListPresenter(MyCollectProductListContract.View vipListView) {
         mCollectListryView = vipListView;
         mCompositeSubscription = new CompositeSubscription();
         mCollectListryView.setPresenter(this);
@@ -58,9 +62,9 @@ public class MyCollectListPresenter implements MyCollectListContract.Presenter {
 
                     @Override
                     public void onNext(ContentBean<VipListBean> vipList) {
-                        if(!HandErrorUtils.isError(vipList.getCode())){
+                        if (!HandErrorUtils.isError(vipList.getCode())) {
                             mCollectListryView.onSuccess(vipList.getContent());
-                        }else{
+                        } else {
                             ToastUtils.showToast(vipList.getMsg());
                         }
                     }
@@ -69,7 +73,30 @@ public class MyCollectListPresenter implements MyCollectListContract.Presenter {
     }
 
     @Override
-    public void getMyCollectDiaryList(int limit, int skip, String type, String actyp) {
+    public void cancelCollect(String id) {
+        mCompositeSubscription.add(NetRequestListManager.collectVip(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ContentBean<CollectBean>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        HandErrorUtils.handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(ContentBean<CollectBean> collectBean) {
+                        if (!HandErrorUtils.isError(collectBean.getCode())) {
+                            mCollectListryView.onSuccess(collectBean.getContent());
+                        } else {
+                            ToastUtils.showToast(collectBean.getMsg());
+                        }
+                    }
+                })
+        );
     }
+
 }

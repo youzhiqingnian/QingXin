@@ -147,10 +147,16 @@ public interface RetrofitService {
     Observable<ContentBean<RecommendResultBean>> submitRecommendUser(@Field("name")String name, @Field("mobile")String mobile, @Field("product")String product, @Field("inthos")String inthos, @Field("remark")String remark);
 
     /**
-     * 获取歆人专享列表
+     * 获取我的预定/收藏过的产品
      */
     @GET("/mem/act")
     Observable<ContentBean<VipListBean>> getMyBookedProductList(@Query("limit") int limit, @Query("skip") int skip, @Query("type") String type, @Query("actyp") String actyp);
+
+    /**
+     * 获取我发布的日记/收藏过的日记
+     */
+    @GET("/mem/act")
+    Observable<ContentBean<ListBean<DiaryItemBean>>> getMyDiaryList(@Query("limit") int limit, @Query("skip") int skip, @Query("type") String type, @Query("actyp") String actyp);
 
 
 }

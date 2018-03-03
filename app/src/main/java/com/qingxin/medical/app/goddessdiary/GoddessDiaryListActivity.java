@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.qingxin.medical.QingXinConstants;
@@ -84,6 +85,7 @@ public class GoddessDiaryListActivity extends QingXinActivity implements DiaryLi
 
     @Override
     public void onSuccess(ListBean<DiaryItemBean> diary) {
+        Log.i("女神日记列表",diary.toString());
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
             mAdapter.setNewData(diary.getItems());

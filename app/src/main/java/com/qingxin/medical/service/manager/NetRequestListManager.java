@@ -125,7 +125,7 @@ public class NetRequestListManager {
     }
 
     /**
-     * 获取预定过的产品列表
+     * 获取预定/收藏过的产品列表
      * @param limit
      * @param skip
      * @param type
@@ -134,6 +134,18 @@ public class NetRequestListManager {
      */
     public static Observable<ContentBean<VipListBean>> getMyBookedProductList(int limit, int skip, String type, String actyp) {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getMyBookedProductList(limit, skip, type, actyp);
+    }
+
+    /**
+     * 获取发布/收藏过的产品列表
+     * @param limit
+     * @param skip
+     * @param type
+     * @param actyp
+     * @return
+     */
+    public static Observable<ContentBean<ListBean<DiaryItemBean>>> getMyDiaryList(int limit, int skip, String type, String actyp) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getMyDiaryList(limit, skip, type, actyp);
     }
 
 }

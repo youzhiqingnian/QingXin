@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +66,7 @@ public class MineFragment extends QingXinFragment {
     private void initView() {
 
         MagicIndicator indicator = mRootView.findViewById(R.id.magicIndicator);
-        final VLFragment[] fragments = new VLFragment[]{MyAppointmengListFragment.newInstance(), MyDiaryListFragment.newInstance(), MyCollectionListFragment.newInstance()};
+        final VLFragment[] fragments = new VLFragment[]{MyAppointmengListFragment.newInstance(), MyDiaryListFragment.newInstance(), MyCollectionDiaryListFragment.newInstance()};
         final String[] titles = new String[]{getResources().getString(R.string.appointment_count), getResources().getString(R.string.diary_count), getResources().getString(R.string.collection_count)};
         QingXinAdapter adapter = new QingXinAdapter(getActivity().getSupportFragmentManager(), fragments, titles);
         final ViewPager viewPager = mRootView.findViewById(R.id.viewPager);

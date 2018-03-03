@@ -1,8 +1,6 @@
 package com.qingxin.medical.mine;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,32 +9,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListAdapter;
 import com.qingxin.medical.app.vip.VipListBean;
-import com.qingxin.medical.base.QingXinFragment;
-import com.qingxin.medical.home.districtsel.AgencyAdapter;
-import com.qingxin.medical.home.districtsel.StrictSelBean;
-import com.qingxin.medical.home.districtsel.StrictSelDetailActivity;
-import com.qingxin.medical.home.districtsel.StrictSelPresenter;
-import com.qingxin.medical.utils.ToastUtils;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLUtils;
-
 /**
  * Date 2018-03-02
  *
  * @author zhikuo1
  */
 
-public class MyCollectionListFragment extends VLFragment implements View.OnClickListener, MyCollectListContract.View, SwipeRefreshLayout.OnRefreshListener, VipListAdapter.ProductCallbackListener {
+public class MyCollectionProductListFragment extends VLFragment implements MyCollectProductListContract.View, SwipeRefreshLayout.OnRefreshListener, VipListAdapter.ProductCallbackListener{
 
     private View mRootView;
 
@@ -44,20 +34,19 @@ public class MyCollectionListFragment extends VLFragment implements View.OnClick
 
     private VipListAdapter mAdapter;
 
+
+
+
     private boolean isClear;
 
 
-    private MyCollectListContract.Presenter mPresenter;
+    private MyCollectProductListContract.Presenter mPresenter;
 
-    private TextView mProductTv, mDiaryTv;
-
-    private boolean isDiary = false;
-
-    public MyCollectionListFragment() {
+    public MyCollectionProductListFragment() {
     }
 
-    public static MyCollectionListFragment newInstance() {
-        return new MyCollectionListFragment();
+    public static MyCollectionProductListFragment newInstance() {
+        return new MyCollectionProductListFragment();
     }
 
     @Override
@@ -74,16 +63,11 @@ public class MyCollectionListFragment extends VLFragment implements View.OnClick
         if (null == getView()) return;
         mRootView = getView();
         initView();
-        initListener();
     }
 
 
     private void initView() {
-        mPresenter = new MyCollectListPresenter(this);
-        LinearLayout collectionTypeLl = mRootView.findViewById(R.id.collectionTypeLl);
-        collectionTypeLl.setVisibility(View.VISIBLE);
-        mProductTv = mRootView.findViewById(R.id.productTv);
-        mDiaryTv = mRootView.findViewById(R.id.diaryTv);
+        mPresenter = new MyCollectProductListPresenter(this);
 
         mSwipeRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
         RecyclerView recyclerView = mRootView.findViewById(R.id.recyclerView);
@@ -103,26 +87,15 @@ public class MyCollectionListFragment extends VLFragment implements View.OnClick
         mSwipeRefreshLayout.setRefreshing(true);
     }
 
-    private void initListener() {
-        mProductTv.setOnClickListener(this);
-        mDiaryTv.setOnClickListener(this);
-    }
-
 
     private void getMyCollectList(boolean isClear) {
         this.isClear = isClear;
-        if (!isDiary) {
-            // 收藏的产品
-            int skip = isClear ? 0 : mAdapter.getData().size();
-            if (isClear) {
-                mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
-            }
-            mPresenter.getMyCollectProductList(QingXinConstants.ROWS, skip, "product", "collect");
-        } else {
-            // 收藏的日记
-            // TODO
-
+        // 收藏的产品
+        int skip = isClear ? 0 : mAdapter.getData().size();
+        if (isClear) {
+            mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
+        mPresenter.getMyCollectProductList(QingXinConstants.ROWS, skip, "product", "collect");
     }
 
     @Override
@@ -151,48 +124,16 @@ public class MyCollectionListFragment extends VLFragment implements View.OnClick
         mPresenter.unsubscribe();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-
-            case R.id.productTv:
-                // 我收藏的产品
-                if (isDiary) {
-                    isDiary = false;
-                    mProductTv.setBackground(getActivity().getResources().getDrawable(R.drawable.blue_button));
-                    mProductTv.setTextColor(getActivity().getResources().getColor(R.color.white));
-                    mDiaryTv.setBackground(getActivity().getResources().getDrawable(R.drawable.mine_gray_button));
-                    mDiaryTv.setTextColor(getActivity().getResources().getColor(R.color.text_color_origin_price));
-                }
-
-                break;
-
-            case R.id.diaryTv:
-                // 我收藏的日记
-                if (!isDiary) {
-                    isDiary = true;
-                    mDiaryTv.setBackground(getActivity().getResources().getDrawable(R.drawable.blue_button));
-                    mDiaryTv.setTextColor(getActivity().getResources().getColor(R.color.white));
-                    mProductTv.setBackground(getActivity().getResources().getDrawable(R.drawable.mine_gray_button));
-                    mProductTv.setTextColor(getActivity().getResources().getColor(R.color.text_color_origin_price));
-                }
-                break;
-
-        }
-
-    }
 
     @Override
-    public void setPresenter(MyCollectListContract.Presenter presenter) {
+    public void setPresenter(MyCollectProductListContract.Presenter presenter) {
 
     }
 
     @Override
     public void onSuccess(VipListBean vipListBean) {
         hideView(R.layout.layout_loading);
-        Log.i("专享列表为", vipListBean.toString());
+        Log.i("我收藏的产品列表", vipListBean.toString());
 
         if (isClear) {
             mSwipeRefreshLayout.setRefreshing(false);
@@ -205,6 +146,14 @@ public class MyCollectionListFragment extends VLFragment implements View.OnClick
             mAdapter.loadMoreEnd(isClear);
         } else {
             mAdapter.loadMoreComplete();
+        }
+    }
+
+    @Override
+    public void onSuccess(CollectBean collectBean) {
+        if (collectBean.getIs_collect().equals("n")) {
+            showToast(getString(R.string.cancel_collect_ok));
+            getMyCollectList(true);
         }
     }
 
@@ -224,8 +173,11 @@ public class MyCollectionListFragment extends VLFragment implements View.OnClick
     }
 
     @Override
-    public void onProductButtonClick() {
+    public void onProductButtonClick(String id) {
         // 取消收藏
-        Log.i("产品取消收藏","我的产品列表取消收藏");
+        Log.i("产品取消收藏", "我的产品列表取消收藏");
+        // 取消收藏产品
+        mPresenter.cancelCollect(id);
     }
+
 }

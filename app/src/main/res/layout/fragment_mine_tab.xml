@@ -4,49 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/collectionTypeLl"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:background="@color/mine_collection_gray"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/productTv"
-            android:layout_width="wrap_content"
-            android:layout_height="28dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
-            android:background="@drawable/blue_button"
-            android:gravity="center"
-            android:paddingEnd="13dp"
-            android:paddingLeft="13dp"
-            android:paddingRight="13dp"
-            android:paddingStart="13dp"
-            android:text="@string/mine_product"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
-
-        <TextView
-            android:id="@+id/diaryTv"
-            android:layout_width="wrap_content"
-            android:layout_height="28dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/mine_gray_button"
-            android:gravity="center"
-            android:paddingEnd="13dp"
-            android:paddingLeft="13dp"
-            android:paddingRight="13dp"
-            android:paddingStart="13dp"
-            android:text="@string/mine_diary"
-            android:textColor="@color/text_color_origin_price"
-            android:textSize="12sp" />
-    </LinearLayout>
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
