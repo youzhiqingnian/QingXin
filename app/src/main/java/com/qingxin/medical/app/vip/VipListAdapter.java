@@ -21,6 +21,16 @@ public class VipListAdapter extends BaseQuickAdapter<ProductBean, BaseViewHolder
 
     private int mType = 0;
 
+    private ProductCallbackListener btnCallBackListener;
+
+    public interface ProductCallbackListener{
+        void onProductButtonClick();
+    }
+
+    public void setBtnCallBackListener(ProductCallbackListener btnCallBackListener) {
+        this.btnCallBackListener = btnCallBackListener;
+    }
+
     public VipListAdapter(@Nullable List<ProductBean> data) {
         super(R.layout.layout_vip_item, data);
     }
@@ -39,12 +49,17 @@ public class VipListAdapter extends BaseQuickAdapter<ProductBean, BaseViewHolder
         TextView mOldpriceTv = helper.getView(R.id.oldpriceTv);
         TextView mOrderCountTv = helper.getView(R.id.orderCountTv);
         TextView mContactUsTv;
-        if(mType == 1){
+        if(mType == 1 || mType == 2){
             mContactUsTv = helper.getView(R.id.contactUsTv);
+            if(mType == 2){
+                mContactUsTv.setText(mContext.getResources().getString(R.string.cancel_collection));
+            }
             mContactUsTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    if(btnCallBackListener != null){
+                        btnCallBackListener.onProductButtonClick();
+                    }
                 }
             });
         }

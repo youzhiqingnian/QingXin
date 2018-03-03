@@ -42,7 +42,7 @@
             android:paddingLeft="13dp"
             android:paddingRight="13dp"
             android:paddingStart="13dp"
-            android:text="@string/mine_product"
+            android:text="@string/mine_diary"
             android:textColor="@color/text_color_origin_price"
             android:textSize="12sp" />
     </LinearLayout>

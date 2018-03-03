@@ -8,15 +8,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.homepagetask.WelFareServiceFragment;
 import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListAdapter;
 import com.qingxin.medical.app.vip.VipListBean;
-import com.qingxin.medical.base.QingXinFragment;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
@@ -28,7 +24,7 @@ import com.vlee78.android.vl.VLUtils;
  * @author zhikuo1
  */
 
-public class MyAppointmengListFragment extends VLFragment implements MyBookedProductListContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class MyAppointmengListFragment extends VLFragment implements MyBookedProductListContract.View, SwipeRefreshLayout.OnRefreshListener,VipListAdapter.ProductCallbackListener {
 
     private View mRootView;
 
@@ -73,6 +69,7 @@ public class MyAppointmengListFragment extends VLFragment implements MyBookedPro
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new VipListAdapter(null,1);
         mAdapter.setOnLoadMoreListener(() -> getMyBookedProduct(false), recyclerView);
+        mAdapter.setBtnCallBackListener(this);
         recyclerView.setAdapter(mAdapter);
         //add padding
         SpaceItemDecoration dividerDecoration = new SpaceItemDecoration(VLUtils.dip2px(18));
@@ -160,5 +157,11 @@ public class MyAppointmengListFragment extends VLFragment implements MyBookedPro
     @Override
     public void onRefresh() {
         getMyBookedProduct(true);
+    }
+
+    @Override
+    public void onProductButtonClick() {
+        // 联系我们
+
     }
 }
