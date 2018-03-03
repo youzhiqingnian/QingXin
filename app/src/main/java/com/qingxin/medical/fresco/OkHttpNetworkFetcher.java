@@ -12,6 +12,7 @@ package com.qingxin.medical.fresco;
 import android.net.Uri;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.facebook.common.logging.FLog;
 import com.facebook.imagepipeline.common.BytesRange;

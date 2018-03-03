@@ -16,13 +16,15 @@ import com.qingxin.medical.home.districtsel.AgencyAdapter;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
 import com.qingxin.medical.home.districtsel.StrictSelDetailActivity;
 import com.qingxin.medical.home.districtsel.StrictSelPresenter;
+import com.vlee78.android.vl.VLFragment;
+
 /**
  * Date 2018-03-02
  *
  * @author zhikuo1
  */
 
-public class MyCollectionListFragment extends QingXinFragment{
+public class MyCollectionListFragment extends VLFragment {
 
     private View mRootView;
 
@@ -32,6 +34,13 @@ public class MyCollectionListFragment extends QingXinFragment{
     private StrictSelPresenter mPresenter;
 
     private LinearLayout mCollectionTypeLl;
+
+    public MyCollectionListFragment() {
+    }
+
+    public static MyCollectionListFragment newInstance() {
+        return new MyCollectionListFragment();
+    }
 
     @Override
     protected View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

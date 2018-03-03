@@ -2,6 +2,7 @@ package com.qingxin.medical.app.vip;
 
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -18,8 +19,15 @@ import java.util.List;
 
 public class VipListAdapter extends BaseQuickAdapter<ProductBean, BaseViewHolder> {
 
-    VipListAdapter(@Nullable List<ProductBean> data) {
+    private int mType = 0;
+
+    public VipListAdapter(@Nullable List<ProductBean> data) {
         super(R.layout.layout_vip_item, data);
+    }
+
+    public VipListAdapter(@Nullable List<ProductBean> data,int type) {
+        super(R.layout.layout_my_appointment_item, data);
+        mType = type;
     }
 
     @Override
@@ -30,6 +38,16 @@ public class VipListAdapter extends BaseQuickAdapter<ProductBean, BaseViewHolder
         TextView mPriceTv = helper.getView(R.id.priceTv);
         TextView mOldpriceTv = helper.getView(R.id.oldpriceTv);
         TextView mOrderCountTv = helper.getView(R.id.orderCountTv);
+        TextView mContactUsTv;
+        if(mType == 1){
+            mContactUsTv = helper.getView(R.id.contactUsTv);
+            mContactUsTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+        }
 
         mCoverSdv.setImageURI(Uri.parse(item.getCover()));
         mNameTv.setText(item.getName());

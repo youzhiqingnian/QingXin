@@ -84,13 +84,22 @@ public interface RetrofitService {
     @PUT("/product/{id}/collect")
     Observable<ContentBean<CollectBean>> collectVip(@Path("id") String id);
 
+   /* *//**
+     * 预定歆人专享
+     *
+     * @param id 日记的id
+     *//*
+    @PUT("/product/{id}/book")
+    Observable<ContentBean<AmountBean>> bookVip(@Path("id") String id);*/
+
     /**
      * 预定歆人专享
      *
      * @param id 日记的id
      */
-    @PUT("/product/{id}/book")
-    Observable<ContentBean<AmountBean>> bookVip(@Path("id") String id);
+    @FormUrlEncoded
+    @POST("/product/{id}/book")
+    Observable<ContentBean<AmountBean>> bookVip(@Field("id") String id);
 
 
     /**
@@ -136,5 +145,12 @@ public interface RetrofitService {
     @FormUrlEncoded
     @POST("/mem/recomem")
     Observable<ContentBean<RecommendResultBean>> submitRecommendUser(@Field("name")String name, @Field("mobile")String mobile, @Field("product")String product, @Field("inthos")String inthos, @Field("remark")String remark);
+
+    /**
+     * 获取歆人专享列表
+     */
+    @GET("/mem/act")
+    Observable<ContentBean<VipListBean>> getMyBookedProductList(@Query("limit") int limit, @Query("skip") int skip, @Query("type") String type, @Query("actyp") String actyp);
+
 
 }

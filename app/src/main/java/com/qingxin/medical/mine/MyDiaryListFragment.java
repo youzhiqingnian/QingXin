@@ -14,13 +14,15 @@ import com.qingxin.medical.home.districtsel.AgencyAdapter;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
 import com.qingxin.medical.home.districtsel.StrictSelDetailActivity;
 import com.qingxin.medical.home.districtsel.StrictSelPresenter;
+import com.vlee78.android.vl.VLFragment;
+
 /**
  * Date 2018-03-02
  *
  * @author zhikuo1
  */
 
-public class MyDiaryListFragment extends QingXinFragment {
+public class MyDiaryListFragment extends VLFragment {
 
     private AgencyAdapter mAdapter;
     private SwipeRefreshLayout mRefreshLayout;
@@ -30,6 +32,13 @@ public class MyDiaryListFragment extends QingXinFragment {
     private static final String STRICTSEL_TYEP = "STRICTSEL_TYEP";
     public static final String STRICTSEL_TYEP_HOSPITALS = "hospital";
     public static final String STRICTSEL_TYEP_DOCTORS = "doctor";
+
+    public MyDiaryListFragment() {
+    }
+
+    public static MyDiaryListFragment newInstance() {
+        return new MyDiaryListFragment();
+    }
 
     @Override
     protected View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

@@ -124,4 +124,16 @@ public class NetRequestListManager {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).submitRecommendUser(name, mobile, product, inthos, remark);
     }
 
+    /**
+     * 获取预定过的产品列表
+     * @param limit
+     * @param skip
+     * @param type
+     * @param actyp
+     * @return
+     */
+    public static Observable<ContentBean<VipListBean>> getMyBookedProductList(int limit, int skip, String type, String actyp) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getMyBookedProductList(limit, skip, type, actyp);
+    }
+
 }

@@ -2,18 +2,12 @@ package com.qingxin.medical.retrofit;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.amap.api.location.AMapLocation;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.map.LocationService;
-import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModel;
-import com.vlee78.android.vl.VLScheduler;
-import com.vlee78.android.vl.VLUtils;
-
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;

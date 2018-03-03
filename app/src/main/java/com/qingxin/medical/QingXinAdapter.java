@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.qingxin.medical.base.QingXinFragment;
+import com.vlee78.android.vl.VLFragment;
 
 /**
  * 声优玩法界面ViewPager适配器
@@ -14,10 +15,10 @@ import com.qingxin.medical.base.QingXinFragment;
  * @author zhikuo
  */
 public class QingXinAdapter extends FragmentPagerAdapter {
-    private QingXinFragment[] mPages;
+    private VLFragment[] mPages;
     private String[] mTitles;
 
-    public QingXinAdapter(@NonNull FragmentManager fm, @NonNull QingXinFragment[] pages, @NonNull String[] titles) {
+    public QingXinAdapter(@NonNull FragmentManager fm, @NonNull VLFragment[] pages, @NonNull String[] titles) {
         super(fm);
         this.mPages = pages;
         this.mTitles = titles;

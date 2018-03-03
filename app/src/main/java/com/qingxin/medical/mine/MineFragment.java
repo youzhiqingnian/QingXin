@@ -23,6 +23,7 @@ import com.qingxin.medical.widget.indicator.LinePagerIndicator;
 import com.qingxin.medical.widget.indicator.MagicIndicator;
 import com.qingxin.medical.widget.indicator.SimplePagerTitleView;
 import com.qingxin.medical.widget.indicator.ViewPagerHelper;
+import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLUtils;
 
 /**
@@ -34,7 +35,7 @@ public class MineFragment extends QingXinFragment {
 
     private View mRootView;
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+//    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private AppBarLayout mAppbar;
 
@@ -66,7 +67,7 @@ public class MineFragment extends QingXinFragment {
     private void initView() {
 
         MagicIndicator indicator = mRootView.findViewById(R.id.magicIndicator);
-        final QingXinFragment[] fragments = new QingXinFragment[]{new MyAppointmengListFragment(), new MyDiaryListFragment(), new MyCollectionListFragment()};
+        final VLFragment[] fragments = new VLFragment[]{MyAppointmengListFragment.newInstance(), MyDiaryListFragment.newInstance(), MyCollectionListFragment.newInstance()};
         final String[] titles = new String[]{getResources().getString(R.string.appointment_count), getResources().getString(R.string.diary_count), getResources().getString(R.string.collection_count)};
         QingXinAdapter adapter = new QingXinAdapter(getActivity().getSupportFragmentManager(), fragments, titles);
         final ViewPager viewPager = mRootView.findViewById(R.id.viewPager);
@@ -104,7 +105,7 @@ public class MineFragment extends QingXinFragment {
         indicator.setNavigator(navigator);
         ViewPagerHelper.bind(indicator, viewPager);
 
-        mSwipeRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
+//        mSwipeRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
         mAppbar = mRootView.findViewById(R.id.appbar);
         RelativeLayout titleBarRl = mRootView.findViewById(R.id.titleBarRl);
         TextView topTitleNameTv = mRootView.findViewById(R.id.topTitleNameTv);
@@ -136,11 +137,11 @@ public class MineFragment extends QingXinFragment {
                         }
 
                     }
-                    if (verticalOffset >= 0) {
+               /*     if (verticalOffset >= 0) {
                         mSwipeRefreshLayout.setEnabled(true);
                     } else {
                         mSwipeRefreshLayout.setEnabled(false);
-                    }
+                    }*/
 
                 }
             }

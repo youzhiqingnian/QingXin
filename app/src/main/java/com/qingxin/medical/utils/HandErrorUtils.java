@@ -39,6 +39,9 @@ public class HandErrorUtils {
             case "1200":
                 isError = true;
                 break;
+            case "200":
+                isError = false;
+                break;
         }
         return isError;
 
