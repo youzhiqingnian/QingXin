@@ -18,6 +18,7 @@ import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.home.ItemBean;
 import com.qingxin.medical.home.ListBean;
 import com.vlee78.android.vl.VLTitleBar;
+import com.vlee78.android.vl.VLUtils;
 
 import java.util.List;
 
@@ -114,8 +115,9 @@ public class MedicalBeautyDetailActivity extends QingXinActivity implements Medi
         MedicalBeautyRealDetailBean.DetailBean detailBean = data.getItem().getDetail();
         mCoverSdv.setImageURI(Uri.parse(detailBean.getCover()));
         mNameTv.setText(data.getItem().getName());
-//        mProductIntroTv.setText(Html.fromHtml(detailBean.getIcontxt()));
-
+        if(!VLUtils.stringIsEmpty(detailBean.getAbout())){
+            mProductIntroTv.setText(Html.fromHtml(detailBean.getAbout()));
+        }
 
         /*if (!TextUtils.isEmpty(detailBean.getIcontxt()) && detailBean.getIcontxt().contains(",")) {
             String[] iconText = detailBean.getIcontxt().split(",");

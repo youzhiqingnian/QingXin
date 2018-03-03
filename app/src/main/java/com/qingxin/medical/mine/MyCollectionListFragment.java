@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
@@ -24,7 +25,7 @@ import com.vlee78.android.vl.VLFragment;
  * @author zhikuo1
  */
 
-public class MyCollectionListFragment extends VLFragment {
+public class MyCollectionListFragment extends VLFragment implements View.OnClickListener{
 
     private View mRootView;
 
@@ -35,6 +36,8 @@ public class MyCollectionListFragment extends VLFragment {
 
     private LinearLayout mCollectionTypeLl;
 
+    private TextView mProductTv, mDiaryTv;
+
     public MyCollectionListFragment() {
     }
 
@@ -44,9 +47,7 @@ public class MyCollectionListFragment extends VLFragment {
 
     @Override
     protected View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.fragment_mine_tab, container, false);
-
-        return inflater.inflate(R.layout.fake_3, container, false);
+        return inflater.inflate(R.layout.fragment_mine_tab, container, false);
     }
 
 
@@ -59,25 +60,22 @@ public class MyCollectionListFragment extends VLFragment {
         if (null == getView()) return;
         mRootView = getView();
         initView();
-        /*mRefreshLayout = getView().findViewById(R.id.swipeRefreshLayout);
-        RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mAdapter = new AgencyAdapter(null);
-        mAdapter.setOnLoadMoreListener(() -> getDiaryList(false), recyclerView);
-        recyclerView.setAdapter(mAdapter);
-        mType = getArguments().getString(STRICTSEL_TYEP);
-        mPresenter = new StrictSelPresenter(this);
-        mRefreshLayout.setOnRefreshListener(this);
-        mRefreshLayout.setRefreshing(true);
-        getDiaryList(true);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> StrictSelDetailActivity.startSelf(getActivity(), (StrictSelBean) adapter.getData().get(position)));
-   */ }
+        initListener();
+    }
+
+
 
     private void initView() {
 
-//        mCollectionTypeLl = mRootView.findViewById(R.id.collectionTypeLl);
-//        mCollectionTypeLl.setVisibility(View.VISIBLE);
+        LinearLayout collectionTypeLl = mRootView.findViewById(R.id.collectionTypeLl);
+        collectionTypeLl.setVisibility(View.VISIBLE);
+        mProductTv = mRootView.findViewById(R.id.productTv);
+        mDiaryTv = mRootView.findViewById(R.id.diaryTv);
+    }
 
+    private void initListener() {
+        mProductTv.setOnClickListener(this);
+        mDiaryTv.setOnClickListener(this);
     }
 
     private void getDiaryList(boolean isClear) {
@@ -103,4 +101,24 @@ public class MyCollectionListFragment extends VLFragment {
 //        mPresenter.unsubscribe();
     }
 
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()){
+
+            case R.id.productTv:
+                // 我收藏的产品
+
+
+                break;
+
+            case R.id.diaryTv:
+                // 我收藏的日记
+
+
+                break;
+
+        }
+
+    }
 }

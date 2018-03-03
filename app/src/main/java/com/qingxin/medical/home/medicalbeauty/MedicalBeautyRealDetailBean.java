@@ -87,6 +87,7 @@ public class MedicalBeautyRealDetailBean extends BaseBean {
         private String cover;
         private String feature;
         private String care;
+        private String about;
         private String introduce;
         private String oper_before_tip;
         private String oper_after_tip;
@@ -174,6 +175,14 @@ public class MedicalBeautyRealDetailBean extends BaseBean {
             this.icontxt = icontxt;
         }
 
+        public String getAbout() {
+            return about;
+        }
+
+        public void setAbout(String about) {
+            this.about = about;
+        }
+
         @Override
         public String toString() {
             return "DetailBean{" +
@@ -181,6 +190,7 @@ public class MedicalBeautyRealDetailBean extends BaseBean {
                     ", cover='" + cover + '\'' +
                     ", feature='" + feature + '\'' +
                     ", care='" + care + '\'' +
+                    ", about='" + about + '\'' +
                     ", introduce='" + introduce + '\'' +
                     ", oper_before_tip='" + oper_before_tip + '\'' +
                     ", oper_after_tip='" + oper_after_tip + '\'' +

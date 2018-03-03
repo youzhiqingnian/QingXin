@@ -277,10 +277,10 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         Log.i("立即预定==", amountBean.toString());
         mOrderNowTv.setEnabled(false);
         mOrderNowTv.setBackgroundColor(getResources().getColor(R.color.line_color));
-        mOrderCountTv.setText(getString(amountBean.getAmount()));
+        mOrderCountTv.setText(String.valueOf(amountBean.getAmount()));
         Intent intent = new Intent();
         intent.putExtra(VIP_ID, id);
-        intent.putExtra(BOOK_NUM, amountBean.getAmount());
+        intent.putExtra(BOOK_NUM, String.valueOf(amountBean.getAmount()));
         setResult(Activity.RESULT_OK, intent);
     }
 

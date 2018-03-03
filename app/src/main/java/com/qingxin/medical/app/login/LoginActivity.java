@@ -61,10 +61,10 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
 
     private void sendBroadCast(int flag) {
         Intent intent = new Intent(LOGIN_ACTION);
-        if(flag == 1){
+        if (flag == 1) {
             intent.putExtra("refresh", true);
             intent.putExtra("position", 1);
-        }else{
+        } else {
             intent.putExtra("position", currentFgPosition);
         }
 
@@ -100,7 +100,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
     @Override
     public void onSuccess(UserTokenBean userTokenBean) {
         hideView(R.layout.layout_loading);
-        Log.i("登录成功的bean",userTokenBean.toString());
+        Log.i("登录成功的bean", userTokenBean.toString());
         userTokenBean.getMem().setToken(userTokenBean.getToken());
         getModel(UserModel.class).onLoginSuccess(userTokenBean.getMem());
         initLoginStatus();
