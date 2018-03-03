@@ -72,12 +72,11 @@ public class HomePageTaskActivity extends QingXinActivity implements MyBroadCast
 
     @Override
     public void receiverUpdata(Intent intent) {
-
         int currentFgPosition = intent.getIntExtra("position",-1);
         if(currentFgPosition != -1){
             mButtonBar.setChecked(currentFgPosition);
             if(currentFgPosition == 1){
-                mFragmentPager.gotoPage(1, true);
+                mFragmentPager.gotoPage(1, false);
             }
         }
 
@@ -168,7 +167,7 @@ public class HomePageTaskActivity extends QingXinActivity implements MyBroadCast
                 startActivity(intent);
             } else {
                 mCurrentFgPosition = position;
-                mFragmentPager.gotoPage(position, true);
+                mFragmentPager.gotoPage(position, false);
             }
         }
     }

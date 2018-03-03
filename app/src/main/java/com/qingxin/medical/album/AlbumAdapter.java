@@ -1,7 +1,7 @@
 package com.qingxin.medical.album;
 
 import android.content.Context;
-import android.net.Uri;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.vlee78.android.vl.VLDebug;
 import java.util.ArrayList;
@@ -69,7 +68,7 @@ public class AlbumAdapter<T> extends RecyclerView.Adapter<AlbumAdapter.ViewHolde
 
     public void addItem(@NonNull AlbumItemData<T> itemData) {
         mItemDataList.add(itemData);
-        this.notifyItemInserted(mItemDataList.size() - 1);
+        this.notifyDataSetChanged();
     }
 
     public void clear() {
@@ -146,21 +145,14 @@ public class AlbumAdapter<T> extends RecyclerView.Adapter<AlbumAdapter.ViewHolde
                 if (holder.mTitleTv.getVisibility() == View.VISIBLE) {
                     holder.mTitleTv.setVisibility(View.GONE);
                 }
-                if (holder.mDeleteIv.getVisibility() == View.VISIBLE) {
-                    holder.mDeleteIv.setVisibility(View.GONE);
-                }
-                Uri uri = Uri.parse("res://" + mContext.getPackageName() + "/" + (AFTER_PHOTO.equals(mTag) ? R.mipmap.ic_after_add : R.mipmap.ic_before_add));
-                holder.mImageView.setImageURI(uri);
+                holder.mImageView.setImageResource(AFTER_PHOTO.equals(mTag) ? R.mipmap.ic_after_add : R.mipmap.ic_before_add);
                 holder.mImageView.setOnClickListener(v -> {
                     if (mOnClickListener != null)
                         mOnClickListener.onAddItemClicked(v);
                 });
-                holder.mDeleteIv.setOnClickListener(v -> {
-                    removeItem(position);
-                });
             }
         } else {
-            holder.mImageView.setImageURI(Uri.parse(itemData.getImageUrl()));
+            holder.mImageView.setImageBitmap((Bitmap) itemData.getData());
             if (position == 0) {
                 if (holder.mTitleTv.getVisibility() == View.GONE) {
                     holder.mTitleTv.setVisibility(View.VISIBLE);
@@ -180,20 +172,19 @@ public class AlbumAdapter<T> extends RecyclerView.Adapter<AlbumAdapter.ViewHolde
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        private SimpleDraweeView mImageView;
+        private ImageView mImageView;
         private TextView mTitleTv;
-        private ImageView mDeleteIv;
 
         ViewHolder(View itemView) {
             super(itemView);
-            mImageView = itemView.findViewById(R.id.simpleDraweeView);
-            mDeleteIv = itemView.findViewById(R.id.deleteIv);
+            mImageView = itemView.findViewById(R.id.imageView);
             mTitleTv = itemView.findViewById(R.id.titleTv);
         }
     }
 
     public interface OnClickListener {
         void onAddItemClicked(View view);
+
         void onItemClicked(View view, int position);
     }
 }

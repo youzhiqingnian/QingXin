@@ -111,12 +111,10 @@ public class QingXinLocalPhotoPopupWindow implements OnClickListener {
             mContentPopupWindow.mMenuView.findViewById(R.id.empty_view_get_photo).setVisibility(View.VISIBLE);
         }
         // 返回键关闭当前窗口
-        mContentPopupWindow.mMenuView.setOnKeyListener(new View.OnKeyListener() {
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK)
-                    mContentPopupWindow.dismiss();
-                return false;
-            }
+        mContentPopupWindow.mMenuView.setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK)
+                mContentPopupWindow.dismiss();
+            return false;
         });
     }
 
@@ -237,7 +235,7 @@ public class QingXinLocalPhotoPopupWindow implements OnClickListener {
         result.mLoadPhotoFile = new File(Environment.getExternalStorageDirectory(), IMAGE_FILE_CUT_NAME);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(result.mLoadPhotoFile));
         intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-        intent.putExtra("noFaceDetection", true); // no face detection
+        intent.putExtra("noFaceDetection", true);
         //intent.putExtra("loadPhotoResult", result);
         ((VLActivity) mContext).setActivityResultListener(onVLSelectPicResultListener);
         ((VLActivity) mContext).startActivityForResult(intent, REQUESTCODE_CUTTING);
