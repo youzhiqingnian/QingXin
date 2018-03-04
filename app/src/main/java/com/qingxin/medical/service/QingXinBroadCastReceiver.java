@@ -10,7 +10,7 @@ import android.content.Intent;
  */
 
 
-public class MyBroadCastReceiver extends BroadcastReceiver {
+public class QingXinBroadCastReceiver extends BroadcastReceiver {
 
     private OnReceiverCallbackListener mReceiverListener;
 

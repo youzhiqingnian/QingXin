@@ -26,7 +26,7 @@ import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.ListBean;
-import com.qingxin.medical.service.MyBroadCastReceiver;
+import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
@@ -39,7 +39,7 @@ import com.vlee78.android.vl.VLTitleBar;
  *
  * @author zhikuo1
  */
-public class WelFareServiceFragment extends VLFragment implements WelfareCoinLogsListContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, MyBroadCastReceiver.OnReceiverCallbackListener  {
+public class WelFareServiceFragment extends VLFragment implements WelfareCoinLogsListContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, QingXinBroadCastReceiver.OnReceiverCallbackListener  {
 
 
     private WelfareCoinLogsListContract.Presenter mPresenter;
@@ -49,7 +49,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
     private TextView mQingxinCoinAmountTv;
     private TextView mClickToSignTv;
-    private MyBroadCastReceiver mReceiver;
+    private QingXinBroadCastReceiver mReceiver;
     private VLTitleBar mTitleBar;
 
 
@@ -80,7 +80,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
      * 初始化广播接收者
      */
     private void initBroadcastReceiver() {
-        mReceiver = new MyBroadCastReceiver();
+        mReceiver = new QingXinBroadCastReceiver();
         IntentFilter intentFilter = new IntentFilter(LoginActivity.LOGIN_ACTION);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
         mReceiver.setReceiverListener(this);

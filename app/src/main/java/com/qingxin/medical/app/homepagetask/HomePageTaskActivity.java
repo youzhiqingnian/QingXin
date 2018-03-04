@@ -14,7 +14,7 @@ import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.mine.MineFragment;
-import com.qingxin.medical.service.MyBroadCastReceiver;
+import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
@@ -25,7 +25,7 @@ import com.vlee78.android.vl.VLUtils;
  *
  * @author zhikuo1
  */
-public class HomePageTaskActivity extends QingXinActivity implements MyBroadCastReceiver.OnReceiverCallbackListener {
+public class HomePageTaskActivity extends QingXinActivity implements QingXinBroadCastReceiver.OnReceiverCallbackListener {
 
     public static void startSelf(Context context, int index) {
         Intent intent = new Intent(context, HomePageTaskActivity.class);
@@ -35,7 +35,7 @@ public class HomePageTaskActivity extends QingXinActivity implements MyBroadCast
 
     private VLPagerView mFragmentPager;
     private VLStatedButtonBar mButtonBar;
-    private MyBroadCastReceiver mReceiver;
+    private QingXinBroadCastReceiver mReceiver;
     private static final String INDEX = "INDEX";
 
     private int mCurrentFgPosition = 0;
@@ -64,7 +64,7 @@ public class HomePageTaskActivity extends QingXinActivity implements MyBroadCast
      */
     private void initBroadcastReceiver() {
 
-        mReceiver = new MyBroadCastReceiver();
+        mReceiver = new QingXinBroadCastReceiver();
         IntentFilter intentFilter = new IntentFilter(LoginActivity.LOGIN_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver,intentFilter);
         mReceiver.setReceiverListener(this);
