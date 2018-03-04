@@ -280,7 +280,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 StrictSelListActivity.startSelf(getActivity());
                 break;
             case R.id.encyclopediasRl: //医美百科
-                MedicalBeautyActivity.startSelf(getActivity());
+                MedicalBeautyActivity.startSelf(getVLActivity());
                 break;
             case R.id.diaryRl: //女神日记
             case R.id.diaryMoreRl:

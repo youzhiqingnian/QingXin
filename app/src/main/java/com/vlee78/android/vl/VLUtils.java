@@ -2199,13 +2199,13 @@ public final class VLUtils {
     /**
      * 保存bitmap到本地
      */
-    public static String saveBitmap(Context context, Bitmap mBitmap) {
+    public static String saveBitmap(@NonNull VLApplication application, Bitmap mBitmap) {
         String savePath;
         File filePic;
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             savePath = SD_PATH;
         } else {
-            savePath = context.getApplicationContext().getFilesDir().getAbsolutePath() + IN_PATH;
+            savePath = application.getApplicationContext().getFilesDir().getAbsolutePath() + IN_PATH;
         }
         try {
             filePic = new File(savePath + generateFileName() + ".jpg");
@@ -2221,7 +2221,6 @@ public final class VLUtils {
             e.printStackTrace();
             return null;
         }
-
         return filePic.getAbsolutePath();
     }
 

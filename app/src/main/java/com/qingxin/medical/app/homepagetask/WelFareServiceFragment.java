@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.goddessdiary.DiaryPublishActivity;
+import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishActivity;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.login.LoginActivity;

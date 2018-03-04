@@ -52,7 +52,7 @@ public class MedicalBeautyDetailAdapter extends BaseQuickAdapter<MedicalBeautyDe
                 flexboxLayout.addView(textView, params);
                 textView.setOnClickListener(v -> {
                     if (null != mClickListener){
-                        mClickListener.onClick(medicalBeautyListBean.getId());
+                        mClickListener.onClick(medicalBeautyListBean);
                     }
                 });
             }
@@ -60,6 +60,6 @@ public class MedicalBeautyDetailAdapter extends BaseQuickAdapter<MedicalBeautyDe
     }
 
     public interface OnClickMedicalBeautyListener{
-        void onClick(String id);
+        void onClick(MedicalBeautyListBean medicalBeautyListBean);
     }
 }

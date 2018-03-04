@@ -1,9 +1,10 @@
 package com.qingxin.medical.home.medicalbeauty;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -11,6 +12,7 @@ import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.home.ListBean;
+import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLTitleBar;
 
 import java.util.List;
@@ -27,10 +29,18 @@ public class MedicalBeautyActivity extends QingXinActivity implements MedicalBea
     private MedicalBeautyPresenter mMedicalBeautyPresenter;
     private MedicalBeautyListBean mCurrentSelItem;
     private MedicalBeautyDetailAdapter mMedicalBeautyDetailAdapter;
+    public static final String MEDICAL_BEAUTY_LIST_BEAN = "MEDICAL_BEAUTY_LIST_BEAN";
+    public static final int REQUEST_CODE = 1001;
 
-    public static void startSelf(@NonNull Context context) {
-        Intent intent = new Intent(context, MedicalBeautyActivity.class);
-        context.startActivity(intent);
+    public static void startSelf(@NonNull VLActivity activity) {
+        startSelf(activity, null, null);
+    }
+
+    public static void startSelf(@NonNull VLActivity activity, @Nullable MedicalBeautyListBean medicalBeautyListBean, @Nullable VLActivityResultListener activityResultListener) {
+        Intent intent = new Intent(activity, MedicalBeautyActivity.class);
+        intent.putExtra(MEDICAL_BEAUTY_LIST_BEAN, medicalBeautyListBean);
+        activity.setActivityResultListener(activityResultListener);
+        activity.startActivityForResult(intent, REQUEST_CODE);
     }
 
     @Override
@@ -58,8 +68,18 @@ public class MedicalBeautyActivity extends QingXinActivity implements MedicalBea
             adapter.notifyItemChanged(mCurrentSelItem.getPosition());
             mMedicalBeautyPresenter.getMedicalBeautySecondList(mCurrentSelItem.getId());
         });
+        MedicalBeautyListBean medicalChildBeautyBean = (MedicalBeautyListBean) getIntent().getSerializableExtra(MEDICAL_BEAUTY_LIST_BEAN);
+        mMedicalBeautyDetailAdapter = new MedicalBeautyDetailAdapter(medicalBeautyListBean -> {
+            if (null != medicalChildBeautyBean) {
+                Intent intent = new Intent();
+                intent.putExtra(MEDICAL_BEAUTY_LIST_BEAN, medicalBeautyListBean);
+                setResult(Activity.RESULT_OK, intent);
+                MedicalBeautyActivity.this.finish();
+            } else {
+                MedicalBeautyDetailActivity.startSelf(MedicalBeautyActivity.this, medicalBeautyListBean.getId());
+            }
+        });
 
-        mMedicalBeautyDetailAdapter = new MedicalBeautyDetailAdapter(id -> MedicalBeautyDetailActivity.startSelf(MedicalBeautyActivity.this, id));
         itemRecyclerView.setAdapter(mMedicalBeautyDetailAdapter);
     }
 
