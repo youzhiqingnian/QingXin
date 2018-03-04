@@ -2,6 +2,7 @@ package com.qingxin.medical.mine;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.view.ViewPager;
@@ -12,8 +13,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinAdapter;
+import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
+import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
 import com.qingxin.medical.widget.indicator.CommonNavigator;
 import com.qingxin.medical.widget.indicator.CommonNavigatorAdapter;
@@ -35,9 +39,9 @@ public class MineFragment extends QingXinFragment {
 
     private View mRootView;
 
-//    private SwipeRefreshLayout mSwipeRefreshLayout;
-
     private AppBarLayout mAppbar;
+
+    private ImageView mDefaultHeadIv;
 
     public MineFragment() {
     }
@@ -65,6 +69,16 @@ public class MineFragment extends QingXinFragment {
     }
 
     private void initView() {
+
+        SimpleDraweeView userHeadSdv = mRootView.findViewById(R.id.userHeadSdv);
+        ImageView defaultHeadIv = mRootView.findViewById(R.id.defaultHeadIv);
+        TextView userNicknameTv = mRootView.findViewById(R.id.userNicknameTv);
+
+        if(!VLUtils.stringIsEmpty(QingXinApplication.getInstance().getLoginUser().getCover())){
+            defaultHeadIv.setVisibility(View.GONE);
+            userHeadSdv.setImageURI(Uri.parse(QingXinApplication.getInstance().getLoginUser().getCover()));
+        }
+        userNicknameTv.setText(QingXinApplication.getInstance().getLoginUser().getName());
 
         MagicIndicator indicator = mRootView.findViewById(R.id.magicIndicator);
         final VLFragment[] fragments = new VLFragment[]{MyBookedProductListFragment.newInstance(), MyPublishedDiaryListFragment.newInstance(), MyCollectedTabListFragment.newInstance()};

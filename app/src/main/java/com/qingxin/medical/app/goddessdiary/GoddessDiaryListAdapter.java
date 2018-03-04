@@ -8,6 +8,8 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
+import com.vlee78.android.vl.VLUtils;
+
 import java.util.List;
 /**
  * Date 2018-02-03
@@ -87,8 +89,12 @@ public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, Bas
 
         }
 
-        beforeCoverSdv.setImageURI(Uri.parse(item.getOper_before_photo()));
-        afterCoverSdv.setImageURI(Uri.parse(item.getOper_after_photo()));
+        if(!VLUtils.stringIsEmpty(item.getOper_before_photo())){
+            beforeCoverSdv.setImageURI(Uri.parse(item.getOper_before_photo()));
+        }
+        if(!VLUtils.stringIsEmpty(item.getOper_after_photo())){
+            afterCoverSdv.setImageURI(Uri.parse(item.getOper_after_photo()));
+        }
         contentTv.setText(item.getSummary());
 
         tagTv.setText(item.getTags());

@@ -104,7 +104,7 @@
             android:name=".home.medicalbeauty.MedicalBeautyDetailActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".app.goddessdiary.DiaryPublishActivity"
+            android:name=".app.goddessdiary.publish.DiaryPublishActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".album.LocalAlbumActivity"
