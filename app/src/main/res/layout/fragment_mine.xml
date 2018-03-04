@@ -67,6 +67,7 @@
                     android:layout_height="20dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="11dp"
+                    android:visibility="gone"
                     android:background="@drawable/mine_wish_list_bg"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -128,6 +129,7 @@
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:paddingStart="15dp"
+                        android:visibility="gone"
                         android:src="@mipmap/white_setting_logo" />
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>

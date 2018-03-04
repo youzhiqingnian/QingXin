@@ -1,10 +1,13 @@
 package com.qingxin.medical.mine;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,8 +20,10 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinAdapter;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
+import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.qingxin.medical.widget.indicator.CommonNavigator;
 import com.qingxin.medical.widget.indicator.CommonNavigatorAdapter;
 import com.qingxin.medical.widget.indicator.IPagerIndicator;
@@ -35,13 +40,17 @@ import com.vlee78.android.vl.VLUtils;
  *
  * @author zhikuo
  */
-public class MineFragment extends QingXinFragment {
+public class MineFragment extends QingXinFragment implements QingXinBroadCastReceiver.OnReceiverCallbackListener {
 
     private View mRootView;
 
     private AppBarLayout mAppbar;
 
-    private ImageView mDefaultHeadIv;
+    private TextView[] mCountTextViewList = new TextView[3];
+
+    private QingXinBroadCastReceiver mReceiver;
+
+    public static final String COUNT_ACTION = "com.archie.action.COUNT_ACTION";
 
     public MineFragment() {
     }
@@ -65,6 +74,7 @@ public class MineFragment extends QingXinFragment {
         mRootView = getView();
 
         initView();
+        initBroadcastReceiver();
 
     }
 
@@ -74,7 +84,7 @@ public class MineFragment extends QingXinFragment {
         ImageView defaultHeadIv = mRootView.findViewById(R.id.defaultHeadIv);
         TextView userNicknameTv = mRootView.findViewById(R.id.userNicknameTv);
 
-        if(!VLUtils.stringIsEmpty(QingXinApplication.getInstance().getLoginUser().getCover())){
+        if (!VLUtils.stringIsEmpty(QingXinApplication.getInstance().getLoginUser().getCover())) {
             defaultHeadIv.setVisibility(View.GONE);
             userHeadSdv.setImageURI(Uri.parse(QingXinApplication.getInstance().getLoginUser().getCover()));
         }
@@ -100,6 +110,7 @@ public class MineFragment extends QingXinFragment {
                 titleView.setTextSelectedColor(0xff3bc5e8);
                 titleView.setText(titles[index]);
                 titleView.setTextSize(16);
+                mCountTextViewList[index] = titleView;
                 titleView.setOnClickListener(v -> viewPager.setCurrentItem(index));
                 return titleView;
             }
@@ -119,7 +130,6 @@ public class MineFragment extends QingXinFragment {
         indicator.setNavigator(navigator);
         ViewPagerHelper.bind(indicator, viewPager);
 
-//        mSwipeRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
         mAppbar = mRootView.findViewById(R.id.appbar);
         RelativeLayout titleBarRl = mRootView.findViewById(R.id.titleBarRl);
         TextView topTitleNameTv = mRootView.findViewById(R.id.topTitleNameTv);
@@ -151,11 +161,6 @@ public class MineFragment extends QingXinFragment {
                         }
 
                     }
-               /*     if (verticalOffset >= 0) {
-                        mSwipeRefreshLayout.setEnabled(true);
-                    } else {
-                        mSwipeRefreshLayout.setEnabled(false);
-                    }*/
 
                 }
             }
@@ -163,10 +168,37 @@ public class MineFragment extends QingXinFragment {
         });
     }
 
+    /**
+     * 初始化广播接收者
+     */
+    private void initBroadcastReceiver() {
+        mReceiver = new QingXinBroadCastReceiver();
+        IntentFilter intentFilter = new IntentFilter(COUNT_ACTION);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
+        mReceiver.setReceiverListener(this);
+
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
     }
 
+    @Override
+    public void receiverUpdata(Intent intent) {
+        String bookCount = intent.getStringExtra("bookCount");
+        String diaryCount = intent.getStringExtra("diaryCount");
+        String collectCount = intent.getStringExtra("collectCount");
+
+        if (!VLUtils.stringIsEmpty(bookCount)) {
+            mCountTextViewList[0].setText(getActivity().getResources().getString(R.string.appointment_count_prefix) + bookCount);
+        }
+        if (!VLUtils.stringIsEmpty(diaryCount)) {
+            mCountTextViewList[1].setText(getActivity().getResources().getString(R.string.diary_count_prefix) + diaryCount);
+
+        }
+        if (!VLUtils.stringIsEmpty(collectCount)) {
+            mCountTextViewList[2].setText(getActivity().getResources().getString(R.string.collection_count_prefix) + collectCount);
+        }
+    }
 }

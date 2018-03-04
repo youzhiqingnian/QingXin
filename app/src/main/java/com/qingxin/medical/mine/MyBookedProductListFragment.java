@@ -1,6 +1,8 @@
 package com.qingxin.medical.mine;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,7 +35,10 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
 
     private VipListAdapter mAdapter;
 
+
     private boolean isClear;
+
+    public static final String COUNT_ACTION = "com.archie.action.COUNT_ACTION";
 
     public MyBookedProductListFragment() {
     }
@@ -138,6 +143,9 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
         } else {
             mAdapter.loadMoreComplete();
         }
+        if(vipListBean != null && vipListBean.getCount() != 0){
+            sendBroadCast(vipListBean.getCount()+"");
+        }
     }
 
     @Override
@@ -161,7 +169,12 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
 
     }
 
-    public void setRefreshLayoutUnAbled(){
-        mRefreshLayout.setRefreshing(false);
+    private void sendBroadCast(String bookCount) {
+        Intent intent = new Intent(COUNT_ACTION);
+        intent.putExtra("bookCount",bookCount);
+        LocalBroadcastManager.getInstance(getVLActivity()).sendBroadcast(
+                intent
+        );
     }
+
 }

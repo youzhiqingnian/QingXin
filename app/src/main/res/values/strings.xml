@@ -111,5 +111,11 @@
     <string name="appointment_count">预约 · 0</string>
     <string name="diary_count">日记 · 0</string>
     <string name="collection_count">收藏 · 0</string>
+    <string name="appointment_count_prefix">预约 · </string>
+    <string name="diary_count_prefix">日记 · </string>
+    <string name="collection_count_prefix">收藏 · </string>
+    <string name="publish_your_first_diary">发布你的第一篇日记</string>
+    <string name="you_have_not_collected_this">你还没有收藏该内容</string>
+    <string name="go_to_scan_product">去浏览产品</string>
 
 </resources>

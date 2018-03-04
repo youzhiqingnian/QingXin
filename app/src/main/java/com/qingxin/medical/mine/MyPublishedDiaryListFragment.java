@@ -1,6 +1,8 @@
 package com.qingxin.medical.mine;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +36,7 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
 
     private MyPublishedDiaryListContract.Presenter mPresenter;
 
+    public static final String COUNT_ACTION = "com.archie.action.COUNT_ACTION";
 
     private boolean isClear;
 
@@ -128,7 +131,7 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     @Override
     public void onSuccess(ListBean<DiaryItemBean> diary) {
         hideView(R.layout.layout_loading);
-        Log.i("我收藏的日记列表", diary.toString());
+        Log.i("我发布的日记列表", diary.toString());
 
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
@@ -142,6 +145,11 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
         } else {
             mAdapter.loadMoreComplete();
         }
+
+        if(diary != null && 0 != diary.getCount()){
+            sendBroadCast(diary.getCount()+"");
+        }
+
     }
 
     @Override
@@ -170,5 +178,13 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
         // 编辑日记
         // TODO
 
+    }
+
+    private void sendBroadCast(String diaryCount) {
+        Intent intent = new Intent(COUNT_ACTION);
+        intent.putExtra("diaryCount",diaryCount);
+        LocalBroadcastManager.getInstance(getVLActivity()).sendBroadcast(
+                intent
+        );
     }
 }
