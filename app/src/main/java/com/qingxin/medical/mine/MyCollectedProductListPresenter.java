@@ -19,15 +19,15 @@ import rx.subscriptions.CompositeSubscription;
  *
  * @author zhikuo1
  */
-public class MyCollectProductListPresenter implements MyCollectProductListContract.Presenter {
+public class MyCollectedProductListPresenter implements MyCollectedProductListContract.Presenter {
 
     @NonNull
-    private final MyCollectProductListContract.View mCollectListryView;
+    private final MyCollectedProductListContract.View mCollectListryView;
 
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    public MyCollectProductListPresenter(MyCollectProductListContract.View vipListView) {
+    public MyCollectedProductListPresenter(MyCollectedProductListContract.View vipListView) {
         mCollectListryView = vipListView;
         mCompositeSubscription = new CompositeSubscription();
         mCollectListryView.setPresenter(this);

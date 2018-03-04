@@ -13,7 +13,7 @@ import com.qingxin.medical.home.ListBean;
  * @author zhikuo1
  */
 
-public class MyCollectDiaryListContract {
+public class MyCollectedDiaryListContract {
 
     interface View extends BaseView<Presenter> {
         void onSuccess(ListBean<DiaryItemBean> diary);

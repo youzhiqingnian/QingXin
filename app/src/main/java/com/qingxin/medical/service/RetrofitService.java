@@ -153,10 +153,16 @@ public interface RetrofitService {
     Observable<ContentBean<VipListBean>> getMyBookedProductList(@Query("limit") int limit, @Query("skip") int skip, @Query("type") String type, @Query("actyp") String actyp);
 
     /**
-     * 获取我发布的日记/收藏过的日记
+     * 获取我收藏过的日记
      */
     @GET("/mem/act")
-    Observable<ContentBean<ListBean<DiaryItemBean>>> getMyDiaryList(@Query("limit") int limit, @Query("skip") int skip, @Query("type") String type, @Query("actyp") String actyp);
+    Observable<ContentBean<ListBean<DiaryItemBean>>> getMyCollectDiaryList(@Query("limit") int limit, @Query("skip") int skip, @Query("type") String type, @Query("actyp") String actyp);
+
+    /**
+     * 获取我发布过的日记
+     */
+    @GET("/diary")
+    Observable<ContentBean<ListBean<DiaryItemBean>>> getMyPublishedDiaryList(@Query("author") String author, @Query("limit") int limit, @Query("skip") int skip);
 
 
 }

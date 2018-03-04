@@ -8,7 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
@@ -26,7 +26,7 @@ import com.vlee78.android.vl.VLUtils;
  * @author zhikuo1
  */
 
-public class MyCollectionProductListFragment extends VLFragment implements MyCollectProductListContract.View, SwipeRefreshLayout.OnRefreshListener, VipListAdapter.ProductCallbackListener{
+public class MyCollectedProductListFragment extends VLFragment implements MyCollectedProductListContract.View, SwipeRefreshLayout.OnRefreshListener, VipListAdapter.ProductCallbackListener{
 
     private View mRootView;
 
@@ -40,13 +40,13 @@ public class MyCollectionProductListFragment extends VLFragment implements MyCol
     private boolean isClear;
 
 
-    private MyCollectProductListContract.Presenter mPresenter;
+    private MyCollectedProductListContract.Presenter mPresenter;
 
-    public MyCollectionProductListFragment() {
+    public MyCollectedProductListFragment() {
     }
 
-    public static MyCollectionProductListFragment newInstance() {
-        return new MyCollectionProductListFragment();
+    public static MyCollectedProductListFragment newInstance() {
+        return new MyCollectedProductListFragment();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class MyCollectionProductListFragment extends VLFragment implements MyCol
 
 
     private void initView() {
-        mPresenter = new MyCollectProductListPresenter(this);
+        mPresenter = new MyCollectedProductListPresenter(this);
 
         mSwipeRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
         RecyclerView recyclerView = mRootView.findViewById(R.id.recyclerView);
@@ -126,7 +126,7 @@ public class MyCollectionProductListFragment extends VLFragment implements MyCol
 
 
     @Override
-    public void setPresenter(MyCollectProductListContract.Presenter presenter) {
+    public void setPresenter(MyCollectedProductListContract.Presenter presenter) {
 
     }
 

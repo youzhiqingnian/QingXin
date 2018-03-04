@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.qingxin.medical.QingXinAdapter;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinFragment;
@@ -66,7 +67,7 @@ public class MineFragment extends QingXinFragment {
     private void initView() {
 
         MagicIndicator indicator = mRootView.findViewById(R.id.magicIndicator);
-        final VLFragment[] fragments = new VLFragment[]{MyAppointmengListFragment.newInstance(), MyDiaryListFragment.newInstance(), MyCollectionDiaryListFragment.newInstance()};
+        final VLFragment[] fragments = new VLFragment[]{MyBookedProductListFragment.newInstance(), MyPublishedDiaryListFragment.newInstance(), MyCollectedTabListFragment.newInstance()};
         final String[] titles = new String[]{getResources().getString(R.string.appointment_count), getResources().getString(R.string.diary_count), getResources().getString(R.string.collection_count)};
         QingXinAdapter adapter = new QingXinAdapter(getActivity().getSupportFragmentManager(), fragments, titles);
         final ViewPager viewPager = mRootView.findViewById(R.id.viewPager);
@@ -131,7 +132,7 @@ public class MineFragment extends QingXinFragment {
                         settingIv.setImageResource(R.mipmap.white_setting_logo);
                         topTitleNameTv.setTextColor(getActivity().getResources().getColor(R.color.white));
 
-                        if(dy >= toolbarHeight / 4){
+                        if (dy >= toolbarHeight / 4) {
                             topTitleNameTv.setTextColor(Color.argb((int) alpha, 70, 74, 76));
                         }
 

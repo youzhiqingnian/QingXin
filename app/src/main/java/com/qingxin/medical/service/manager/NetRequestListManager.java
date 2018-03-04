@@ -17,7 +17,6 @@ import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.service.RetrofitService;
 import com.vlee78.android.vl.VLApplication;
-
 import rx.Observable;
 
 /**
@@ -137,15 +136,24 @@ public class NetRequestListManager {
     }
 
     /**
-     * 获取发布/收藏过的产品列表
+     * 获取收藏过的日记列表
      * @param limit
      * @param skip
      * @param type
      * @param actyp
      * @return
      */
-    public static Observable<ContentBean<ListBean<DiaryItemBean>>> getMyDiaryList(int limit, int skip, String type, String actyp) {
-        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getMyDiaryList(limit, skip, type, actyp);
+    public static Observable<ContentBean<ListBean<DiaryItemBean>>> getMyCollectDiaryList(int limit, int skip, String type, String actyp) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getMyCollectDiaryList(limit, skip, type, actyp);
+    }
+
+    /**
+     * 获取发布过的日记列表
+     * @param author 发布者的id
+     * @return
+     */
+    public static Observable<ContentBean<ListBean<DiaryItemBean>>> getMyPublishedDiaryList(String author, int limit, int skip) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getMyPublishedDiaryList(author,limit,skip);
     }
 
 }

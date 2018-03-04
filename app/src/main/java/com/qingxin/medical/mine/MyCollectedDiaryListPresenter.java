@@ -16,15 +16,15 @@ import rx.subscriptions.CompositeSubscription;
  *
  * @author zhikuo1
  */
-public class MyCollectDiaryListPresenter implements MyCollectDiaryListContract.Presenter {
+public class MyCollectedDiaryListPresenter implements MyCollectedDiaryListContract.Presenter {
 
     @NonNull
-    private final MyCollectDiaryListContract.View mCollectListryView;
+    private final MyCollectedDiaryListContract.View mCollectListryView;
 
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    public MyCollectDiaryListPresenter(MyCollectDiaryListContract.View vipListView) {
+    public MyCollectedDiaryListPresenter(MyCollectedDiaryListContract.View vipListView) {
         mCollectListryView = vipListView;
         mCompositeSubscription = new CompositeSubscription();
         mCollectListryView.setPresenter(this);
@@ -44,7 +44,7 @@ public class MyCollectDiaryListPresenter implements MyCollectDiaryListContract.P
 
     @Override
     public void getMyCollectDiaryList(int limit, int skip, String type, String actyp) {
-        mCompositeSubscription.add(NetRequestListManager.getMyDiaryList(limit, skip, type, actyp)
+        mCompositeSubscription.add(NetRequestListManager.getMyCollectDiaryList(limit, skip, type, actyp)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<ListBean<DiaryItemBean>>>() {

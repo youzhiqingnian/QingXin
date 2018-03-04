@@ -8,91 +8,83 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
-import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
-import com.qingxin.medical.app.goddessdiary.GoddessDiaryListAdapter;
-import com.qingxin.medical.home.ListBean;
-import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
+import com.qingxin.medical.app.vip.VipDetailActivity;
+import com.qingxin.medical.app.vip.VipListAdapter;
+import com.qingxin.medical.app.vip.VipListBean;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
-import com.vlee78.android.vl.VLUtils;
+
 /**
  * Date 2018-03-02
  *
  * @author zhikuo1
  */
 
-public class MyCollectionDiaryListFragment extends VLFragment implements MyCollectDiaryListContract.View, SwipeRefreshLayout.OnRefreshListener, GoddessDiaryListAdapter.DeleteDiaryListener, GoddessDiaryListAdapter.EditDiaryListener {
+public class MyBookedProductListFragment extends VLFragment implements MyBookedProductListContract.View, SwipeRefreshLayout.OnRefreshListener, VipListAdapter.ProductCallbackListener {
 
     private View mRootView;
 
-    private SwipeRefreshLayout mRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private GoddessDiaryListAdapter mAdapter;
+    private MyBookedProductListContract.Presenter mPresenter;
 
+    private VipListAdapter mAdapter;
 
     private boolean isClear;
 
-
-    private MyCollectDiaryListContract.Presenter mPresenter;
-
-    public MyCollectionDiaryListFragment() {
+    public MyBookedProductListFragment() {
     }
 
-    public static MyCollectionDiaryListFragment newInstance() {
-        return new MyCollectionDiaryListFragment();
+    public static MyBookedProductListFragment newInstance() {
+        return new MyBookedProductListFragment();
     }
+
 
     @Override
     protected View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_mine_tab, container, false);
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
         if (null == getView()) return;
         mRootView = getView();
         initView();
     }
 
-
     private void initView() {
-        mPresenter = new MyCollectDiaryListPresenter(this);
 
-        mRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
+        mPresenter = new MyBookProductListPresenter(this);
+        mSwipeRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
         RecyclerView recyclerView = mRootView.findViewById(R.id.recyclerView);
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new GoddessDiaryListAdapter(null,1);
-        mAdapter.setOnLoadMoreListener(() -> getMyCollectList(false), recyclerView);
-        mAdapter.setDeleteDiaryListener(this);
-        mAdapter.setEditDiaryListener(this);
+        mAdapter = new VipListAdapter(null, 1);
+        mAdapter.setOnLoadMoreListener(() -> getMyBookedProduct(false), recyclerView);
+        mAdapter.setBtnCallBackListener(this);
         recyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickListener((adapter, view, position) -> GoddessDiaryDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), null));
-        mRefreshLayout.setOnRefreshListener(this);
-        mRefreshLayout.setRefreshing(true);
-        mAdapter.setEmptyView(R.layout.group_empty);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), null));
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setRefreshing(true);
+
+
     }
 
 
-    private void getMyCollectList(boolean isClear) {
+    private void getMyBookedProduct(boolean isClear) {
         this.isClear = isClear;
-        // 收藏的产品
         int skip = isClear ? 0 : mAdapter.getData().size();
         if (isClear) {
             mAdapter.setEnableLoadMore(false);//这里的作用是防止下拉刷新的时候还可以上拉加载
         }
-        mPresenter.getMyCollectDiaryList(QingXinConstants.ROWS, skip, "diary", "collect");
+        mPresenter.getMyBookedProductList(QingXinConstants.ROWS, skip, "product", "book");
     }
 
     @Override
@@ -103,7 +95,7 @@ public class MyCollectionDiaryListFragment extends VLFragment implements MyColle
             VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
                 @Override
                 protected void process(boolean canceled) {
-                    getMyCollectList(true);
+                    getMyBookedProduct(true);
                 }
             });
         }
@@ -121,18 +113,24 @@ public class MyCollectionDiaryListFragment extends VLFragment implements MyColle
         mPresenter.unsubscribe();
     }
 
+
     @Override
-    public void onSuccess(ListBean<DiaryItemBean> diary) {
+    public void setPresenter(MyBookedProductListContract.Presenter presenter) {
+
+    }
+
+    @Override
+    public void onSuccess(VipListBean vipListBean) {
         hideView(R.layout.layout_loading);
-        Log.i("我收藏的日记列表", diary.toString());
+        Log.i("我预定的产品列表", vipListBean.toString());
 
         if (isClear) {
-            mRefreshLayout.setRefreshing(false);
-            mAdapter.setNewData(diary.getItems());
+            mSwipeRefreshLayout.setRefreshing(false);
+            mAdapter.setNewData(vipListBean.getItems());
         } else {
-            mAdapter.addData(diary.getItems());
+            mAdapter.addData(vipListBean.getItems());
         }
-        if (diary.getItems().size() < QingXinConstants.ROWS) {
+        if (vipListBean.getItems().size() < QingXinConstants.ROWS) {
             //第一页如果不够一页就不显示没有更多数据布局
             mAdapter.loadMoreEnd(isClear);
         } else {
@@ -144,7 +142,7 @@ public class MyCollectionDiaryListFragment extends VLFragment implements MyColle
     public void onError(String result) {
         hideView(R.layout.layout_loading);
         if (isClear) {
-            mRefreshLayout.setRefreshing(false);
+            mSwipeRefreshLayout.setRefreshing(false);
         } else {
             mAdapter.loadMoreFail();
         }
@@ -152,24 +150,12 @@ public class MyCollectionDiaryListFragment extends VLFragment implements MyColle
 
     @Override
     public void onRefresh() {
-        getMyCollectList(true);
+        getMyBookedProduct(true);
     }
 
     @Override
-    public void deleteDiary(String id) {
-        // 删除日记
-        // TODO
-    }
-
-    @Override
-    public void editDiary(DiaryItemBean item) {
-        // 编辑日记
-        // TODO
-
-    }
-
-    @Override
-    public void setPresenter(MyCollectDiaryListContract.Presenter presenter) {
+    public void onProductButtonClick(String id) {
+        // 联系我们
 
     }
 }
