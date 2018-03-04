@@ -4,10 +4,13 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.qingxin.medical.R;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
@@ -20,7 +23,7 @@ import com.vlee78.android.vl.VLUtils;
  * @author zhikuo1
  */
 
-public class MyCollectedTabListFragment extends VLFragment{
+public class MyCollectedTabListFragment extends VLFragment {
 
     private View mRootView;
 
@@ -56,11 +59,10 @@ public class MyCollectedTabListFragment extends VLFragment{
     }
 
     private void initView() {
-
         mFragmentPager = mRootView.findViewById(R.id.mainPager);
         mButtonBar = mRootView.findViewById(R.id.mainBottomBar);
         mFragmentPager.setOffscreenPageLimit(2);
-        //将4个fragment添加至activity中
+        //将2个fragment添加至activity中
         VLFragment[] fragments = new VLFragment[]{MyCollectedProductListFragment.newInstance(), MyCollectedDiaryListFragment.newInstance()};
         mFragmentPager.setFragmentPages(getVLActivity().getSupportFragmentManager(), fragments);
         //滑动切换界面 false不可滑动
@@ -68,7 +70,6 @@ public class MyCollectedTabListFragment extends VLFragment{
         mButtonBar.setStatedButtonBarDelegate(new MainBottomBarDelegate(getVLActivity()));
         mFragmentPager.setPageChangeListener(position -> mButtonBar.setChecked(position));
         mButtonBar.setChecked(0);
-
     }
 
     private class MainBottomBarDelegate implements VLStatedButtonBar.VLStatedButtonBarDelegate {
@@ -78,52 +79,50 @@ public class MyCollectedTabListFragment extends VLFragment{
             mContext = context;
         }
 
-        private class MainBottomBarButtonDelegate implements VLStatedButtonBar.VLStatedButton.VLStatedButtonDelegate {
-            private TextView mCollectTypeTv;
-            private String mText;
-
-            MainBottomBarButtonDelegate(String text) {
-                mText = text;
-            }
-
-            @Override
-            public void onStatedButtonCreated(VLStatedButtonBar.VLStatedButton button, LayoutInflater inflater) {
-                View view = inflater.inflate(R.layout.layout_mine_collect_text, button);
-                mCollectTypeTv = view.findViewById(R.id.collectTypeTv);
-                mCollectTypeTv.setText(mText);
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onStatedButtonChanged(VLStatedButtonBar.VLStatedButton button, VLStatedButtonBar.VLStatedButton.VLButtonState buttonState, int userState) {
-                //设置底部按钮选中及未选择状态
-                if (buttonState == VLStatedButtonBar.VLStatedButton.VLButtonState.StateChecked) {
-                    mCollectTypeTv.setBackground(getResources().getDrawable(R.drawable.blue_button));
-                    mCollectTypeTv.setTextColor(getResources().getColor(R.color.white));
-                } else {
-                    mCollectTypeTv.setBackground(getResources().getDrawable(R.drawable.mine_gray_button));
-                    mCollectTypeTv.setTextColor(getResources().getColor(R.color.text_color_origin_price));
-                }
-            }
-        }
-
         @Override
         public void onStatedButtonBarCreated(VLStatedButtonBar buttonBar) {
             VLStatedButtonBar.VLStatedButton button = new VLStatedButtonBar.VLStatedButton(mContext);
-            button.setStatedButtonDelegate(new MainBottomBarDelegate.MainBottomBarButtonDelegate(mContext.getResources().getString(R.string.mine_product)));
-            button.setPadding(VLUtils.dip2px(8), 0, VLUtils.dip2px(8), 0);
-            buttonBar.addStatedButton(button);
+            button.setStatedButtonDelegate(new MainBottomBarButtonDelegate(mContext.getResources().getString(R.string.mine_product)));
+            LinearLayout.LayoutParams params = VLUtils.paramsLinear(VLUtils.WRAP_CONTENT, VLUtils.WRAP_CONTENT);
+            buttonBar.addStatedButton(button, params);
 
             button = new VLStatedButtonBar.VLStatedButton(mContext);
-            button.setStatedButtonDelegate(new MainBottomBarDelegate.MainBottomBarButtonDelegate(mContext.getResources().getString(R.string.mine_diary)));
-            button.setPadding(VLUtils.dip2px(8), 0, VLUtils.dip2px(8), 0);
-            buttonBar.addStatedButton(button);
-
+            button.setStatedButtonDelegate(new MainBottomBarButtonDelegate(mContext.getResources().getString(R.string.mine_diary)));
+            LinearLayout.LayoutParams params1 = VLUtils.paramsLinear(VLUtils.WRAP_CONTENT, VLUtils.WRAP_CONTENT);
+            buttonBar.addStatedButton(button, params1);
         }
 
         @Override
         public void onStatedButtonBarChanged(VLStatedButtonBar buttonBar, int position) {
             mFragmentPager.gotoPage(position, false);
+        }
+    }
+
+    private class MainBottomBarButtonDelegate implements VLStatedButtonBar.VLStatedButton.VLStatedButtonDelegate {
+        private TextView mCollectTypeTv;
+        private String mText;
+
+        MainBottomBarButtonDelegate(String text) {
+            mText = text;
+        }
+
+        @Override
+        public void onStatedButtonCreated(VLStatedButtonBar.VLStatedButton button, LayoutInflater inflater) {
+            View view = inflater.inflate(R.layout.layout_mine_collect_text, button);
+            mCollectTypeTv = view.findViewById(R.id.collectTypeTv);
+            mCollectTypeTv.setText(mText);
+        }
+
+        @Override
+        public void onStatedButtonChanged(VLStatedButtonBar.VLStatedButton button, VLStatedButtonBar.VLStatedButton.VLButtonState buttonState, int userState) {
+            //设置底部按钮选中及未选择状态
+            if (buttonState == VLStatedButtonBar.VLStatedButton.VLButtonState.StateChecked) {
+                mCollectTypeTv.setBackgroundDrawable(getResources().getDrawable(R.drawable.blue_button));
+                mCollectTypeTv.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                mCollectTypeTv.setBackgroundDrawable(getResources().getDrawable(R.drawable.mine_gray_button));
+                mCollectTypeTv.setTextColor(getResources().getColor(R.color.text_color_origin_price));
+            }
         }
     }
 

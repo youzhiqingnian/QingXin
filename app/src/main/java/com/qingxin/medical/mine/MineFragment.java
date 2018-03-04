@@ -83,10 +83,12 @@ public class MineFragment extends QingXinFragment {
         MagicIndicator indicator = mRootView.findViewById(R.id.magicIndicator);
         final VLFragment[] fragments = new VLFragment[]{MyBookedProductListFragment.newInstance(), MyPublishedDiaryListFragment.newInstance(), MyCollectedTabListFragment.newInstance()};
         final String[] titles = new String[]{getResources().getString(R.string.appointment_count), getResources().getString(R.string.diary_count), getResources().getString(R.string.collection_count)};
-        QingXinAdapter adapter = new QingXinAdapter(getActivity().getSupportFragmentManager(), fragments, titles);
+        QingXinAdapter adapter = new QingXinAdapter(getChildFragmentManager(), fragments, titles);
         final ViewPager viewPager = mRootView.findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(3);
         CommonNavigator navigator = new CommonNavigator(getActivity());
+        navigator.setAdjustMode(true);
         navigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
@@ -107,10 +109,9 @@ public class MineFragment extends QingXinFragment {
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator lineIndicator = new LinePagerIndicator(context);
-                lineIndicator.setMode(LinePagerIndicator.MODE_EXACTLY);
+                lineIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
                 lineIndicator.setLineHeight(VLUtils.dip2px(2));
                 lineIndicator.setRoundRadius(VLUtils.dip2px(2));
-                lineIndicator.setLineWidth(VLUtils.dip2px(16));
                 lineIndicator.setColors(0xff3bc5e8);
                 lineIndicator.setYOffset(VLUtils.dip2px(5));
                 return lineIndicator;
