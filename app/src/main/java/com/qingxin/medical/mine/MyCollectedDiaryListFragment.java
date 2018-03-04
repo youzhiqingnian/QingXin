@@ -95,6 +95,9 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
+        if(mRefreshLayout != null){
+            mRefreshLayout.setRefreshing(false);
+        }
         if (first) {
             showView(R.layout.layout_loading);
             VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {

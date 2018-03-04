@@ -30,7 +30,7 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
 
     private View mRootView;
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mRefreshLayout;
 
     private VipListAdapter mAdapter;
 
@@ -69,7 +69,7 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
     private void initView() {
         mPresenter = new MyCollectedProductListPresenter(this);
 
-        mSwipeRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
+        mRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
         RecyclerView recyclerView = mRootView.findViewById(R.id.recyclerView);
 
 
@@ -83,8 +83,8 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
         recyclerView.addItemDecoration(dividerDecoration);
         //add header
         mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), null));
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setRefreshing(true);
+        mRefreshLayout.setOnRefreshListener(this);
+        mRefreshLayout.setRefreshing(true);
     }
 
 
@@ -101,6 +101,9 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
+        if(mRefreshLayout != null){
+            mRefreshLayout.setRefreshing(false);
+        }
         if (first) {
             showView(R.layout.layout_loading);
             VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
@@ -136,7 +139,7 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
         Log.i("我收藏的产品列表", vipListBean.toString());
 
         if (isClear) {
-            mSwipeRefreshLayout.setRefreshing(false);
+            mRefreshLayout.setRefreshing(false);
             mAdapter.setNewData(vipListBean.getItems());
         } else {
             mAdapter.addData(vipListBean.getItems());
@@ -161,7 +164,7 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
     public void onError(String result) {
         hideView(R.layout.layout_loading);
         if (isClear) {
-            mSwipeRefreshLayout.setRefreshing(false);
+            mRefreshLayout.setRefreshing(false);
         } else {
             mAdapter.loadMoreFail();
         }

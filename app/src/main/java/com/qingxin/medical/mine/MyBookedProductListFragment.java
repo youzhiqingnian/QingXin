@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.vip.VipDetailActivity;
@@ -28,7 +27,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
 
     private View mRootView;
 
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mRefreshLayout;
 
     private MyBookedProductListContract.Presenter mPresenter;
 
@@ -60,7 +59,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     private void initView() {
 
         mPresenter = new MyBookProductListPresenter(this);
-        mSwipeRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
+        mRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
         RecyclerView recyclerView = mRootView.findViewById(R.id.recyclerView);
 
 
@@ -71,8 +70,9 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
         recyclerView.setAdapter(mAdapter);
 
         mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), null));
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setRefreshing(true);
+        mRefreshLayout.setOnRefreshListener(this);
+        mRefreshLayout.setRefreshing(true);
+        mAdapter.setEmptyView(R.layout.group_empty);
 
 
     }
@@ -90,6 +90,9 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
+        if(mRefreshLayout != null){
+            mRefreshLayout.setRefreshing(false);
+        }
         if (first) {
             showView(R.layout.layout_loading);
             VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
@@ -123,9 +126,8 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     public void onSuccess(VipListBean vipListBean) {
         hideView(R.layout.layout_loading);
         Log.i("我预定的产品列表", vipListBean.toString());
-
         if (isClear) {
-            mSwipeRefreshLayout.setRefreshing(false);
+            mRefreshLayout.setRefreshing(false);
             mAdapter.setNewData(vipListBean.getItems());
         } else {
             mAdapter.addData(vipListBean.getItems());
@@ -142,7 +144,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     public void onError(String result) {
         hideView(R.layout.layout_loading);
         if (isClear) {
-            mSwipeRefreshLayout.setRefreshing(false);
+            mRefreshLayout.setRefreshing(false);
         } else {
             mAdapter.loadMoreFail();
         }
@@ -157,5 +159,9 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     public void onProductButtonClick(String id) {
         // 联系我们
 
+    }
+
+    public void setRefreshLayoutUnAbled(){
+        mRefreshLayout.setRefreshing(false);
     }
 }
