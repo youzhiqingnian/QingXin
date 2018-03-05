@@ -2,18 +2,22 @@ package com.qingxin.medical.base;
 
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.fresco.QingXinFrescoModel;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyModel;
 import com.qingxin.medical.map.GaoDeMapModel;
 import com.qingxin.medical.map.LocationService;
 import com.qingxin.medical.retrofit.RetrofitModel;
+import com.qingxin.medical.user.SessionModel;
 import com.qingxin.medical.user.User;
 import com.qingxin.medical.user.UserModel;
 import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModelManager;
+
 import org.codehaus.jackson.map.ObjectMapper;
+
 import java.io.File;
 import java.io.IOException;
 /**
@@ -57,6 +61,7 @@ public class QingXinApplication extends VLApplication {
         manager.registerModel(RetrofitModel.class);
         manager.registerModel(UserModel.class);
         manager.registerModel(MedicalBeautyModel.class);
+        manager.registerModel(SessionModel.class);
     }
 
     @Override

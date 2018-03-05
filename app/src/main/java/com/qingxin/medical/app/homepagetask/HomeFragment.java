@@ -19,10 +19,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
@@ -33,10 +31,12 @@ import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.base.QingXinApplication;
+import com.qingxin.medical.common.FragmentToActivity;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
 import com.qingxin.medical.home.districtsel.StrictSelDetailActivity;
 import com.qingxin.medical.home.districtsel.StrictSelListActivity;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyActivity;
+import com.qingxin.medical.search.SearchActivity;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
@@ -45,7 +45,6 @@ import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
-
 import java.util.List;
 
 /**
@@ -110,6 +109,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         LinearLayout selectionRl = mRootView.findViewById(R.id.selectionRl);
         LinearLayout encyclopediasRl = mRootView.findViewById(R.id.encyclopediasRl);
         FrameLayout diaryMoreRl = mRootView.findViewById(R.id.diaryMoreRl);
+        LinearLayout searchLl = mRootView.findViewById(R.id.searchLl);
         mSlectionMoreRl = mRootView.findViewById(R.id.slectionMoreRl);
         mStatedBtnBar = mRootView.findViewById(R.id.statedBtnBar);
 
@@ -123,6 +123,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         encyclopediasRl.setOnClickListener(this);
         diaryMoreRl.setOnClickListener(this);
         mSlectionMoreRl.setOnClickListener(this);
+        searchLl.setOnClickListener(this);
         showView(R.layout.layout_loading);
         VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
             @Override
@@ -275,7 +276,9 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             case R.id.shareRl: //歆人专享
                 VipListActivity.startSelf(getActivity());
                 break;
-            case R.id.selectionRl: //本地严选
+            case R.id.selectionRl: //本地严选(暂时换成专属服务)
+                FragmentToActivity.startSelf(getActivity(),FragmentToActivity.EXCLUSIVE_SERVICE_FRAGMENT);
+                break;
             case R.id.slectionMoreRl:
                 StrictSelListActivity.startSelf(getActivity());
                 break;
@@ -292,6 +295,9 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 String vid = (String) view.getTag();
                 if (null == vid) return;
                 VipDetailActivity.startSelf(getVLActivity(), vid, null);
+                break;
+            case R.id.searchLl:
+                SearchActivity.startSelf(getActivity());
                 break;
             default:
                 break;
