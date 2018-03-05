@@ -11,10 +11,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinActivity;
-import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.mine.MineFragment;
 import com.qingxin.medical.mine.login.LoginFragment;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
@@ -22,6 +21,7 @@ import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
+
 /**
  * HomeActivity
  * Date 2018-02-05
@@ -41,8 +41,6 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
     private QingXinBroadCastReceiver mReceiver;
     private static final String INDEX = "INDEX";
 
-    private int mCurrentFgPosition = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +50,7 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
         mButtonBar = findViewById(R.id.mainBottomBar);
         mFragmentPager.setOffscreenPageLimit(4);
         //将4个fragment添加至activity中
-        VLFragment[] fragments = new VLFragment[]{HomeFragment.newInstance(), WelFareServiceFragment.newInstance(), ExclusiveServiceFragment.newInstance(), MineFragment.newInstance()};
+        VLFragment[] fragments = new VLFragment[]{HomeFragment.newInstance(), WelFareFragment.newInstance(), ExclusiveServiceFragment.newInstance(), MineFragment.newInstance()};
         mFragmentPager.setFragmentPages(getSupportFragmentManager(), fragments);
         //滑动切换界面 false不可滑动
         mFragmentPager.setScrollable(false);
@@ -69,16 +67,16 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
     private void initBroadcastReceiver() {
         mReceiver = new QingXinBroadCastReceiver();
         IntentFilter intentFilter = new IntentFilter(LoginFragment.LOGIN_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver,intentFilter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, intentFilter);
         mReceiver.setReceiverListener(this);
     }
 
     @Override
     public void receiverUpdata(Intent intent) {
-        int currentFgPosition = intent.getIntExtra("position",-1);
-        if(currentFgPosition != -1){
+        int currentFgPosition = intent.getIntExtra("position", -1);
+        if (currentFgPosition != -1) {
             mButtonBar.setChecked(currentFgPosition);
-            if(currentFgPosition == 1){
+            if (currentFgPosition == 1) {
                 mFragmentPager.gotoPage(1, false);
             }
         }
@@ -160,16 +158,7 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
 
         @Override
         public void onStatedButtonBarChanged(VLStatedButtonBar buttonBar, int position) {
-            if ((position == 1) && QingXinApplication.getInstance().getLoginUser() == null) {
-                // 没登录
-                Intent intent = new Intent(HomePageTaskActivity.this, LoginActivity.class);
-                intent.putExtra("home",true);
-                intent.putExtra("position",mCurrentFgPosition);
-                startActivity(intent);
-            } else {
-                mCurrentFgPosition = position;
-                mFragmentPager.gotoPage(position, false);
-            }
+            mFragmentPager.gotoPage(position, false);
         }
     }
 
@@ -180,7 +169,7 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
     }
 
     //取消注册
-    private void unRegisterLoginBroadcast(){
+    private void unRegisterLoginBroadcast() {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
     }
 
