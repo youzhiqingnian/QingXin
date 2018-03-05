@@ -18,12 +18,12 @@
         android:paddingRight="15dp"
         android:textColor="@color/text_color"
         app:layout_constraintBottom_toTopOf="@+id/nestedScrollView"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+        app:layout_constraintEnd_toStartOf="@+id/searchLl"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/searchLl"
         android:layout_width="0dp"
         android:layout_height="32dp"
         android:layout_marginBottom="8dp"
@@ -47,10 +47,11 @@
             android:paddingStart="15dp"
             android:src="@mipmap/home_search" />
 
-        <EditText
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
+            android:gravity="center_vertical"
             android:hint="@string/home_search_text_hint"
             android:paddingEnd="15dp"
             android:paddingLeft="0dp"
@@ -70,7 +71,7 @@
         android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+        app:layout_constraintTop_toBottomOf="@+id/searchLl">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -176,7 +177,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="8dp"
-                        android:text="@string/local_strict_selection"
+                        android:text="@string/exclusive_service"
                         android:textColor="@color/light_text_color"
                         android:textSize="12sp" />
                 </LinearLayout>

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -38,8 +39,18 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
     }
 
     public static ExclusiveServiceFragment newInstance() {
-        return new ExclusiveServiceFragment();
+        return newInstance(false);
     }
+
+    public static ExclusiveServiceFragment newInstance(boolean showLeftReturn) {
+        ExclusiveServiceFragment fragment = new ExclusiveServiceFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(SHOW_LEFT_RETURN, showLeftReturn);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    private static final String SHOW_LEFT_RETURN = "SHOW_LEFT_RETURN";
 
     @Override
     public View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,6 +72,9 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
         RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
         mRefreshLayout = getView().findViewById(R.id.swipeLayout);
         QingXinTitleBar.init(mTitleBar, getResources().getString(R.string.exclusive_service));
+        if (getArguments().getBoolean(SHOW_LEFT_RETURN)) {
+            QingXinTitleBar.setLeftReturn(mTitleBar, getActivity());
+        }
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new ExclusiveServiceListAdapter(null, moblile -> VLUtils.gotoDail(getActivity(), moblile));
         mAdapter.setOnLoadMoreListener(() -> getServiceList(false), recyclerView);
@@ -75,22 +89,15 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
         imageView.setImageResource(R.mipmap.exclusive_service_top_cover);
         mAdapter.addHeaderView(imageView);
         mRefreshLayout.setOnRefreshListener(this);
-    }
+        showViewBelowActionBar(R.layout.layout_loading, QingXinTitleBar.fixActionBarHeight(mTitleBar));
+        mRefreshLayout.setRefreshing(true);
 
-    @Override
-    protected void onVisible(boolean first) {
-        super.onVisible(first);
-        if (first) {
-            showViewBelowActionBar(R.layout.layout_loading,QingXinTitleBar.fixActionBarHeight(mTitleBar));
-            mRefreshLayout.setRefreshing(true);
-            VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
-                @Override
-                protected void process(boolean canceled) {
-                    getServiceList(true);
-                }
-            });
-
-        }
+        VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
+            @Override
+            protected void process(boolean canceled) {
+                getServiceList(true);
+            }
+        });
     }
 
     private void getServiceList(boolean isClear) {
