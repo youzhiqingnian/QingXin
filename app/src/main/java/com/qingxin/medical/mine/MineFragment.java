@@ -35,7 +35,6 @@ public class MineFragment extends QingXinFragment {
         return inflater.inflate(R.layout.activity_fragment, container, false);
     }
 
-    private LoginFragment mLoginFragment;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -44,7 +43,7 @@ public class MineFragment extends QingXinFragment {
             return;
         if (getView() == null) return;
         if (null == QingXinApplication.getInstance().getLoginUser()) {
-            mLoginFragment = LoginFragment.newInstance(false);
+            LoginFragment mLoginFragment = LoginFragment.newInstance(false);
             getFragmentManager().beginTransaction().add(R.id.container, mLoginFragment).commit();
         } else {
             getFragmentManager().beginTransaction().add(R.id.container, MineDataFragment.newInstance()).commit();
