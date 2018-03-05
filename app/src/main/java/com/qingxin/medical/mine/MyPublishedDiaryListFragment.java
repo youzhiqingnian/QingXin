@@ -6,7 +6,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +22,14 @@ import com.qingxin.medical.home.ListBean;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
+
 /**
  * Date 2018-03-02
  *
  * @author zhikuo1
  */
 
-public class MyPublishedDiaryListFragment extends VLFragment implements MyPublishedDiaryListContract.View, SwipeRefreshLayout.OnRefreshListener, GoddessDiaryListAdapter.DeleteDiaryListener, GoddessDiaryListAdapter.EditDiaryListener  {
+public class MyPublishedDiaryListFragment extends VLFragment implements MyPublishedDiaryListContract.View, SwipeRefreshLayout.OnRefreshListener, GoddessDiaryListAdapter.DeleteDiaryListener, GoddessDiaryListAdapter.EditDiaryListener {
 
     private View mRootView;
 
@@ -58,11 +58,11 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-       if (null == getView()) return;
+        if (null == getView()) return;
         mRootView = getView();
-       initView();
+        initView();
 
-   }
+    }
 
     private void initView() {
         mPresenter = new MyPublishedDiaryListPresenter(this);
@@ -72,7 +72,7 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new GoddessDiaryListAdapter(null,1);
+        mAdapter = new GoddessDiaryListAdapter(null, 1);
         mAdapter.setOnLoadMoreListener(() -> getMyCollectList(false), recyclerView);
         mAdapter.setDeleteDiaryListener(this);
         mAdapter.setEditDiaryListener(this);
@@ -82,14 +82,9 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
 
-        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_my_diary_empty_view,null);
+        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_my_diary_empty_view, null);
         TextView publishDiaryTv = emptyView.findViewById(R.id.publishDiaryTv);
-        publishDiaryTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DiaryPublishActivity.startSelf(getVLActivity(), null);
-            }
-        });
+        publishDiaryTv.setOnClickListener(view -> DiaryPublishActivity.startSelf(getVLActivity()));
         mAdapter.setEmptyView(emptyView);
 
 
@@ -108,7 +103,7 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
-        if(mRefreshLayout != null){
+        if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(false);
         }
         if (first) {
@@ -143,8 +138,6 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     @Override
     public void onSuccess(ListBean<DiaryItemBean> diary) {
         hideView(R.layout.layout_loading);
-        Log.i("我发布的日记列表", diary.toString());
-
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
             mAdapter.setNewData(diary.getItems());
@@ -158,10 +151,9 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
             mAdapter.loadMoreComplete();
         }
 
-        if(diary != null && 0 != diary.getCount()){
-            sendBroadCast(diary.getCount()+"");
+        if (0 != diary.getCount()) {
+            sendBroadCast(diary.getCount() + "");
         }
-
     }
 
     @Override
@@ -188,15 +180,13 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     @Override
     public void editDiary(int position, String id) {
         // 编辑日记
-        // TODO
-
+        mAdapter.getData().get(position);
+        DiaryPublishActivity.startSelf(getVLActivity());
     }
 
     private void sendBroadCast(String diaryCount) {
         Intent intent = new Intent(COUNT_ACTION);
-        intent.putExtra("diaryCount",diaryCount);
-        LocalBroadcastManager.getInstance(getVLActivity()).sendBroadcast(
-                intent
-        );
+        intent.putExtra("diaryCount", diaryCount);
+        LocalBroadcastManager.getInstance(getVLActivity()).sendBroadcast(intent);
     }
 }

@@ -52,6 +52,11 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
         uploadPhotos(diaryPublishParams);
     }
 
+    @Override
+    public void updateDiary(@NonNull DiaryPublishParams diaryPublishParams) {
+
+    }
+
     private void uploadPhotos(@NonNull DiaryPublishParams diaryPublishParams) {
         File file = isFirstUploadSuccess ? diaryPublishParams.getBeforeFile() : diaryPublishParams.getAfterFile();
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"),file);

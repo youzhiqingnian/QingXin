@@ -1,10 +1,12 @@
 package com.qingxin.medical.app.goddessdiary.publish;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
@@ -13,22 +15,25 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.album.AlbumAdapter;
 import com.qingxin.medical.album.AlbumItemData;
+import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.CommonDialogFactory;
 import com.qingxin.medical.common.QingXinLocalPhotoPopupWindow;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyActivity;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyListBean;
-import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLAsyncHandler;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
+
 import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 
 /**
@@ -39,11 +44,17 @@ import java.io.File;
  */
 public class DiaryPublishActivity extends QingXinActivity implements View.OnClickListener, DiaryPublishContract.View {
 
-    public static void startSelf(@NonNull VLActivity activity, @NonNull VLActivityResultListener resultListener) {
-        Intent intent = new Intent(activity, DiaryPublishActivity.class);
-        activity.setActivityResultListener(resultListener);
-        activity.startActivityForResult(intent, REQUEST_CODE);
+    public static void startSelf(@NonNull Context context) {
+        startSelf(context,null);
     }
+
+    public static void startSelf(@NonNull Context context, @Nullable DiaryItemBean diaryItemBean) {
+        Intent intent = new Intent(context, DiaryPublishActivity.class);
+        intent.putExtra(DIARYITEMBEAN, diaryItemBean);
+        context.startActivity(intent);
+    }
+
+    public static final String DIARYITEMBEAN = "DIARYITEMBEAN";
 
     private TextView mCategoryTv;
     private EditText mDescrTv;
@@ -53,7 +64,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
     private MedicalBeautyListBean mMedicalBeautyListBean;
     private DiaryPublishPresenter mPresenter;
     private DiaryPublishParams mDiaryPublishParams;
-    public static final int REQUEST_CODE = 1001;
+    private boolean isEdit;//是否是修改日记
 
     @Override
     protected void onResume() {
@@ -84,7 +95,6 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
         TextView publishTv = findViewById(R.id.publishTv);
         chooseItemRl.setOnClickListener(this);
         publishTv.setOnClickListener(this);
-
         mAfterAlbumAdapter = new AlbumAdapter<>(this, AlbumAdapter.AFTER_PHOTO, 1, new AlbumAdapter.OnClickListener() {
             @Override
             public void onAddItemClicked(View view) {
@@ -93,6 +103,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
 
             @Override
             public void onItemClicked(View view, int position) {
+                getPhotoPopupWindow(AlbumAdapter.AFTER_PHOTO).show(mDescrTv);
             }
         });
         afterAlbumRv.setAdapter(mAfterAlbumAdapter);
@@ -105,10 +116,34 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
 
             @Override
             public void onItemClicked(View view, int position) {
-
+                getPhotoPopupWindow(AlbumAdapter.BEFORE_PHOTO).show(mDescrTv);
             }
         });
         beforeAlbumRv.setAdapter(mBeforeAlbumAdapter);
+
+        DiaryItemBean diaryItemBean = (DiaryItemBean) getIntent().getSerializableExtra(DIARYITEMBEAN);
+        isEdit = diaryItemBean != null;
+        if (isEdit){
+            mDescrTv.setText(diaryItemBean.getWords());
+            mCategoryTv.setText(diaryItemBean.getProduct().getName());
+            mBeforePhoto = VLUtils.getNetWorkBitmap(diaryItemBean.getOper_before_photo());
+            mAfterPhoto = VLUtils.getNetWorkBitmap(diaryItemBean.getOper_after_photo());
+            AlbumItemData<Bitmap> albumItemData = new AlbumItemData<Bitmap>(mAfterPhoto) {
+                @Override
+                public String getImageUrl() {
+                    return null;
+                }
+            };
+            mAfterAlbumAdapter.addItem(albumItemData);
+            AlbumItemData<Bitmap> beforeItemData = new AlbumItemData<Bitmap>(mBeforePhoto) {
+                @Override
+                public String getImageUrl() {
+                    return null;
+                }
+            };
+            mBeforeAlbumAdapter.addItem(beforeItemData);
+            publishTv.setText(getResources().getString(R.string.sure_modify));
+        }
         mMedicalBeautyListBean = new MedicalBeautyListBean();
         mDiaryPublishParams = new DiaryPublishParams();
         mPresenter = new DiaryPublishPresenter(this);

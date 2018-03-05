@@ -24,7 +24,6 @@ import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishActivity;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.login.LoginActivity;
-import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
@@ -156,7 +155,6 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 //                    mPresenter.isChcekIn();
                 }
             });
-
         }
     }
 
@@ -175,7 +173,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         hideView(R.layout.layout_loading);
         Log.i("福利社的bean", coinLog.toString());
 
-        if (coinLog != null && !TextUtils.isEmpty(coinLog.getBalance())) {
+        if (!TextUtils.isEmpty(coinLog.getBalance())) {
             mQingxinCoinAmountTv.setText(coinLog.getBalance());
         }
 
@@ -267,23 +265,22 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
                 RecommendUserActivity.startSelf(getVLActivity(), mActivityResultListener);
                 break;
             case R.id.releaseDairyTv:
-                DiaryPublishActivity.startSelf(getVLActivity(), mActivityResultListener);
+                DiaryPublishActivity.startSelf(getVLActivity());
                 break;
             default:
                 break;
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void setCheckinUnable() {
         mClickToSignTv.setText(getActivity().getString(R.string.already_signed));
-        mClickToSignTv.setBackground(getActivity().getResources().getDrawable(R.drawable.gray_button));
+        mClickToSignTv.setBackgroundResource(R.drawable.gray_button);
         mClickToSignTv.setTextColor(getActivity().getResources().getColor(R.color.text_color_origin_price));
         mClickToSignTv.setEnabled(false);
     }
 
     private VLActivity.VLActivityResultListener mActivityResultListener = (requestCode, resultCode, intent) -> {
-        if (requestCode == DiaryPublishActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {//发布日记成功
+        if (requestCode == RecommendUserActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {//推荐用户成功
             getServiceList(true);
         }
     };

@@ -41,6 +41,7 @@
     <string name="cancel">取消</string>
     <string name="collect_ok">收藏成功</string>
     <string name="sure_publish">确定发布</string>
+    <string name="sure_modify">确定修改</string>
     <string name="publish_diary">发布日记</string>
     <string name="item_category">项目类别</string>
     <string name="diary_publish_hint">记录下你的变美心得吧~</string>

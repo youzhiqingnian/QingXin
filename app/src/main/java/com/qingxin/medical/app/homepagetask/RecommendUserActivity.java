@@ -1,5 +1,6 @@
 package com.qingxin.medical.app.homepagetask;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.RecommendResultBean;
@@ -83,18 +85,13 @@ public class RecommendUserActivity extends QingXinActivity implements RecommendU
 
     @Override
     public void onClick(View view) {
-
         switch (view.getId()) {
-
             case R.id.ensureSubmitTv:
-
                 mPresenter.submitRecommendUser(mUserNameEt.getText().toString().trim(), mCellphoneNumEt.getText().toString().trim(), /*"c5e9d508-c0b5-4197-88f9-9f1bf0955075"*/mIntentionProgramEt.getText().toString().trim(), mIntentionHospitalEt.getText().toString().trim(), mRemarkEt.getText().toString().trim());
-
                 break;
-
+            default:
+                break;
         }
-
-
     }
 
     @Override
@@ -133,6 +130,8 @@ public class RecommendUserActivity extends QingXinActivity implements RecommendU
         Log.i("推荐用户的bean",result.toString());
         if(!VLUtils.stringIsEmpty(result.getId())){
             showToast(getResources().getString(R.string.recommend_success));
+            setResult(Activity.RESULT_OK);
+            this.finish();
         }
     }
 
