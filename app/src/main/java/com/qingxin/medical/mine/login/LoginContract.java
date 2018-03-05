@@ -2,6 +2,7 @@ package com.qingxin.medical.mine.login;
 
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
+import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.user.UserTokenBean;
 
 /**
@@ -13,11 +14,14 @@ public class LoginContract {
 
         void onSuccess(UserTokenBean userTokenBean);
 
+        void onSuccess(MemBean memBean);
+
         void onError(String errorCode, String message);
 
     }
 
     public interface LoginPresenter extends BasePresenter {
         void login(String mobile, String vcode);
+        void getSession();
     }
 }

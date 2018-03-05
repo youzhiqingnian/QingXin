@@ -1,6 +1,7 @@
 package com.qingxin.medical.mine;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,11 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.vip.VipDetailActivity;
+import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.app.vip.VipListAdapter;
 import com.qingxin.medical.app.vip.VipListBean;
+import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
@@ -25,7 +29,7 @@ import com.vlee78.android.vl.VLScheduler;
  * @author zhikuo1
  */
 
-public class MyBookedProductListFragment extends VLFragment implements MyBookedProductListContract.View, SwipeRefreshLayout.OnRefreshListener, VipListAdapter.ProductCallbackListener {
+public class MyBookedProductListFragment extends VLFragment implements MyBookedProductListContract.View, SwipeRefreshLayout.OnRefreshListener, VipListAdapter.ProductCallbackListener,QingXinBroadCastReceiver.OnReceiverCallbackListener {
 
     private View mRootView;
 
@@ -39,6 +43,10 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     private boolean isClear;
 
     public static final String COUNT_ACTION = "com.archie.action.COUNT_ACTION";
+
+    private QingXinBroadCastReceiver mReceiver;
+
+    public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
 
     public MyBookedProductListFragment() {
     }
@@ -59,6 +67,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
         if (null == getView()) return;
         mRootView = getView();
         initView();
+        initBroadcastReceiver();
     }
 
     private void initView() {
@@ -77,8 +86,29 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
         mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), null));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
-        mAdapter.setEmptyView(R.layout.group_empty);
 
+
+        View emptyView = LayoutInflater.from(getVLActivity()).inflate(R.layout.layout_my_booked_product_empty_view,null);
+        TextView goToScanProductTv = emptyView.findViewById(R.id.goToScanProductTv);
+        mAdapter.setEmptyView(emptyView);
+
+        goToScanProductTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VipListActivity.startSelf(getVLActivity());
+            }
+        });
+
+    }
+
+    /**
+     * 初始化广播接收者
+     */
+    private void initBroadcastReceiver() {
+        mReceiver = new QingXinBroadCastReceiver();
+        IntentFilter intentFilter = new IntentFilter(REFRESH_ACTION);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
+        mReceiver.setReceiverListener(this);
 
     }
 
@@ -164,7 +194,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     }
 
     @Override
-    public void onProductButtonClick(String id) {
+    public void onProductButtonClick(int position,String id) {
         // 联系我们
 
     }
@@ -177,4 +207,11 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
         );
     }
 
+    @Override
+    public void receiverUpdata(Intent intent) {
+        if(intent.getBooleanExtra("refresh",false)){
+            getMyBookedProduct(true);
+        }
+
+    }
 }

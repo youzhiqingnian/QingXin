@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -39,7 +40,7 @@ import com.vlee78.android.vl.VLTitleBar;
  *
  * @author zhikuo1
  */
-public class WelFareServiceFragment extends VLFragment implements WelfareCoinLogsListContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, QingXinBroadCastReceiver.OnReceiverCallbackListener  {
+public class WelFareServiceFragment extends VLFragment implements WelfareCoinLogsListContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, QingXinBroadCastReceiver.OnReceiverCallbackListener {
 
 
     private WelfareCoinLogsListContract.Presenter mPresenter;
@@ -65,6 +66,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         return inflater.inflate(R.layout.fragment_welfareservice, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -88,6 +90,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void initView() {
         mPresenter = new WelfareCoinLogPresenter(this);
         if (null == getView()) return;
@@ -109,8 +112,12 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         TextView mClickToInviteTv = mHeaderView.findViewById(R.id.clickToInviteTv);
         TextView mClickToRecommendTv = mHeaderView.findViewById(R.id.clickToRecommendTv);
 
-        if(QingXinApplication.getInstance().getLoginUser() != null){
+        if (QingXinApplication.getInstance().getLoginUser() != null) {
             mQingxinCoinAmountTv.setText(QingXinApplication.getInstance().getLoginUser().getCoin());
+            if (QingXinApplication.getInstance().getLoginSession() != null && !QingXinApplication.getInstance().getLoginSession().getMem().getHas_checkin().equals("n")) {
+                // 如果已经签到
+                setCheckinUnable();
+            }
         }
 
         mQingxinCoinRuleTv.setOnClickListener(this);
@@ -141,12 +148,12 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         super.onVisible(first);
         if (first) {
             mRefreshLayout.setRefreshing(true);
-            showViewBelowActionBar(R.layout.layout_loading,QingXinTitleBar.fixActionBarHeight(mTitleBar));
+            showViewBelowActionBar(R.layout.layout_loading, QingXinTitleBar.fixActionBarHeight(mTitleBar));
             VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
                 @Override
                 protected void process(boolean canceled) {
                     getServiceList(true);
-                    mPresenter.isChcekIn();
+//                    mPresenter.isChcekIn();
                 }
             });
 
@@ -197,16 +204,16 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         getServiceList(true);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    @Override
-    public void onSuccess(MemBean memBean) {
-        hideView(R.layout.layout_loading);
-        Log.i("是否签到的bean",memBean.toString());
-        if(!memBean.getMem().getHas_checkin().equals("n")){
-            // 如果已经签到
-            setCheckinUnable();
-        }
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+//    @Override
+//    public void onSuccess(MemBean memBean) {
+//        hideView(R.layout.layout_loading);
+//        Log.i("是否签到的bean",memBean.toString());
+//        if(!memBean.getMem().getHas_checkin().equals("n")){
+//            // 如果已经签到
+//            setCheckinUnable();
+//        }
+//    }
 
     @Override
     public void onError(String result) {
@@ -247,7 +254,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
                 break;
             case R.id.clickToSignTv:
                 // 点击签到
-                showViewBelowActionBar(R.layout.layout_loading,QingXinTitleBar.fixActionBarHeight(mTitleBar));
+                showViewBelowActionBar(R.layout.layout_loading, QingXinTitleBar.fixActionBarHeight(mTitleBar));
                 mPresenter.checkIn();
 
                 break;
@@ -257,7 +264,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
                 break;
             case R.id.clickToRecommendTv:
                 // 点击推荐
-                RecommendUserActivity.startSelf(getVLActivity(),mActivityResultListener);
+                RecommendUserActivity.startSelf(getVLActivity(), mActivityResultListener);
                 break;
             case R.id.releaseDairyTv:
                 DiaryPublishActivity.startSelf(getVLActivity(), mActivityResultListener);
@@ -268,7 +275,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private void setCheckinUnable(){
+    private void setCheckinUnable() {
         mClickToSignTv.setText(getActivity().getString(R.string.already_signed));
         mClickToSignTv.setBackground(getActivity().getResources().getDrawable(R.drawable.gray_button));
         mClickToSignTv.setTextColor(getActivity().getResources().getColor(R.color.text_color_origin_price));
@@ -288,7 +295,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
     @Override
     public void receiverUpdata(Intent intent) {
-        if(QingXinApplication.getInstance().getLoginUser() != null){
+        if (QingXinApplication.getInstance().getLoginUser() != null) {
             mQingxinCoinAmountTv.setText(QingXinApplication.getInstance().getLoginUser().getCoin());
         }
         boolean isRefresh = intent.getBooleanExtra("refresh", false);

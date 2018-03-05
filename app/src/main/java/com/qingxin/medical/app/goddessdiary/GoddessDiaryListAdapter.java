@@ -30,7 +30,7 @@ public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, Bas
     }
 
     public interface EditDiaryListener{
-        void editDiary(DiaryItemBean item);
+        void editDiary(int position,String id);
     }
 
     public void setDeleteDiaryListener(DeleteDiaryListener deleteDiaryListener) {
@@ -74,6 +74,11 @@ public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, Bas
             deleteTv = helper.getView(R.id.deleteTv);
             editTv = helper.getView(R.id.editTv);
 
+            if(mType == 2){
+                deleteTv.setVisibility(View.GONE);
+                editTv.setText(mContext.getResources().getString(R.string.cancel_collection));
+            }
+
             deleteTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -83,7 +88,7 @@ public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, Bas
             editTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    editDiaryListener.editDiary(item);
+                    editDiaryListener.editDiary(helper.getAdapterPosition(),item.getId());
                 }
             });
 

@@ -20,6 +20,12 @@ public class User extends BaseBean {
     private String coin;
     // 今天是否签到
     private String has_checkin;
+    // 预约产品的数量
+    private int book_amount;
+    // 发布日记的数量
+    private int diary_amount;
+    // 收藏产品和日记总和的数量
+    private int collect_amount;
 
     public String getToken() {
         return token;
@@ -79,6 +85,30 @@ public class User extends BaseBean {
         this.has_checkin = has_checkin;
     }
 
+    public int getBook_amount() {
+        return book_amount;
+    }
+
+    public void setBook_amount(int book_amount) {
+        this.book_amount = book_amount;
+    }
+
+    public int getDiary_amount() {
+        return diary_amount;
+    }
+
+    public void setDiary_amount(int diary_amount) {
+        this.diary_amount = diary_amount;
+    }
+
+    public int getCollect_amount() {
+        return collect_amount;
+    }
+
+    public void setCollect_amount(int collect_amount) {
+        this.collect_amount = collect_amount;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -88,8 +118,10 @@ public class User extends BaseBean {
                 ", cover='" + cover + '\'' +
                 ", coin='" + coin + '\'' +
                 ", has_checkin='" + has_checkin + '\'' +
+                ", book_amount=" + book_amount +
+                ", diary_amount=" + diary_amount +
+                ", collect_amount=" + collect_amount +
                 ", token='" + token + '\'' +
                 '}';
     }
-
 }

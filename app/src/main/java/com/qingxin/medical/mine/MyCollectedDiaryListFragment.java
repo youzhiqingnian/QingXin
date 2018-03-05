@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListAdapter;
@@ -17,13 +18,14 @@ import com.qingxin.medical.home.ListBean;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
+
 /**
  * Date 2018-03-02
  *
  * @author zhikuo1
  */
 
-public class MyCollectedDiaryListFragment extends VLFragment implements MyCollectedDiaryListContract.View, SwipeRefreshLayout.OnRefreshListener, GoddessDiaryListAdapter.DeleteDiaryListener, GoddessDiaryListAdapter.EditDiaryListener {
+public class MyCollectedDiaryListFragment extends VLFragment implements MyCollectedDiaryListContract.View, SwipeRefreshLayout.OnRefreshListener, GoddessDiaryListAdapter.EditDiaryListener {
 
     private View mRootView;
 
@@ -31,6 +33,9 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
 
     private GoddessDiaryListAdapter mAdapter;
 
+    private int mCurrentCancelPosition = 0;
+
+    private ListBean<DiaryItemBean> mDiaryList;
 
     private boolean isClear;
 
@@ -69,16 +74,15 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new GoddessDiaryListAdapter(null,1);
+        mAdapter = new GoddessDiaryListAdapter(null, 2);
         mAdapter.setOnLoadMoreListener(() -> getMyCollectList(false), recyclerView);
-        mAdapter.setDeleteDiaryListener(this);
         mAdapter.setEditDiaryListener(this);
         recyclerView.setAdapter(mAdapter);
 
         mAdapter.setOnItemClickListener((adapter, view, position) -> GoddessDiaryDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), null));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
-        mAdapter.setEmptyView(R.layout.group_empty);
+        mAdapter.setEmptyView(R.layout.layout_my_collect_empty_view);
     }
 
 
@@ -95,7 +99,7 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
-        if(mRefreshLayout != null){
+        if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(false);
         }
         if (first) {
@@ -124,8 +128,8 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
     @Override
     public void onSuccess(ListBean<DiaryItemBean> diary) {
         hideView(R.layout.layout_loading);
+        mDiaryList = diary;
         Log.i("我收藏的日记列表", diary.toString());
-
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
             mAdapter.setNewData(diary.getItems());
@@ -137,6 +141,15 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
             mAdapter.loadMoreEnd(isClear);
         } else {
             mAdapter.loadMoreComplete();
+        }
+    }
+
+    @Override
+    public void onSuccess(CollectBean collectBean) {
+        if (collectBean != null && collectBean.getIs_collect().equals("n")) {
+            showToast(getString(R.string.cancel_collect_ok));
+            mDiaryList.getItems().remove(mCurrentCancelPosition);
+            mAdapter.notifyItemRemoved(mCurrentCancelPosition);
         }
     }
 
@@ -156,15 +169,10 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
     }
 
     @Override
-    public void deleteDiary(String id) {
-        // 删除日记
-        // TODO
-    }
-
-    @Override
-    public void editDiary(DiaryItemBean item) {
-        // 编辑日记
-        // TODO
+    public void editDiary(int position, String id) {
+        mCurrentCancelPosition = position;
+        // 取消收藏日记
+        mPresenter.cancelCollectDiary(id);
 
     }
 

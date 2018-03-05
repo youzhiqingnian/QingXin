@@ -24,7 +24,7 @@ public class VipListAdapter extends BaseQuickAdapter<ProductBean, BaseViewHolder
     private ProductCallbackListener btnCallBackListener;
 
     public interface ProductCallbackListener{
-        void onProductButtonClick(String id);
+        void onProductButtonClick(int position, String id);
     }
 
     public void setBtnCallBackListener(ProductCallbackListener btnCallBackListener) {
@@ -58,7 +58,7 @@ public class VipListAdapter extends BaseQuickAdapter<ProductBean, BaseViewHolder
                 @Override
                 public void onClick(View view) {
                     if(btnCallBackListener != null){
-                        btnCallBackListener.onProductButtonClick(item.getId());
+                        btnCallBackListener.onProductButtonClick(helper.getAdapterPosition(), item.getId());
                     }
                 }
             });

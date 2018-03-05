@@ -260,6 +260,7 @@
                 android:id="@+id/hospitalInfoRl"
                 android:layout_width="match_parent"
                 android:layout_height="99dp"
+                android:visibility="gone"
                 android:layout_below="@id/productGapTv">
 
                 <com.facebook.drawee.view.SimpleDraweeView

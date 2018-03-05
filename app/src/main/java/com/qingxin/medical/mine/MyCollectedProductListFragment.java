@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
+import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListAdapter;
 import com.qingxin.medical.app.vip.VipListBean;
@@ -20,6 +21,9 @@ import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLUtils;
+
+import java.util.List;
+
 /**
  * Date 2018-03-02
  *
@@ -34,7 +38,9 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
 
     private VipListAdapter mAdapter;
 
+    private List<ProductBean> mProductList;
 
+    private int mCurrentCancelPosition = 0;
 
 
     private boolean isClear;
@@ -85,6 +91,7 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
         mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), null));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
+        mAdapter.setEmptyView(R.layout.layout_my_collect_empty_view);
     }
 
 
@@ -136,6 +143,7 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
     @Override
     public void onSuccess(VipListBean vipListBean) {
         hideView(R.layout.layout_loading);
+        mProductList = vipListBean.getItems();
         Log.i("我收藏的产品列表", vipListBean.toString());
 
         if (isClear) {
@@ -156,7 +164,8 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
     public void onSuccess(CollectBean collectBean) {
         if (collectBean.getIs_collect().equals("n")) {
             showToast(getString(R.string.cancel_collect_ok));
-            getMyCollectList(true);
+            mProductList.remove(mCurrentCancelPosition);
+            mAdapter.notifyItemRemoved(mCurrentCancelPosition);
         }
     }
 
@@ -176,8 +185,10 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
     }
 
     @Override
-    public void onProductButtonClick(String id) {
-        // 取消收藏
+    public void onProductButtonClick(int position, String id) {
+
+        mCurrentCancelPosition = position;
+
         Log.i("产品取消收藏", "我的产品列表取消收藏");
         // 取消收藏产品
         mPresenter.cancelCollect(id);

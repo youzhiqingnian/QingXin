@@ -5,11 +5,7 @@
     android:orientation="vertical"
     >
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/gap_color_gray"
-        />
+
 
     <include layout="@layout/layout_vip_item_top" />
 
@@ -39,5 +35,10 @@
             android:text="@string/contact_us"
             />
     </FrameLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/gap_color_gray"
+        />
 
 </LinearLayout>

@@ -21,7 +21,7 @@ public class WelfareCoinLogsListContract {
 
         void onSuccess(CheckInBean checkIn);
 
-        void onSuccess(MemBean memBean);
+//        void onSuccess(MemBean memBean);
 
         void onError(String result);
     }
@@ -32,6 +32,6 @@ public class WelfareCoinLogsListContract {
 
         void checkIn();
 
-        void isChcekIn();
+//        void isChcekIn();
     }
 }

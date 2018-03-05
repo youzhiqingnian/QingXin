@@ -2,17 +2,13 @@ package com.qingxin.medical.app.homepagetask;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.base.ContentBean;
-import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
-import com.vlee78.android.vl.VLUtils;
-
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -107,7 +103,7 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
         );
     }
 
-    @Override
+    /*@Override
     public void isChcekIn() {
         mCompositeSubscription.add(NetRequestListManager.isChcekIn()
                 .subscribeOn(Schedulers.io())
@@ -133,5 +129,5 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
                     }
                 })
         );
-    }
+    }*/
 }

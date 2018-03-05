@@ -17,10 +17,12 @@ public class MyCollectedDiaryListContract {
 
     interface View extends BaseView<Presenter> {
         void onSuccess(ListBean<DiaryItemBean> diary);
+        void onSuccess(CollectBean collectBean);
         void onError(String result);
     }
 
     interface Presenter extends BasePresenter {
         void getMyCollectDiaryList(int limit, int skip, String type, String actyp);
+        void cancelCollectDiary(String id);
     }
 }

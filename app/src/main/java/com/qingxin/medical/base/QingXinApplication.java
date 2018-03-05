@@ -2,7 +2,6 @@ package com.qingxin.medical.base;
 
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.fresco.QingXinFrescoModel;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyModel;
@@ -14,12 +13,9 @@ import com.qingxin.medical.user.UserModel;
 import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModelManager;
-
 import org.codehaus.jackson.map.ObjectMapper;
-
 import java.io.File;
 import java.io.IOException;
-
 /**
  * QingXinApplication
  *
@@ -34,6 +30,8 @@ public class QingXinApplication extends VLApplication {
     private final static ObjectMapper MAPPER = new ObjectMapper();
     private User mUser;
 
+    private MemBean mSessionBean;
+
     /**
      * 获取当前应用单例
      */
@@ -47,6 +45,7 @@ public class QingXinApplication extends VLApplication {
         super.onCreate();
         instance = this;
         this.mUser = loadPersistentUser();
+        this.mSessionBean = loadPersistentSession();
     }
 
     @Override
@@ -81,6 +80,20 @@ public class QingXinApplication extends VLApplication {
         return null;
     }
 
+    private MemBean loadPersistentSession(){
+        String serializedSession = getSharedPreferences().getString(QingXinConstants.KEY_PREFERENCES_SESSION, null);
+        if (serializedSession != null) {
+            try {
+                return MAPPER.readValue(serializedSession, MemBean.class);
+            } catch (IOException e) {
+                VLDebug.logE("反序列化登录用户数据异常", e);
+            }
+        } else {
+            VLDebug.logD("应用启动, 未发现用户登录");
+        }
+        return null;
+    }
+
     /**
      * 保存当前应用已登录用户信息.
      */
@@ -99,6 +112,21 @@ public class QingXinApplication extends VLApplication {
         this.mUser = user;
     }
 
+    public void saveMemberBean(@NonNull MemBean memBean){
+        SharedPreferences.Editor sharedEditor = getSharedPreferences().edit();
+        String serializedUser = null;
+        try {
+            serializedUser = MAPPER.writeValueAsString(memBean);
+        } catch (IOException e) {
+            VLDebug.logE("序列化登录用户数据异常", e);
+        }
+        VLDebug.Assert(serializedUser != null);
+        sharedEditor.putString(QingXinConstants.KEY_PREFERENCES_SESSION, serializedUser);
+        sharedEditor.apply();
+        this.mSessionBean = memBean;
+    }
+
+
     /**
      * 删除当前应用保存的已登录用户信息.
      */
@@ -108,6 +136,15 @@ public class QingXinApplication extends VLApplication {
         sharedEditor.apply();
         this.mUser = null;
     }
+    /**
+     * 删除当前应用保存的已登录用户信息.
+     */
+    public void removeLoginSession() {
+        SharedPreferences.Editor sharedEditor = getSharedPreferences().edit();
+        sharedEditor.remove(QingXinConstants.KEY_PREFERENCES_SESSION);
+        sharedEditor.apply();
+        this.mSessionBean = null;
+    }
 
     /**
      * 获取当前应用已登录用户信息. null表示尚未登录成功
@@ -116,6 +153,14 @@ public class QingXinApplication extends VLApplication {
      */
     public User getLoginUser() {
         return this.mUser;
+    }
+    /**
+     * 获取当前应用已登录用户信息. null表示尚未登录成功
+     *
+     * @return 用户信息
+     */
+    public MemBean getLoginSession() {
+        return this.mSessionBean;
     }
 
     public LocationService getLocationService() {

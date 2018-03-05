@@ -97,9 +97,8 @@ public interface RetrofitService {
      *
      * @param id 日记的id
      */
-    @FormUrlEncoded
-    @POST("/product/{id}/book")
-    Observable<ContentBean<AmountBean>> bookVip(@Field("id") String id);
+    @PUT("/product/{id}/book")
+    Observable<ContentBean<AmountBean>> bookVip(@Path("id") String id);
 
 
     /**

@@ -4,7 +4,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
+import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.user.UserService;
 import com.qingxin.medical.user.UserTokenBean;
 import com.qingxin.medical.utils.HandErrorUtils;
@@ -72,5 +74,33 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                         }
                     }
                 }));
+    }
+
+    @Override
+    public void getSession() {
+        mCompositeSubscription.add(NetRequestListManager.isChcekIn()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ContentBean<MemBean>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        HandErrorUtils.handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(ContentBean<MemBean> memBean) {
+                        if(!HandErrorUtils.isError(memBean.getCode())){
+                            mLoginView.onSuccess(memBean.getContent());
+                        }else{
+                            ToastUtils.showToast(memBean.getMsg());
+                        }
+
+                    }
+                })
+        );
     }
 }

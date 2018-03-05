@@ -5,10 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/gap_color_gray" />
+
 
     <include layout="@layout/layout_diary_item"
         />
@@ -59,5 +56,10 @@
             android:textColor="@color/text_color_blue"
             android:textSize="12sp" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/gap_color_gray" />
 
 </LinearLayout>

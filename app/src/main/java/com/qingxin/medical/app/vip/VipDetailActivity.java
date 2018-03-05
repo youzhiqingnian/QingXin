@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
@@ -77,6 +78,14 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
 
     public static final String BOOK_NUM = "BOOK_NUM";
 
+    public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
+
+    public static final String VIP_ID = "VIP_ID";
+
+    private String id = "";
+
+    public static final int VIP_DETAIL_REQUEST_CODE = 6; // 跳到歆人专享详情里的请求码
+
     public static void startSelf(VLActivity activity, String vipId, VLActivityResultListener resultListener) {
         Intent intent = new Intent(activity, VipDetailActivity.class);
         intent.putExtra(VIP_ID, vipId);
@@ -84,11 +93,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         activity.startActivityForResult(intent, VIP_DETAIL_REQUEST_CODE);
     }
 
-    public static final String VIP_ID = "VIP_ID";
 
-    private String id = "";
-
-    public static final int VIP_DETAIL_REQUEST_CODE = 6; // 跳到歆人专享详情里的请求码
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -282,6 +287,10 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         intent.putExtra(VIP_ID, id);
         intent.putExtra(BOOK_NUM, String.valueOf(amountBean.getAmount()));
         setResult(Activity.RESULT_OK, intent);
+        if(amountBean != null && amountBean.getAmount() > 0){
+            // 通知我预约的产品列表刷新数据
+            sendBroadCast();
+        }
     }
 
     @Override
@@ -406,6 +415,14 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
                 mDotImageView.setImageResource(buttonState == VLStatedButtonBar.VLStatedButton.VLButtonState.StateNormal ? mResIdNormal : mResIdCheck);
             }
         }
+    }
+
+    private void sendBroadCast() {
+        Intent intent = new Intent(REFRESH_ACTION);
+        intent.putExtra("refresh",true);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(
+                intent
+        );
     }
 
 }

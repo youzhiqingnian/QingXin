@@ -7,15 +7,15 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-
 import com.qingxin.medical.R;
+import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.mine.login.LoginContract;
 import com.qingxin.medical.mine.login.LoginPresenter;
+import com.qingxin.medical.user.SessionModel;
 import com.qingxin.medical.user.UserModel;
 import com.qingxin.medical.user.UserTokenBean;
-
 /**
  * Date 2018-02-03
  *
@@ -80,6 +80,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
             case R.id.loginTv:
                 if (isLogin) {
                     getModel(UserModel.class).onLogout();
+                    getModel(SessionModel.class).onLogout();
                     initLoginStatus();
                     showToast("退出登陆");
                 } else {//登陆
@@ -105,7 +106,17 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
         getModel(UserModel.class).onLoginSuccess(userTokenBean.getMem());
         initLoginStatus();
         showToast("登陆成功");
-        sendBroadCast(1);
+        mLoginPresenter.getSession();
+
+    }
+
+    @Override
+    public void onSuccess(MemBean memBean) {
+        if(memBean != null){
+            // 获取到了session的bean
+            getModel(SessionModel.class).onLoginSuccess(memBean);
+            sendBroadCast(1);
+        }
     }
 
     @Override

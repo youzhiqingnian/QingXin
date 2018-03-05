@@ -7,6 +7,7 @@ package com.qingxin.medical;
  */
 public class QingXinConstants {
     public static final String KEY_PREFERENCES_USER = "loginUser";
+    public static final String KEY_PREFERENCES_SESSION = "loginSession";
 
     public static final int ROWS = 10;
 

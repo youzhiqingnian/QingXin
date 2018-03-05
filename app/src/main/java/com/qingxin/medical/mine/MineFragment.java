@@ -18,12 +18,11 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinAdapter;
-import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
+import com.qingxin.medical.user.User;
 import com.qingxin.medical.widget.indicator.CommonNavigator;
 import com.qingxin.medical.widget.indicator.CommonNavigatorAdapter;
 import com.qingxin.medical.widget.indicator.IPagerIndicator;
@@ -34,6 +33,9 @@ import com.qingxin.medical.widget.indicator.SimplePagerTitleView;
 import com.qingxin.medical.widget.indicator.ViewPagerHelper;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 首页我的界面
@@ -46,11 +48,12 @@ public class MineFragment extends QingXinFragment implements QingXinBroadCastRec
 
     private AppBarLayout mAppbar;
 
-    private TextView[] mCountTextViewList = new TextView[3];
+    private List<TextView> mCountTextViewList = new ArrayList();
 
     private QingXinBroadCastReceiver mReceiver;
 
     public static final String COUNT_ACTION = "com.archie.action.COUNT_ACTION";
+    public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
 
     public MineFragment() {
     }
@@ -84,19 +87,23 @@ public class MineFragment extends QingXinFragment implements QingXinBroadCastRec
         ImageView defaultHeadIv = mRootView.findViewById(R.id.defaultHeadIv);
         TextView userNicknameTv = mRootView.findViewById(R.id.userNicknameTv);
 
-        if (!VLUtils.stringIsEmpty(QingXinApplication.getInstance().getLoginUser().getCover())) {
-            defaultHeadIv.setVisibility(View.GONE);
-            userHeadSdv.setImageURI(Uri.parse(QingXinApplication.getInstance().getLoginUser().getCover()));
+        if (QingXinApplication.getInstance().getLoginUser() != null) {
+            if (!VLUtils.stringIsEmpty(QingXinApplication.getInstance().getLoginUser().getCover())) {
+                defaultHeadIv.setVisibility(View.GONE);
+                userHeadSdv.setImageURI(Uri.parse(QingXinApplication.getInstance().getLoginUser().getCover()));
+            }
+            userNicknameTv.setText(QingXinApplication.getInstance().getLoginUser().getName());
         }
-        userNicknameTv.setText(QingXinApplication.getInstance().getLoginUser().getName());
 
         MagicIndicator indicator = mRootView.findViewById(R.id.magicIndicator);
         final VLFragment[] fragments = new VLFragment[]{MyBookedProductListFragment.newInstance(), MyPublishedDiaryListFragment.newInstance(), MyCollectedTabListFragment.newInstance()};
         final String[] titles = new String[]{getResources().getString(R.string.appointment_count), getResources().getString(R.string.diary_count), getResources().getString(R.string.collection_count)};
-        QingXinAdapter adapter = new QingXinAdapter(getActivity().getSupportFragmentManager(), fragments, titles);
+        QingXinAdapter adapter = new QingXinAdapter(getChildFragmentManager(), fragments, titles);
         final ViewPager viewPager = mRootView.findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(3);
         CommonNavigator navigator = new CommonNavigator(getActivity());
+        navigator.setAdjustMode(true);
         navigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
@@ -110,7 +117,10 @@ public class MineFragment extends QingXinFragment implements QingXinBroadCastRec
                 titleView.setTextSelectedColor(0xff3bc5e8);
                 titleView.setText(titles[index]);
                 titleView.setTextSize(16);
-                mCountTextViewList[index] = titleView;
+                mCountTextViewList.add(titleView);
+                if (QingXinApplication.getInstance().getLoginSession() != null && mCountTextViewList.size() == 3) {
+                    setCountRefresh();
+                }
                 titleView.setOnClickListener(v -> viewPager.setCurrentItem(index));
                 return titleView;
             }
@@ -118,10 +128,9 @@ public class MineFragment extends QingXinFragment implements QingXinBroadCastRec
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator lineIndicator = new LinePagerIndicator(context);
-                lineIndicator.setMode(LinePagerIndicator.MODE_EXACTLY);
+                lineIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
                 lineIndicator.setLineHeight(VLUtils.dip2px(2));
                 lineIndicator.setRoundRadius(VLUtils.dip2px(2));
-                lineIndicator.setLineWidth(VLUtils.dip2px(16));
                 lineIndicator.setColors(0xff3bc5e8);
                 lineIndicator.setYOffset(VLUtils.dip2px(5));
                 return lineIndicator;
@@ -186,19 +195,29 @@ public class MineFragment extends QingXinFragment implements QingXinBroadCastRec
 
     @Override
     public void receiverUpdata(Intent intent) {
-        String bookCount = intent.getStringExtra("bookCount");
-        String diaryCount = intent.getStringExtra("diaryCount");
-        String collectCount = intent.getStringExtra("collectCount");
+        if (intent.getBooleanExtra("refresh", false)) {
+            setCountRefresh();
+        }
+
+    }
+
+
+    private void setCountRefresh() {
+        User sessionBean = QingXinApplication.getInstance().getLoginSession().getMem();
+        String bookCount = sessionBean.getBook_amount() + "";
+        String diaryCount = sessionBean.getDiary_amount() + "";
+        String collectCount = sessionBean.getCollect_amount() + "";
 
         if (!VLUtils.stringIsEmpty(bookCount)) {
-            mCountTextViewList[0].setText(getActivity().getResources().getString(R.string.appointment_count_prefix) + bookCount);
+            mCountTextViewList.get(0).setText(getActivity().getResources().getString(R.string.appointment_count_prefix) + bookCount);
         }
         if (!VLUtils.stringIsEmpty(diaryCount)) {
-            mCountTextViewList[1].setText(getActivity().getResources().getString(R.string.diary_count_prefix) + diaryCount);
+            mCountTextViewList.get(1).setText(getActivity().getResources().getString(R.string.diary_count_prefix) + diaryCount);
 
         }
         if (!VLUtils.stringIsEmpty(collectCount)) {
-            mCountTextViewList[2].setText(getActivity().getResources().getString(R.string.collection_count_prefix) + collectCount);
+            mCountTextViewList.get(2).setText(getActivity().getResources().getString(R.string.collection_count_prefix) + collectCount);
         }
     }
+
 }

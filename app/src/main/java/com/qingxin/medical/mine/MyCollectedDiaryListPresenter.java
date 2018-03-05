@@ -1,6 +1,8 @@
 package com.qingxin.medical.mine;
 
 import android.support.annotation.NonNull;
+
+import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.home.ListBean;
@@ -63,6 +65,33 @@ public class MyCollectedDiaryListPresenter implements MyCollectedDiaryListContra
                             mCollectListryView.onSuccess(vipList.getContent());
                         } else {
                             ToastUtils.showToast(vipList.getMsg());
+                        }
+                    }
+                })
+        );
+    }
+
+    @Override
+    public void cancelCollectDiary(String id) {
+        mCompositeSubscription.add(NetRequestListManager.collectVip(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ContentBean<CollectBean>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        HandErrorUtils.handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(ContentBean<CollectBean> collectBean) {
+                        if(!HandErrorUtils.isError(collectBean.getCode())){
+                            mCollectListryView.onSuccess(collectBean.getContent());
+                        }else{
+                            ToastUtils.showToast(collectBean.getMsg());
                         }
                     }
                 })
