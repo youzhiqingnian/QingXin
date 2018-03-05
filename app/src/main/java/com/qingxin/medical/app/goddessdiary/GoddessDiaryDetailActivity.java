@@ -76,7 +76,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         VLTitleBar titleBar = findViewById(R.id.titleBar);
         QingXinTitleBar.init(titleBar, getResources().getString(R.string.goddess_diary));
         QingXinTitleBar.setLeftReturn(titleBar, this);
-        QingXinTitleBar.setRightIcon(titleBar, R.mipmap.ic_top_right_share, view -> mShareDialog.show());
+//        QingXinTitleBar.setRightIcon(titleBar, R.mipmap.ic_top_right_share, view -> mShareDialog.show());
 
         mPresenter = new GoddessDiaryDetailPresenter(this);
 

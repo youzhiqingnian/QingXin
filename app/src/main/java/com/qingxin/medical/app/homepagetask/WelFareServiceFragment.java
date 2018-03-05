@@ -1,11 +1,10 @@
 package com.qingxin.medical.app.homepagetask;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -27,19 +25,19 @@ import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.mine.login.LoginFragment;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
+import com.qingxin.medical.widget.indicator.view.ApplyWithdrawalsDialog;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
-
 /**
  * 福利
  * Date 2018-02-05
  *
  * @author zhikuo1
  */
-public class WelFareServiceFragment extends VLFragment implements WelfareCoinLogsListContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, QingXinBroadCastReceiver.OnReceiverCallbackListener {
+public class WelFareServiceFragment extends VLFragment implements WelfareCoinLogsListContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, QingXinBroadCastReceiver.OnReceiverCallbackListener, ApplyWithdrawalsDialog.OnConfirmWithdrawalListener {
 
 
     private WelfareCoinLogsListContract.Presenter mPresenter;
@@ -51,6 +49,8 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     private TextView mClickToSignTv;
     private QingXinBroadCastReceiver mReceiver;
     private VLTitleBar mTitleBar;
+
+    private ApplyWithdrawalsDialog applyWithdrawalsDialog;
 
 
     public WelFareServiceFragment() {
@@ -65,7 +65,6 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         return inflater.inflate(R.layout.fragment_welfareservice, container, false);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -89,7 +88,6 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void initView() {
         mPresenter = new WelfareCoinLogPresenter(this);
         if (null == getView()) return;
@@ -102,7 +100,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         mAdapter.setOnLoadMoreListener(() -> getServiceList(false), recyclerView);
         recyclerView.setAdapter(mAdapter);
         //add header
-        View mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_welfare_service_header, null);
+        @SuppressLint("InflateParams") View mHeaderView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_welfare_service_header, null);
         TextView mQingxinCoinRuleTv = mHeaderView.findViewById(R.id.qingxinCoinRuleTv);
         mQingxinCoinAmountTv = mHeaderView.findViewById(R.id.qingxinCoinAmountTv);
         TextView mApplyWithDrawalsTv = mHeaderView.findViewById(R.id.applyWithDrawalsTv);
@@ -110,6 +108,9 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         TextView mReleaseDairyTv = mHeaderView.findViewById(R.id.releaseDairyTv);
         TextView mClickToInviteTv = mHeaderView.findViewById(R.id.clickToInviteTv);
         TextView mClickToRecommendTv = mHeaderView.findViewById(R.id.clickToRecommendTv);
+
+        applyWithdrawalsDialog = new ApplyWithdrawalsDialog(getActivity());
+        applyWithdrawalsDialog.setOnConfirmWithdrawalListener(this);
 
         if (QingXinApplication.getInstance().getLoginUser() != null) {
             mQingxinCoinAmountTv.setText(QingXinApplication.getInstance().getLoginUser().getCoin());
@@ -193,7 +194,6 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onSuccess(CheckInBean checkIn) {
         hideView(R.layout.layout_loading);
@@ -247,8 +247,8 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
                 break;
             case R.id.applyWithDrawalsTv:
                 // 申请提现
-
-
+                applyWithdrawalsDialog.show();
+                applyWithdrawalsDialog.setBalance(QingXinApplication.getInstance().getLoginUser().getCoin(),"100");
                 break;
             case R.id.clickToSignTv:
                 // 点击签到
@@ -301,4 +301,8 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         }
     }
 
+    @Override
+    public void confirmWithdrawal() {
+        // 确定提现
+    }
 }
