@@ -52,7 +52,6 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
 
     private QingXinBroadCastReceiver mReceiver;
 
-    public static final String COUNT_ACTION = "com.archie.action.COUNT_ACTION";
     public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
 
     public MineDataFragment() {
@@ -174,7 +173,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
      */
     private void initBroadcastReceiver() {
         mReceiver = new QingXinBroadCastReceiver();
-        IntentFilter intentFilter = new IntentFilter(COUNT_ACTION);
+        IntentFilter intentFilter = new IntentFilter(REFRESH_ACTION);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
         mReceiver.setReceiverListener(this);
 

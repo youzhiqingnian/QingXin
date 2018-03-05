@@ -272,11 +272,12 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
             Intent intent = new Intent();
             intent.putExtra(VIP_ID, id);
             setResult(Activity.RESULT_OK, intent);
+            sendBroadCast(2);
         } else {
             mCollectTabTv.setText(R.string.cancel_collection);
             mCollectionIv.setImageResource(R.mipmap.already_collected_logo);
             showToast(getString(R.string.collect_ok));
-            sendBroadCast();
+            sendBroadCast(1);
         }
     }
 
@@ -293,7 +294,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         setResult(Activity.RESULT_OK, intent);
         if (amountBean != null && amountBean.getAmount() > 0) {
             // 通知我预约的产品列表刷新数据
-            sendBroadCast();
+            sendBroadCast(3);
         }
     }
 
@@ -438,9 +439,23 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         }
     }
 
-    private void sendBroadCast() {
+    private void sendBroadCast(int flag) {
         Intent intent = new Intent(REFRESH_ACTION);
         intent.putExtra("refresh", true);
+        if(flag == 1){
+            // 收藏产品
+            int collect_amount = QingXinApplication.getInstance().getLoginSession().getMem().getCollect_amount() + 1;
+            QingXinApplication.getInstance().getLoginSession().getMem().setCollect_amount(collect_amount);
+        }else if(flag == 2){
+            // 取消收藏产品
+            int collect_amount = QingXinApplication.getInstance().getLoginSession().getMem().getCollect_amount() - 1;
+            QingXinApplication.getInstance().getLoginSession().getMem().setCollect_amount(collect_amount);
+        }else if(flag == 3){
+            // 预定产品
+            int book_amount = QingXinApplication.getInstance().getLoginSession().getMem().getBook_amount() + 1;
+            QingXinApplication.getInstance().getLoginSession().getMem().setBook_amount(book_amount);
+        }
+
         LocalBroadcastManager.getInstance(this).sendBroadcast(
                 intent
         );

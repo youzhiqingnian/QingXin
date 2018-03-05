@@ -144,10 +144,11 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         if (mCollectBean.getIs_collect().equals("n")) {
             mCollectionTv.setText(R.string.plus_collection);
             showToast(getString(R.string.cancel_collect_ok));
+            sendBroadCast(2);
         } else {
             mCollectionTv.setText(R.string.cancel_collection);
             showToast(getString(R.string.collect_ok));
-            sendBroadCast();
+            sendBroadCast(1);
         }
         Intent intent = new Intent();
         intent.putExtra(DIARY_ID, id);
@@ -260,9 +261,18 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         }
     }
 
-    private void sendBroadCast() {
+    private void sendBroadCast(int flag) {
         Intent intent = new Intent(REFRESH_ACTION);
         intent.putExtra("refresh", true);
+        if(flag == 1){
+            // 收藏产品
+            int collect_amount = QingXinApplication.getInstance().getLoginSession().getMem().getCollect_amount() + 1;
+            QingXinApplication.getInstance().getLoginSession().getMem().setCollect_amount(collect_amount);
+        }else if(flag == 2){
+            // 取消收藏产品
+            int collect_amount = QingXinApplication.getInstance().getLoginSession().getMem().getCollect_amount() - 1;
+            QingXinApplication.getInstance().getLoginSession().getMem().setCollect_amount(collect_amount);
+        }
         LocalBroadcastManager.getInstance(this).sendBroadcast(
                 intent
         );

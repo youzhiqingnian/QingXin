@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinActivity;
@@ -161,7 +160,7 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
 
         @Override
         public void onStatedButtonBarChanged(VLStatedButtonBar buttonBar, int position) {
-            if ((position == 1 || position == 3) && QingXinApplication.getInstance().getLoginUser() == null) {
+            if ((position == 1) && QingXinApplication.getInstance().getLoginUser() == null) {
                 // 没登录
                 Intent intent = new Intent(HomePageTaskActivity.this, LoginActivity.class);
                 intent.putExtra("home",true);
