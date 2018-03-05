@@ -1,46 +1,21 @@
 package com.qingxin.medical.app.login;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-
 import com.qingxin.medical.R;
-import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.base.QingXinActivity;
-import com.qingxin.medical.base.QingXinApplication;
-import com.qingxin.medical.mine.login.LoginContract;
-import com.qingxin.medical.mine.login.LoginPresenter;
-import com.qingxin.medical.user.SessionModel;
-import com.qingxin.medical.user.UserModel;
-import com.qingxin.medical.user.UserTokenBean;
-import com.qingxin.medical.utils.ToastUtils;
-import com.vlee78.android.vl.VLUtils;
+import com.qingxin.medical.mine.login.LoginFragment;
 
 /**
  * Date 2018-02-03
  *
  * @author zhikuo1
  */
-public class LoginActivity extends QingXinActivity implements View.OnClickListener, LoginContract.LoginView {
-
-    public boolean isLogin;
-    public LoginPresenter mLoginPresenter;
-    public Button mLoginTv;
-
-    public static final String LOGIN_ACTION = "com.archie.action.LOGIN_ACTION";
-    private boolean homeFlag;
-    private int currentFgPosition = 0;
-    private EditText mCodeEt, mPhoneEt;
+public class LoginActivity extends QingXinActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+<<<<<<< HEAD
 
         dealIntent();
 
@@ -180,4 +155,9 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
         return true;
     }
 
+=======
+        setContentView(R.layout.activity_fragment);
+        getSupportFragmentManager().beginTransaction().add(R.id.container, LoginFragment.newInstance(true)).commitAllowingStateLoss();
+    }
+>>>>>>> 398116c6002fdfbf8d1b270b2d799692cbb5844e
 }

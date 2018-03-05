@@ -18,6 +18,8 @@ public class LoginContract {
 
         void onSuccess(MemBean memBean);
 
+        void onGetMobileCodeSuccess();
+
         void onError(String errorCode, String message);
 
     }

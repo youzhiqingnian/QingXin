@@ -6,14 +6,18 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.mine.MineFragment;
+import com.qingxin.medical.mine.login.LoginFragment;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
@@ -43,6 +47,7 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_main);
         mFragmentPager = findViewById(R.id.mainPager);
         mButtonBar = findViewById(R.id.mainBottomBar);
@@ -63,9 +68,8 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
      * 初始化广播接收者
      */
     private void initBroadcastReceiver() {
-
         mReceiver = new QingXinBroadCastReceiver();
-        IntentFilter intentFilter = new IntentFilter(LoginActivity.LOGIN_ACTION);
+        IntentFilter intentFilter = new IntentFilter(LoginFragment.LOGIN_ACTION);
         LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver,intentFilter);
         mReceiver.setReceiverListener(this);
     }
@@ -79,9 +83,7 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
                 mFragmentPager.gotoPage(1, false);
             }
         }
-
     }
-
 
     private class MainBottomBarDelegate implements VLStatedButtonBar.VLStatedButtonBarDelegate {
         private Context mContext;
@@ -183,4 +185,13 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
         LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            if (VLUtils.isShouldHideInput(getCurrentFocus(), ev)) {
+                hideKeyboard();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 }

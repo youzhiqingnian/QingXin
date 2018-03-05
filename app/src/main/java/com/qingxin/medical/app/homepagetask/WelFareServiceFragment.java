@@ -22,10 +22,14 @@ import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishActivity;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
+<<<<<<< HEAD
 import com.qingxin.medical.app.homepagetask.model.WithdrawalsItemBean;
 import com.qingxin.medical.app.login.LoginActivity;
+=======
+>>>>>>> 398116c6002fdfbf8d1b270b2d799692cbb5844e
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.ListBean;
+import com.qingxin.medical.mine.login.LoginFragment;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.qingxin.medical.widget.indicator.view.ApplyWithdrawalsDialog;
 import com.vlee78.android.vl.VLActivity;
@@ -87,7 +91,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
      */
     private void initBroadcastReceiver() {
         mReceiver = new QingXinBroadCastReceiver();
-        IntentFilter intentFilter = new IntentFilter(LoginActivity.LOGIN_ACTION);
+        IntentFilter intentFilter = new IntentFilter(LoginFragment.LOGIN_ACTION);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
         mReceiver.setReceiverListener(this);
 
