@@ -1,16 +1,36 @@
 package com.qingxin.medical.app.goddessdiary;
 
-import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import com.qingxin.medical.base.BaseBean;
-import com.qingxin.medical.user.User;
 
 /**
- *
  * Date 2018-02-05
+ *
  * @author zhikuo1
  */
 
-public class DiaryItemBean extends BaseBean{
+public class DiaryItemBean extends BaseBean {
+
+
+    /**
+     * id : 25e2cc72-4a84-4bf5-adc0-dac91e158693
+     * name : 面部年轻唤起
+     * product_id : e12d0a20-1a05-445f-92a3-a911af3a74bf
+     * mem_id : 9ca209a8-41a6-441f-92cf-7508570b2765
+     * oper_before_photo : http://qingxin-assets.awesomes.cn/app/0e05c4f0-1ca9-11e8-baed-179e2dc32e46
+     * oper_after_photo : http://qingxin-assets.awesomes.cn/app/11645940-1ca9-11e8-baed-179e2dc32e46
+     * summary : 京东快递就到家的时候就想着我说你不是因为有个人们都在想你
+     * tags : null
+     * words : <p>京东快递就到家的时候就想着我说你不是因为有个人们都在想你</p>
+     * ison : n
+     * created_at : 2018-3-1 01:01:52
+     * updated_at : 2018-02-28T17:01:52.000Z
+     * visit_num : 109
+     * collect_num : 3
+     * state : pass
+     * wiki_id : null
+     * mem : {"id":"9ca209a8-41a6-441f-92cf-7508570b2765","name":"小倩","cover":"http://qingxin-assets.awesomes.cn/banner/c63b79d0-065a-11e8-b745-8dcdb0f2d3c3.jpg"}
+     * is_collect : n
+     */
 
     private String id;
     private String name;
@@ -26,8 +46,9 @@ public class DiaryItemBean extends BaseBean{
     private String updated_at;
     private int visit_num;
     private int collect_num;
-    private User mem;
-    private ProductBean product;
+    private String state;
+    private String wiki_id;
+    private MemBean mem;
     private String is_collect;
 
     public String getId() {
@@ -46,11 +67,11 @@ public class DiaryItemBean extends BaseBean{
         this.name = name;
     }
 
-    String getProduct_id() {
+    public String getProduct_id() {
         return product_id;
     }
 
-    void setProduct_id(String product_id) {
+    public void setProduct_id(String product_id) {
         this.product_id = product_id;
     }
 
@@ -98,7 +119,7 @@ public class DiaryItemBean extends BaseBean{
         return words;
     }
 
-    void setWords(String words) {
+    public void setWords(String words) {
         this.words = words;
     }
 
@@ -142,20 +163,28 @@ public class DiaryItemBean extends BaseBean{
         this.collect_num = collect_num;
     }
 
-    public User getMem() {
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getWiki_id() {
+        return wiki_id;
+    }
+
+    public void setWiki_id(String wiki_id) {
+        this.wiki_id = wiki_id;
+    }
+
+    public MemBean getMem() {
         return mem;
     }
 
-    public void setMem(User mem) {
+    public void setMem(MemBean mem) {
         this.mem = mem;
-    }
-
-    public ProductBean getProduct() {
-        return product;
-    }
-
-    public void setProduct(ProductBean product) {
-        this.product = product;
     }
 
     public String getIs_collect() {
@@ -166,26 +195,39 @@ public class DiaryItemBean extends BaseBean{
         this.is_collect = is_collect;
     }
 
-    @Override
-    public String toString() {
-        return "DiaryItemBean{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", product_id='" + product_id + '\'' +
-                ", mem_id='" + mem_id + '\'' +
-                ", oper_before_photo='" + oper_before_photo + '\'' +
-                ", oper_after_photo='" + oper_after_photo + '\'' +
-                ", summary='" + summary + '\'' +
-                ", tags='" + tags + '\'' +
-                ", words='" + words + '\'' +
-                ", ison='" + ison + '\'' +
-                ", created_at='" + created_at + '\'' +
-                ", updated_at='" + updated_at + '\'' +
-                ", visit_num=" + visit_num +
-                ", collect_num=" + collect_num +
-                ", mem=" + mem +
-                ", product=" + product +
-                ", is_collect='" + is_collect + '\'' +
-                '}';
+    public static class MemBean {
+        /**
+         * id : 9ca209a8-41a6-441f-92cf-7508570b2765
+         * name : 小倩
+         * cover : http://qingxin-assets.awesomes.cn/banner/c63b79d0-065a-11e8-b745-8dcdb0f2d3c3.jpg
+         */
+
+        private String id;
+        private String name;
+        private String cover;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getCover() {
+            return cover;
+        }
+
+        public void setCover(String cover) {
+            this.cover = cover;
+        }
     }
 }

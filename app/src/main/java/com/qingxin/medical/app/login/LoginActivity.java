@@ -74,6 +74,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
         if (flag == 1) {
             intent.putExtra("refresh", true);
             intent.putExtra("position", 1);
+            intent.putExtra("loginrefresh", true);
         } else {
             intent.putExtra("position", currentFgPosition);
         }
@@ -147,6 +148,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
 
     @Override
     public void onSuccess(MemBean memBean) {
+        Log.i("session的bean", memBean.toString());
         if (memBean != null) {
             // 获取到了session的bean
             getModel(SessionModel.class).onLoginSuccess(memBean);

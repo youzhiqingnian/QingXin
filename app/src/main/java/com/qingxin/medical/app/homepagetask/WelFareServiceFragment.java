@@ -15,12 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishActivity;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
+import com.qingxin.medical.app.homepagetask.model.WithdrawalsItemBean;
 import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.ListBean;
@@ -28,9 +30,13 @@ import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.qingxin.medical.widget.indicator.view.ApplyWithdrawalsDialog;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
+import com.vlee78.android.vl.VLDialog;
 import com.vlee78.android.vl.VLFragment;
+import com.vlee78.android.vl.VLResHandler;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
+import com.vlee78.android.vl.VLUtils;
+
 /**
  * 福利
  * Date 2018-02-05
@@ -202,6 +208,18 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         getServiceList(true);
     }
 
+    @Override
+    public void onSuccess(WithdrawalsItemBean withdrawalsBean) {
+        if (withdrawalsBean != null && !VLUtils.stringIsEmpty(withdrawalsBean.getAmount())) {
+            VLDialog.showAlertDialog(getActivity(), getActivity().getResources().getString(R.string.warm_remind), getActivity().getResources().getString(R.string.apply_withdrawals_finish_remind_message), true, new VLResHandler() {
+                @Override
+                protected void handler(boolean succeed) {
+                }
+            });
+        }
+
+    }
+
 //    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 //    @Override
 //    public void onSuccess(MemBean memBean) {
@@ -247,8 +265,17 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
                 break;
             case R.id.applyWithDrawalsTv:
                 // 申请提现
-                applyWithdrawalsDialog.show();
-                applyWithdrawalsDialog.setBalance(QingXinApplication.getInstance().getLoginUser().getCoin(),"100");
+                if (Long.valueOf(QingXinApplication.getInstance().getLoginUser().getCoin()) >= 10000) {
+                    applyWithdrawalsDialog.setBalance(mQingxinCoinAmountTv.getText().toString().trim(), VLUtils.keepTwoSecimal2(Double.valueOf((Long.valueOf(mQingxinCoinAmountTv.getText().toString().trim()) / 100)) + ""));
+                    applyWithdrawalsDialog.show();
+                } else {
+                    VLDialog.showAlertDialog(getActivity(), getActivity().getResources().getString(R.string.warm_remind), getActivity().getResources().getString(R.string.can_not_withdrawals_remind_message), true, new VLResHandler() {
+                        @Override
+                        protected void handler(boolean succeed) {
+                        }
+                    });
+                }
+
                 break;
             case R.id.clickToSignTv:
                 // 点击签到
@@ -302,7 +329,9 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     }
 
     @Override
-    public void confirmWithdrawal() {
+    public void confirmWithdrawal(String amount) {
         // 确定提现
+        applyWithdrawalsDialog.dismiss();
+        mPresenter.applyWithdrawals(amount);
     }
 }

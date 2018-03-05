@@ -18,6 +18,8 @@ public class User extends BaseBean {
     private String cover;
     //青歆币
     private String coin;
+    //可提现金额
+    private String available_coin;
     // 今天是否签到
     private String has_checkin;
     // 预约产品的数量
@@ -77,6 +79,14 @@ public class User extends BaseBean {
         this.coin = coin;
     }
 
+    public String getAvailable_coin() {
+        return available_coin;
+    }
+
+    public void setAvailable_coin(String available_coin) {
+        this.available_coin = available_coin;
+    }
+
     public String getHas_checkin() {
         return has_checkin;
     }
@@ -117,6 +127,7 @@ public class User extends BaseBean {
                 ", mobile='" + mobile + '\'' +
                 ", cover='" + cover + '\'' +
                 ", coin='" + coin + '\'' +
+                ", available_coin='" + available_coin + '\'' +
                 ", has_checkin='" + has_checkin + '\'' +
                 ", book_amount=" + book_amount +
                 ", diary_amount=" + diary_amount +

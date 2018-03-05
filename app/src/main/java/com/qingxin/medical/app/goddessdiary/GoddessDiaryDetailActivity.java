@@ -23,6 +23,8 @@ import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
+import com.vlee78.android.vl.VLUtils;
+
 /**
  * Date 2018-02-02
  *
@@ -156,8 +158,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     @SuppressLint("DefaultLocale")
     private void setData(GoddessDiaryDetailBean diaryDetailBean) {
 
-        DiaryItemBean itemBean;
-        itemBean = diaryDetailBean.getItem();
+        DiaryItemBean itemBean = diaryDetailBean.getItem();
         String collectState;
         if (itemBean.getIs_collect().equals("y")) {
             collectState = getString(R.string.cancel_collection);
@@ -171,10 +172,13 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         mBeforeCoverSdv.setImageURI(Uri.parse(itemBean.getOper_before_photo()));
         mAfterCoverSdv.setImageURI(Uri.parse(itemBean.getOper_after_photo()));
 
-        mProductCoverSdv.setImageURI(Uri.parse(itemBean.getProduct().getCover()));
-        mDiaryProductIntroTv.setText(itemBean.getProduct().getName());
-        mReserveCountTv.setText(String.format("%d%s", itemBean.getProduct().getOrder(), getString(R.string.book_times)));
-        mProductPriceTv.setText(String.format("%d%s%d", itemBean.getProduct().getPrice(), getString(R.string.gap), itemBean.getProduct().getOld_price()));
+
+//        mDiaryProductIntroTv.setText(itemBean.getProduct().getName());
+//        if(!VLUtils.stringIsEmpty(itemBean.getProduct().getCover())){
+//            mProductCoverSdv.setImageURI(Uri.parse(itemBean.getProduct().getCover()));
+//        }
+//        mReserveCountTv.setText(String.format("%d%s", itemBean.getProduct().getOrder(), getString(R.string.book_times)));
+//        mProductPriceTv.setText(String.format("%d%s%d", itemBean.getProduct().getPrice(), getString(R.string.gap), itemBean.getProduct().getOld_price()));
         mDiaryDetailTv.setText(itemBean.getSummary());
         mDiaryPublishDateTv.setText(itemBean.getCreated_at());
         mScanCountTv.setText(String.valueOf(itemBean.getVisit_num()));

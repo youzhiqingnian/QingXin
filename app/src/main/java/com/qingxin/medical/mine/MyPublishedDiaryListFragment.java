@@ -106,7 +106,7 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
         if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(false);
         }
-        if (first) {
+        if (first && QingXinApplication.getInstance().getLoginUser() != null) {
             showView(R.layout.layout_loading);
             VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
                 @Override

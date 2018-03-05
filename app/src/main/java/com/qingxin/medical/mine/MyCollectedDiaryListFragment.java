@@ -19,6 +19,7 @@ import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListAdapter;
+import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.vlee78.android.vl.VLActivity;
@@ -144,7 +145,7 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
         if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(false);
         }
-        if (first) {
+        if (first && QingXinApplication.getInstance().getLoginUser() != null) {
             showView(R.layout.layout_loading);
             VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
                 @Override

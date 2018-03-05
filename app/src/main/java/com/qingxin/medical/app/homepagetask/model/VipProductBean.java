@@ -164,4 +164,25 @@ public class VipProductBean {
     public void setCover(List<String> cover) {
         this.cover = cover;
     }
+
+    @Override
+    public String toString() {
+        return "VipProductBean{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", old_price=" + old_price +
+                ", price=" + price +
+                ", hospital='" + hospital + '\'' +
+                ", isvip='" + isvip + '\'' +
+                ", order=" + order +
+                ", ison='" + ison + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", updated_at='" + updated_at + '\'' +
+                ", citycode='" + citycode + '\'' +
+                ", collect_num=" + collect_num +
+                ", book_num=" + book_num +
+                ", mobile='" + mobile + '\'' +
+                ", cover=" + cover +
+                '}';
+    }
 }

@@ -4,7 +4,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
+import com.qingxin.medical.app.homepagetask.model.WithdrawalsItemBean;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.home.ItemBean;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
@@ -95,6 +97,36 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
                                 mWelfareCoinLogView.onSuccess(checkInBean.getContent());
                             }else{
                                 ToastUtils.showToast(checkInBean.getMsg());
+                            }
+                        }
+
+                    }
+                })
+        );
+    }
+
+    @Override
+    public void applyWithdrawals(String amount) {
+        mCompositeSubscription.add(NetRequestListManager.applyWithdrawals(amount)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ContentBean<ItemBean<WithdrawalsItemBean>>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        HandErrorUtils.handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(ContentBean<ItemBean<WithdrawalsItemBean>> withdrawalsBean) {
+                        if(null != withdrawalsBean.getMsg()){
+                            if(!HandErrorUtils.isError(withdrawalsBean.getCode())){
+                                mWelfareCoinLogView.onSuccess(withdrawalsBean.getContent().getItem());
+                            }else{
+                                ToastUtils.showToast(withdrawalsBean.getMsg());
                             }
                         }
 

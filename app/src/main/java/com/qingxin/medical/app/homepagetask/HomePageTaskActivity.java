@@ -159,7 +159,7 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
 
         @Override
         public void onStatedButtonBarChanged(VLStatedButtonBar buttonBar, int position) {
-            if (position == 1 && QingXinApplication.getInstance().getLoginUser() == null) {
+            if ((position == 1 || position == 3) && QingXinApplication.getInstance().getLoginUser() == null) {
                 // 没登录
                 Intent intent = new Intent(HomePageTaskActivity.this, LoginActivity.class);
                 intent.putExtra("home",true);

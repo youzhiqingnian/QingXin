@@ -125,7 +125,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
         isEdit = diaryItemBean != null;
         if (isEdit){
             mDescrTv.setText(diaryItemBean.getWords());
-            mCategoryTv.setText(diaryItemBean.getProduct().getName());
+//            mCategoryTv.setText(diaryItemBean.getProduct().getName());
             mBeforePhoto = VLUtils.getNetWorkBitmap(diaryItemBean.getOper_before_photo());
             mAfterPhoto = VLUtils.getNetWorkBitmap(diaryItemBean.getOper_after_photo());
             AlbumItemData<Bitmap> albumItemData = new AlbumItemData<Bitmap>(mAfterPhoto) {

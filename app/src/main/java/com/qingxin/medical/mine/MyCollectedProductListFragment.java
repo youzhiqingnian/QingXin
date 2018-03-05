@@ -20,6 +20,7 @@ import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.ProductListAdapter;
+import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
@@ -150,7 +151,7 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
         if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(false);
         }
-        if (first) {
+        if (first && QingXinApplication.getInstance().getLoginUser() != null) {
             showView(R.layout.layout_loading);
             VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
                 @Override
