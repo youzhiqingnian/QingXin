@@ -1,5 +1,6 @@
 package com.qingxin.medical.mine.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -11,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.login.CountDownUtils;
 import com.qingxin.medical.base.MemBean;
@@ -21,7 +21,6 @@ import com.qingxin.medical.user.UserModel;
 import com.qingxin.medical.user.UserTokenBean;
 import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +50,18 @@ public class LoginFragment extends QingXinFragment implements View.OnClickListen
     public LoginPresenter mLoginPresenter;
     private EditText mCodeEt, mPhoneEt;
     private CountDownUtils mCountDownUtils;
+    private OnLoginSuccessListener mOnLoginSuccessListener;
     public static final String LOGIN_ACTION = "com.archie.action.LOGIN_ACTION";
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            mOnLoginSuccessListener = (OnLoginSuccessListener) activity;
+        }catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + "must implements OnLoginSuccessListener");
+        }
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -162,6 +172,9 @@ public class LoginFragment extends QingXinFragment implements View.OnClickListen
             // 获取到了session的bean
             getModel(SessionModel.class).onLoginSuccess(memBean);
             Intent intent = new Intent(LOGIN_ACTION);
+            if (null != mOnLoginSuccessListener){
+                mOnLoginSuccessListener.loginSuccess();
+            }
             LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
         }
     }
@@ -182,5 +195,9 @@ public class LoginFragment extends QingXinFragment implements View.OnClickListen
         super.onDestroy();
         mLoginPresenter.unsubscribe();
         mCountDownUtils.endCountDown();
+    }
+
+    public interface OnLoginSuccessListener {
+        void loginSuccess();
     }
 }
