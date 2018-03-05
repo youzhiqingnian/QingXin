@@ -14,10 +14,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListActivity;
-import com.qingxin.medical.app.vip.VipListAdapter;
-import com.qingxin.medical.app.vip.VipListBean;
+import com.qingxin.medical.app.vip.ProductListAdapter;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
@@ -29,7 +29,7 @@ import com.vlee78.android.vl.VLScheduler;
  * @author zhikuo1
  */
 
-public class MyBookedProductListFragment extends VLFragment implements MyBookedProductListContract.View, SwipeRefreshLayout.OnRefreshListener, VipListAdapter.ProductCallbackListener,QingXinBroadCastReceiver.OnReceiverCallbackListener {
+public class MyBookedProductListFragment extends VLFragment implements MyBookedProductListContract.View, SwipeRefreshLayout.OnRefreshListener, ProductListAdapter.ProductCallbackListener,QingXinBroadCastReceiver.OnReceiverCallbackListener {
 
     private View mRootView;
 
@@ -37,7 +37,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
 
     private MyBookedProductListContract.Presenter mPresenter;
 
-    private VipListAdapter mAdapter;
+    private ProductListAdapter mAdapter;
 
 
     private boolean isClear;
@@ -78,7 +78,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new VipListAdapter(null, 1);
+        mAdapter = new ProductListAdapter(null, 1);
         mAdapter.setOnLoadMoreListener(() -> getMyBookedProduct(false), recyclerView);
         mAdapter.setBtnCallBackListener(this);
         recyclerView.setAdapter(mAdapter);
@@ -158,23 +158,23 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     }
 
     @Override
-    public void onSuccess(VipListBean vipListBean) {
+    public void onSuccess(ProductListBean ProductListBean) {
         hideView(R.layout.layout_loading);
-        Log.i("我预定的产品列表", vipListBean.toString());
+        Log.i("我预定的产品列表", ProductListBean.toString());
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
-            mAdapter.setNewData(vipListBean.getItems());
+            mAdapter.setNewData(ProductListBean.getItems());
         } else {
-            mAdapter.addData(vipListBean.getItems());
+            mAdapter.addData(ProductListBean.getItems());
         }
-        if (vipListBean.getItems().size() < QingXinConstants.ROWS) {
+        if (ProductListBean.getItems().size() < QingXinConstants.ROWS) {
             //第一页如果不够一页就不显示没有更多数据布局
             mAdapter.loadMoreEnd(isClear);
         } else {
             mAdapter.loadMoreComplete();
         }
-        if(vipListBean != null && vipListBean.getCount() != 0){
-            sendBroadCast(vipListBean.getCount()+"");
+        if(ProductListBean != null && ProductListBean.getCount() != 0){
+            sendBroadCast(ProductListBean.getCount()+"");
         }
     }
 

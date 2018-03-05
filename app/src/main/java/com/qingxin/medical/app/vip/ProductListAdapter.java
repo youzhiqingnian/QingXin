@@ -8,8 +8,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.homepagetask.model.VipProductBean;
-
+import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ import java.util.List;
  * @author zhikuo1
  */
 
-public class VipListAdapter extends BaseQuickAdapter<VipProductBean, BaseViewHolder> {
+public class ProductListAdapter extends BaseQuickAdapter<ProductBean, BaseViewHolder> {
 
     private int mType = 0;
 
@@ -32,17 +31,17 @@ public class VipListAdapter extends BaseQuickAdapter<VipProductBean, BaseViewHol
         this.btnCallBackListener = btnCallBackListener;
     }
 
-    public VipListAdapter(@Nullable List<VipProductBean> data) {
+    public ProductListAdapter(@Nullable List<ProductBean> data) {
         super(R.layout.layout_vip_item, data);
     }
 
-    public VipListAdapter(@Nullable List<VipProductBean> data, int type) {
+    public ProductListAdapter(@Nullable List<ProductBean> data, int type) {
         super(R.layout.layout_my_appointment_item, data);
         mType = type;
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, VipProductBean item) {
+    protected void convert(BaseViewHolder helper, ProductBean item) {
         SimpleDraweeView mCoverSdv = helper.getView(R.id.coverSdv);
         TextView mNameTv = helper.getView(R.id.nameTv);
         TextView mHospitalNameTv = helper.getView(R.id.hospitalNameTv);
@@ -65,7 +64,7 @@ public class VipListAdapter extends BaseQuickAdapter<VipProductBean, BaseViewHol
             });
         }
 
-        mCoverSdv.setImageURI(Uri.parse(item.getCover().get(0)));
+        mCoverSdv.setImageURI(Uri.parse(item.getCover()));
         mNameTv.setText(item.getName());
         mHospitalNameTv.setText(item.getHospital());
         mPriceTv.setText(String.valueOf(item.getPrice()));

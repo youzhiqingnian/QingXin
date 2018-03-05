@@ -1,32 +1,37 @@
 package com.qingxin.medical.app.vip;
 
+import java.util.List;
+
 /**
  * Date 2018-02-09
  *
  * @author zhikuo1
  */
-
 public class VipDetailItemBean {
 
+
     /**
-     * id : 48929048-0bad-4449-80f0-aa651728e29c
-     * name : 不错的
-     * cover : product/2f978060-066d-11e8-b660-7ff7a8ac94b1.png
-     * old_price : 234
-     * price : 12
-     * hospital : meidi
+     * id : 0c792be5-59fb-483b-a88d-4d94e7598a11
+     * name : 美容针
+     * cover : ["http://p3u20cqo9.bkt.clouddn.com/product/46acb4c0-0cce-11e8-9a80-a72b786a38c9.jpg"]
+     * old_price : 3888
+     * price : 1288
+     * hospital : 北京清华长庚医院
      * isvip : y
-     * order : 12
+     * order : 9
      * ison : y
-     * created_at : 2018-1-31 17:57:47
-     * updated_at : 2018-1-31 17:57:47
-     * citycode : 028
-     * collect_num : 1
-     * book_num : 1
+     * created_at : 2018-2-6 23:53:46
+     * updated_at : 2018-2-6 23:53:46
+     * citycode : 0311
+     * collect_num : 0
+     * book_num : 0
+     * mobile : null
+     * is_collect : n
+     * is_book : n
      */
+
     private String id;
     private String name;
-    private String cover;
     private int old_price;
     private int price;
     private String hospital;
@@ -38,6 +43,10 @@ public class VipDetailItemBean {
     private String citycode;
     private int collect_num;
     private int book_num;
+    private String mobile;
+    private String is_collect;
+    private String is_book;
+    private List<String> cover;
 
     public String getId() {
         return id;
@@ -53,14 +62,6 @@ public class VipDetailItemBean {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCover() {
-        return cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
     }
 
     public int getOld_price() {
@@ -151,12 +152,43 @@ public class VipDetailItemBean {
         this.book_num = book_num;
     }
 
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getIs_collect() {
+        return is_collect;
+    }
+
+    public void setIs_collect(String is_collect) {
+        this.is_collect = is_collect;
+    }
+
+    public String getIs_book() {
+        return is_book;
+    }
+
+    public void setIs_book(String is_book) {
+        this.is_book = is_book;
+    }
+
+    public List<String> getCover() {
+        return cover;
+    }
+
+    public void setCover(List<String> cover) {
+        this.cover = cover;
+    }
+
     @Override
     public String toString() {
-        return "VipDetailBean{" +
+        return "VipDetailItemBean{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", cover='" + cover + '\'' +
                 ", old_price=" + old_price +
                 ", price=" + price +
                 ", hospital='" + hospital + '\'' +
@@ -168,7 +200,10 @@ public class VipDetailItemBean {
                 ", citycode='" + citycode + '\'' +
                 ", collect_num=" + collect_num +
                 ", book_num=" + book_num +
+                ", mobile='" + mobile + '\'' +
+                ", is_collect='" + is_collect + '\'' +
+                ", is_book='" + is_book + '\'' +
+                ", cover=" + cover +
                 '}';
     }
-
 }

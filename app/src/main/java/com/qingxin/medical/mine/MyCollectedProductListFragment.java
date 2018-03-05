@@ -1,6 +1,10 @@
 package com.qingxin.medical.mine;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,14 +17,14 @@ import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.homepagetask.model.ProductBean;
+import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.app.vip.VipDetailActivity;
-import com.qingxin.medical.app.vip.VipListAdapter;
-import com.qingxin.medical.app.vip.VipListBean;
-import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
+import com.qingxin.medical.app.vip.ProductListAdapter;
+import com.qingxin.medical.service.QingXinBroadCastReceiver;
+import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
-import com.vlee78.android.vl.VLUtils;
 
 import java.util.List;
 
@@ -30,18 +34,21 @@ import java.util.List;
  * @author zhikuo1
  */
 
-public class MyCollectedProductListFragment extends VLFragment implements MyCollectedProductListContract.View, SwipeRefreshLayout.OnRefreshListener, VipListAdapter.ProductCallbackListener{
+public class MyCollectedProductListFragment extends VLFragment implements MyCollectedProductListContract.View, SwipeRefreshLayout.OnRefreshListener, ProductListAdapter.ProductCallbackListener, QingXinBroadCastReceiver.OnReceiverCallbackListener {
 
     private View mRootView;
 
     private SwipeRefreshLayout mRefreshLayout;
 
-    private VipListAdapter mAdapter;
+    private ProductListAdapter mAdapter;
 
     private List<ProductBean> mProductList;
 
     private int mCurrentCancelPosition = 0;
 
+    public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
+
+    private QingXinBroadCastReceiver mReceiver;
 
     private boolean isClear;
 
@@ -69,6 +76,7 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
         if (null == getView()) return;
         mRootView = getView();
         initView();
+        initBroadcastReceiver();
     }
 
 
@@ -80,18 +88,24 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
 
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        mAdapter = new VipListAdapter(null, 2);
+        mAdapter = new ProductListAdapter(null, 2);
         mAdapter.setOnLoadMoreListener(() -> getMyCollectList(false), recyclerView);
         mAdapter.setBtnCallBackListener(this);
         recyclerView.setAdapter(mAdapter);
-        //add padding
-        SpaceItemDecoration dividerDecoration = new SpaceItemDecoration(VLUtils.dip2px(18));
-        recyclerView.addItemDecoration(dividerDecoration);
-        //add header
-        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), null));
+        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), mResultListener));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
         mAdapter.setEmptyView(R.layout.layout_my_collect_empty_view);
+    }
+
+    /**
+     * 初始化广播接收者
+     */
+    private void initBroadcastReceiver() {
+        mReceiver = new QingXinBroadCastReceiver();
+        IntentFilter intentFilter = new IntentFilter(REFRESH_ACTION);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
+        mReceiver.setReceiverListener(this);
     }
 
 
@@ -105,10 +119,35 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
         mPresenter.getMyCollectProductList(QingXinConstants.ROWS, skip, "product", "collect");
     }
 
+    private VLActivity.VLActivityResultListener mResultListener = new VLActivity.VLActivityResultListener() {
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+            if (requestCode == VipDetailActivity.VIP_DETAIL_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+                String vipId = intent.getStringExtra(VipDetailActivity.VIP_ID);
+                int bookNum = intent.getIntExtra(VipDetailActivity.BOOK_NUM, 0);
+                List<ProductBean> vipItemBeans = mAdapter.getData();
+
+
+                int index = 0;
+                for (ProductBean vipItemBean : vipItemBeans) {
+                    if (vipItemBean.getId().equals(vipId)) {
+                        vipItemBean.setOrder(bookNum);
+                        vipItemBeans.remove(index);
+//                        mAdapter.notifyItemChanged(index + mAdapter.getHeaderLayoutCount());
+                        mAdapter.notifyItemRemoved(index);
+                        break;
+                    }
+                    index++;
+                }
+            }
+        }
+    };
+
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
-        if(mRefreshLayout != null){
+        if (mRefreshLayout != null) {
             mRefreshLayout.setRefreshing(false);
         }
         if (first) {
@@ -141,18 +180,18 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
     }
 
     @Override
-    public void onSuccess(VipListBean vipListBean) {
+    public void onSuccess(ProductListBean ProductListBean) {
         hideView(R.layout.layout_loading);
-        mProductList = vipListBean.getItems();
-        Log.i("我收藏的产品列表", vipListBean.toString());
+        mProductList = ProductListBean.getItems();
+        Log.i("我收藏的产品列表", ProductListBean.toString());
 
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
-            mAdapter.setNewData(vipListBean.getItems());
+            mAdapter.setNewData(ProductListBean.getItems());
         } else {
-            mAdapter.addData(vipListBean.getItems());
+            mAdapter.addData(ProductListBean.getItems());
         }
-        if (vipListBean.getItems().size() < QingXinConstants.ROWS) {
+        if (ProductListBean.getItems().size() < QingXinConstants.ROWS) {
             //第一页如果不够一页就不显示没有更多数据布局
             mAdapter.loadMoreEnd(isClear);
         } else {
@@ -194,4 +233,10 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
         mPresenter.cancelCollect(id);
     }
 
+    @Override
+    public void receiverUpdata(Intent intent) {
+        if (intent.getBooleanExtra("refresh", false)) {
+            getMyCollectList(true);
+        }
+    }
 }

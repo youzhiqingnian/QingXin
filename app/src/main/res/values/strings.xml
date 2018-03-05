@@ -58,6 +58,7 @@
     <string name="order_now">立即预约</string>
     <string name="medical_beauty">医美百科</string>
     <string name="order_count">次预约</string>
+    <string name="already_booked">已预约</string>
 
     <!--医美百科-->
     <string name="characteristic">特点</string>

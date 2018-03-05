@@ -73,7 +73,7 @@ public class MyCollectedDiaryListPresenter implements MyCollectedDiaryListContra
 
     @Override
     public void cancelCollectDiary(String id) {
-        mCompositeSubscription.add(NetRequestListManager.collectVip(id)
+        mCompositeSubscription.add(NetRequestListManager.collectDiary(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<CollectBean>>() {

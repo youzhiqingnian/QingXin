@@ -2,7 +2,7 @@ package com.qingxin.medical.mine;
 
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
-import com.qingxin.medical.app.vip.VipListBean;
+import com.qingxin.medical.app.vip.ProductListBean;
 
 /**
  * Date 2018-02-05
@@ -13,7 +13,7 @@ import com.qingxin.medical.app.vip.VipListBean;
 public class MyBookedProductListContract {
 
     interface View extends BaseView<Presenter> {
-        void onSuccess(VipListBean vipListBean);
+        void onSuccess(ProductListBean ProductListBean);
         void onError(String result);
     }
 

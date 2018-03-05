@@ -1,12 +1,14 @@
 package com.qingxin.medical.app.homepagetask.model;
 
 
+import java.util.List;
+
 /**
  * Date 2018-02-05
  *
  * @author zhikuo1
  */
-public class ProductBean {
+public class VipProductBean {
 
 
     /**
@@ -41,7 +43,7 @@ public class ProductBean {
     private int collect_num;
     private int book_num;
     private String mobile;
-    private String cover;
+    private List<String> cover;
 
     public String getId() {
         return id;
@@ -155,11 +157,11 @@ public class ProductBean {
         this.mobile = mobile;
     }
 
-    public String getCover() {
+    public List<String> getCover() {
         return cover;
     }
 
-    public void setCover(String cover) {
+    public void setCover(List<String> cover) {
         this.cover = cover;
     }
 }

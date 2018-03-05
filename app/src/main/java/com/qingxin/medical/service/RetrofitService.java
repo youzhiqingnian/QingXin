@@ -9,6 +9,7 @@ import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.RecommendResultBean;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import com.qingxin.medical.app.vip.AmountBean;
+import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.app.vip.VipDetailBean;
 import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.base.ContentBean;
@@ -149,7 +150,7 @@ public interface RetrofitService {
      * 获取我的预定/收藏过的产品
      */
     @GET("/mem/act")
-    Observable<ContentBean<VipListBean>> getMyBookedProductList(@Query("limit") int limit, @Query("skip") int skip, @Query("type") String type, @Query("actyp") String actyp);
+    Observable<ContentBean<ProductListBean>> getMyBookedProductList(@Query("limit") int limit, @Query("skip") int skip, @Query("type") String type, @Query("actyp") String actyp);
 
     /**
      * 获取我收藏过的日记

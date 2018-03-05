@@ -9,6 +9,7 @@ import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.RecommendResultBean;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import com.qingxin.medical.app.vip.AmountBean;
+import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.app.vip.VipDetailBean;
 import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.base.ContentBean;
@@ -131,7 +132,7 @@ public class NetRequestListManager {
      * @param actyp
      * @return
      */
-    public static Observable<ContentBean<VipListBean>> getMyBookedProductList(int limit, int skip, String type, String actyp) {
+    public static Observable<ContentBean<ProductListBean>> getMyBookedProductList(int limit, int skip, String type, String actyp) {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getMyBookedProductList(limit, skip, type, actyp);
     }
 

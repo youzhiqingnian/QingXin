@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,8 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
 
     public static final String DIARY_ID = "DIARY_ID";
     public static final String COLLECT_NUM = "COLLECT_NUM";
+
+    public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
 
     private ScrollView mScrollSv;
 
@@ -142,6 +145,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         } else {
             mCollectionTv.setText(R.string.cancel_collection);
             showToast(getString(R.string.collect_ok));
+            sendBroadCast();
         }
         Intent intent = new Intent();
         intent.putExtra(DIARY_ID, id);
@@ -166,6 +170,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         mAuthorNameTv.setText(itemBean.getMem().getName());
         mBeforeCoverSdv.setImageURI(Uri.parse(itemBean.getOper_before_photo()));
         mAfterCoverSdv.setImageURI(Uri.parse(itemBean.getOper_after_photo()));
+
         mProductCoverSdv.setImageURI(Uri.parse(itemBean.getProduct().getCover()));
         mDiaryProductIntroTv.setText(itemBean.getProduct().getName());
         mReserveCountTv.setText(String.format("%d%s", itemBean.getProduct().getOrder(), getString(R.string.book_times)));
@@ -249,5 +254,13 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
             default:
                 break;
         }
+    }
+
+    private void sendBroadCast() {
+        Intent intent = new Intent(REFRESH_ACTION);
+        intent.putExtra("refresh", true);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(
+                intent
+        );
     }
 }

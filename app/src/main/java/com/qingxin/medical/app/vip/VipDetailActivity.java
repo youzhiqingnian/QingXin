@@ -50,6 +50,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
     private NestedScrollView mScrollSv;
     private ImageView mTopReturnIv,
             mTopShareIv,
+            mCollectionIv,
             mScrollTopIv;
     private VLPagerView mPagerView;
     private VLStatedButtonBar mStatedBtnBar;
@@ -61,8 +62,8 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
             mOrderCountTv,
             mHospitalNameTv,
             mHospitalCityNameTv,
-//            mProductDetailTv,
-            mCollectTabTv,
+    //            mProductDetailTv,
+    mCollectTabTv,
             mOrderNowTv;
     private RelativeLayout mCollectRl;
     private SimpleDraweeView mHospitalCoverSdv;
@@ -94,7 +95,6 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
     }
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,7 +103,6 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         dealIntent();
         initView();
         initListener();
-        initViewPager();
 
         if (!TextUtils.isEmpty(id)) {
             mPresenter.getVipDetail(id);
@@ -116,10 +115,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         }
     }
 
-    private void initViewPager() {
-        bannerList.add(R.mipmap.fake1);
-        bannerList.add(R.mipmap.fake2);
-        bannerList.add(R.mipmap.fake3);
+    private void initViewPager(List<String> bannerList) {
         BannerPagerAdapter adapter = new BannerPagerAdapter(this, bannerList);
         mPagerView.getViewPager().setAdapter(adapter);
         mPagerView.setPageChangeListener(position -> mStatedBtnBar.setChecked(position));
@@ -161,6 +157,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         mAppBarLayout = findViewById(R.id.appbar);
         mScrollSv = findViewById(R.id.scrollSv);
         mTopReturnIv = findViewById(R.id.topReturnIv);
+        mCollectionIv = findViewById(R.id.collectionIv);
         mTopShareIv = findViewById(R.id.topShareIv);
         mScrollTopIv = findViewById(R.id.scrollTopIv);
         mPagerView = findViewById(R.id.viewpagerVp);
@@ -270,10 +267,16 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
     public void onSuccess(CollectBean collectBean) {
         if (collectBean.getIs_collect().equals("n")) {
             mCollectTabTv.setText(R.string.collect);
+            mCollectionIv.setImageResource(R.mipmap.vip_unique_collect_logo);
             showToast(getString(R.string.cancel_collect_ok));
+            Intent intent = new Intent();
+            intent.putExtra(VIP_ID, id);
+            setResult(Activity.RESULT_OK, intent);
         } else {
             mCollectTabTv.setText(R.string.cancel_collection);
+            mCollectionIv.setImageResource(R.mipmap.already_collected_logo);
             showToast(getString(R.string.collect_ok));
+            sendBroadCast();
         }
     }
 
@@ -281,13 +284,14 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
     public void onSuccess(AmountBean amountBean) {
         Log.i("立即预定==", amountBean.toString());
         mOrderNowTv.setEnabled(false);
-        mOrderNowTv.setBackgroundColor(getResources().getColor(R.color.line_color));
+        mOrderNowTv.setText(R.string.already_booked);
         mOrderCountTv.setText(String.valueOf(amountBean.getAmount()));
+        showToast(R.string.already_booked);
         Intent intent = new Intent();
         intent.putExtra(VIP_ID, id);
         intent.putExtra(BOOK_NUM, String.valueOf(amountBean.getAmount()));
         setResult(Activity.RESULT_OK, intent);
-        if(amountBean != null && amountBean.getAmount() > 0){
+        if (amountBean != null && amountBean.getAmount() > 0) {
             // 通知我预约的产品列表刷新数据
             sendBroadCast();
         }
@@ -319,23 +323,40 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
     private void setData(VipDetailBean vipDetailBean) {
 
         VipDetailItemBean itemBean = vipDetailBean.getItems();
-
+        initViewPager(itemBean.getCover());
         mProductNameTv.setText(itemBean.getName());
         mPriceTv.setText(String.valueOf(itemBean.getPrice()));
         mGrayRmbIconTv.setText(String.format("￥%s", itemBean.getOld_price()));
 //        mCityNameTv.setText();
         mOrderCountTv.setText(String.format("%s次预约", itemBean.getOrder()));
         mHospitalNameTv.setText(itemBean.getHospital());
+
+        if (vipDetailBean.getItems().getIs_collect().equals("n")) {
+            // 如果没有收藏
+            mCollectTabTv.setText(R.string.collect);
+            mCollectionIv.setImageResource(R.mipmap.vip_unique_collect_logo);
+        } else {
+            // 如果收藏过
+            mCollectTabTv.setText(R.string.cancel_collection);
+            mCollectionIv.setImageResource(R.mipmap.already_collected_logo);
+        }
+
+        if (vipDetailBean.getItems().getIs_book().equals("y")) {
+            // 如果该用户预定过该产品
+            mOrderNowTv.setEnabled(false);
+            mOrderNowTv.setText(R.string.already_booked);
+        }
+
 //        mProductDetailTv.setText(itemBean.get);
 //        VLUtils.setControllerListener(mVipDetailImgZdv, "http://p36zly2vu.bkt.clouddn.com/" + itemBean.getCover());
     }
 
     private class BannerPagerAdapter extends PagerAdapter {
 
-        private List<Integer> mBannerList;
+        private List<String> mBannerList;
         private Context mContext;
 
-        BannerPagerAdapter(Context context, List<Integer> bannerList) {
+        BannerPagerAdapter(Context context, List<String> bannerList) {
             this.mContext = context;
             this.mBannerList = bannerList;
         }
@@ -354,7 +375,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         public Object instantiateItem(ViewGroup container, final int position) {
             View mView = LayoutInflater.from(mContext).inflate(R.layout.layout_vip_detail_viewpager, container, false);
             SimpleDraweeView mSlectionMoreRl = mView.findViewById(R.id.slectionMoreRl);
-            mSlectionMoreRl.setImageDrawable(getResources().getDrawable(mBannerList.get(position % mBannerList.size())));
+            mSlectionMoreRl.setImageURI(mBannerList.get(position % mBannerList.size()));
             container.addView(mView);
             return mView;
         }
@@ -419,7 +440,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
 
     private void sendBroadCast() {
         Intent intent = new Intent(REFRESH_ACTION);
-        intent.putExtra("refresh",true);
+        intent.putExtra("refresh", true);
         LocalBroadcastManager.getInstance(this).sendBroadcast(
                 intent
         );

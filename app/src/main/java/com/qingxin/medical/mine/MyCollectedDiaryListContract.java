@@ -4,7 +4,6 @@ import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
-import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.home.ListBean;
 
 /**

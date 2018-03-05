@@ -1,7 +1,8 @@
 package com.qingxin.medical.mine;
 
 import android.support.annotation.NonNull;
-import com.qingxin.medical.app.vip.VipListBean;
+
+import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
@@ -46,7 +47,7 @@ public class MyBookProductListPresenter implements MyBookedProductListContract.P
         mCompositeSubscription.add(NetRequestListManager.getMyBookedProductList(limit, skip, type, actyp)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ContentBean<VipListBean>>() {
+                .subscribe(new Observer<ContentBean<ProductListBean>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -57,7 +58,7 @@ public class MyBookProductListPresenter implements MyBookedProductListContract.P
                     }
 
                     @Override
-                    public void onNext(ContentBean<VipListBean> vipList) {
+                    public void onNext(ContentBean<ProductListBean> vipList) {
                         if(!HandErrorUtils.isError(vipList.getCode())){
                             mBookedProductListryView.onSuccess(vipList.getContent());
                         }else{

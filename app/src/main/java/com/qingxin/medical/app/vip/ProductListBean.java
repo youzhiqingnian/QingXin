@@ -11,16 +11,16 @@ import java.util.List;
  * @author zhikuo1
  */
 
-public class VipListBean {
+public class ProductListBean {
 
-    private List<VipProductBean> items;
+    private List<ProductBean> items;
     private int count;
 
-    public List<VipProductBean> getItems() {
+    public List<ProductBean> getItems() {
         return items;
     }
 
-    public void setItems(List<VipProductBean> items) {
+    public void setItems(List<ProductBean> items) {
         this.items = items;
     }
 

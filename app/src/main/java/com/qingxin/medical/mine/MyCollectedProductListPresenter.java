@@ -3,7 +3,7 @@ package com.qingxin.medical.mine;
 import android.support.annotation.NonNull;
 
 import com.qingxin.medical.app.goddessdiary.CollectBean;
-import com.qingxin.medical.app.vip.VipListBean;
+import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
@@ -50,7 +50,7 @@ public class MyCollectedProductListPresenter implements MyCollectedProductListCo
         mCompositeSubscription.add(NetRequestListManager.getMyBookedProductList(limit, skip, type, actyp)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ContentBean<VipListBean>>() {
+                .subscribe(new Observer<ContentBean<ProductListBean>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -61,7 +61,7 @@ public class MyCollectedProductListPresenter implements MyCollectedProductListCo
                     }
 
                     @Override
-                    public void onNext(ContentBean<VipListBean> vipList) {
+                    public void onNext(ContentBean<ProductListBean> vipList) {
                         if (!HandErrorUtils.isError(vipList.getCode())) {
                             mCollectListryView.onSuccess(vipList.getContent());
                         } else {

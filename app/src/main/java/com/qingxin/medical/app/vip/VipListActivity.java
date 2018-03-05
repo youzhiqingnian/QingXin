@@ -15,6 +15,7 @@ import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.ProductBean;
+import com.qingxin.medical.app.homepagetask.model.VipProductBean;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLActivity;
@@ -137,9 +138,9 @@ public class VipListActivity extends QingXinActivity implements VipListContract.
             if (requestCode == VipDetailActivity.VIP_DETAIL_REQUEST_CODE && resultCode == RESULT_OK) {
                 String vipId = intent.getStringExtra(VipDetailActivity.VIP_ID);
                 int bookNum = intent.getIntExtra(VipDetailActivity.BOOK_NUM, 0);
-                List<ProductBean> vipItemBeans = mAdapter.getData();
+                List<VipProductBean> vipItemBeans = mAdapter.getData();
                 int index = 0;
-                for (ProductBean vipItemBean : vipItemBeans) {
+                for (VipProductBean vipItemBean : vipItemBeans) {
                     if (vipItemBean.getId().equals(vipId)) {
                         vipItemBean.setOrder(bookNum);
                         mAdapter.notifyItemChanged(index + mAdapter.getHeaderLayoutCount());

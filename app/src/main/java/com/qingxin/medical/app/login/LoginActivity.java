@@ -85,7 +85,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
                     showToast("退出登陆");
                 } else {//登陆
                     showView(R.layout.layout_loading);
-                    mLoginPresenter.login("13803396510", "1111");
+                    mLoginPresenter.login("13785421040", "1111");
                 }
                 break;
             default:
