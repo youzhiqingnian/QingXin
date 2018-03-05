@@ -46,7 +46,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
     }
 
     @Override
-    public void login(String mobile, String vcode) {
+    public void login(@NonNull String mobile, @NonNull String vcode) {
         mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(UserService.class).login(mobile, vcode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -99,6 +99,33 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                             ToastUtils.showToast(memBean.getMsg());
                         }
 
+                    }
+                })
+        );
+    }
+
+    @Override
+    public void getMoblieCode(@NonNull String mobile) {
+        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(UserService.class).getMobileCode(mobile)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ContentBean>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        HandErrorUtils.handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(ContentBean contentBean) {
+                        if(HandErrorUtils.isError(contentBean.getCode())){
+                            ToastUtils.showToast(contentBean.getMsg());
+                        }else {
+                            ToastUtils.showToast("验证码发送成功，请查收");
+                        }
                     }
                 })
         );

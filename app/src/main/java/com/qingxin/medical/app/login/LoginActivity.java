@@ -7,6 +7,9 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.base.QingXinActivity;
@@ -16,6 +19,9 @@ import com.qingxin.medical.mine.login.LoginPresenter;
 import com.qingxin.medical.user.SessionModel;
 import com.qingxin.medical.user.UserModel;
 import com.qingxin.medical.user.UserTokenBean;
+import com.qingxin.medical.utils.ToastUtils;
+import com.vlee78.android.vl.VLUtils;
+
 /**
  * Date 2018-02-03
  *
@@ -30,6 +36,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
     public static final String LOGIN_ACTION = "com.archie.action.LOGIN_ACTION";
     private boolean homeFlag;
     private int currentFgPosition = 0;
+    private EditText mCodeEt, mPhoneEt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +48,10 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
 
         mLoginTv = findViewById(R.id.loginTv);
         mLoginTv.setOnClickListener(this);
-
+        TextView codeTv = findViewById(R.id.codeTv);
+        mCodeEt = findViewById(R.id.codeEt);
+        mPhoneEt = findViewById(R.id.phoneEt);
+        codeTv.setOnClickListener(this);
         mLoginPresenter = new LoginPresenter(this);
         initLoginStatus();
 
@@ -80,15 +90,42 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
                     getModel(UserModel.class).onLogout();
                     getModel(SessionModel.class).onLogout();
                     initLoginStatus();
-                    showToast("退出登陆");
+                    ToastUtils.showToast("退出登陆");
                 } else {//登陆
-                    showView(R.layout.layout_loading);
-                    mLoginPresenter.login("13785421040", "1111");
+                    if (isChecked()) {
+                        showView(R.layout.layout_loading);
+                        mLoginPresenter.login(mPhoneEt.getText().toString().trim(), mCodeEt.getText().toString().trim());
+                    }
+                }
+                break;
+            case R.id.codeTv://获取验证码
+                if (isCheckedCode()) {
+                    mLoginPresenter.getMoblieCode(mPhoneEt.getText().toString().trim());
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    private boolean isCheckedCode() {
+        if (VLUtils.stringIsEmpty(mPhoneEt.getText().toString().trim())) {
+            ToastUtils.showToast("请输入手机号");
+            return false;
+        }
+        if (!VLUtils.stringValidatePhoneNumber(mPhoneEt.getText().toString().trim())) {
+            ToastUtils.showToast("请输入正确的手机号");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isChecked() {
+        if (VLUtils.stringValidatePhoneNumber(mCodeEt.getText().toString().trim())) {
+            ToastUtils.showToast("请输入验证码");
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -103,14 +140,14 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
         userTokenBean.getMem().setToken(userTokenBean.getToken());
         getModel(UserModel.class).onLoginSuccess(userTokenBean.getMem());
         initLoginStatus();
-        showToast("登陆成功");
+        ToastUtils.showToast("登陆成功");
         mLoginPresenter.getSession();
 
     }
 
     @Override
     public void onSuccess(MemBean memBean) {
-        if(memBean != null){
+        if (memBean != null) {
             // 获取到了session的bean
             getModel(SessionModel.class).onLoginSuccess(memBean);
             sendBroadCast(1);

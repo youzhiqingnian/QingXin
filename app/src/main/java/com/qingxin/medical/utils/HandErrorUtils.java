@@ -30,6 +30,7 @@ public class HandErrorUtils {
             case "1000":
             case "1001":
             case "1002":
+            case "1011":
             case "1020":
             case "1021":
             case "1030":
