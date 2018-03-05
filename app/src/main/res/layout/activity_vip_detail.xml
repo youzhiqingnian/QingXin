@@ -86,6 +86,7 @@
                         android:paddingLeft="15dp"
                         android:paddingRight="15dp"
                         android:paddingStart="15dp"
+                        android:visibility="gone"
                         android:src="@mipmap/vip_top_share_logo" />
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>

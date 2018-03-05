@@ -99,14 +99,13 @@ public class RecommendUserActivity extends QingXinActivity implements RecommendU
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (checkEditTextNotEmpty()) {
-            mEnsureSubmitTv.setBackground(getResources().getDrawable(R.drawable.recommend_submit_click));
+            mEnsureSubmitTv.setBackgroundDrawable(getResources().getDrawable(R.drawable.recommend_submit_click));
             mEnsureSubmitTv.setEnabled(true);
         } else {
-            mEnsureSubmitTv.setBackground(getResources().getDrawable(R.drawable.recommend_user_btn_unfill_bg));
+            mEnsureSubmitTv.setBackgroundDrawable(getResources().getDrawable(R.drawable.recommend_user_btn_unfill_bg));
             mEnsureSubmitTv.setEnabled(false);
         }
     }

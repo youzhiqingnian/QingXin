@@ -169,7 +169,7 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             }
         } else {
-            mTopShareIv.setVisibility(View.VISIBLE);
+            mTopShareIv.setVisibility(View.GONE);
             if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
             }
@@ -181,7 +181,7 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
     }
 
     private void showNavigationBar() {
-        mTopShareIv.setVisibility(View.VISIBLE);
+        mTopShareIv.setVisibility(View.GONE);
         View decorView = getWindow().getDecorView();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);

@@ -72,6 +72,10 @@
     <!--福利社-->
     <string name="welfare_home">福利社</string>
     <string name="my_qingxin_coin">我的青歆币</string>
+    <string name="my_qingxin_coin_balance">我的青歆币总额</string>
+    <string name="save_and_save">再攒攒</string>
+    <string name="withdrawals_balance">可提现金额</string>
+    <string name="confirm_withdrawal">确定提现</string>
     <string name="qingxin_coin_rule">青歆币规则</string>
     <string name="apply_withdrawals">申请提现</string>
     <string name="sign_in_every_day">每日签到</string>

@@ -145,6 +145,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:paddingBottom="8dp"
+            android:visibility="gone"
             android:paddingLeft="15dp"
             android:paddingRight="10dp"
             android:paddingTop="8dp"
