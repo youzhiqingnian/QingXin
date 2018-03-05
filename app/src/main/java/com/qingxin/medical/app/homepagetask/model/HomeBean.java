@@ -19,7 +19,7 @@ public class HomeBean {
      */
 
     private List<BannersBean> banners;
-    private List<ProductBean> products;
+    private List<VipProductBean> products;
     private List<DiaryItemBean> diarys;
     private List<OpencitysBean> opencitys;
     private List<StrictSelBean> preferrs;
@@ -40,11 +40,11 @@ public class HomeBean {
         this.banners = banners;
     }
 
-    public List<ProductBean> getProducts() {
+    public List<VipProductBean> getProducts() {
         return products;
     }
 
-    public void setProducts(List<ProductBean> products) {
+    public void setProducts(List<VipProductBean> products) {
         this.products = products;
     }
 
