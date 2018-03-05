@@ -68,9 +68,7 @@ public class LoginActivity extends QingXinActivity implements View.OnClickListen
             intent.putExtra("position", currentFgPosition);
         }
 
-        LocalBroadcastManager.getInstance(this).sendBroadcast(
-                intent
-        );
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         finish();
     }
 
