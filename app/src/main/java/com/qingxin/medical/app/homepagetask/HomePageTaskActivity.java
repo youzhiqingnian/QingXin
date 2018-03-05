@@ -28,7 +28,7 @@ import com.vlee78.android.vl.VLUtils;
  *
  * @author zhikuo1
  */
-public class HomePageTaskActivity extends QingXinActivity implements QingXinBroadCastReceiver.OnReceiverCallbackListener {
+public class HomePageTaskActivity extends QingXinActivity implements QingXinBroadCastReceiver.OnReceiverCallbackListener,LoginFragment.OnLoginSuccessListener {
 
     public static void startSelf(Context context, int index) {
         Intent intent = new Intent(context, HomePageTaskActivity.class);
@@ -80,6 +80,11 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
                 mFragmentPager.gotoPage(1, false);
             }
         }
+    }
+
+    @Override
+    public void loginSuccess() {
+        //do nothing
     }
 
     private class MainBottomBarDelegate implements VLStatedButtonBar.VLStatedButtonBarDelegate {

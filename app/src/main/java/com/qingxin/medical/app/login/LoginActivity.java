@@ -14,7 +14,7 @@ import com.vlee78.android.vl.VLActivity;
  *
  * @author zhikuo1
  */
-public class LoginActivity extends QingXinActivity {
+public class LoginActivity extends QingXinActivity implements LoginFragment.OnLoginSuccessListener {
 
     public static void startSelf(@NonNull VLActivity activity, VLActivityResultListener resultListener) {
         Intent intent = new Intent(activity, LoginActivity.class);
@@ -29,5 +29,10 @@ public class LoginActivity extends QingXinActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fragment);
         getSupportFragmentManager().beginTransaction().add(R.id.container, LoginFragment.newInstance(true)).commitAllowingStateLoss();
+    }
+
+    @Override
+    public void loginSuccess() {
+        //TODO
     }
 }

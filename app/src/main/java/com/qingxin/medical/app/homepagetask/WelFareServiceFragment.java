@@ -36,6 +36,7 @@ import com.vlee78.android.vl.VLResHandler;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
+
 /**
  * 福利
  * Date 2018-02-05
@@ -151,17 +152,6 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
-        if (first) {
-            mRefreshLayout.setRefreshing(true);
-            showViewBelowActionBar(R.layout.layout_loading, QingXinTitleBar.fixActionBarHeight(mTitleBar));
-            VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
-                @Override
-                protected void process(boolean canceled) {
-                    getServiceList(true);
-//                    mPresenter.isChcekIn();
-                }
-            });
-        }
     }
 
     @Override
@@ -307,7 +297,14 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
     private VLActivity.VLActivityResultListener mActivityResultListener = (requestCode, resultCode, intent) -> {
         if (requestCode == RecommendUserActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {//推荐用户成功
-            getServiceList(true);
+            mRefreshLayout.setRefreshing(true);
+            showViewBelowActionBar(R.layout.layout_loading, QingXinTitleBar.fixActionBarHeight(mTitleBar));
+            VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
+                @Override
+                protected void process(boolean canceled) {
+                    getServiceList(true);
+                }
+            });
         }
     };
 
