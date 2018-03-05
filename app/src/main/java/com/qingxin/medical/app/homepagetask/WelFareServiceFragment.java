@@ -22,11 +22,7 @@ import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishActivity;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
-<<<<<<< HEAD
 import com.qingxin.medical.app.homepagetask.model.WithdrawalsItemBean;
-import com.qingxin.medical.app.login.LoginActivity;
-=======
->>>>>>> 398116c6002fdfbf8d1b270b2d799692cbb5844e
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.mine.login.LoginFragment;
@@ -40,7 +36,6 @@ import com.vlee78.android.vl.VLResHandler;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
-
 /**
  * 福利
  * Date 2018-02-05
