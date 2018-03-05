@@ -180,8 +180,7 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     @Override
     public void editDiary(int position, String id) {
         // 编辑日记
-        mAdapter.getData().get(position);
-        DiaryPublishActivity.startSelf(getVLActivity());
+        DiaryPublishActivity.startSelf(getVLActivity(), mAdapter.getData().get(position));
     }
 
     private void sendBroadCast(String diaryCount) {

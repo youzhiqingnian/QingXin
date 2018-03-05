@@ -98,7 +98,6 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                         }else{
                             ToastUtils.showToast(memBean.getMsg());
                         }
-
                     }
                 })
         );
@@ -124,7 +123,9 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                         if(HandErrorUtils.isError(contentBean.getCode())){
                             ToastUtils.showToast(contentBean.getMsg());
                         }else {
-                            ToastUtils.showToast("验证码发送成功，请查收");
+                            if (null != mLoginView){
+                                mLoginView.onGetMobileCodeSuccess();
+                            }
                         }
                     }
                 })

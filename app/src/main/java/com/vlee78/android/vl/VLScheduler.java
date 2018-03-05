@@ -188,4 +188,72 @@ public class VLScheduler {
         }
         return true;
     }
+
+    public static class VLScheduleRepeater {
+        private int mIndex;
+        private int mTotal;
+        private boolean mCanceled;
+
+        public VLScheduleRepeater(int total) {
+            mIndex = 0;
+            mTotal = total;
+            mCanceled = false;
+        }
+
+        public void setCanceled() {
+            mCanceled = true;
+        }
+
+        public int getIndex() {
+            return mIndex;
+        }
+
+        public int getTotal() {
+            return mTotal;
+        }
+
+        public boolean getCanceled() {
+            return mCanceled;
+        }
+
+        public boolean endOfSchedule() {
+            return (mIndex >= mTotal || mCanceled);
+        }
+    }
+
+    public synchronized VLScheduleRepeater scheduleRepeat(int delayMs, int intervalMs, int total, VLAsyncHandler<VLScheduleRepeater> asyncHandler) {
+        VLDebug.Assert(delayMs >= 0 && intervalMs >= 0 && total >= 0);
+        VLScheduleRepeater repeater = new VLScheduleRepeater(total);
+        scheduleRepeatFun(repeater, delayMs, intervalMs, asyncHandler);
+        return repeater;
+    }
+
+    private synchronized void scheduleRepeatFun(final VLScheduleRepeater repeater, final int delayMs, final int intervalMs, final VLAsyncHandler<VLScheduleRepeater> asyncHandler) {
+        if (asyncHandler != null && asyncHandler.isCancelled()) return;
+        if (repeater.getCanceled()) {
+            if (asyncHandler != null)
+                asyncHandler.handlerError(VLAsyncHandler.VLAsyncRes.VLAsyncResCanceled, null);
+            return;
+        }
+        if (repeater.getIndex() >= repeater.getTotal()) {
+            if (asyncHandler != null) asyncHandler.handlerSuccess(repeater);
+            return;
+        }
+        schedule((repeater.getIndex() == 0 ? delayMs : intervalMs), asyncHandler.getThread(), new VLBlock() {
+            @Override
+            protected void process(boolean canceled) {
+                if (repeater.getCanceled()) {
+                    asyncHandler.handlerError(VLAsyncHandler.VLAsyncRes.VLAsyncResCanceled, null);
+                    return;
+                }
+                if (repeater.getIndex() >= repeater.getTotal()) {
+                    asyncHandler.handlerSuccess(repeater);
+                    return;
+                }
+                asyncHandler.progress(repeater);
+                repeater.mIndex++;
+                scheduleRepeatFun(repeater, delayMs, intervalMs, asyncHandler);
+            }
+        });
+    }
 }

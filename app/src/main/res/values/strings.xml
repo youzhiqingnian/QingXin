@@ -119,5 +119,9 @@
     <string name="publish_your_first_diary">发布你的第一篇日记</string>
     <string name="you_have_not_collected_this">你还没有收藏该内容</string>
     <string name="go_to_scan_product">去浏览产品</string>
+    <string name="login">登陆</string>
+    <string name="hint_login_input_phone">请输入手机号</string>
+    <string name="hint_login_input_code">请输入验证码</string>
+    <string name="get_verification_code">获取验证码</string>
 
 </resources>
