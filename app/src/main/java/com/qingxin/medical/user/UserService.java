@@ -25,4 +25,6 @@ public interface UserService {
     @GET("/session")
     Observable<ContentBean<User>> getUserInfo();
 
+    @GET("/session/yzm")
+    Observable<ContentBean> getMobileCode(@Query("mobile") String mobile);
 }

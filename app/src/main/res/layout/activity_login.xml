@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/phoneEt"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:ellipsize="end"
+        android:hint="请输入手机号"
+        android:inputType="phone"
+        android:maxLines="1" />
+
+    <Button
+        android:id="@+id/codeTv"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="获取验证码" />
+
+    <EditText
+        android:id="@+id/codeEt"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:ellipsize="end"
+        android:hint="请输入验证码"
+        android:maxLines="1" />
+
     <Button
         android:id="@+id/loginTv"
         android:layout_width="match_parent"
         android:layout_height="40dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:lineSpacingExtra="8dp"
-        android:textSize="13sp" />
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

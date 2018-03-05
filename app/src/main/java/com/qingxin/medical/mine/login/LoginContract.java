@@ -1,5 +1,7 @@
 package com.qingxin.medical.mine.login;
 
+import android.support.annotation.NonNull;
+
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.base.MemBean;
@@ -21,7 +23,8 @@ public class LoginContract {
     }
 
     public interface LoginPresenter extends BasePresenter {
-        void login(String mobile, String vcode);
+        void login(@NonNull String mobile, @NonNull String vcode);
         void getSession();
+        void getMoblieCode(@NonNull String mobile);
     }
 }
