@@ -16,7 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -24,7 +23,6 @@ import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishActivity;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.login.LoginActivity;
-import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
@@ -274,10 +272,9 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void setCheckinUnable() {
         mClickToSignTv.setText(getActivity().getString(R.string.already_signed));
-        mClickToSignTv.setBackground(getActivity().getResources().getDrawable(R.drawable.gray_button));
+        mClickToSignTv.setBackgroundDrawable(getActivity().getResources().getDrawable(R.drawable.gray_button));
         mClickToSignTv.setTextColor(getActivity().getResources().getColor(R.color.text_color_origin_price));
         mClickToSignTv.setEnabled(false);
     }
@@ -301,6 +298,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         boolean isRefresh = intent.getBooleanExtra("refresh", false);
         if (isRefresh) {
             getServiceList(true);
+            setCheckinUnable();
         }
     }
 

@@ -27,7 +27,7 @@ import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListAdapter;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
-import com.qingxin.medical.app.homepagetask.model.ProductBean;
+import com.qingxin.medical.app.homepagetask.model.VipProductBean;
 import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.base.QingXinApplication;
@@ -186,14 +186,14 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         mStatedBtnBar.setChecked(mPagerView.getCurrentItem());
         mPagerView.setAutoScroll(3000);
 
-        List<ProductBean> productList = mHomeBean.getProducts();
+        List<VipProductBean> productList = mHomeBean.getProducts();
         if (productList != null && productList.size() > 0) {
             if (productList.size() >= 1) {
                 firstPrNameTv.setText(productList.get(0).getName());
                 firstPrPriceTv.setText(String.format("%s元", productList.get(0).getPrice()));
                 firstPrOldPriceTv.setText(String.format("原价%s元", productList.get(0).getOld_price()));
                 firstPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                mFirstPrCoverSdv.setImageURI(Uri.parse(productList.get(0).getCover()));
+                mFirstPrCoverSdv.setImageURI(Uri.parse(productList.get(0).getCover().get(0)));
                 firstFl.setTag(productList.get(0).getId());
             }
 
@@ -202,7 +202,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 secondPrPriceTv.setText(String.format("%s元", productList.get(1).getPrice()));
                 secondPrOldPriceTv.setText(String.format("原价%s元", productList.get(1).getOld_price()));
                 secondPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                mSecondPrCoverSdv.setImageURI(Uri.parse(productList.get(1).getCover()));
+                mSecondPrCoverSdv.setImageURI(Uri.parse(productList.get(1).getCover().get(0)));
                 secondFl.setTag(productList.get(1).getId());
             }
 
@@ -211,7 +211,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 thirdPrPriceTv.setText(String.format("%s元", productList.get(2).getPrice()));
                 thirdPrOldPriceTv.setText(String.format("原价%s元", productList.get(2).getOld_price()));
                 thirdPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                mThirdPrCoverSdv.setImageURI(Uri.parse(productList.get(2).getCover()));
+                mThirdPrCoverSdv.setImageURI(Uri.parse(productList.get(2).getCover().get(0)));
                 thirdFl.setTag(productList.get(2).getId());
             }
         } else {
