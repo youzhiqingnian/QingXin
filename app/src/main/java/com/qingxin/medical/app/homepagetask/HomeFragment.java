@@ -33,6 +33,7 @@ import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.FragmentToActivity;
+import com.qingxin.medical.map.GaoDeMapModel;
 import com.qingxin.medical.widget.decoration.GridSpacingItemDecoration;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
 import com.qingxin.medical.home.districtsel.StrictSelDetailActivity;
@@ -432,13 +433,18 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                     index++;
                 }
             } else if (requestCode == CityListActivity.CITY_LIST_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-                String cityCode = intent.getStringExtra("cityCode");
-                String cityName = intent.getStringExtra("cityName");
-                if (!VLUtils.stringIsEmpty(cityName)) {
-                    mCityTv.setText(cityName);
-                }
-                if (!VLUtils.stringIsEmpty(cityCode)) {
+                HomeBean.OpencitysBean opencitysBean = (HomeBean.OpencitysBean) intent.getSerializableExtra(CityListActivity.CURRENT_SELECT_CITY);
+                GaoDeMapModel gaoDeMapModel = getModel(GaoDeMapModel.class);
+                if (gaoDeMapModel.getOpencitysBean() == null) {
+                    gaoDeMapModel.setOpencitysBean(opencitysBean);
+                    mCityTv.setText(opencitysBean.getName());
                     getHomeData();
+                } else {
+                    if (!opencitysBean.getCitycode().equals(gaoDeMapModel.getOpencitysBean().getCitycode())) {
+                        gaoDeMapModel.setOpencitysBean(opencitysBean);
+                        mCityTv.setText(opencitysBean.getName());
+                        getHomeData();
+                    }
                 }
             }
         }

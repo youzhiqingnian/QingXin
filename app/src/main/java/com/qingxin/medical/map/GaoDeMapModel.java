@@ -3,6 +3,7 @@ package com.qingxin.medical.map;
 import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
+import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModel;
 
@@ -11,12 +12,14 @@ import com.vlee78.android.vl.VLModel;
  *
  * @author zhikuo
  */
-public class GaoDeMapModel extends VLModel implements LocationService{
+public class GaoDeMapModel extends VLModel implements LocationService {
 
     //声明AMapLocationClient类对象
     private AMapLocationClient mLocationClient = null;
 
     private AMapLocation mAMapLocation;
+
+    private HomeBean.OpencitysBean mOpencitysBean;
 
     @Override
     protected void onCreate() {
@@ -49,10 +52,14 @@ public class GaoDeMapModel extends VLModel implements LocationService{
             if (aMapLocation != null && aMapLocation.getErrorCode() == 0) {
                 //可在其中解析amapLocation获取相应内容。
                 mAMapLocation = aMapLocation;
+                mOpencitysBean = new HomeBean.OpencitysBean();
+                mOpencitysBean.setCitycode(mAMapLocation.getCityCode());
+                mOpencitysBean.setName(mAMapLocation.getCity());
+                mOpencitysBean.setProvince(mAMapLocation.getProvince());
                 mLocationClient.stopLocation();
             } else {
                 //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                if (null != aMapLocation){
+                if (null != aMapLocation) {
                     VLDebug.logE("AmapError", "location Error, ErrCode:" + aMapLocation.getErrorCode() + ", errInfo:" + aMapLocation.getErrorInfo());
                 }
             }
@@ -62,5 +69,13 @@ public class GaoDeMapModel extends VLModel implements LocationService{
     @Override
     public AMapLocation getAMLocation() {
         return mAMapLocation;
+    }
+
+    public HomeBean.OpencitysBean getOpencitysBean() {
+        return mOpencitysBean;
+    }
+
+    public void setOpencitysBean(HomeBean.OpencitysBean opencitysBean) {
+        this.mOpencitysBean = opencitysBean;
     }
 }
