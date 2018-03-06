@@ -120,5 +120,8 @@
         <activity
             android:name=".guide.GuideActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".QingXinWebViewActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

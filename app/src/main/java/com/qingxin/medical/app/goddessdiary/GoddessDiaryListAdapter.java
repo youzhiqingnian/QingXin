@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -11,6 +12,7 @@ import com.qingxin.medical.R;
 import com.vlee78.android.vl.VLUtils;
 
 import java.util.List;
+
 /**
  * Date 2018-02-03
  *
@@ -25,12 +27,12 @@ public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, Bas
 
     private EditDiaryListener editDiaryListener;
 
-    public interface DeleteDiaryListener{
-        void deleteDiary(String id);
+    public interface DeleteDiaryListener {
+        void deleteDiary(int position, String id);
     }
 
-    public interface EditDiaryListener{
-        void editDiary(int position,String id);
+    public interface EditDiaryListener {
+        void editDiary(int position, String id);
     }
 
     public void setDeleteDiaryListener(DeleteDiaryListener deleteDiaryListener) {
@@ -57,7 +59,7 @@ public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, Bas
         SimpleDraweeView afterCoverSdv = helper.getView(R.id.afterCoverSdv);
         TextView contentTv = helper.getView(R.id.diaryContentTv);
         TextView tagTv = helper.getView(R.id.diaryTagTv);
-        TextView authorName, scanCountTv, collectionCountTv,deleteTv,editTv;
+        TextView authorName, scanCountTv, collectionCountTv, deleteTv, editTv;
         if (mType == 0) {
             authorHeadSdv = helper.getView(R.id.authoerHeadSdv);
             authorName = helper.getView(R.id.authorName);
@@ -70,34 +72,24 @@ public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, Bas
             }
             scanCountTv.setText(String.valueOf(item.getVisit_num()));
             collectionCountTv.setText(String.valueOf(item.getCollect_num()));
-        }else{
+        } else {
             deleteTv = helper.getView(R.id.deleteTv);
             editTv = helper.getView(R.id.editTv);
 
-            if(mType == 2){
+            if (mType == 2) {
                 deleteTv.setVisibility(View.GONE);
                 editTv.setText(mContext.getResources().getString(R.string.cancel_collection));
             }
 
-            deleteTv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    deleteDiaryListener.deleteDiary(item.getId());
-                }
-            });
-            editTv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    editDiaryListener.editDiary(helper.getAdapterPosition(),item.getId());
-                }
-            });
+            deleteTv.setOnClickListener(view -> deleteDiaryListener.deleteDiary(helper.getAdapterPosition(), item.getId()));
+            editTv.setOnClickListener(view -> editDiaryListener.editDiary(helper.getAdapterPosition(), item.getId()));
 
         }
 
-        if(!VLUtils.stringIsEmpty(item.getOper_before_photo())){
+        if (!VLUtils.stringIsEmpty(item.getOper_before_photo())) {
             beforeCoverSdv.setImageURI(Uri.parse(item.getOper_before_photo()));
         }
-        if(!VLUtils.stringIsEmpty(item.getOper_after_photo())){
+        if (!VLUtils.stringIsEmpty(item.getOper_after_photo())) {
             afterCoverSdv.setImageURI(Uri.parse(item.getOper_after_photo()));
         }
         contentTv.setText(item.getSummary());

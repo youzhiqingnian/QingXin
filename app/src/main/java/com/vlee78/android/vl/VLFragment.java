@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.qingxin.medical.utils.ToastUtils;
+
 
 public class VLFragment extends Fragment implements VLMessageManager.VLMessageHandler {
     public enum VLFragmentState {
@@ -279,16 +281,7 @@ public class VLFragment extends Fragment implements VLMessageManager.VLMessageHa
         if (getActivity() == null) {
             return;
         }
-        if (VLUtils.threadInMain()) {
-            VLToast.makeText(getVLApplication(), msg, 2000).show();
-        } else {
-            VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {
-                @Override
-                protected void process(boolean canceled) {
-                    VLToast.makeText(getVLApplication(), msg, 2000).show();
-                }
-            });
-        }
+        ToastUtils.showToast(msg);
     }
 
     public VLActivity getVLActivity() {

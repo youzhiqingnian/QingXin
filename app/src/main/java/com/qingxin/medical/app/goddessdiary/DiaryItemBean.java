@@ -195,7 +195,7 @@ public class DiaryItemBean extends BaseBean {
         this.is_collect = is_collect;
     }
 
-    public static class MemBean {
+    public static class MemBean extends BaseBean{
         /**
          * id : 9ca209a8-41a6-441f-92cf-7508570b2765
          * name : 小倩

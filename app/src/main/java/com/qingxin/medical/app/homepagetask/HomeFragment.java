@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -19,8 +18,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.qingxin.medical.QingXinWebViewActivity;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
@@ -32,6 +33,7 @@ import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.FragmentToActivity;
+import com.qingxin.medical.widget.decoration.GridSpacingItemDecoration;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
 import com.qingxin.medical.home.districtsel.StrictSelDetailActivity;
 import com.qingxin.medical.home.districtsel.StrictSelListActivity;
@@ -45,6 +47,7 @@ import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
+
 import java.util.List;
 
 /**
@@ -131,8 +134,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 getHomeData();
             }
         });
-
-
     }
 
     @Override
@@ -335,6 +336,9 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             SimpleDraweeView simpleDraweeView = mView.findViewById(R.id.slectionMoreRl);
             simpleDraweeView.setImageURI(Uri.parse(mBannerList.get(position % mBannerList.size()).getCover()));
             container.addView(mView);
+            simpleDraweeView.setOnClickListener(v -> {
+                QingXinWebViewActivity.startSelf(getActivity(),mBannerList.get(position % mBannerList.size()).getLink());
+            });
             return mView;
         }
 
@@ -391,44 +395,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         public void onStatedButtonChanged(VLStatedButtonBar.VLStatedButton button, VLStatedButtonBar.VLStatedButton.VLButtonState buttonState, int userState) {
             if (mDotImageView != null) {
                 mDotImageView.setImageResource(buttonState == VLStatedButtonBar.VLStatedButton.VLButtonState.StateNormal ? mResIdNormal : mResIdCheck);
-            }
-        }
-    }
-
-    /**
-     * gridveiw item之间的间距
-     */
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
-
-        GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
             }
         }
     }

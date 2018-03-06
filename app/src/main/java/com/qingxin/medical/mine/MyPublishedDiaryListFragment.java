@@ -130,7 +130,7 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
 
     @Override
     public void onSuccess(ListBean<DiaryItemBean> diary) {
-        Log.i("我发布的日记的bean",diary.toString());
+        Log.i("我发布的日记的bean", diary.toString());
         hideView(R.layout.layout_loading);
         if (diary.getCount() > 0) {
             QingXinApplication.getInstance().getLoginSession().getMem().setDiary_amount(diary.getCount());
@@ -152,8 +152,9 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     }
 
     @Override
-    public void onDeleteDiarySuccess() {
-        //todo
+    public void onDeleteDiarySuccess(int position) {
+        showToast("删除成功");
+        mAdapter.remove(position);
     }
 
     @Override
@@ -177,13 +178,6 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     }
 
     @Override
-    public void deleteDiary(String id) {
-        // 删除日记
-        // TODO
-
-    }
-
-    @Override
     public void editDiary(int position, String id) {
         // 编辑日记
         //TODO
@@ -195,5 +189,11 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
         intent.putExtra("refresh", true);
 
         LocalBroadcastManager.getInstance(getVLActivity()).sendBroadcast(intent);
+    }
+
+    @Override
+    public void deleteDiary(int position, String id) {
+        // 删除日记
+        mPresenter.deleteDiary(position, id);
     }
 }
