@@ -86,7 +86,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
         mAdapter.setBtnCallBackListener(this);
         recyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), null));
+        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), mAdapter.getData().get(position).getName(),null));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
 

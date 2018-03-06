@@ -16,10 +16,13 @@ public class MyPublishedDiaryListContract {
 
     interface View extends BaseView<Presenter> {
         void onSuccess(ListBean<DiaryItemBean> diary);
+        void onDeleteDiarySuccess();
         void onError(QingXinError error);
     }
 
     interface Presenter extends BasePresenter {
         void getMyPublishedDiaryList(String author, int limit, int skip);
+
+        void deleteDiary(String diaryId);
     }
 }

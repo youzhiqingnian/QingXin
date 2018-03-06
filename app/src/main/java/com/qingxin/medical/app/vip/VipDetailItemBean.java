@@ -46,6 +46,9 @@ public class VipDetailItemBean {
     private String mobile;
     private String is_collect;
     private String is_book;
+    private String province_name;
+    private String city_name;
+    private String about;
     private List<String> cover;
 
     public String getId() {
@@ -176,6 +179,30 @@ public class VipDetailItemBean {
         this.is_book = is_book;
     }
 
+    public String getProvince_name() {
+        return province_name;
+    }
+
+    public void setProvince_name(String province_name) {
+        this.province_name = province_name;
+    }
+
+    public String getCity_name() {
+        return city_name;
+    }
+
+    public void setCity_name(String city_name) {
+        this.city_name = city_name;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
     public List<String> getCover() {
         return cover;
     }
@@ -203,6 +230,9 @@ public class VipDetailItemBean {
                 ", mobile='" + mobile + '\'' +
                 ", is_collect='" + is_collect + '\'' +
                 ", is_book='" + is_book + '\'' +
+                ", province_name='" + province_name + '\'' +
+                ", city_name='" + city_name + '\'' +
+                ", about='" + about + '\'' +
                 ", cover=" + cover +
                 '}';
     }

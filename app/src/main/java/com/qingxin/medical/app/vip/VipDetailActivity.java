@@ -10,6 +10,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.NestedScrollView;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,13 +63,13 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
             mOrderCountTv,
             mHospitalNameTv,
             mHospitalCityNameTv,
-    //            mProductDetailTv,
-    mCollectTabTv,
+            mProductDetailTv,
+            mCollectTabTv,
             mOrderNowTv;
     private RelativeLayout mCollectRl;
     private SimpleDraweeView mHospitalCoverSdv;
 
-    private WebView mWebview;
+//    private WebView mWebview;
 //    private SimpleDraweeView mVipDetailImgZdv;
 
     private List<Integer> bannerList = new ArrayList<>();
@@ -82,14 +83,18 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
     public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
 
     public static final String VIP_ID = "VIP_ID";
+    public static final String VIP_TITLE = "VIP_TITLE";
 
     private String id = "";
 
+    private String title = "";
+
     public static final int VIP_DETAIL_REQUEST_CODE = 6; // 跳到歆人专享详情里的请求码
 
-    public static void startSelf(VLActivity activity, String vipId, VLActivityResultListener resultListener) {
+    public static void startSelf(VLActivity activity, String vipId, String vipTitle, VLActivityResultListener resultListener) {
         Intent intent = new Intent(activity, VipDetailActivity.class);
         intent.putExtra(VIP_ID, vipId);
+        intent.putExtra(VIP_TITLE, vipTitle);
         activity.setActivityResultListener(resultListener);
         activity.startActivityForResult(intent, VIP_DETAIL_REQUEST_CODE);
     }
@@ -112,6 +117,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
     private void dealIntent() {
         if (getIntent() != null) {
             id = getIntent().getStringExtra(VIP_ID);
+            title = getIntent().getStringExtra(VIP_TITLE);
         }
     }
 
@@ -170,17 +176,17 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         mOrderCountTv = findViewById(R.id.orderCountTv);
         mHospitalNameTv = findViewById(R.id.hospitalNameTv);
         mHospitalCityNameTv = findViewById(R.id.hospitalCityNameTv);
-//        mProductDetailTv = findViewById(R.id.productDetailTv);
+        mProductDetailTv = findViewById(R.id.productDetailTv);
         mOrderNowTv = findViewById(R.id.orderNowTv);
         mCollectTabTv = findViewById(R.id.collectTabTv);
         mCollectRl = findViewById(R.id.collectRl);
         mHospitalCoverSdv = findViewById(R.id.hospitalCoverSdv);
-        mWebview = findViewById(R.id.webview);
+//        mWebview = findViewById(R.id.webview);
 //        mVipDetailImgZdv = findViewById(R.id.vipDetailImgZdv);
 //      VLUtils.setControllerListener(mVipDetailImgZdv,"http://p36zly2vu.bkt.clouddn.com/product/46acb4c0-0cce-11e8-9a80-a72b786a38c9.jpg");
         mShareDialog = new ShareDialog(this);
 
-        mTopTitleNameTv.setText(getString(R.string.product_detail));
+        mTopTitleNameTv.setText(title);
     }
 
     @Override
@@ -328,7 +334,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         mProductNameTv.setText(itemBean.getName());
         mPriceTv.setText(String.valueOf(itemBean.getPrice()));
         mGrayRmbIconTv.setText(String.format("￥%s", itemBean.getOld_price()));
-//        mCityNameTv.setText();
+        mCityNameTv.setText(itemBean.getProvince_name() + itemBean.getCity_name());
         mOrderCountTv.setText(String.format("%s次预约", itemBean.getOrder()));
         mHospitalNameTv.setText(itemBean.getHospital());
 
@@ -348,7 +354,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
             mOrderNowTv.setText(R.string.already_booked);
         }
 
-//        mProductDetailTv.setText(itemBean.get);
+        mProductDetailTv.setText(Html.fromHtml(itemBean.getAbout()));
 //        VLUtils.setControllerListener(mVipDetailImgZdv, "http://p36zly2vu.bkt.clouddn.com/" + itemBean.getCover());
     }
 
@@ -442,15 +448,15 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
     private void sendBroadCast(int flag) {
         Intent intent = new Intent(REFRESH_ACTION);
         intent.putExtra("refresh", true);
-        if(flag == 1){
+        if (flag == 1) {
             // 收藏产品
             int collect_amount = QingXinApplication.getInstance().getLoginSession().getMem().getCollect_amount() + 1;
             QingXinApplication.getInstance().getLoginSession().getMem().setCollect_amount(collect_amount);
-        }else if(flag == 2){
+        } else if (flag == 2) {
             // 取消收藏产品
             int collect_amount = QingXinApplication.getInstance().getLoginSession().getMem().getCollect_amount() - 1;
             QingXinApplication.getInstance().getLoginSession().getMem().setCollect_amount(collect_amount);
-        }else if(flag == 3){
+        } else if (flag == 3) {
             // 预定产品
             int book_amount = QingXinApplication.getInstance().getLoginSession().getMem().getBook_amount() + 1;
             QingXinApplication.getInstance().getLoginSession().getMem().setBook_amount(book_amount);

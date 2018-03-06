@@ -3,6 +3,7 @@ package com.qingxin.medical.app.homepagetask.model;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  *
  * @author zhikuo
  */
-public class HomeBean {
+public class HomeBean implements Serializable{
 
     /**
      * code : 200
@@ -64,7 +65,7 @@ public class HomeBean {
         this.opencitys = opencitys;
     }
 
-    public static class BannersBean {
+    public static class BannersBean implements Serializable{
         /**
          * cover : http://p36zly2vu.bkt.clouddn.com/banner/eacb5bd0-06a0-11e8-8218-39903d26fa93.gif
          * link : https://pro.modao.cc/workspace/apps/p5E0DA22EBD1515479463494
@@ -99,7 +100,7 @@ public class HomeBean {
     }
 
 
-    public static class OpencitysBean {
+    public static class OpencitysBean  implements Serializable{
         /**
          * citycode : 028
          * name : 成都市

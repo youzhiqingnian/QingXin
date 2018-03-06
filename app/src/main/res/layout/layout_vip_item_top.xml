@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="128dp"
     android:background="?attr/selectableItemBackground">
@@ -15,7 +16,11 @@
         android:layout_marginRight="20dp"
         android:layout_marginStart="15dp"
         android:scaleType="centerCrop"
-        app:roundedCornerRadius="4dp" />
+        app:roundedCornerRadius="4dp"
+        fresco:failureImage="@mipmap/ic_product_default"
+        fresco:failureImageScaleType="centerCrop"
+        fresco:placeholderImage="@mipmap/ic_product_default"
+        fresco:placeholderImageScaleType="centerCrop" />
 
     <ImageView
         android:layout_width="wrap_content"

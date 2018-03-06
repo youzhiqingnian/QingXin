@@ -175,5 +175,6 @@ public interface RetrofitService {
     @GET("/diary")
     Observable<ContentBean<ListBean<DiaryItemBean>>> getMyPublishedDiaryList(@Query("author") String author, @Query("limit") int limit, @Query("skip") int skip);
 
-
+    @GET("/diary")
+    Observable<ContentBean> deleteDiary(String diaryId);
 }

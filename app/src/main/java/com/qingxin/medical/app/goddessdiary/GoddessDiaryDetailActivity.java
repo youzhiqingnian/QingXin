@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -180,7 +181,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
 //        }
 //        mReserveCountTv.setText(String.format("%d%s", itemBean.getProduct().getOrder(), getString(R.string.book_times)));
 //        mProductPriceTv.setText(String.format("%d%s%d", itemBean.getProduct().getPrice(), getString(R.string.gap), itemBean.getProduct().getOld_price()));
-        mDiaryDetailTv.setText(itemBean.getSummary());
+        mDiaryDetailTv.setText(Html.fromHtml(itemBean.getWords()));
         mDiaryPublishDateTv.setText(itemBean.getCreated_at());
         mScanCountTv.setText(String.valueOf(itemBean.getVisit_num()));
         mCollectionCountTv.setText(String.valueOf(itemBean.getCollect_num()));

@@ -75,7 +75,7 @@ public class VipListFragment extends QingXinFragment implements VipListContract.
         //add header
         boolean showHeader = getArguments().getBoolean(SHOW_HEADER);
         mSearch = getArguments().getString(VIP_SEARCH);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), mResultListener));
+        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), mAdapter.getData().get(position).getName(), mResultListener));
         mRefreshLayout.setOnRefreshListener(this);
         if (showHeader) {
             ImageView imageView = new ImageView(getActivity());

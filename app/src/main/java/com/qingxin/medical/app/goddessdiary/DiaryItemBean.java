@@ -2,13 +2,15 @@ package com.qingxin.medical.app.goddessdiary;
 
 import com.qingxin.medical.base.BaseBean;
 
+import java.io.Serializable;
+
 /**
  * Date 2018-02-05
  *
  * @author zhikuo1
  */
 
-public class DiaryItemBean extends BaseBean {
+public class DiaryItemBean extends BaseBean  implements Serializable {
 
 
     /**
@@ -195,7 +197,7 @@ public class DiaryItemBean extends BaseBean {
         this.is_collect = is_collect;
     }
 
-    public static class MemBean {
+    public static class MemBean implements Serializable{
         /**
          * id : 9ca209a8-41a6-441f-92cf-7508570b2765
          * name : 小倩

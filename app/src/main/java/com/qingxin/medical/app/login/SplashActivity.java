@@ -7,13 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.WindowManager;
-
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.Constants;
 import com.qingxin.medical.app.homepagetask.HomePageTaskActivity;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.guide.GuideActivity;
 import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLScheduler;
@@ -21,6 +21,7 @@ import com.vlee78.android.vl.VLScheduler;
 /**
  * 启动页
  * Date 2018-02-05
+ *
  * @author zhikuo1
  */
 public class SplashActivity extends QingXinActivity {
@@ -30,19 +31,27 @@ public class SplashActivity extends QingXinActivity {
 
     //声明AMapLocationClientOption对象
     public AMapLocationClientOption mLocationOption = null;
+    private static final String FIRST_START = "isFirstStart";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
-//        requestGaodeLoction();
+        //requestGaodeLoction();
+        boolean isFirstStart = getSharedPreferences().getBoolean(FIRST_START, true);
         VLScheduler.instance.schedule(3000, VLScheduler.THREAD_MAIN, new VLBlock() {
             @Override
             protected void process(boolean canceled) {
-                // 进入主页
-                HomePageTaskActivity.startSelf(SplashActivity.this, 0);
-                finish();
+                if (isFirstStart) {
+                    GuideActivity.startSelf(SplashActivity.this);
+                    getSharedPreferences().edit().putBoolean(FIRST_START, false).apply();
+                    finish();
+                } else {
+                    // 进入主页
+                    HomePageTaskActivity.startSelf(SplashActivity.this, 0);
+                    finish();
+                }
             }
         });
     }

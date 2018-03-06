@@ -93,7 +93,7 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
         mAdapter.setOnLoadMoreListener(() -> getMyCollectList(false), recyclerView);
         mAdapter.setBtnCallBackListener(this);
         recyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), mResultListener));
+        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), mAdapter.getData().get(position).getName() ,mResultListener));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
         mAdapter.setEmptyView(R.layout.layout_my_collect_empty_view);

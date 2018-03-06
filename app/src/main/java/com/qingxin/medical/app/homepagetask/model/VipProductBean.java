@@ -1,6 +1,7 @@
 package com.qingxin.medical.app.homepagetask.model;
 
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  *
  * @author zhikuo1
  */
-public class VipProductBean {
+public class VipProductBean  implements Serializable {
 
 
     /**

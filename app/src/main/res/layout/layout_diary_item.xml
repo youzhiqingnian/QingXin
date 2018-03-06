@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="15dp"
@@ -26,7 +27,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                app:roundedCornerRadius="4dp" />
+                app:roundedCornerRadius="4dp"
+                fresco:failureImage="@mipmap/ic_diary_default"
+                fresco:failureImageScaleType="centerCrop"
+                fresco:placeholderImage="@mipmap/ic_diary_default"
+                fresco:placeholderImageScaleType="centerCrop" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,8 +55,12 @@
                 android:id="@+id/afterCoverSdv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="fitXY"
-                app:roundedCornerRadius="4dp" />
+                android:scaleType="centerCrop"
+                app:roundedCornerRadius="4dp"
+                fresco:failureImage="@mipmap/ic_diary_default"
+                fresco:failureImageScaleType="centerCrop"
+                fresco:placeholderImage="@mipmap/ic_diary_default"
+                fresco:placeholderImageScaleType="centerCrop" />
 
             <TextView
                 android:layout_width="wrap_content"

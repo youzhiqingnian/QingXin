@@ -168,4 +168,13 @@ public class NetRequestListManager {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getMyPublishedDiaryList(author,limit,skip);
     }
 
+    /**
+     * 删除日记
+     *
+     * @param diaryId 日记id
+     */
+    public static Observable<ContentBean> deleteDiary(String diaryId) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).deleteDiary(diaryId);
+    }
+
 }

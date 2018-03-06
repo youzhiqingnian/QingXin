@@ -164,7 +164,6 @@
                 android:layout_alignStart="@id/pinkRmbIconTv"
                 android:layout_below="@+id/grayRmbIconTv"
                 android:layout_marginTop="4dp"
-                android:text="成都"
                 android:textColor="@color/text_color_origin_price"
                 android:textSize="12sp" />
 
@@ -172,11 +171,10 @@
                 android:id="@+id/orderCountTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/cityNameTv"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_alignBaseline="@+id/cityNameTv"
+                android:layout_alignBottom="@+id/cityNameTv"
+                android:layout_alignEnd="@+id/productNameTv"
+                android:layout_alignRight="@+id/productNameTv"
                 android:textColor="@color/text_color_origin_price"
                 android:textSize="12sp" />
 
@@ -262,7 +260,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="99dp"
                 android:visibility="gone"
-                android:layout_below="@id/productGapTv">
+                android:layout_below="@id/productGapTv"
+                >
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/hospitalCoverSdv"
@@ -328,7 +327,7 @@
                 android:layout_below="@id/productDetailTitle"
                 android:background="@color/line_color" />
 
-        <!--    <TextView
+               <TextView
                 android:id="@+id/productDetailTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -337,28 +336,27 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
                 android:lineSpacingExtra="6dp"
-                android:text="我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你我爱你爱你"
                 android:textColor="@color/text_color"
                 android:textSize="14sp" />
+            <!--
+                        &lt;!&ndash;    <com.qingxin.medical.fresco.zoomable.ZoomableDraweeView
+                                android:id="@+id/vipDetailImgZdv"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/productDetailTv"
+                                android:layout_marginTop="20dp" />&ndash;&gt;
 
-            &lt;!&ndash;    <com.qingxin.medical.fresco.zoomable.ZoomableDraweeView
-                    android:id="@+id/vipDetailImgZdv"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/productDetailTv"
-                    android:layout_marginTop="20dp" />&ndash;&gt;
-
-            <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/vipDetailImgZdv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/productDetailTv"
-                android:layout_marginTop="20dp" />-->
+                        <com.facebook.drawee.view.SimpleDraweeView
+                            android:id="@+id/vipDetailImgZdv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/productDetailTv"
+                            android:layout_marginTop="20dp" />
             <WebView
                 android:id="@+id/webview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:ignore="WebViewLayout" />
+                tools:ignore="WebViewLayout" />-->
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 

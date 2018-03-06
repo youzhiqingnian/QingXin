@@ -2,13 +2,15 @@ package com.qingxin.medical.home.districtsel;
 
 import com.qingxin.medical.base.BaseBean;
 
+import java.io.Serializable;
+
 /**
  * 严选javabean
  * Date 2018/2/7
  *
  * @author zhikuo
  */
-public class StrictSelBean extends BaseBean {
+public class StrictSelBean extends BaseBean  implements Serializable {
 
     private String id;
 
