@@ -72,5 +72,30 @@ public class MyPublishedDiaryListPresenter implements MyPublishedDiaryListContra
         );
     }
 
+    @Override
+    public void deleteDiary(String diaryId) {
+        mCompositeSubscription.add(NetRequestListManager.deleteDiary(diaryId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ContentBean>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        mPublishedListryView.onError(new QingXinError(e));
+                    }
+
+                    @Override
+                    public void onNext(ContentBean contentBean) {
+                        if (!HandErrorUtils.isError(contentBean.getCode())) {
+                            mPublishedListryView.onDeleteDiarySuccess();
+                        } else {
+                            mPublishedListryView.onError(new QingXinError(contentBean.getMsg()));
+                        }
+                    }
+                })
+        );
+    }
 }

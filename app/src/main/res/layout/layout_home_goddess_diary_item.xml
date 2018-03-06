@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
@@ -10,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        >
+        android:layout_marginRight="15dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/authoerHeadSdv"
@@ -19,7 +19,11 @@
             android:layout_height="36dp"
             android:scaleType="centerCrop"
             app:actualImageScaleType="centerCrop"
-            app:roundAsCircle="true" />
+            app:roundAsCircle="true"
+            fresco:failureImage="@mipmap/ic_diary_user_default"
+            fresco:failureImageScaleType="centerCrop"
+            fresco:placeholderImage="@mipmap/ic_diary_user_default"
+            fresco:placeholderImageScaleType="centerCrop" />
 
         <TextView
             android:id="@+id/authorName"
@@ -34,8 +38,7 @@
             android:textSize="14sp" />
     </RelativeLayout>
 
-    <include layout="@layout/layout_diary_item"
-        />
+    <include layout="@layout/layout_diary_item" />
 
     <!--<LinearLayout
         android:layout_width="match_parent"
@@ -115,11 +118,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -160,10 +163,10 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:layout_marginTop="20dp"
         android:layout_marginEnd="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginStart="15dp"
+        android:layout_marginTop="20dp"
         android:background="@color/line_color" />
 </LinearLayout>

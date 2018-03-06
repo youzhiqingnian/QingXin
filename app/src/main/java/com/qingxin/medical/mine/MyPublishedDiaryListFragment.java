@@ -68,11 +68,8 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
 
     private void initView() {
         mPresenter = new MyPublishedDiaryListPresenter(this);
-
         mRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
         RecyclerView recyclerView = mRootView.findViewById(R.id.recyclerView);
-
-
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new GoddessDiaryListAdapter(null, 1);
         mAdapter.setOnLoadMoreListener(() -> getMyCollectList(false), recyclerView);
@@ -88,8 +85,6 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
         TextView publishDiaryTv = emptyView.findViewById(R.id.publishDiaryTv);
         publishDiaryTv.setOnClickListener(view -> DiaryPublishActivity.startSelf(getVLActivity()));
         mAdapter.setEmptyView(emptyView);
-
-
     }
 
     private void getMyCollectList(boolean isClear) {
@@ -137,7 +132,7 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     public void onSuccess(ListBean<DiaryItemBean> diary) {
         Log.i("我发布的日记的bean",diary.toString());
         hideView(R.layout.layout_loading);
-        if (diary != null && diary.getCount() > 0) {
+        if (diary.getCount() > 0) {
             QingXinApplication.getInstance().getLoginSession().getMem().setDiary_amount(diary.getCount());
             sendBroadCast();
         }
@@ -154,6 +149,11 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
         } else {
             mAdapter.loadMoreComplete();
         }
+    }
+
+    @Override
+    public void onDeleteDiarySuccess() {
+        //todo
     }
 
     @Override
@@ -180,11 +180,13 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     public void deleteDiary(String id) {
         // 删除日记
         // TODO
+
     }
 
     @Override
     public void editDiary(int position, String id) {
         // 编辑日记
+        //TODO
         DiaryPublishActivity.startSelf(getVLActivity(), mAdapter.getData().get(position));
     }
 

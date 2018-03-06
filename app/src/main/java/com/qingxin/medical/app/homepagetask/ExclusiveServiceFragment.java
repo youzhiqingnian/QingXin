@@ -33,7 +33,6 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
     private ExclusiveServiceListAdapter mAdapter;
     private SwipeRefreshLayout mRefreshLayout;
     private boolean isClear;
-    private VLTitleBar mTitleBar;
 
     public ExclusiveServiceFragment() {
     }
@@ -68,12 +67,12 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
     private void initView() {
         mPresenter = new ExclusiveServicePresenter(this);
         if (null == getView()) return;
-        mTitleBar = getView().findViewById(R.id.titleBar);
+        VLTitleBar titleBar = getView().findViewById(R.id.titleBar);
         RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
         mRefreshLayout = getView().findViewById(R.id.swipeLayout);
-        QingXinTitleBar.init(mTitleBar, getResources().getString(R.string.exclusive_service));
+        QingXinTitleBar.init(titleBar, getResources().getString(R.string.exclusive_service));
         if (getArguments().getBoolean(SHOW_LEFT_RETURN)) {
-            QingXinTitleBar.setLeftReturn(mTitleBar, getActivity());
+            QingXinTitleBar.setLeftReturn(titleBar, getActivity());
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new ExclusiveServiceListAdapter(null, moblile -> VLUtils.gotoDail(getActivity(), moblile));
@@ -89,7 +88,7 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
         imageView.setImageResource(R.mipmap.exclusive_service_top_cover);
         mAdapter.addHeaderView(imageView);
         mRefreshLayout.setOnRefreshListener(this);
-        showViewBelowActionBar(R.layout.layout_loading, QingXinTitleBar.fixActionBarHeight(mTitleBar));
+        showViewBelowActionBar(R.layout.layout_loading, QingXinTitleBar.fixActionBarHeight(titleBar));
         mRefreshLayout.setRefreshing(true);
 
         VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
@@ -116,7 +115,6 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
 
     @Override
     public void setPresenter(ServiceListContract.Presenter presenter) {
-
     }
 
     @Override
