@@ -6,6 +6,8 @@ import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishParams;
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishResult;
+import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.upload.UploadResult;
 
 /**
  * Date 2018-03-07
@@ -19,11 +21,13 @@ public class MineDataContract {
 
         void onSuccess(DiaryPublishResult diaryPublishResult);
 
+        void onSuccess(UploadResult uploadResultBean);
+
         void onError(String result);
     }
 
     public interface Presenter extends BasePresenter {
-        void diaryPublish(@NonNull DiaryPublishParams diaryPublishParams);
+        void headUpload(@NonNull DiaryPublishParams diaryPublishParams);
 
         void updateDiary(@NonNull DiaryPublishParams diaryPublishParams);
     }

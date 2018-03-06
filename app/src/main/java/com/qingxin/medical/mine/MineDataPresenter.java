@@ -1,9 +1,11 @@
 package com.qingxin.medical.mine;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
-import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishContract;
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishParams;
+import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishResult;
+import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishService;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.upload.UploadResult;
@@ -17,6 +19,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -28,8 +31,6 @@ import rx.subscriptions.CompositeSubscription;
 
 public class MineDataPresenter implements MineDataContract.Presenter {
 
-
-    private volatile boolean isFirstUploadSuccess;
     private MineDataContract.View mUploadHeadView;
 
     @NonNull
@@ -55,7 +56,7 @@ public class MineDataPresenter implements MineDataContract.Presenter {
     }
 
     @Override
-    public void diaryPublish(@NonNull DiaryPublishParams diaryPublishParams) {
+    public void headUpload(@NonNull DiaryPublishParams diaryPublishParams) {
         uploadPhotos(diaryPublishParams);
     }
 
@@ -65,7 +66,7 @@ public class MineDataPresenter implements MineDataContract.Presenter {
     }
 
     private void uploadPhotos(@NonNull DiaryPublishParams diaryPublishParams) {
-        File file = isFirstUploadSuccess ? diaryPublishParams.getAfterFile() : diaryPublishParams.getBeforeFile();
+        File file = diaryPublishParams.getBeforeFile();
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("aFile", file.getName(), requestFile);
         mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(UploadService.class).uploadFile(body)
@@ -84,18 +85,69 @@ public class MineDataPresenter implements MineDataContract.Presenter {
                     @Override
                     public void onNext(ContentBean<UploadResult> uploadResultContentBean) {
                         if (!HandErrorUtils.isError(uploadResultContentBean.getCode())) {
-                            if (!isFirstUploadSuccess) {
-                                diaryPublishParams.setBeforeFileName(uploadResultContentBean.getContent().getFilename());
-                                isFirstUploadSuccess = true;
-                                uploadPhotos(diaryPublishParams);
-                            } else {
-                                diaryPublishParams.setAfterFileName(uploadResultContentBean.getContent().getFilename());
-//                                publishDiary(diaryPublishParams);
-                            }
+                            Log.i("头像内部上传成功",uploadResultContentBean.toString());
+                            mUploadHeadView.onSuccess(uploadResultContentBean.getContent());
+                            diaryPublishParams.setBeforeFileName(uploadResultContentBean.getContent().getFilename());
+
+                            modifyHead(diaryPublishParams);
                         } else {
-//                            mDiaryPublishView.onPublishFailed(uploadResultContentBean.getMsg());
+                            mUploadHeadView.onError(uploadResultContentBean.getMsg());
                         }
                     }
                 }));
     }
+
+    private void modifyHead(@NonNull DiaryPublishParams diaryPublishParams){
+        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(DiaryPublishService.class).diaryPublish(diaryPublishParams.getWikiId(), diaryPublishParams.getBeforeFileName(), diaryPublishParams.getAfterFileName(), diaryPublishParams.getContent())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ContentBean<DiaryPublishResult>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        HandErrorUtils.handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(ContentBean<DiaryPublishResult> resultContentBean) {
+                        Log.i("头像内部上传成功",resultContentBean.toString());
+                        if (!HandErrorUtils.isError(resultContentBean.getCode())) {
+                            mUploadHeadView.onSuccess(resultContentBean.getContent());
+                        } else {
+                            mUploadHeadView.onError(resultContentBean.getMsg());
+                        }
+                    }
+                }));
+    }
+
+   /* private void publishDiary(@NonNull DiaryPublishParams diaryPublishParams) {
+        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(DiaryPublishService.class).diaryPublish(diaryPublishParams.getWikiId(), diaryPublishParams.getBeforeFileName(), diaryPublishParams.getAfterFileName(), diaryPublishParams.getContent())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ContentBean<DiaryPublishResult>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        HandErrorUtils.handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(ContentBean<DiaryPublishResult> resultContentBean) {
+                        if (!HandErrorUtils.isError(resultContentBean.getCode())) {
+                            mDiaryPublishView.onSuccess(resultContentBean.getContent());
+                        } else {
+                            mDiaryPublishView.onError(resultContentBean.getMsg());
+                        }
+                    }
+                }));
+    }*/
+
 }

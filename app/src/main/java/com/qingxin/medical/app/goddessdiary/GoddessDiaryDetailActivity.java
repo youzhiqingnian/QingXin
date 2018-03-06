@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.login.LoginActivity;
+import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
@@ -55,6 +57,8 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
             mAfterCoverSdv,
             mProductCoverSdv;
 
+    private RelativeLayout mRelateProductRl;
+
     private TextView mAuthorNameTv,
             mCollectionTv,
             mDiaryProductIntroTv,
@@ -72,6 +76,9 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     private DiaryDetailContract.Presenter mPresenter;
 
     private String id = "";
+
+    private String mProductId = "";
+    private String mTitle = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +103,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     }
 
     private void initListener() {
+        mRelateProductRl.setOnClickListener(this);
         mCollectionTv.setOnClickListener(this);
         mScrollTopIv.setOnClickListener(this);
     }
@@ -112,6 +120,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         mBeforeCoverSdv = findViewById(R.id.beforeCoverSdv);
         mAfterCoverSdv = findViewById(R.id.afterCoverSdv);
         mProductCoverSdv = findViewById(R.id.productCoverSdv);
+        mRelateProductRl = findViewById(R.id.relateProductRl);
         mAuthorNameTv = findViewById(R.id.authorNameTv);
         mCollectionTv = findViewById(R.id.collectionTv);
         mDiaryProductIntroTv = findViewById(R.id.diaryProductIntroTv);
@@ -162,6 +171,15 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     private void setData(GoddessDiaryDetailBean diaryDetailBean) {
 
         DiaryItemBean itemBean = diaryDetailBean.getItem();
+        if (itemBean.getProduct() != null) {
+            if (!VLUtils.stringIsEmpty(itemBean.getProduct().getId())) {
+                mProductId = itemBean.getProduct().getId();
+            }
+            if (!VLUtils.stringIsEmpty(itemBean.getProduct().getName())) {
+                mTitle = itemBean.getProduct().getName();
+            }
+
+        }
         String collectState;
         if (itemBean.getIs_collect().equals("y")) {
             collectState = getString(R.string.cancel_collection);
@@ -249,6 +267,13 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
                     startActivity(intent);
                 }
                 break;
+
+            case R.id.relateProductRl:
+                // 相关产品点击跳到产品详情
+                VipDetailActivity.startSelf(this, mProductId, mTitle, null);
+
+                break;
+
             case R.id.scrollTopIv:
                 //设置默认滚动到顶部
                 VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {

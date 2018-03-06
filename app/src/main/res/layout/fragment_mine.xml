@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/wholeLayoutCdl"
@@ -37,6 +38,7 @@
                         android:id="@+id/userHeadSdv"
                         android:layout_width="88dp"
                         android:layout_height="88dp"
+                        android:scaleType="centerCrop"
                         app:roundAsCircle="true" />
 
                     <ImageView
