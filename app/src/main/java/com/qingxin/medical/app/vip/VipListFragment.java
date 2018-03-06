@@ -86,6 +86,7 @@ public class VipListFragment extends QingXinFragment implements VipListContract.
             getVipList(true);
         }else {
             titleBar.setVisibility(View.GONE);
+            mAdapter.setEmptyView(R.layout.group_empty);
             mRefreshLayout.setEnabled(false);
         }
     }

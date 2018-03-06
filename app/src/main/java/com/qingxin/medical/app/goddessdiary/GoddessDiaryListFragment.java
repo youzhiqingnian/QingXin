@@ -75,7 +75,6 @@ public class GoddessDiaryListFragment extends QingXinFragment implements DiaryLi
         recyclerView.addItemDecoration(dividerDecoration);
         //add header
         boolean showHeader = getArguments().getBoolean(SHOW_HEADER);
-        mAdapter.setEmptyView(R.layout.group_empty);
         mAdapter.setOnItemClickListener((adapter, view, position) -> GoddessDiaryDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), mResultListener));
         mRefreshLayout.setOnRefreshListener(this);
         if (showHeader) {
@@ -87,6 +86,7 @@ public class GoddessDiaryListFragment extends QingXinFragment implements DiaryLi
             getDiaryList(true);
         } else {
             titleBar.setVisibility(View.GONE);
+            mAdapter.setEmptyView(R.layout.group_empty);
             mRefreshLayout.setEnabled(false);
         }
     }
