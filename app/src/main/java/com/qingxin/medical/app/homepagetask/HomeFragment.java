@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -19,8 +18,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.amap.api.location.AMapLocation;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.qingxin.medical.QingXinWebViewActivity;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
@@ -32,6 +33,7 @@ import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.FragmentToActivity;
+import com.qingxin.medical.widget.decoration.GridSpacingItemDecoration;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
 import com.qingxin.medical.home.districtsel.StrictSelDetailActivity;
 import com.qingxin.medical.home.districtsel.StrictSelListActivity;
@@ -133,8 +135,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 getHomeData();
             }
         });
-
-
     }
 
     @Override
@@ -290,13 +290,13 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cityTv: //城市列表
-                CityListActivity.startSelf(getVLActivity(),mHomeBean.getOpencitys(),mResultListener);
+                CityListActivity.startSelf(getVLActivity(), mHomeBean.getOpencitys(), mResultListener);
                 break;
             case R.id.shareRl: //歆人专享
                 VipListActivity.startSelf(getActivity());
                 break;
             case R.id.selectionRl: //本地严选(暂时换成专属服务)
-                FragmentToActivity.startSelf(getActivity(),FragmentToActivity.EXCLUSIVE_SERVICE_FRAGMENT);
+                FragmentToActivity.startSelf(getActivity(), FragmentToActivity.EXCLUSIVE_SERVICE_FRAGMENT);
                 break;
             case R.id.slectionMoreRl:
                 StrictSelListActivity.startSelf(getActivity());
@@ -314,7 +314,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 String vid = ((List<String>) view.getTag()).get(0);
                 String name = ((List<String>) view.getTag()).get(1);
                 if (null == vid) return;
-                VipDetailActivity.startSelf(getVLActivity(), vid, name,null);
+                VipDetailActivity.startSelf(getVLActivity(), vid, name, null);
                 break;
             case R.id.searchLl:
                 SearchActivity.startSelf(getActivity());
@@ -351,6 +351,9 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             SimpleDraweeView simpleDraweeView = mView.findViewById(R.id.slectionMoreRl);
             simpleDraweeView.setImageURI(Uri.parse(mBannerList.get(position % mBannerList.size()).getCover()));
             container.addView(mView);
+            simpleDraweeView.setOnClickListener(v -> {
+                QingXinWebViewActivity.startSelf(getActivity(), mBannerList.get(position % mBannerList.size()).getLink());
+            });
             return mView;
         }
 
@@ -411,44 +414,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         }
     }
 
-    /**
-     * gridveiw item之间的间距
-     */
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
-
-        private int spanCount;
-        private int spacing;
-        private boolean includeEdge;
-
-        GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
-            this.spanCount = spanCount;
-            this.spacing = spacing;
-            this.includeEdge = includeEdge;
-        }
-
-        @Override
-        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-            int position = parent.getChildAdapterPosition(view); // item position
-            int column = position % spanCount; // item column
-
-            if (includeEdge) {
-                outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
-                outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
-                if (position < spanCount) { // top edge
-                    outRect.top = spacing;
-                }
-                outRect.bottom = spacing; // item bottom
-            } else {
-                outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
-                outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
-                if (position >= spanCount) {
-                    outRect.top = spacing; // item top
-                }
-            }
-        }
-    }
-
     private VLActivity.VLActivityResultListener mResultListener = new VLActivity.VLActivityResultListener() {
 
         @Override
@@ -466,13 +431,13 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                     }
                     index++;
                 }
-            }else if(requestCode == CityListActivity.CITY_LIST_REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            } else if (requestCode == CityListActivity.CITY_LIST_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
                 String cityCode = intent.getStringExtra("cityCode");
                 String cityName = intent.getStringExtra("cityName");
-                if(!VLUtils.stringIsEmpty(cityName)){
+                if (!VLUtils.stringIsEmpty(cityName)) {
                     mCityTv.setText(cityName);
                 }
-                if(!VLUtils.stringIsEmpty(cityCode)){
+                if (!VLUtils.stringIsEmpty(cityCode)) {
                     getHomeData();
                 }
             }

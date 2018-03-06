@@ -28,6 +28,7 @@ import com.qingxin.medical.common.QingXinLocalPhotoPopupWindow;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyActivity;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyListBean;
 import com.vlee78.android.vl.VLAsyncHandler;
+import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
@@ -128,22 +129,32 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
 //            if (null != diaryItemBean.getProduct()) {
 //                mCategoryTv.setText(diaryItemBean.getProduct().getName());
 //            }
-            mBeforePhoto = VLUtils.getNetWorkBitmap(diaryItemBean.getOper_before_photo());
-            mAfterPhoto = VLUtils.getNetWorkBitmap(diaryItemBean.getOper_after_photo());
-            AlbumItemData<Bitmap> albumItemData = new AlbumItemData<Bitmap>(mAfterPhoto) {
+            VLScheduler.instance.schedule(0, VLScheduler.THREAD_BG_NORMAL, new VLBlock() {
                 @Override
-                public String getImageUrl() {
-                    return null;
+                protected void process(boolean canceled) {
+                    mBeforePhoto = VLUtils.getNetWorkBitmap(diaryItemBean.getOper_before_photo());
+                    mAfterPhoto = VLUtils.getNetWorkBitmap(diaryItemBean.getOper_after_photo());
+                    VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {
+                        @Override
+                        protected void process(boolean canceled) {
+                            AlbumItemData<Bitmap> albumItemData = new AlbumItemData<Bitmap>(mAfterPhoto) {
+                                @Override
+                                public String getImageUrl() {
+                                    return null;
+                                }
+                            };
+                            mAfterAlbumAdapter.addItem(albumItemData);
+                            AlbumItemData<Bitmap> beforeItemData = new AlbumItemData<Bitmap>(mBeforePhoto) {
+                                @Override
+                                public String getImageUrl() {
+                                    return null;
+                                }
+                            };
+                            mBeforeAlbumAdapter.addItem(beforeItemData);
+                        }
+                    });
                 }
-            };
-            mAfterAlbumAdapter.addItem(albumItemData);
-            AlbumItemData<Bitmap> beforeItemData = new AlbumItemData<Bitmap>(mBeforePhoto) {
-                @Override
-                public String getImageUrl() {
-                    return null;
-                }
-            };
-            mBeforeAlbumAdapter.addItem(beforeItemData);
+            });
             publishTv.setText(getResources().getString(R.string.sure_modify));
         }
         mMedicalBeautyListBean = new MedicalBeautyListBean();
@@ -183,7 +194,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
                         }
                     };
                     mAfterAlbumAdapter.addItem(albumItemData);
-                    mAfterPhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mBeforePhoto);
+                    mAfterPhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mAfterPhoto);
                 } else {
                     mBeforePhoto = result.getCutResult();
                     AlbumItemData<Bitmap> albumItemData = new AlbumItemData<Bitmap>(mBeforePhoto) {
@@ -218,6 +229,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
         }
         mDiaryPublishParams.setBeforeFile(new File(mBeforePhotoPath));
         mDiaryPublishParams.setAfterFile(new File(mAfterPhotoPath));
+        mDiaryPublishParams.setContent(mDescrTv.getText().toString().trim());
         return true;
     }
 

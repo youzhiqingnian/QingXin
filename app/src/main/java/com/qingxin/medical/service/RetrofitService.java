@@ -18,6 +18,7 @@ import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.home.ItemBean;
 import com.qingxin.medical.home.ListBean;
 
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -134,7 +135,7 @@ public interface RetrofitService {
      */
     @FormUrlEncoded
     @POST("/mem/cashapply")
-    Observable<ContentBean<ItemBean<WithdrawalsItemBean>>> applyWithdrawals(@Field("amount")String amount);
+    Observable<ContentBean<ItemBean<WithdrawalsItemBean>>> applyWithdrawals(@Field("amount") String amount);
 
     /**
      * 今日是否签到
@@ -146,16 +147,17 @@ public interface RetrofitService {
 
     /**
      * 推荐用户
-     * @param name 用户姓名
-     * @param mobile 用户手机号
+     *
+     * @param name    用户姓名
+     * @param mobile  用户手机号
      * @param product 意向产品
-     * @param inthos 意向医院
-     * @param remark 备注
+     * @param inthos  意向医院
+     * @param remark  备注
      * @return
      */
     @FormUrlEncoded
     @POST("/mem/recomem")
-    Observable<ContentBean<RecommendResultBean>> submitRecommendUser(@Field("name")String name, @Field("mobile")String mobile, @Field("product")String product, @Field("inthos")String inthos, @Field("remark")String remark);
+    Observable<ContentBean<RecommendResultBean>> submitRecommendUser(@Field("name") String name, @Field("mobile") String mobile, @Field("product") String product, @Field("inthos") String inthos, @Field("remark") String remark);
 
     /**
      * 获取我的预定/收藏过的产品
@@ -175,6 +177,6 @@ public interface RetrofitService {
     @GET("/diary")
     Observable<ContentBean<ListBean<DiaryItemBean>>> getMyPublishedDiaryList(@Query("author") String author, @Query("limit") int limit, @Query("skip") int skip);
 
-    @GET("/diary")
-    Observable<ContentBean> deleteDiary(String diaryId);
+    @DELETE("/diary/{id}")
+    Observable<ContentBean> deleteDiary(@Path("id") String diaryId);
 }

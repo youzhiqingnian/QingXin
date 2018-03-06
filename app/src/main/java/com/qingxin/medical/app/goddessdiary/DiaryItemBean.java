@@ -198,6 +198,7 @@ public class DiaryItemBean extends BaseBean  implements Serializable {
     }
 
     public static class MemBean implements Serializable{
+
         /**
          * id : 9ca209a8-41a6-441f-92cf-7508570b2765
          * name : 小倩

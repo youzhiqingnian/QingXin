@@ -3,15 +3,11 @@ package com.vlee78.android.vl;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import android.widget.ZoomButtonsController;
-
-import java.lang.reflect.Field;
 
 public class VLWebView extends FrameLayout {
 
@@ -54,11 +50,7 @@ public class VLWebView extends FrameLayout {
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);// 是否允许JavaScript自动打开窗口
         webSettings.setDomStorageEnabled(true);// 支持本地存储;
         webSettings.setLoadWithOverviewMode(true);
-        if (android.os.Build.VERSION.SDK_INT >= 11) {// 用于判断是否为Android 3.0系统,
-            webSettings.setDisplayZoomControls(false);
-        } else {
-            setZoomControlGone(mWebView); // Android 3.0(11) 以下使用以下方法
-        }
+        webSettings.setDisplayZoomControls(false);
         mWebView.setWebViewClient(webViewClient);
         mWebView.setWebChromeClient(new WebChromeClient());
         addView(mWebView);
@@ -78,23 +70,4 @@ public class VLWebView extends FrameLayout {
         return mWebView;
     }
 
-    // 实现放大缩小控件隐藏
-    public void setZoomControlGone(View view) {
-        Class<WebView> classType;
-        Field field;
-        try {
-            classType = WebView.class;
-            field = classType.getDeclaredField("mZoomButtonsController");
-            field.setAccessible(true);
-            ZoomButtonsController mZoomButtonsController = new ZoomButtonsController(view);
-            mZoomButtonsController.getZoomControls().setVisibility(View.GONE);
-            try {
-                field.set(view, mZoomButtonsController);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
-        } catch (SecurityException | NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-    }
 }

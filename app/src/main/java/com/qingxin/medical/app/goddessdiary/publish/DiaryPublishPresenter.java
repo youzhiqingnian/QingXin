@@ -1,13 +1,16 @@
 package com.qingxin.medical.app.goddessdiary.publish;
 
 import android.support.annotation.NonNull;
+
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.upload.UploadResult;
 import com.qingxin.medical.upload.UploadService;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.vlee78.android.vl.VLApplication;
+
 import java.io.File;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -58,8 +61,8 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
     }
 
     private void uploadPhotos(@NonNull DiaryPublishParams diaryPublishParams) {
-        File file = isFirstUploadSuccess ? diaryPublishParams.getBeforeFile() : diaryPublishParams.getAfterFile();
-        RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"),file);
+        File file = isFirstUploadSuccess ? diaryPublishParams.getAfterFile() : diaryPublishParams.getBeforeFile();
+        RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("aFile", file.getName(), requestFile);
         mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(UploadService.class).uploadFile(body)
                 .subscribeOn(Schedulers.io())

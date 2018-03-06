@@ -47,7 +47,7 @@ public class MyPublishedDiaryListPresenter implements MyPublishedDiaryListContra
 
     @Override
     public void getMyPublishedDiaryList(String author, int limit, int skip) {
-        mCompositeSubscription.add(NetRequestListManager.getMyPublishedDiaryList(author,limit,skip)
+        mCompositeSubscription.add(NetRequestListManager.getMyPublishedDiaryList(author, limit, skip)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<ListBean<DiaryItemBean>>>() {
@@ -73,7 +73,7 @@ public class MyPublishedDiaryListPresenter implements MyPublishedDiaryListContra
     }
 
     @Override
-    public void deleteDiary(String diaryId) {
+    public void deleteDiary(int position, String diaryId) {
         mCompositeSubscription.add(NetRequestListManager.deleteDiary(diaryId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -90,7 +90,7 @@ public class MyPublishedDiaryListPresenter implements MyPublishedDiaryListContra
                     @Override
                     public void onNext(ContentBean contentBean) {
                         if (!HandErrorUtils.isError(contentBean.getCode())) {
-                            mPublishedListryView.onDeleteDiarySuccess();
+                            mPublishedListryView.onDeleteDiarySuccess(position);
                         } else {
                             mPublishedListryView.onError(new QingXinError(contentBean.getMsg()));
                         }
