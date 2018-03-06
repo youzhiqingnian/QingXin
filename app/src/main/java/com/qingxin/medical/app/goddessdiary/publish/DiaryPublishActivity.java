@@ -20,7 +20,11 @@ import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.album.AlbumAdapter;
 import com.qingxin.medical.album.AlbumItemData;
+import com.qingxin.medical.app.goddessdiary.CollectBean;
+import com.qingxin.medical.app.goddessdiary.DiaryDetailContract;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
+import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
+import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailPresenter;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.CommonDialogFactory;
@@ -37,13 +41,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
+import static com.qingxin.medical.app.goddessdiary.publish.DiaryPublishContract.Presenter;
+import static com.qingxin.medical.app.goddessdiary.publish.DiaryPublishContract.PublishView;
+
 /**
  * 日记发布界面
  * Date 2018/2/26
  *
  * @author zhikuo
  */
-public class DiaryPublishActivity extends QingXinActivity implements View.OnClickListener, DiaryPublishContract.View {
+public class DiaryPublishActivity extends QingXinActivity implements View.OnClickListener, PublishView {
 
     public static void startSelf(@NonNull Context context) {
         startSelf(context, null);
@@ -57,7 +64,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
 
     public static final String DIARYITEMBEAN = "DIARYITEMBEAN";
 
-    private TextView mCategoryTv;
+    private TextView mCategoryTv, mPublishTv;
     private EditText mDescrTv;
     private AlbumAdapter<Bitmap> mAfterAlbumAdapter, mBeforeAlbumAdapter;
     private Bitmap mBeforePhoto, mAfterPhoto;
@@ -66,17 +73,26 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
     private DiaryPublishPresenter mPresenter;
     private DiaryPublishParams mDiaryPublishParams;
     private boolean isEdit;//是否是修改日记
+    private DiaryItemBean mDiaryItemBean;
+    private DiaryDetailContract.Presenter mDiaryDetailPresenter;
+    private boolean isWikiChanged, isBeforeChanged, isAfterChanged, isWordsChanged;
 
     @Override
     protected void onResume() {
         super.onResume();
         mPresenter.subscribe();
+        if (null != mDiaryDetailPresenter) {
+            mDiaryDetailPresenter.subscribe();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.unsubscribe();
+        if (null != mDiaryDetailPresenter) {
+            mDiaryDetailPresenter.unsubscribe();
+        }
     }
 
     @Override
@@ -93,9 +109,9 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
         beforeAlbumRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         afterAlbumRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         QingXinTitleBar.init(titleBar, getResources().getString(R.string.publish_diary));
-        TextView publishTv = findViewById(R.id.publishTv);
+        mPublishTv = findViewById(R.id.publishTv);
         chooseItemRl.setOnClickListener(this);
-        publishTv.setOnClickListener(this);
+        mPublishTv.setOnClickListener(this);
         mAfterAlbumAdapter = new AlbumAdapter<>(this, AlbumAdapter.AFTER_PHOTO, 1, new AlbumAdapter.OnClickListener() {
             @Override
             public void onAddItemClicked(View view) {
@@ -122,18 +138,48 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
         });
         beforeAlbumRv.setAdapter(mBeforeAlbumAdapter);
 
-        DiaryItemBean diaryItemBean = (DiaryItemBean) getIntent().getSerializableExtra(DIARYITEMBEAN);
-        isEdit = diaryItemBean != null;
+        mDiaryItemBean = (DiaryItemBean) getIntent().getSerializableExtra(DIARYITEMBEAN);
+        isEdit = mDiaryItemBean != null;
+        mMedicalBeautyListBean = new MedicalBeautyListBean();
+        mDiaryPublishParams = new DiaryPublishParams();
+        mPresenter = new DiaryPublishPresenter(this);
         if (isEdit) {
-            mDescrTv.setText(diaryItemBean.getWords());
-//            if (null != diaryItemBean.getProduct()) {
-//                mCategoryTv.setText(diaryItemBean.getProduct().getName());
-//            }
+            if (null != mDiaryItemBean.getWiki()) {
+                mCategoryTv.setText(mDiaryItemBean.getWiki().getName());
+            }
+            mDiaryPublishParams.setWikiId(mDiaryItemBean.getWiki_id());
+            mDiaryDetailPresenter = new GoddessDiaryDetailPresenter(new DiaryDetailContract.View() {
+                @Override
+                public void onSuccess(GoddessDiaryDetailBean mDiary) {
+                    DiaryItemBean diaryItemBean = mDiary.getItem();
+                    if (null != diaryItemBean.getWords()) {
+                        mDiaryItemBean.setWords(diaryItemBean.getWords());
+                        mDescrTv.setText(mDiaryItemBean.getWords());
+                        mDescrTv.setSelection(mDiaryItemBean.getWords().length());
+                        mDiaryPublishParams.setContent(mDiaryItemBean.getWords());
+                    }
+                }
+
+                @Override
+                public void onSuccess(CollectBean mCollectBean) {
+                }
+
+                @Override
+                public void onError(String result) {
+
+                }
+
+                @Override
+                public void setPresenter(DiaryDetailContract.Presenter presenter) {
+                }
+            });
+            mDiaryDetailPresenter.getGoddessDiaryDetail(mDiaryItemBean.getId());
+            mPublishTv.setText(getResources().getString(R.string.sure_modify));
             VLScheduler.instance.schedule(0, VLScheduler.THREAD_BG_NORMAL, new VLBlock() {
                 @Override
                 protected void process(boolean canceled) {
-                    mBeforePhoto = VLUtils.getNetWorkBitmap(diaryItemBean.getOper_before_photo());
-                    mAfterPhoto = VLUtils.getNetWorkBitmap(diaryItemBean.getOper_after_photo());
+                    mBeforePhoto = VLUtils.getNetWorkBitmap(mDiaryItemBean.getOper_before_photo());
+                    mAfterPhoto = VLUtils.getNetWorkBitmap(mDiaryItemBean.getOper_after_photo());
                     VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {
                         @Override
                         protected void process(boolean canceled) {
@@ -151,15 +197,13 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
                                 }
                             };
                             mBeforeAlbumAdapter.addItem(beforeItemData);
+                            mAfterPhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mAfterPhoto);
+                            mBeforePhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mBeforePhoto);
                         }
                     });
                 }
             });
-            publishTv.setText(getResources().getString(R.string.sure_modify));
         }
-        mMedicalBeautyListBean = new MedicalBeautyListBean();
-        mDiaryPublishParams = new DiaryPublishParams();
-        mPresenter = new DiaryPublishPresenter(this);
     }
 
     @Override
@@ -170,7 +214,31 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
                 break;
             case R.id.publishTv:
                 if (isCheck()) {
-                    mPresenter.diaryPublish(mDiaryPublishParams);
+                    if (!isEdit) {
+                        mPresenter.diaryPublish(mDiaryPublishParams);
+                        mPublishTv.setEnabled(false);
+                        mPublishTv.setText("正在发布中,请稍后");
+                    } else {
+                        if (!isWordsChanged && !isWikiChanged && !isAfterChanged && !isBeforeChanged) {//都没变动
+                            this.finish();
+                            return;
+                        }
+                        if (!isWordsChanged) {
+                            mDiaryPublishParams.setContent("");
+                        }
+                        if (!isWikiChanged) {
+                            mDiaryPublishParams.setWikiId("");
+                        }
+                        if (!isBeforeChanged) {
+                            mDiaryPublishParams.setBeforeFile(null);
+                        }
+                        if (!isAfterChanged) {
+                            mDiaryPublishParams.setAfterFile(null);
+                        }
+                        mPresenter.updateDiary(mDiaryPublishParams);
+                        mPublishTv.setEnabled(false);
+                        mPublishTv.setText("正在发布中,请稍后");
+                    }
                 }
                 break;
             default:
@@ -195,7 +263,8 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
                     };
                     mAfterAlbumAdapter.addItem(albumItemData);
                     mAfterPhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mAfterPhoto);
-                } else {
+                    isAfterChanged = isEdit;
+                } else if (AlbumAdapter.BEFORE_PHOTO.equals(whichPhoto)) {
                     mBeforePhoto = result.getCutResult();
                     AlbumItemData<Bitmap> albumItemData = new AlbumItemData<Bitmap>(mBeforePhoto) {
                         @Override
@@ -205,13 +274,14 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
                     };
                     mBeforeAlbumAdapter.addItem(albumItemData);
                     mBeforePhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mBeforePhoto);
+                    isBeforeChanged = isEdit;
                 }
             }
         });
     }
 
     private boolean isCheck() {
-        if (VLUtils.stringIsEmpty(mCategoryTv.getText().toString().trim())) {
+        if (VLUtils.stringIsEmpty(mDiaryPublishParams.getWikiId())) {
             showToast("请选择项目类别");
             return false;
         }
@@ -229,6 +299,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
         }
         mDiaryPublishParams.setBeforeFile(new File(mBeforePhotoPath));
         mDiaryPublishParams.setAfterFile(new File(mAfterPhotoPath));
+        isWordsChanged = isEdit && !(mDescrTv.getText().toString().trim()).equals(mDiaryPublishParams.getContent());
         mDiaryPublishParams.setContent(mDescrTv.getText().toString().trim());
         return true;
     }
@@ -237,6 +308,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
         if (requestCode == MedicalBeautyActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             mMedicalBeautyListBean = (MedicalBeautyListBean) intent.getSerializableExtra(MedicalBeautyActivity.MEDICAL_BEAUTY_LIST_BEAN);
             mCategoryTv.setText(mMedicalBeautyListBean.getName());
+            isWikiChanged = isEdit && !mMedicalBeautyListBean.getId().equals(mDiaryPublishParams.getWikiId());
             mDiaryPublishParams.setWikiId(mMedicalBeautyListBean.getId());
         }
     };
@@ -252,18 +324,21 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
     }
 
     @Override
-    public void setPresenter(DiaryPublishContract.Presenter presenter) {
+    public void setPresenter(Presenter presenter) {
 
     }
 
     @Override
-    public void onSuccess(DiaryPublishResult diaryPublishResult) {
+    public void onPublishSuccess(DiaryPublishResult diaryPublishResult) {
         showToast("发布成功，后台人员审核过后您将看到您的日记");
         DiaryPublishActivity.this.finish();
     }
 
     @Override
-    public void onError(String result) {
+    public void onPublishFailed(String result) {
         showToast(result);
+        mPublishTv.setEnabled(true);
+        mPublishTv.setText(isEdit ? getResources().getString(R.string.sure_modify) : getResources().getString(R.string.sure_publish));
     }
+
 }

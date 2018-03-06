@@ -25,7 +25,7 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    public GoddessDiaryDetailPresenter(DiaryDetailContract.View diaryDetailView) {
+    public GoddessDiaryDetailPresenter(@NonNull DiaryDetailContract.View diaryDetailView) {
         mDiaryDetailView = diaryDetailView;
         mCompositeSubscription = new CompositeSubscription();
         mDiaryDetailView.setPresenter(this);

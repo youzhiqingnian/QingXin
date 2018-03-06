@@ -27,7 +27,7 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
      * <p>
      * If you need to access Adapter for additional data, you can call
      * {@link RecyclerView#getChildAdapterPosition(View)} to get the adapter position of the
-     * View.
+     * PublishView.
      *
      * @param outRect Rect to receive the output.
      * @param view    The child view to decorate

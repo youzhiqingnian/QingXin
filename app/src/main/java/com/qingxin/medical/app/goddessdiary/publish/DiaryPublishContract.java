@@ -12,11 +12,11 @@ import com.qingxin.medical.app.BaseView;
  */
 public class DiaryPublishContract {
 
-    public interface View extends BaseView<Presenter> {
+    public interface PublishView extends BaseView<Presenter> {
 
-        void onSuccess(DiaryPublishResult diaryPublishResult);
+        void onPublishSuccess(DiaryPublishResult diaryPublishResult);
 
-        void onError(String result);
+        void onPublishFailed(String result);
     }
 
     public interface Presenter extends BasePresenter {

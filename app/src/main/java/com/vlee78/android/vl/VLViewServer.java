@@ -71,20 +71,20 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * public class MyInputMethodService extends InputMethodService {
  *     public void onCreate() {
  *         super.onCreate();
- *         View decorView = getWindow().getWindow().getDecorView();
+ *         PublishView decorView = getWindow().getWindow().getDecorView();
  *         String name = "MyInputMethodService";
  *         ViewServer.get(this).addWindow(decorView, name);
  *     }
  *
  *     public void onDestroy() {
  *         super.onDestroy();
- *         View decorView = getWindow().getWindow().getDecorView();
+ *         PublishView decorView = getWindow().getWindow().getDecorView();
  *         ViewServer.get(this).removeWindow(decorView);
  *     }
  *
  *     public void onStartInput(EditorInfo attribute, boolean restarting) {
  *         super.onStartInput(attribute, restarting);
- *         View decorView = getWindow().getWindow().getDecorView();
+ *         PublishView decorView = getWindow().getWindow().getDecorView();
  *         ViewServer.get(this).setFocusedWindow(decorView);
  *     }
  * }
@@ -189,7 +189,7 @@ public class VLViewServer implements Runnable {
             return false;
         }
 
-        mThread = new Thread(this, "Local View Server [port=" + mPort + "]");
+        mThread = new Thread(this, "Local PublishView Server [port=" + mPort + "]");
         mThreadPool = Executors.newFixedThreadPool(VIEW_SERVER_MAX_CONNECTIONS);
         mThread.start();
 

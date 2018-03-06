@@ -195,7 +195,7 @@ public class WylMediaControl extends MediaController {
             // );
             //
             // removeAllViews();
-            // View v = makeControllerView();
+            // PublishView v = makeControllerView();
             // addView(v, frameParams);
         }
 
@@ -216,7 +216,7 @@ public class WylMediaControl extends MediaController {
      * @return The controller view.
      * @hide This doesn't work as advertised
      */
-    // protected View makeControllerView() {
+    // protected PublishView makeControllerView() {
     // LayoutInflater inflate = (LayoutInflater)
     // mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     // mRoot = inflate.inflate(com.android.internal.R.layout.media_controller,
@@ -242,8 +242,8 @@ public class WylMediaControl extends MediaController {
 //		if (mFfwdButton != null) {
 //			mFfwdButton.setOnClickListener(mFfwdListener);
 //			if (!mFromXml) {
-//				mFfwdButton.setVisibility(mUseFastForward ? View.VISIBLE
-//						: View.GONE);
+//				mFfwdButton.setVisibility(mUseFastForward ? PublishView.VISIBLE
+//						: PublishView.GONE);
 //			}
 //		}
 //
@@ -251,8 +251,8 @@ public class WylMediaControl extends MediaController {
 //		if (mRewButton != null) {
 //			mRewButton.setOnClickListener(mRewListener);
 //			if (!mFromXml) {
-//				mRewButton.setVisibility(mUseFastForward ? View.VISIBLE
-//						: View.GONE);
+//				mRewButton.setVisibility(mUseFastForward ? PublishView.VISIBLE
+//						: PublishView.GONE);
 //			}
 //		}
 
@@ -260,11 +260,11 @@ public class WylMediaControl extends MediaController {
         // setPrevNextListeners() is called
 //		mNextButton = (ImageButton) v.findViewById(com.android.internal.R.id.next);
 //		if (mNextButton != null && !mFromXml && !mListenersSet) {
-//			mNextButton.setVisibility(View.GONE);
+//			mNextButton.setVisibility(PublishView.GONE);
 //		}
 //		mPrevButton = (ImageButton) v.findViewById(com.android.internal.R.id.prev);
 //		if (mPrevButton != null && !mFromXml && !mListenersSet) {
-//			mPrevButton.setVisibility(View.GONE);
+//			mPrevButton.setVisibility(PublishView.GONE);
 //		}
 
         mProgress = (ProgressBar) v.findViewById(R.id.mediacontroller_seekbar);

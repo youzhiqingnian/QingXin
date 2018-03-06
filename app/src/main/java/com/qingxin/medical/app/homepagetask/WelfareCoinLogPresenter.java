@@ -146,14 +146,14 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onPublishFailed(Throwable e) {
                         HandErrorUtils.handleError(e);
                     }
 
                     @Override
                     public void onNext(ContentBean<MemBean> memBean) {
                         if(!HandErrorUtils.isError(memBean.getCode())){
-                            mWelfareCoinLogView.onSuccess(memBean.getContent());
+                            mWelfareCoinLogView.onPublishSuccess(memBean.getContent());
                         }else{
                             ToastUtils.showToast(memBean.getMsg());
                         }
