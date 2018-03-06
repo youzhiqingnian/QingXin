@@ -114,7 +114,6 @@ public class MineDataPresenter implements MineDataContract.Presenter {
 
                     @Override
                     public void onNext(ContentBean<DiaryPublishResult> resultContentBean) {
-                        Log.i("头像内部上传成功",resultContentBean.toString());
                         if (!HandErrorUtils.isError(resultContentBean.getCode())) {
                             mUploadHeadView.onSuccess(resultContentBean.getContent());
                         } else {
