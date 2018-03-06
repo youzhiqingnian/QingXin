@@ -2,21 +2,17 @@ package com.qingxin.medical.app.homepagetask;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.mine.MineFragment;
 import com.qingxin.medical.mine.login.LoginFragment;
-import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLStatedButtonBar;
@@ -28,7 +24,7 @@ import com.vlee78.android.vl.VLUtils;
  *
  * @author zhikuo1
  */
-public class HomePageTaskActivity extends QingXinActivity implements QingXinBroadCastReceiver.OnReceiverCallbackListener,LoginFragment.OnLoginSuccessListener {
+public class HomePageTaskActivity extends QingXinActivity implements LoginFragment.OnLoginSuccessListener {
 
     public static void startSelf(Context context, int index) {
         Intent intent = new Intent(context, HomePageTaskActivity.class);
@@ -38,7 +34,6 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
 
     private VLPagerView mFragmentPager;
     private VLStatedButtonBar mButtonBar;
-    private QingXinBroadCastReceiver mReceiver;
     private static final String INDEX = "INDEX";
 
     @Override
@@ -57,29 +52,6 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
         mButtonBar.setStatedButtonBarDelegate(new MainBottomBarDelegate(this));
         mFragmentPager.setPageChangeListener(position -> mButtonBar.setChecked(position));
         mButtonBar.setChecked(getIntent().getIntExtra(INDEX, 0));
-
-        initBroadcastReceiver();
-    }
-
-    /**
-     * 初始化广播接收者
-     */
-    private void initBroadcastReceiver() {
-        mReceiver = new QingXinBroadCastReceiver();
-        IntentFilter intentFilter = new IntentFilter(LoginFragment.LOGIN_ACTION);
-        LocalBroadcastManager.getInstance(this).registerReceiver(mReceiver, intentFilter);
-        mReceiver.setReceiverListener(this);
-    }
-
-    @Override
-    public void receiverUpdata(Intent intent) {
-        int currentFgPosition = intent.getIntExtra("position", -1);
-        if (currentFgPosition != -1) {
-            mButtonBar.setChecked(currentFgPosition);
-            if (currentFgPosition == 1) {
-                mFragmentPager.gotoPage(1, false);
-            }
-        }
     }
 
     @Override
@@ -165,17 +137,6 @@ public class HomePageTaskActivity extends QingXinActivity implements QingXinBroa
         public void onStatedButtonBarChanged(VLStatedButtonBar buttonBar, int position) {
             mFragmentPager.gotoPage(position, false);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unRegisterLoginBroadcast();
-    }
-
-    //取消注册
-    private void unRegisterLoginBroadcast() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mReceiver);
     }
 
     @Override
