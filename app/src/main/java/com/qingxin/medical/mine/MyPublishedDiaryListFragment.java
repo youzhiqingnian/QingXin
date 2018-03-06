@@ -6,6 +6,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,6 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     private GoddessDiaryListAdapter mAdapter;
 
     private MyPublishedDiaryListContract.Presenter mPresenter;
-
-    public static final String COUNT_ACTION = "com.archie.action.COUNT_ACTION";
 
     private boolean isClear;
 
@@ -136,7 +135,13 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
 
     @Override
     public void onSuccess(ListBean<DiaryItemBean> diary) {
+        Log.i("我发布的日记的bean",diary.toString());
         hideView(R.layout.layout_loading);
+        if (diary != null && diary.getCount() > 0) {
+            QingXinApplication.getInstance().getLoginSession().getMem().setDiary_amount(diary.getCount());
+            sendBroadCast();
+        }
+
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
             mAdapter.setNewData(diary.getItems());
@@ -148,10 +153,6 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
             mAdapter.loadMoreEnd(isClear);
         } else {
             mAdapter.loadMoreComplete();
-        }
-
-        if (0 != diary.getCount()) {
-            sendBroadCast(diary.getCount() + "");
         }
     }
 
@@ -187,9 +188,10 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
         DiaryPublishActivity.startSelf(getVLActivity(), mAdapter.getData().get(position));
     }
 
-    private void sendBroadCast(String diaryCount) {
-        Intent intent = new Intent(COUNT_ACTION);
-        intent.putExtra("diaryCount", diaryCount);
+    private void sendBroadCast() {
+        Intent intent = new Intent(MineDataFragment.REFRESH_ACTION);
+        intent.putExtra("refresh", true);
+
         LocalBroadcastManager.getInstance(getVLActivity()).sendBroadcast(intent);
     }
 }

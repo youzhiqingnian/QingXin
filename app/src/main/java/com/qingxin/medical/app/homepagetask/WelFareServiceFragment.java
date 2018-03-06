@@ -132,6 +132,15 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
+        if (first) {
+            showView(R.layout.layout_loading);
+            VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
+                @Override
+                protected void process(boolean canceled) {
+                    getServiceList(true);
+                }
+            });
+        }
     }
 
     @Override
@@ -233,7 +242,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
             case R.id.applyWithDrawalsTv:
                 // 申请提现
                 if (Long.valueOf(QingXinApplication.getInstance().getLoginUser().getCoin()) >= 10000) {
-                    applyWithdrawalsDialog.setBalance(mQingxinCoinAmountTv.getText().toString().trim(), VLUtils.keepTwoSecimal2(Double.valueOf((Long.valueOf(mQingxinCoinAmountTv.getText().toString().trim()) / 100)) + ""));
+                    applyWithdrawalsDialog.setBalance(mQingxinCoinAmountTv.getText().toString().trim(), QingXinApplication.getInstance().getLoginSession().getMem().getAvailable_coin());
                     applyWithdrawalsDialog.show();
                 } else {
                     VLDialog.showAlertDialog(getActivity(), getActivity().getResources().getString(R.string.warm_remind), getActivity().getResources().getString(R.string.can_not_withdrawals_remind_message), true, new VLResHandler() {
