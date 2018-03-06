@@ -64,7 +64,7 @@ public class DefaultZoomableController
   private float mMinScaleFactor = 1.0f;
   private float mMaxScaleFactor = 2.0f;
 
-  // View bounds, in view-absolute coordinates
+  // PublishView bounds, in view-absolute coordinates
   private final RectF mViewBounds = new RectF();
   // Non-transformed image bounds, in view-absolute coordinates
   private final RectF mImageBounds = new RectF();

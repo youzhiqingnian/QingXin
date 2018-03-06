@@ -27,15 +27,17 @@ import rx.subscriptions.CompositeSubscription;
 public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
 
     private volatile boolean isFirstUploadSuccess;
-    private DiaryPublishContract.View mDiaryPublishView;
+    private DiaryPublishContract.PublishView mDiaryPublishPublishView;
+    private static final String BEFORE_FILE = "BEFORE_FILE";
+    private static final String AFTER_FILE = "AFTER_FILE";
 
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    DiaryPublishPresenter(@NonNull DiaryPublishContract.View diaryPublishView) {
-        mDiaryPublishView = diaryPublishView;
+    DiaryPublishPresenter(@NonNull DiaryPublishContract.PublishView diaryPublishPublishView) {
+        mDiaryPublishPublishView = diaryPublishPublishView;
         mCompositeSubscription = new CompositeSubscription();
-        mDiaryPublishView.setPresenter(this);
+        mDiaryPublishPublishView.setPresenter(this);
     }
 
     @Override
@@ -57,7 +59,47 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
 
     @Override
     public void updateDiary(@NonNull DiaryPublishParams diaryPublishParams) {
+        if (null == diaryPublishParams.getAfterFile() && null == diaryPublishParams.getBeforeFile()) {
+            publishDiary(diaryPublishParams);
+        } else if (null != diaryPublishParams.getBeforeFile() && null != diaryPublishParams.getAfterFile()) {
+            uploadPhotos(diaryPublishParams);
+        } else if (null == diaryPublishParams.getBeforeFile() && null != diaryPublishParams.getAfterFile()) {
+            uploadPhotos(diaryPublishParams, diaryPublishParams.getAfterFile(), AFTER_FILE);
+        } else if (null == diaryPublishParams.getAfterFile() && null != diaryPublishParams.getBeforeFile()) {
+            uploadPhotos(diaryPublishParams, diaryPublishParams.getBeforeFile(), BEFORE_FILE);
+        }
+    }
 
+    private void uploadPhotos(DiaryPublishParams diaryPublishParams, File file, String flag) {
+        RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("aFile", file.getName(), requestFile);
+        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(UploadService.class).uploadFile(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.io())
+                .subscribe(new Observer<ContentBean<UploadResult>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        HandErrorUtils.handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(ContentBean<UploadResult> uploadResultContentBean) {
+                        if (!HandErrorUtils.isError(uploadResultContentBean.getCode())) {
+                            if (BEFORE_FILE.equals(flag)) {
+                                diaryPublishParams.setBeforeFileName(uploadResultContentBean.getContent().getFilename());
+                            } else if (AFTER_FILE.equals(flag)) {
+                                diaryPublishParams.setAfterFileName(uploadResultContentBean.getContent().getFilename());
+                            }
+                            publishDiary(diaryPublishParams);
+                        } else {
+                            mDiaryPublishPublishView.onPublishFailed(uploadResultContentBean.getMsg());
+                        }
+                    }
+                }));
     }
 
     private void uploadPhotos(@NonNull DiaryPublishParams diaryPublishParams) {
@@ -89,7 +131,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
                                 publishDiary(diaryPublishParams);
                             }
                         } else {
-                            mDiaryPublishView.onError(uploadResultContentBean.getMsg());
+                            mDiaryPublishPublishView.onPublishFailed(uploadResultContentBean.getMsg());
                         }
                     }
                 }));
@@ -113,9 +155,9 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
                     @Override
                     public void onNext(ContentBean<DiaryPublishResult> resultContentBean) {
                         if (!HandErrorUtils.isError(resultContentBean.getCode())) {
-                            mDiaryPublishView.onSuccess(resultContentBean.getContent());
+                            mDiaryPublishPublishView.onPublishSuccess(resultContentBean.getContent());
                         } else {
-                            mDiaryPublishView.onError(resultContentBean.getMsg());
+                            mDiaryPublishPublishView.onPublishFailed(resultContentBean.getMsg());
                         }
                     }
                 }));

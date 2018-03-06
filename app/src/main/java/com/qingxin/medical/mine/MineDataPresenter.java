@@ -93,7 +93,7 @@ public class MineDataPresenter implements MineDataContract.Presenter {
 //                                publishDiary(diaryPublishParams);
                             }
                         } else {
-//                            mDiaryPublishView.onError(uploadResultContentBean.getMsg());
+//                            mDiaryPublishView.onPublishFailed(uploadResultContentBean.getMsg());
                         }
                     }
                 }));

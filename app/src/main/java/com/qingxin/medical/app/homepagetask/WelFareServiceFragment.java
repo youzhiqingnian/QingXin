@@ -200,7 +200,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
 //    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 //    @Override
-//    public void onSuccess(MemBean memBean) {
+//    public void onPublishSuccess(MemBean memBean) {
 //        hideView(R.layout.layout_loading);
 //        Log.i("是否签到的bean",memBean.toString());
 //        if(!memBean.getMem().getHas_checkin().equals("n")){

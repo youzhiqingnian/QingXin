@@ -59,13 +59,13 @@ public class ShareDialog extends Dialog implements View.OnClickListener {
         View mWeiboLl = view.findViewById(R.id.weiboLl);
         View mCopyLinkLl = view.findViewById(R.id.copyLinkLl);
 //        if (mFlag == 0) {
-//            shareSuccessIv.setVisibility(View.GONE);
-//            shareSuccessText.setVisibility(View.GONE);
-//            cancel.setVisibility(View.GONE);
+//            shareSuccessIv.setVisibility(PublishView.GONE);
+//            shareSuccessText.setVisibility(PublishView.GONE);
+//            cancel.setVisibility(PublishView.GONE);
 //        } else {
-//            shareSuccessIv.setVisibility(View.VISIBLE);
-//            shareSuccessText.setVisibility(View.VISIBLE);
-//            cancel.setVisibility(View.VISIBLE);
+//            shareSuccessIv.setVisibility(PublishView.VISIBLE);
+//            shareSuccessText.setVisibility(PublishView.VISIBLE);
+//            cancel.setVisibility(PublishView.VISIBLE);
 //        }
         mCancelShareTv.setOnClickListener(this);
         mWechatFriendsLl.setOnClickListener(this);

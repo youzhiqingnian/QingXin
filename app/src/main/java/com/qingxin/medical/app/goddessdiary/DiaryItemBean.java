@@ -2,6 +2,8 @@ package com.qingxin.medical.app.goddessdiary;
 
 import com.qingxin.medical.app.homepagetask.model.VipProductBean;
 import com.qingxin.medical.base.BaseBean;
+import com.qingxin.medical.home.medicalbeauty.MedicalBeautyListBean;
+
 import java.io.Serializable;
 /**
  * Date 2018-02-05
@@ -52,6 +54,15 @@ public class DiaryItemBean extends BaseBean  implements Serializable {
     private MemBean mem;
     private VipProductBean product;
     private String is_collect;
+    private MedicalBeautyListBean wiki;
+
+    public MedicalBeautyListBean getWiki() {
+        return wiki;
+    }
+
+    public void setWiki(MedicalBeautyListBean wiki) {
+        this.wiki = wiki;
+    }
 
     public String getId() {
         return id;
