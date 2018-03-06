@@ -470,7 +470,8 @@
                 android:id="@+id/diaryRv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="31dp" />
+                android:layout_marginBottom="31dp"
+                android:descendantFocusability="afterDescendants" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.constraint.ConstraintLayout>

@@ -9,12 +9,16 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.mine.MineFragment;
 import com.qingxin.medical.mine.login.LoginFragment;
+import com.qingxin.medical.utils.ToastUtils;
+import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
+import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
 
@@ -147,5 +151,23 @@ public class HomePageTaskActivity extends QingXinActivity implements LoginFragme
             }
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    private boolean isFirst = true;
+
+    @Override
+    public void onBackPressed() {
+        if (isFirst) {
+            isFirst = false;
+            ToastUtils.showToast("再按一次退出应用!");
+            VLScheduler.instance.schedule(2500, VLScheduler.THREAD_MAIN, new VLBlock() {
+                @Override
+                protected void process(boolean canceled) {
+                    isFirst = true;
+                }
+            });
+        } else {
+            finish();
+        }
     }
 }

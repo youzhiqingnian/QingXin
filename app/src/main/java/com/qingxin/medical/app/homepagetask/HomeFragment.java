@@ -222,11 +222,11 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
         List<StrictSelBean> preferrsList = mHomeBean.getPreferrs();
         RecyclerView slectionRv = mRootView.findViewById(R.id.slectionRv);
+        TextView selectionGapTv = mRootView.findViewById(R.id.selectionGapTv);
 
         if (preferrsList == null || preferrsList.size() == 0) {
-            TextView mSelectionGapTv = mRootView.findViewById(R.id.selectionGapTv);
             mSlectionMoreRl.setVisibility(View.GONE);
-            mSelectionGapTv.setVisibility(View.GONE);
+            selectionGapTv.setVisibility(View.GONE);
             slectionRv.setVisibility(View.GONE);
         } else {
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
@@ -237,6 +237,10 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             slectionRv.setNestedScrollingEnabled(false);
             strictSelctionAdapter.setOnItemClickListener((adapter12, view, position) -> StrictSelDetailActivity.startSelf(getActivity(), (StrictSelBean) adapter12.getData().get(position)));
         }
+
+        mSlectionMoreRl.setVisibility(View.GONE);
+        selectionGapTv.setVisibility(View.GONE);
+        slectionRv.setVisibility(View.GONE);
 
         RecyclerView diaryRv = mRootView.findViewById(R.id.diaryRv);
         List<DiaryItemBean> diaryList = mHomeBean.getDiarys();
