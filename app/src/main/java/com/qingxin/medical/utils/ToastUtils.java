@@ -30,14 +30,11 @@ public class ToastUtils {
                 @Override
                 public void run() {
                     show(mMessage);
-
-
                 }
             });
         } else {
             show(mMessage);
         }
-
     }
 
     private static void show(String mMessage) {

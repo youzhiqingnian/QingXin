@@ -38,7 +38,6 @@
         android:ellipsize="end"
         android:lineSpacingExtra="5dp"
         android:maxLines="2"
-        android:text="小气泡美颜@全面部逐层净斑，赋活新生，圣诞大促"
         android:textColor="@color/text_color"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -54,7 +53,6 @@
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
         android:maxLines="1"
-        android:text="成都奕后激光整形医院"
         android:textColor="@color/text_color_origin_price"
         android:textSize="12sp" />
 
@@ -77,7 +75,6 @@
         android:layout_marginBottom="-3dp"
         android:layout_toEndOf="@id/rmbIconTv"
         android:layout_toRightOf="@id/rmbIconTv"
-        android:text="888"
         android:textColor="@color/price_pink"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -91,7 +88,6 @@
         android:layout_alignParentRight="true"
         android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
-        android:text="2235次预约"
         android:textColor="@color/text_color_origin_price"
         android:textSize="12sp" />
 

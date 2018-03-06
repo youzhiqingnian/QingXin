@@ -13,7 +13,7 @@ public class DiaryPublishParams extends BaseBean {
 
     private File beforeFile, afterFile;
     private String beforeFileName, afterFileName;
-    private String productId;
+    private String wikiId;
     private String content;
 
     public File getBeforeFile() {
@@ -48,12 +48,12 @@ public class DiaryPublishParams extends BaseBean {
         this.afterFileName = afterFileName;
     }
 
-    public String getProductId() {
-        return productId;
+    public String getWikiId() {
+        return wikiId;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setWikiId(String wikiId) {
+        this.wikiId = wikiId;
     }
 
     public String getContent() {

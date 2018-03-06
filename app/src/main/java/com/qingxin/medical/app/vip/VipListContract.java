@@ -17,6 +17,6 @@ public class VipListContract {
     }
 
     interface Presenter extends BasePresenter {
-        void getVipList(int limit,int skip,String isvip,String order);
+        void getVipList(int limit,int skip,String search);
     }
 }

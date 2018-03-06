@@ -17,6 +17,7 @@
     <!--首页-->
     <string name="home_search_text_hint">大家在搜:自体脂肪填充</string>
     <string name="share_only_by_new_person">歆人专享</string>
+    <string name="diary">日记</string>
     <string name="goddess_diary">女神日记</string>
     <string name="local_strict_selection">本地严选</string>
     <string name="encyclopedia_of_medical_beauty">医美百科</string>
@@ -49,6 +50,7 @@
     <string name="cancel_collect_ok">已取消收藏</string>
     <string name="agency">机构</string>
     <string name="doctor">医生</string>
+    <string name="xin_buy">歆购</string>
 
     <!--歆人专享-->
     <string name="vip_unique_price">歆人独享专价</string>
@@ -130,5 +132,7 @@
     <string name="hint_login_input_phone">请输入手机号</string>
     <string name="hint_login_input_code">请输入验证码</string>
     <string name="get_verification_code">获取验证码</string>
+    <string name="history_record">历史记录</string>
+    <string name="clear_history">清除历史记录</string>
 
 </resources>

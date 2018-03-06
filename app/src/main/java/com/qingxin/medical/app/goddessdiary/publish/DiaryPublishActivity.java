@@ -225,7 +225,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
         if (requestCode == MedicalBeautyActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             mMedicalBeautyListBean = (MedicalBeautyListBean) intent.getSerializableExtra(MedicalBeautyActivity.MEDICAL_BEAUTY_LIST_BEAN);
             mCategoryTv.setText(mMedicalBeautyListBean.getName());
-            mDiaryPublishParams.setProductId(mMedicalBeautyListBean.getId());
+            mDiaryPublishParams.setWikiId(mMedicalBeautyListBean.getId());
         }
     };
 

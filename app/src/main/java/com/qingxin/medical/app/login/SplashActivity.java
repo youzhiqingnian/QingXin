@@ -6,13 +6,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.widget.Toast;
+import android.view.WindowManager;
 
-import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
-import com.amap.api.location.AMapLocationListener;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.Constants;
 import com.qingxin.medical.app.homepagetask.HomePageTaskActivity;
@@ -37,6 +34,7 @@ public class SplashActivity extends QingXinActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 //        requestGaodeLoction();
         VLScheduler.instance.schedule(3000, VLScheduler.THREAD_MAIN, new VLBlock() {

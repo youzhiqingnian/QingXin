@@ -22,6 +22,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.qingxin.medical.utils.ToastUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -274,16 +276,7 @@ public class VLActivity extends AppCompatActivity implements VLMessageManager.VL
     public void showToast(final String msg) {
         if (mState == VLActivityState.ActivityDestroyed)
             return;
-        if (VLUtils.threadInMain()) {
-            VLToast.makeText(VLActivity.this, msg).show();
-        } else {
-            VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {
-                @Override
-                protected void process(boolean canceled) {
-                    VLToast.makeText(VLActivity.this, msg).show();
-                }
-            });
-        }
+        ToastUtils.showToast(msg);
     }
 
     public void showToast(final int resId) {
