@@ -3,6 +3,7 @@ package com.qingxin.medical.mine;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,8 +21,13 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinAdapter;
 import com.qingxin.medical.R;
+import com.qingxin.medical.album.AlbumAdapter;
+import com.qingxin.medical.album.AlbumItemData;
+import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishParams;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
+import com.qingxin.medical.common.CommonDialogFactory;
+import com.qingxin.medical.common.QingXinLocalPhotoPopupWindow;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.qingxin.medical.user.User;
 import com.qingxin.medical.widget.indicator.CommonNavigator;
@@ -32,8 +38,12 @@ import com.qingxin.medical.widget.indicator.LinePagerIndicator;
 import com.qingxin.medical.widget.indicator.MagicIndicator;
 import com.qingxin.medical.widget.indicator.SimplePagerTitleView;
 import com.qingxin.medical.widget.indicator.ViewPagerHelper;
+import com.vlee78.android.vl.VLAsyncHandler;
 import com.vlee78.android.vl.VLFragment;
+import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLUtils;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +64,10 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
     private QingXinBroadCastReceiver mReceiver;
 
     public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
+
+    private Bitmap mBeforePhoto;
+    private String mBeforePhotoPath;
+    private DiaryPublishParams mDiaryPublishParams;
 
     public MineDataFragment() {
     }
@@ -94,6 +108,44 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
             }
             userNicknameTv.setText(QingXinApplication.getInstance().getLoginUser().getName());
         }
+
+        mDiaryPublishParams = new DiaryPublishParams();
+
+        userHeadSdv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CommonDialogFactory.createLoadLocalPhotoPopupWindow(getActivity(), true, new VLAsyncHandler<QingXinLocalPhotoPopupWindow.LoadPhotoResult>(null, VLScheduler.THREAD_MAIN) {
+                    @Override
+                    protected void handler(boolean succeed) {
+                        if (!succeed) return;
+                        QingXinLocalPhotoPopupWindow.LoadPhotoResult result = getParam();
+                        if (null == result) return;
+                    /*    if (AlbumAdapter.AFTER_PHOTO.equals(whichPhoto)) {
+                            mAfterPhoto = result.getCutResult();
+                            AlbumItemData<Bitmap> albumItemData = new AlbumItemData<Bitmap>(mAfterPhoto) {
+                                @Override
+                                public String getImageUrl() {
+                                    return null;
+                                }
+                            };
+                            mAfterAlbumAdapter.addItem(albumItemData);
+                            mAfterPhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mAfterPhoto);
+                        } else {*/
+                            mBeforePhoto = result.getCutResult();
+//                            AlbumItemData<Bitmap> albumItemData = new AlbumItemData<Bitmap>(mBeforePhoto) {
+//                                @Override
+//                                public String getImageUrl() {
+//                                    return null;
+//                                }
+//                            };
+//                            mBeforeAlbumAdapter.addItem(albumItemData);
+                            mBeforePhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mBeforePhoto);
+                        mDiaryPublishParams.setAfterFile(new File(mBeforePhotoPath));
+
+                    }
+                });
+            }
+        });
 
         MagicIndicator indicator = mRootView.findViewById(R.id.magicIndicator);
         final VLFragment[] fragments = new VLFragment[]{MyBookedProductListFragment.newInstance(), MyPublishedDiaryListFragment.newInstance(), MyCollectedTabListFragment.newInstance()};
