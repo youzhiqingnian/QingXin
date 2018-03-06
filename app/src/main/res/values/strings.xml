@@ -89,7 +89,7 @@
     <string name="click_to_recommend">点击推荐</string>
     <string name="qingxin_coin_detail">青歆币明细</string>
     <string name="warm_remind">温馨提示</string>
-    <string name="can_not_withdrawals_remind_message">抱歉，您的青新币总额未达到10000，还不能提现，加油，再攒攒</string>
+    <string name="can_not_withdrawals_remind_message">抱歉，您的青歆币总额未达到10000，还不能提现，加油，再攒攒</string>
     <string name="apply_withdrawals_finish_remind_message">您的申请已收到，稍后青歆客服会与您联系，将现金发放与您</string>
     <string name="plus_300">+300</string>
     <string name="plus_1000">+1000</string>
