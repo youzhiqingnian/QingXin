@@ -23,7 +23,7 @@ public class VipListPresenter implements VipListContract.Presenter {
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    public VipListPresenter(View vipListView) {
+    public VipListPresenter(@NonNull View vipListView) {
         mVipListryView = vipListView;
         mCompositeSubscription = new CompositeSubscription();
         mVipListryView.setPresenter(this);
@@ -42,8 +42,8 @@ public class VipListPresenter implements VipListContract.Presenter {
     }
 
     @Override
-    public void getVipList(int limit, int skip, String isvip, String order) {
-        mCompositeSubscription.add(NetRequestListManager.getVipList(limit, skip, isvip, order)
+    public void getVipList(int limit, int skip, String search) {
+        mCompositeSubscription.add(NetRequestListManager.getVipList(limit, skip, search)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<VipListBean>>() {

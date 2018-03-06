@@ -2,10 +2,7 @@ package com.qingxin.medical.app.homepagetask;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,8 +22,6 @@ import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.homepagetask.model.WithdrawalsItemBean;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.home.ListBean;
-import com.qingxin.medical.mine.login.LoginFragment;
-import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.qingxin.medical.widget.indicator.view.ApplyWithdrawalsDialog;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
@@ -43,7 +38,7 @@ import com.vlee78.android.vl.VLUtils;
  *
  * @author zhikuo1
  */
-public class WelFareServiceFragment extends VLFragment implements WelfareCoinLogsListContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, QingXinBroadCastReceiver.OnReceiverCallbackListener, ApplyWithdrawalsDialog.OnConfirmWithdrawalListener {
+public class WelFareServiceFragment extends VLFragment implements WelfareCoinLogsListContract.View, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener, ApplyWithdrawalsDialog.OnConfirmWithdrawalListener {
 
 
     private WelfareCoinLogsListContract.Presenter mPresenter;
@@ -53,7 +48,6 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
 
     private TextView mQingxinCoinAmountTv;
     private TextView mClickToSignTv;
-    private QingXinBroadCastReceiver mReceiver;
     private VLTitleBar mTitleBar;
 
     private ApplyWithdrawalsDialog applyWithdrawalsDialog;
@@ -77,22 +71,8 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
             return;
         if (getView() == null) return;
-
         initView();
-        initBroadcastReceiver();
     }
-
-    /**
-     * 初始化广播接收者
-     */
-    private void initBroadcastReceiver() {
-        mReceiver = new QingXinBroadCastReceiver();
-        IntentFilter intentFilter = new IntentFilter(LoginFragment.LOGIN_ACTION);
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
-        mReceiver.setReceiverListener(this);
-
-    }
-
 
     private void initView() {
         mPresenter = new WelfareCoinLogPresenter(this);
@@ -249,13 +229,11 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     public void onDestroy() {
         super.onDestroy();
         mPresenter.unsubscribe();
-        unRegisterLoginBroadcast();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-
             case R.id.qingxinCoinRuleTv:
                 // 青歆币规则
 
@@ -316,22 +294,6 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
             });
         }
     };
-
-    //取消注册
-    private void unRegisterLoginBroadcast() {
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReceiver);
-    }
-
-    @Override
-    public void receiverUpdata(Intent intent) {
-        if (QingXinApplication.getInstance().getLoginUser() != null) {
-            mQingxinCoinAmountTv.setText(QingXinApplication.getInstance().getLoginUser().getCoin());
-        }
-        boolean isRefresh = intent.getBooleanExtra("refresh", false);
-        if (isRefresh) {
-            getServiceList(true);
-        }
-    }
 
     @Override
     public void confirmWithdrawal(String amount) {

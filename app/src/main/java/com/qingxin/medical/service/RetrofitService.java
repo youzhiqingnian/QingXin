@@ -47,7 +47,7 @@ public interface RetrofitService {
      * @param skip  跳过第几条数据 非必填   默认值 0
      */
     @GET("/diary")
-    Observable<ContentBean<ListBean<DiaryItemBean>>> getGoddessDiaryList(@Query("limit") int limit, @Query("skip") int skip);
+    Observable<ContentBean<ListBean<DiaryItemBean>>> getGoddessDiaryList(@Query("limit") int limit, @Query("skip") int skip, @Query("search") String search);
 
     /**
      * 获取女神日记详情
@@ -70,7 +70,7 @@ public interface RetrofitService {
      * 获取歆人专享列表
      */
     @GET("/product")
-    Observable<ContentBean<VipListBean>> getVipList(@Query("limit") int limit, @Query("skip") int skip, @Query("isvip") String isvip, @Query("order") String order);
+    Observable<ContentBean<VipListBean>> getVipList(@Query("limit") int limit, @Query("skip") int skip, @Query("search") String search);
 
     /**
      * 获取歆人专享详情

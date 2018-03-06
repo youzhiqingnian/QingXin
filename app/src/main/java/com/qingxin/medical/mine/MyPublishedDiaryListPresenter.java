@@ -1,12 +1,14 @@
 package com.qingxin.medical.mine;
 
 import android.support.annotation.NonNull;
+
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.qingxin.medical.utils.ToastUtils;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -25,7 +27,7 @@ public class MyPublishedDiaryListPresenter implements MyPublishedDiaryListContra
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    public MyPublishedDiaryListPresenter(MyPublishedDiaryListContract.View vipListView) {
+    public MyPublishedDiaryListPresenter(@NonNull MyPublishedDiaryListContract.View vipListView) {
         mPublishedListryView = vipListView;
         mCompositeSubscription = new CompositeSubscription();
         mPublishedListryView.setPresenter(this);
@@ -55,7 +57,7 @@ public class MyPublishedDiaryListPresenter implements MyPublishedDiaryListContra
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mPublishedListryView.onError(new QingXinError(e));
                     }
 
                     @Override
@@ -63,7 +65,7 @@ public class MyPublishedDiaryListPresenter implements MyPublishedDiaryListContra
                         if (!HandErrorUtils.isError(vipList.getCode())) {
                             mPublishedListryView.onSuccess(vipList.getContent());
                         } else {
-                            ToastUtils.showToast(vipList.getMsg());
+                            mPublishedListryView.onError(new QingXinError(vipList.getMsg()));
                         }
                     }
                 })

@@ -3,6 +3,7 @@ package com.qingxin.medical.mine;
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 
 /**
@@ -15,7 +16,7 @@ public class MyPublishedDiaryListContract {
 
     interface View extends BaseView<Presenter> {
         void onSuccess(ListBean<DiaryItemBean> diary);
-        void onError(String result);
+        void onError(QingXinError error);
     }
 
     interface Presenter extends BasePresenter {

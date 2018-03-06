@@ -44,8 +44,8 @@ public class NetRequestListManager {
      * @param skip  跳过第几条数据 非必填   默认值 0
      * @return
      */
-    public static Observable<ContentBean<ListBean<DiaryItemBean>>> getGoddessDiary(int limit, int skip) {
-        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getGoddessDiaryList(limit, skip);
+    public static Observable<ContentBean<ListBean<DiaryItemBean>>> getGoddessDiary(int limit, int skip, String search) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getGoddessDiaryList(limit, skip, search);
     }
 
 
@@ -57,8 +57,8 @@ public class NetRequestListManager {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).collectDiary(id);
     }
 
-    public static Observable<ContentBean<VipListBean>> getVipList(int limit, int skip, String isvip, String order) {
-        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getVipList(limit, skip, isvip, order);
+    public static Observable<ContentBean<VipListBean>> getVipList(int limit, int skip,String search) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getVipList(limit, skip, search);
     }
 
     public static Observable<ContentBean<VipDetailBean>> getVipDetail(String id) {

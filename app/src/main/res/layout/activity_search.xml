@@ -20,7 +20,8 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:background="@drawable/home_search_bg">
+            android:background="@drawable/home_search_bg"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -35,11 +36,13 @@
 
             <EditText
                 android:id="@+id/searchEt"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@null"
                 android:gravity="center_vertical"
                 android:hint="@string/home_search_text_hint"
+                android:maxLength="20"
                 android:maxLines="1"
                 android:paddingEnd="15dp"
                 android:paddingLeft="0dp"
@@ -48,6 +51,19 @@
                 android:textColor="@color/text_color"
                 android:textColorHint="@color/text_color_hint"
                 android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/deleteIv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:contentDescription="@string/app_name"
+                android:paddingEnd="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingStart="15dp"
+                android:src="@mipmap/ic_delete"
+                android:visibility="gone" />
         </LinearLayout>
 
         <TextView
@@ -64,29 +80,97 @@
             android:textSize="16sp" />
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/historyView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/searchResultView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/searchHistoryLl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <com.qingxin.medical.widget.indicator.MagicIndicator
-        android:id="@+id/magicIndicator"
-        android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:visibility="gone" />
+            <TextView
+                android:id="@+id/historyTv"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="#edf0f2"
+                android:gravity="center_vertical"
+                android:paddingEnd="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:paddingStart="15dp"
+                android:text="@string/history_record"
+                android:textColor="#8d8e90"
+                android:textSize="16sp" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/historyRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/clearHistoryTv"
+                android:layout_width="140dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/ripple_clear_history_bg"
+                android:gravity="center"
+                android:text="@string/clear_history"
+                android:textColor="#3bc5e8"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/searchResultView"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@color/white"
+            android:visibility="gone">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_gravity="top"
+                android:background="@color/line_color" />
+
+            <TextView
+                android:id="@+id/searchResultTv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
+                android:gravity="center_vertical"
+                android:textColor="#464a4c"
+                android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_gravity="bottom"
+                android:background="@color/line_color" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/searchResultLl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.qingxin.medical.widget.indicator.MagicIndicator
+                android:id="@+id/magicIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="44dp" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

@@ -93,7 +93,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
     }
 
     private void publishDiary(@NonNull DiaryPublishParams diaryPublishParams) {
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(DiaryPublishService.class).diaryPublish(diaryPublishParams.getProductId(), diaryPublishParams.getBeforeFileName(), diaryPublishParams.getAfterFileName(), diaryPublishParams.getContent())
+        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(DiaryPublishService.class).diaryPublish(diaryPublishParams.getWikiId(), diaryPublishParams.getBeforeFileName(), diaryPublishParams.getAfterFileName(), diaryPublishParams.getContent())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<DiaryPublishResult>>() {

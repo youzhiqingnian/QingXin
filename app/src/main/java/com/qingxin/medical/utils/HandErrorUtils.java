@@ -4,6 +4,8 @@ import com.google.gson.JsonParseException;
 import com.qingxin.medical.R;
 import com.vlee78.android.vl.VLApplication;
 import org.json.JSONException;
+
+import java.net.SocketTimeoutException;
 import java.text.ParseException;
 import retrofit2.HttpException;
 /**
@@ -122,9 +124,10 @@ public class HandErrorUtils {
                 || e instanceof JSONException
                 || e instanceof ParseException){
             ToastUtils.showToast("数据解析错误");            //均视为解析错误
-        } else {
+        } else if (e instanceof SocketTimeoutException){
+            ToastUtils.showToast("连接超时,请稍后再试");
+        }else {
             ToastUtils.showToast("未知错误");          //未知错误
         }
     }
-
 }

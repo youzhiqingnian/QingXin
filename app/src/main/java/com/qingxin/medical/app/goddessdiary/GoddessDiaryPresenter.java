@@ -1,19 +1,21 @@
 package com.qingxin.medical.app.goddessdiary;
 
 import android.support.annotation.NonNull;
+
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- *
  * Date 2018-02-03
+ *
  * @author zhikuo1
  */
 public class GoddessDiaryPresenter implements DiaryListContract.Presenter {
@@ -43,8 +45,8 @@ public class GoddessDiaryPresenter implements DiaryListContract.Presenter {
     }
 
     @Override
-    public void getGoddessDiaryList(int limit, int skip) {
-        mCompositeSubscription.add(NetRequestListManager.getGoddessDiary(limit, skip)
+    public void getGoddessDiaryList(int limit, int skip, String search) {
+        mCompositeSubscription.add(NetRequestListManager.getGoddessDiary(limit, skip, search)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<ListBean<DiaryItemBean>>>() {
@@ -59,12 +61,11 @@ public class GoddessDiaryPresenter implements DiaryListContract.Presenter {
 
                     @Override
                     public void onNext(ContentBean<ListBean<DiaryItemBean>> diary) {
-                        if(!HandErrorUtils.isError(diary.getCode())){
+                        if (!HandErrorUtils.isError(diary.getCode())) {
                             mGoddessDiaryView.onSuccess(diary.getContent());
-                        }else{
+                        } else {
                             ToastUtils.showToast(diary.getMsg());
                         }
-
                     }
                 })
         );
