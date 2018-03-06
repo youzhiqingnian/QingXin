@@ -2,24 +2,23 @@ package com.qingxin.medical.mine;
 
 import android.support.annotation.NonNull;
 
-import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishContract;
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishParams;
+import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishResult;
+import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishService;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.upload.UploadResult;
 import com.qingxin.medical.upload.UploadService;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.vlee78.android.vl.VLApplication;
-
 import java.io.File;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
-
 /**
  * Date 2018-03-07
  *
@@ -28,8 +27,6 @@ import rx.subscriptions.CompositeSubscription;
 
 public class MineDataPresenter implements MineDataContract.Presenter {
 
-
-    private volatile boolean isFirstUploadSuccess;
     private MineDataContract.View mUploadHeadView;
 
     @NonNull
@@ -65,7 +62,7 @@ public class MineDataPresenter implements MineDataContract.Presenter {
     }
 
     private void uploadPhotos(@NonNull DiaryPublishParams diaryPublishParams) {
-        File file = isFirstUploadSuccess ? diaryPublishParams.getAfterFile() : diaryPublishParams.getBeforeFile();
+        File file = diaryPublishParams.getBeforeFile();
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("aFile", file.getName(), requestFile);
         mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(UploadService.class).uploadFile(body)
@@ -90,7 +87,7 @@ public class MineDataPresenter implements MineDataContract.Presenter {
                                 uploadPhotos(diaryPublishParams);
                             } else {
                                 diaryPublishParams.setAfterFileName(uploadResultContentBean.getContent().getFilename());
-//                                publishDiary(diaryPublishParams);
+                                publishDiary(diaryPublishParams);
                             }
                         } else {
 //                            mDiaryPublishView.onError(uploadResultContentBean.getMsg());
@@ -98,4 +95,31 @@ public class MineDataPresenter implements MineDataContract.Presenter {
                     }
                 }));
     }
+
+    private void publishDiary(@NonNull DiaryPublishParams diaryPublishParams) {
+        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(DiaryPublishService.class).diaryPublish(diaryPublishParams.getWikiId(), diaryPublishParams.getBeforeFileName(), diaryPublishParams.getAfterFileName(), diaryPublishParams.getContent())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ContentBean<DiaryPublishResult>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        HandErrorUtils.handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(ContentBean<DiaryPublishResult> resultContentBean) {
+                        if (!HandErrorUtils.isError(resultContentBean.getCode())) {
+                            mDiaryPublishView.onSuccess(resultContentBean.getContent());
+                        } else {
+                            mDiaryPublishView.onError(resultContentBean.getMsg());
+                        }
+                    }
+                }));
+    }
+
 }

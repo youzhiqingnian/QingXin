@@ -140,7 +140,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
 //                            };
 //                            mBeforeAlbumAdapter.addItem(albumItemData);
                             mBeforePhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mBeforePhoto);
-                        mDiaryPublishParams.setAfterFile(new File(mBeforePhotoPath));
+                        mDiaryPublishParams.setBeforeFile(new File(mBeforePhotoPath));
 
                     }
                 });
