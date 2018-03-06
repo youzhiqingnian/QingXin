@@ -9,12 +9,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.qingxin.medical.QingXinAdapter;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListFragment;
@@ -88,17 +90,17 @@ public class SearchActivity extends QingXinActivity implements View.OnClickListe
             mClearHistoryTv.setVisibility(View.GONE);
             mHistoryTv.setText("没有历史记录");
         }
-        mClearHistoryTv.setOnClickListener(this);
         mSearchResultAdapter = new SearchResultAdapter(mSearchResults);
         RecyclerView recyclerView = findViewById(R.id.historyRv);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(mSearchResultAdapter);
-
         mSearchEt = findViewById(R.id.searchEt);
         mSearchResultTv = findViewById(R.id.searchResultTv);
         mSearchHistoryLl = findViewById(R.id.searchHistoryLl);
         mSearchResultView = findViewById(R.id.searchResultView);
         mSearchResultLl = findViewById(R.id.searchResultLl);
+        mSearchResultAdapter.setOnItemClickListener((adapter, view, position) -> onClick(mSearchResultView));
+
         mSearchEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -133,7 +135,7 @@ public class SearchActivity extends QingXinActivity implements View.OnClickListe
         deleteIv.setOnClickListener(this);
         cancelTv.setOnClickListener(this);
         mSearchResultView.setOnClickListener(this);
-
+        mClearHistoryTv.setOnClickListener(this);
         MagicIndicator indicator = findViewById(R.id.magicIndicator);
         ViewPager viewPager = findViewById(R.id.viewPager);
         mVipListFragment = VipListFragment.newInstance(false);
@@ -144,6 +146,7 @@ public class SearchActivity extends QingXinActivity implements View.OnClickListe
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(adapter);
         CommonNavigator navigator = new CommonNavigator(this);
+        navigator.setAdjustMode(true);
         navigator.setAdapter(new CommonNavigatorAdapter() {
             @Override
             public int getCount() {
@@ -164,8 +167,8 @@ public class SearchActivity extends QingXinActivity implements View.OnClickListe
             @Override
             public IPagerIndicator getIndicator(Context context) {
                 LinePagerIndicator lineIndicator = new LinePagerIndicator(context);
+                lineIndicator.setMode(LinePagerIndicator.MODE_WRAP_CONTENT);
                 lineIndicator.setLineHeight(VLUtils.dip2px(2));
-                lineIndicator.setLineWidth(VLUtils.dip2px(16));
                 lineIndicator.setRoundRadius(VLUtils.dip2px(2));
                 lineIndicator.setLineWidth(VLUtils.dip2px(16));
                 lineIndicator.setColors(0xff3bc5e8);
@@ -193,6 +196,7 @@ public class SearchActivity extends QingXinActivity implements View.OnClickListe
                 }
                 break;
             case R.id.searchResultView:
+                hideKeyboard();
                 if (mSearchHistoryLl.getVisibility() == View.VISIBLE) {
                     mSearchHistoryLl.setVisibility(View.GONE);
                 }
@@ -224,9 +228,25 @@ public class SearchActivity extends QingXinActivity implements View.OnClickListe
                 break;
             case R.id.deleteIv:
                 mSearchEt.getText().clear();
+                if (mSearchHistoryLl.getVisibility() == View.GONE) {
+                    mSearchHistoryLl.setVisibility(View.VISIBLE);
+                }
+                if (mSearchResultLl.getVisibility() == View.VISIBLE) {
+                    mSearchResultLl.setVisibility(View.GONE);
+                }
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            if (VLUtils.isShouldHideInput(getCurrentFocus(), ev)) {
+                hideKeyboard();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

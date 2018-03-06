@@ -230,4 +230,28 @@ public class DiaryItemBean extends BaseBean {
             this.cover = cover;
         }
     }
+
+    @Override
+    public String toString() {
+        return "DiaryItemBean{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", product_id='" + product_id + '\'' +
+                ", mem_id='" + mem_id + '\'' +
+                ", oper_before_photo='" + oper_before_photo + '\'' +
+                ", oper_after_photo='" + oper_after_photo + '\'' +
+                ", summary='" + summary + '\'' +
+                ", tags='" + tags + '\'' +
+                ", words='" + words + '\'' +
+                ", ison='" + ison + '\'' +
+                ", created_at='" + created_at + '\'' +
+                ", updated_at='" + updated_at + '\'' +
+                ", visit_num=" + visit_num +
+                ", collect_num=" + collect_num +
+                ", state='" + state + '\'' +
+                ", wiki_id='" + wiki_id + '\'' +
+                ", mem=" + mem +
+                ", is_collect='" + is_collect + '\'' +
+                '}';
+    }
 }

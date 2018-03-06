@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -118,6 +119,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
                 titleView.setTextSize(16);
                 mCountTextViewList.add(titleView);
                 if (QingXinApplication.getInstance().getLoginSession() != null && mCountTextViewList.size() == 3) {
+                    Log.i("进去之后填充数量了吗","填充了哟，三种数量");
                     setCountRefresh();
                 }
                 titleView.setOnClickListener(v -> viewPager.setCurrentItem(index));
@@ -193,20 +195,19 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
 
 
     private void setCountRefresh() {
-        User sessionBean = QingXinApplication.getInstance().getLoginSession().getMem();
-        String bookCount = sessionBean.getBook_amount() + "";
-        String diaryCount = sessionBean.getDiary_amount() + "";
-        String collectCount = sessionBean.getCollect_amount() + "";
+        String bookCount = QingXinApplication.getInstance().getLoginSession().getMem().getBook_amount() + "";
+        String diaryCount = QingXinApplication.getInstance().getLoginSession().getMem().getDiary_amount() + "";
+        String collectCount = QingXinApplication.getInstance().getLoginSession().getMem().getCollect_amount() + "";
 
         if (!VLUtils.stringIsEmpty(bookCount)) {
-            mCountTextViewList.get(0).setText(getActivity().getResources().getString(R.string.appointment_count_prefix) + bookCount);
+            mCountTextViewList.get(0).setText("预约 · " + bookCount);
         }
         if (!VLUtils.stringIsEmpty(diaryCount)) {
-            mCountTextViewList.get(1).setText(getActivity().getResources().getString(R.string.diary_count_prefix) + diaryCount);
+            mCountTextViewList.get(1).setText("日记 · " + diaryCount);
 
         }
         if (!VLUtils.stringIsEmpty(collectCount)) {
-            mCountTextViewList.get(2).setText(getActivity().getResources().getString(R.string.collection_count_prefix) + collectCount);
+            mCountTextViewList.get(2).setText("收藏 · " + collectCount);
         }
     }
 
