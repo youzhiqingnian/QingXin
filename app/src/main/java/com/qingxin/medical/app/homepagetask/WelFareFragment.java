@@ -55,4 +55,9 @@ public class WelFareFragment extends VLFragment {
         }
     };
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mBroadcastReceiver);
+    }
 }
