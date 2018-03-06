@@ -29,4 +29,12 @@ public class UploadResult extends BaseBean{
     public void setFilename(String filename) {
         this.filename = filename;
     }
+
+    @Override
+    public String toString() {
+        return "UploadResult{" +
+                "url='" + url + '\'' +
+                ", filename='" + filename + '\'' +
+                '}';
+    }
 }

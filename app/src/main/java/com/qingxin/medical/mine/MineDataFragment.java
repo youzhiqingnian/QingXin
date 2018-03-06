@@ -24,12 +24,13 @@ import com.qingxin.medical.R;
 import com.qingxin.medical.album.AlbumAdapter;
 import com.qingxin.medical.album.AlbumItemData;
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishParams;
+import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishResult;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
 import com.qingxin.medical.common.CommonDialogFactory;
 import com.qingxin.medical.common.QingXinLocalPhotoPopupWindow;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
-import com.qingxin.medical.user.User;
+import com.qingxin.medical.upload.UploadResult;
 import com.qingxin.medical.widget.indicator.CommonNavigator;
 import com.qingxin.medical.widget.indicator.CommonNavigatorAdapter;
 import com.qingxin.medical.widget.indicator.IPagerIndicator;
@@ -43,6 +44,8 @@ import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,11 +56,14 @@ import java.util.List;
  * @author zhikuo
  */
 
-public class MineDataFragment extends QingXinFragment implements QingXinBroadCastReceiver.OnReceiverCallbackListener {
+public class MineDataFragment extends QingXinFragment implements QingXinBroadCastReceiver.OnReceiverCallbackListener, MineDataContract.View {
 
     private View mRootView;
 
     private AppBarLayout mAppbar;
+
+    private SimpleDraweeView mUserHeadSdv;
+    private ImageView mDefaultHeadIv;
 
     private List<TextView> mCountTextViewList = new ArrayList();
 
@@ -68,6 +74,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
     private Bitmap mBeforePhoto;
     private String mBeforePhotoPath;
     private DiaryPublishParams mDiaryPublishParams;
+    private MineDataPresenter mPresenter;
 
     public MineDataFragment() {
     }
@@ -97,55 +104,22 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
 
     private void initView() {
 
-        SimpleDraweeView userHeadSdv = mRootView.findViewById(R.id.userHeadSdv);
-        ImageView defaultHeadIv = mRootView.findViewById(R.id.defaultHeadIv);
+        mUserHeadSdv = mRootView.findViewById(R.id.userHeadSdv);
+        mUserHeadSdv.setImageURI(Uri.parse("http://qingxin-assets.awesomes.cn/app/bc4e8580-216b-11e8-b2dd-cb5a2df58a45.jpg"));
+        mDefaultHeadIv = mRootView.findViewById(R.id.defaultHeadIv);
         TextView userNicknameTv = mRootView.findViewById(R.id.userNicknameTv);
 
         if (QingXinApplication.getInstance().getLoginUser() != null) {
             if (!VLUtils.stringIsEmpty(QingXinApplication.getInstance().getLoginUser().getCover())) {
-                defaultHeadIv.setVisibility(View.GONE);
-                userHeadSdv.setImageURI(Uri.parse(QingXinApplication.getInstance().getLoginUser().getCover()));
+                mDefaultHeadIv.setVisibility(View.GONE);
+                mUserHeadSdv.setImageURI(Uri.parse(QingXinApplication.getInstance().getLoginUser().getCover()));
             }
             userNicknameTv.setText(QingXinApplication.getInstance().getLoginUser().getName());
         }
 
+        mPresenter = new MineDataPresenter(this);
         mDiaryPublishParams = new DiaryPublishParams();
 
-        userHeadSdv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CommonDialogFactory.createLoadLocalPhotoPopupWindow(getActivity(), true, new VLAsyncHandler<QingXinLocalPhotoPopupWindow.LoadPhotoResult>(null, VLScheduler.THREAD_MAIN) {
-                    @Override
-                    protected void handler(boolean succeed) {
-                        if (!succeed) return;
-                        QingXinLocalPhotoPopupWindow.LoadPhotoResult result = getParam();
-                        if (null == result) return;
-                    /*    if (AlbumAdapter.AFTER_PHOTO.equals(whichPhoto)) {
-                            mAfterPhoto = result.getCutResult();
-                            AlbumItemData<Bitmap> albumItemData = new AlbumItemData<Bitmap>(mAfterPhoto) {
-                                @Override
-                                public String getImageUrl() {
-                                    return null;
-                                }
-                            };
-                            mAfterAlbumAdapter.addItem(albumItemData);
-                            mAfterPhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mAfterPhoto);
-                        } else {*/
-                            mBeforePhoto = result.getCutResult();
-//                            AlbumItemData<Bitmap> albumItemData = new AlbumItemData<Bitmap>(mBeforePhoto) {
-//                                @Override
-//                                public String getImageUrl() {
-//                                    return null;
-//                                }
-//                            };
-//                            mBeforeAlbumAdapter.addItem(albumItemData);
-                            mBeforePhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mBeforePhoto);
-                        mDiaryPublishParams.setBeforeFile(new File(mBeforePhotoPath));
-
-                    }
-                });
-            }
-        });
 
         MagicIndicator indicator = mRootView.findViewById(R.id.magicIndicator);
         final VLFragment[] fragments = new VLFragment[]{MyBookedProductListFragment.newInstance(), MyPublishedDiaryListFragment.newInstance(), MyCollectedTabListFragment.newInstance()};
@@ -171,7 +145,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
                 titleView.setTextSize(16);
                 mCountTextViewList.add(titleView);
                 if (QingXinApplication.getInstance().getLoginSession() != null && mCountTextViewList.size() == 3) {
-                    Log.i("进去之后填充数量了吗","填充了哟，三种数量");
+                    Log.i("进去之后填充数量了吗", "填充了哟，三种数量");
                     setCountRefresh();
                 }
                 titleView.setOnClickListener(v -> viewPager.setCurrentItem(index));
@@ -191,6 +165,14 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
         });
         indicator.setNavigator(navigator);
         ViewPagerHelper.bind(indicator, viewPager);
+
+        mUserHeadSdv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getPhotoPopupWindow().show(viewPager);
+            }
+        });
+
 
         mAppbar = mRootView.findViewById(R.id.appbar);
         RelativeLayout titleBarRl = mRootView.findViewById(R.id.titleBarRl);
@@ -220,6 +202,33 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
                 }
             }
         });
+    }
+
+    private QingXinLocalPhotoPopupWindow getPhotoPopupWindow() {
+        return CommonDialogFactory.createLoadLocalPhotoPopupWindow(getActivity(), true, new VLAsyncHandler<QingXinLocalPhotoPopupWindow.LoadPhotoResult>(null, VLScheduler.THREAD_MAIN) {
+            @Override
+            protected void handler(boolean succeed) {
+                if (!succeed) return;
+                QingXinLocalPhotoPopupWindow.LoadPhotoResult result = getParam();
+                if (null == result) return;
+                mBeforePhoto = result.getCutResult();
+                mBeforePhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mBeforePhoto);
+                mDiaryPublishParams.setBeforeFile(new File(mBeforePhotoPath));
+                mPresenter.headUpload(mDiaryPublishParams);
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.subscribe();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.unsubscribe();
     }
 
     /**
@@ -263,4 +272,29 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
         }
     }
 
+    @Override
+    public void setPresenter(MineDataContract.Presenter presenter) {
+
+    }
+
+    @Override
+    public void onSuccess(DiaryPublishResult diaryPublishResult) {
+
+    }
+
+    @Override
+    public void onSuccess(UploadResult uploadResultBean) {
+        Log.i("上传头像成功了",uploadResultBean.toString());
+        if (uploadResultBean != null && !VLUtils.stringIsEmpty(uploadResultBean.getUrl())) {
+            mDefaultHeadIv.setVisibility(View.GONE);
+            Log.i("上传头像成功了","真的成功了");
+            showToast("上传成功");
+            mUserHeadSdv.setImageURI(Uri.parse(uploadResultBean.getUrl()));
+        }
+    }
+
+    @Override
+    public void onError(String result) {
+
+    }
 }

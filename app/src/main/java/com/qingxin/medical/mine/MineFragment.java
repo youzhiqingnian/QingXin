@@ -54,7 +54,7 @@ public class MineFragment extends QingXinFragment {
         public void onReceive(Context context, Intent intent) {
             MineDataFragment mineDataFragment = MineDataFragment.newInstance();
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.container, mineDataFragment).commit();
+            fragmentTransaction.replace(R.id.container, mineDataFragment).commitAllowingStateLoss();
         }
     };
 

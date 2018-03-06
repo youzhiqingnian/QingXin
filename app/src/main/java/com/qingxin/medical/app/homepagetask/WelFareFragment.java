@@ -51,7 +51,7 @@ public class WelFareFragment extends VLFragment {
         public void onReceive(Context context, Intent intent) {
             WelFareServiceFragment welFareServiceFragment = WelFareServiceFragment.newInstance();
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.containerFl, welFareServiceFragment).commit();
+            fragmentTransaction.replace(R.id.containerFl, welFareServiceFragment).commitAllowingStateLoss();
         }
     };
 

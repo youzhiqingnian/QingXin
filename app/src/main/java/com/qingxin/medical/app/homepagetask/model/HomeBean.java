@@ -1,6 +1,7 @@
 package com.qingxin.medical.app.homepagetask.model;
 
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
+import com.qingxin.medical.base.BaseBean;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
 
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.util.List;
  *
  * @author zhikuo
  */
-public class HomeBean implements Serializable{
+public class HomeBean extends BaseBean{
 
     /**
      * code : 200
@@ -100,7 +101,7 @@ public class HomeBean implements Serializable{
     }
 
 
-    public static class OpencitysBean  implements Serializable{
+    public static class OpencitysBean  extends BaseBean{
         /**
          * citycode : 028
          * name : 成都市

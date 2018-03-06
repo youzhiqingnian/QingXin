@@ -2,12 +2,14 @@ package com.qingxin.medical.retrofit;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-import com.amap.api.location.AMapLocation;
+
 import com.qingxin.medical.base.QingXinApplication;
-import com.qingxin.medical.map.LocationService;
+import com.qingxin.medical.map.GaoDeMapModel;
 import com.vlee78.android.vl.VLDebug;
 import com.vlee78.android.vl.VLModel;
+
 import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -42,10 +44,9 @@ public class RetrofitModel extends VLModel {
         httpClient.addInterceptor(chain -> {
             Request original = chain.request();
             String cityCode = "";
-            LocationService locationService = QingXinApplication.getInstance().getLocationService();
-            if (null != locationService && null != locationService.getAMLocation()) {
-                AMapLocation aMapLocation = locationService.getAMLocation();
-                cityCode = aMapLocation.getCityCode();
+            GaoDeMapModel locationService = (GaoDeMapModel) QingXinApplication.getInstance().getLocationService();
+            if (null != locationService && null != locationService.getOpencitysBean()) {
+                cityCode = locationService.getOpencitysBean().getCitycode();
             }
             Log.e("RetrofitModel", "cityCode = " + cityCode);
             Request request = original.newBuilder()
