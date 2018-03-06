@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -175,12 +176,12 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         mAfterCoverSdv.setImageURI(Uri.parse(itemBean.getOper_after_photo()));
 
 
-//        mDiaryProductIntroTv.setText(itemBean.getProduct().getName());
-//        if(!VLUtils.stringIsEmpty(itemBean.getProduct().getCover())){
-//            mProductCoverSdv.setImageURI(Uri.parse(itemBean.getProduct().getCover()));
-//        }
-//        mReserveCountTv.setText(String.format("%d%s", itemBean.getProduct().getOrder(), getString(R.string.book_times)));
-//        mProductPriceTv.setText(String.format("%d%s%d", itemBean.getProduct().getPrice(), getString(R.string.gap), itemBean.getProduct().getOld_price()));
+        mDiaryProductIntroTv.setText(itemBean.getProduct().getName());
+        if (!VLUtils.stringIsEmpty(itemBean.getProduct().getCover().get(0))) {
+            mProductCoverSdv.setImageURI(Uri.parse(itemBean.getProduct().getCover().get(0)));
+        }
+        mReserveCountTv.setText(String.format("%d%s", itemBean.getProduct().getOrder(), getString(R.string.book_times)));
+        mProductPriceTv.setText(String.format("%d%s%d", itemBean.getProduct().getPrice(), getString(R.string.gap), itemBean.getProduct().getOld_price()));
         mDiaryDetailTv.setText(Html.fromHtml(itemBean.getWords()));
         mDiaryPublishDateTv.setText(itemBean.getCreated_at());
         mScanCountTv.setText(String.valueOf(itemBean.getVisit_num()));
@@ -265,11 +266,11 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     private void sendBroadCast(int flag) {
         Intent intent = new Intent(REFRESH_ACTION);
         intent.putExtra("refresh", true);
-        if(flag == 1){
+        if (flag == 1) {
             // 收藏产品
             int collect_amount = QingXinApplication.getInstance().getLoginSession().getMem().getCollect_amount() + 1;
             QingXinApplication.getInstance().getLoginSession().getMem().setCollect_amount(collect_amount);
-        }else if(flag == 2){
+        } else if (flag == 2) {
             // 取消收藏产品
             int collect_amount = QingXinApplication.getInstance().getLoginSession().getMem().getCollect_amount() - 1;
             QingXinApplication.getInstance().getLoginSession().getMem().setCollect_amount(collect_amount);

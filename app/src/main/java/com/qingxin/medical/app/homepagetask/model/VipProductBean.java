@@ -41,6 +41,9 @@ public class VipProductBean  implements Serializable {
     private String created_at;
     private String updated_at;
     private String citycode;
+    private String price_unit;
+    private String city_name;
+    private String province_name;
     private int collect_num;
     private int book_num;
     private String mobile;
@@ -166,6 +169,30 @@ public class VipProductBean  implements Serializable {
         this.cover = cover;
     }
 
+    public String getPrice_unit() {
+        return price_unit;
+    }
+
+    public void setPrice_unit(String price_unit) {
+        this.price_unit = price_unit;
+    }
+
+    public String getCity_name() {
+        return city_name;
+    }
+
+    public void setCity_name(String city_name) {
+        this.city_name = city_name;
+    }
+
+    public String getProvince_name() {
+        return province_name;
+    }
+
+    public void setProvince_name(String province_name) {
+        this.province_name = province_name;
+    }
+
     @Override
     public String toString() {
         return "VipProductBean{" +
@@ -180,6 +207,9 @@ public class VipProductBean  implements Serializable {
                 ", created_at='" + created_at + '\'' +
                 ", updated_at='" + updated_at + '\'' +
                 ", citycode='" + citycode + '\'' +
+                ", price_unit='" + price_unit + '\'' +
+                ", city_name='" + city_name + '\'' +
+                ", province_name='" + province_name + '\'' +
                 ", collect_num=" + collect_num +
                 ", book_num=" + book_num +
                 ", mobile='" + mobile + '\'' +
