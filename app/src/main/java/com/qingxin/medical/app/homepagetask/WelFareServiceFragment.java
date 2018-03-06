@@ -152,6 +152,15 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
+        if (first) {
+            showView(R.layout.layout_loading);
+            VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
+                @Override
+                protected void process(boolean canceled) {
+                    getServiceList(true);
+                }
+            });
+        }
     }
 
     @Override

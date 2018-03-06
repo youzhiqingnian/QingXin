@@ -138,6 +138,11 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     @Override
     public void onSuccess(ListBean<DiaryItemBean> diary) {
         hideView(R.layout.layout_loading);
+        if(diary != null && diary.getCount() > 0){
+            QingXinApplication.getInstance().getLoginSession().getMem().setDiary_amount(diary.getCount());
+            sendBroadCast("",1);
+        }
+
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
             mAdapter.setNewData(diary.getItems());
@@ -152,7 +157,7 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
         }
 
         if (0 != diary.getCount()) {
-            sendBroadCast(diary.getCount() + "");
+            sendBroadCast(diary.getCount() + "",0);
         }
     }
 
@@ -183,9 +188,16 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
         DiaryPublishActivity.startSelf(getVLActivity(), mAdapter.getData().get(position));
     }
 
-    private void sendBroadCast(String diaryCount) {
-        Intent intent = new Intent(COUNT_ACTION);
-        intent.putExtra("diaryCount", diaryCount);
+    private void sendBroadCast(String diaryCount,int flag) {
+        Intent intent;
+        if(0 == flag){
+            intent = new Intent(COUNT_ACTION);
+            intent.putExtra("diaryCount", diaryCount);
+        }else{
+            intent = new Intent(MineDataFragment.REFRESH_ACTION);
+            intent.putExtra("refresh", true);
+        }
+
         LocalBroadcastManager.getInstance(getVLActivity()).sendBroadcast(intent);
     }
 }

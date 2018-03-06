@@ -1,9 +1,9 @@
 package com.qingxin.medical.app.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.mine.login.LoginFragment;
@@ -33,6 +33,7 @@ public class LoginActivity extends QingXinActivity implements LoginFragment.OnLo
 
     @Override
     public void loginSuccess() {
-        //TODO
+        setResult(Activity.RESULT_OK);
+        this.finish();
     }
 }

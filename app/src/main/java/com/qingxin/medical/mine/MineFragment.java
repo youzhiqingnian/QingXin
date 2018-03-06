@@ -10,7 +10,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
@@ -58,4 +57,10 @@ public class MineFragment extends QingXinFragment {
             fragmentTransaction.replace(R.id.container, mineDataFragment).commit();
         }
     };
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mBroadcastReceiver);
+    }
 }
