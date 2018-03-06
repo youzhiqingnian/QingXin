@@ -95,6 +95,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -1984,6 +1985,27 @@ public final class VLUtils {
 
     public static String millisToString(long millis) {
         return millisToString(millis, false);
+    }
+
+    /**
+     * 四舍五入保留两位小数点
+     *
+     * @param numberStr 需要处理的数
+     *                  保留小数点的位数
+     * @return
+     */
+    public static String keepTwoSecimal2(String numberStr) {
+        double number = Double.parseDouble(numberStr);
+        BigDecimal b = new BigDecimal(number);
+
+        String ss = b.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() + "";
+
+        String[] tt = ss.split("\\.");
+        if (tt[1].length() == 1) {
+            ss = ss + "0";
+        }
+
+        return ss;
     }
 
     public static String millisToString(long millis, boolean text) {

@@ -8,12 +8,14 @@ import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.RecommendResultBean;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
+import com.qingxin.medical.app.homepagetask.model.WithdrawalsItemBean;
 import com.qingxin.medical.app.vip.AmountBean;
 import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.app.vip.VipDetailBean;
 import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.base.MemBean;
+import com.qingxin.medical.home.ItemBean;
 import com.qingxin.medical.home.ListBean;
 
 import retrofit2.http.Field;
@@ -124,6 +126,15 @@ public interface RetrofitService {
      */
     @GET("/mem/checkin")
     Observable<ContentBean<CheckInBean>> checkIn();
+
+    /**
+     * 申请提现
+     *
+     * @return
+     */
+    @FormUrlEncoded
+    @POST("/mem/cashapply")
+    Observable<ContentBean<ItemBean<WithdrawalsItemBean>>> applyWithdrawals(@Field("amount")String amount);
 
     /**
      * 今日是否签到

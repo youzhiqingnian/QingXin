@@ -5,6 +5,7 @@ import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
+import com.qingxin.medical.app.homepagetask.model.WithdrawalsItemBean;
 import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.home.ListBean;
 
@@ -21,7 +22,7 @@ public class WelfareCoinLogsListContract {
 
         void onSuccess(CheckInBean checkIn);
 
-//        void onSuccess(MemBean memBean);
+        void onSuccess(WithdrawalsItemBean withdrawalsBean);
 
         void onError(String result);
     }
@@ -32,6 +33,6 @@ public class WelfareCoinLogsListContract {
 
         void checkIn();
 
-//        void isChcekIn();
+        void applyWithdrawals(String amount);
     }
 }

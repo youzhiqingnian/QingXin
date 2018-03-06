@@ -20,6 +20,8 @@ public class ApplyWithdrawalsDialog extends Dialog implements View.OnClickListen
 
     private TextView mMyQingxinCoinBalanceTv,mWithdrawalsBalanceTv;
 
+    private String mAmount = "";
+
     /**
      * 分享弹框
      *
@@ -40,7 +42,7 @@ public class ApplyWithdrawalsDialog extends Dialog implements View.OnClickListen
         LayoutParams params = window.getAttributes();
         params.gravity = Gravity.CENTER;
         window.setAttributes(params);
-        window.getDecorView().setPadding(VLUtils.dip2px(35), 0, VLUtils.dip2px(35), 0);
+        window.getDecorView().setPadding(0, 0, 0, 0);
         window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         window.setBackgroundDrawable(new ColorDrawable(0x00000000));
     }
@@ -65,7 +67,7 @@ public class ApplyWithdrawalsDialog extends Dialog implements View.OnClickListen
                 this.dismiss();
                 break;
             case R.id.confirmWithdrawalTv:
-                if (mListener != null) mListener.confirmWithdrawal();
+                if (mListener != null) mListener.confirmWithdrawal(mAmount);
                 break;
 
         }
@@ -73,7 +75,7 @@ public class ApplyWithdrawalsDialog extends Dialog implements View.OnClickListen
 
     public interface OnConfirmWithdrawalListener {
 
-        void confirmWithdrawal();
+        void confirmWithdrawal(String amount);
 
     }
 
@@ -84,5 +86,6 @@ public class ApplyWithdrawalsDialog extends Dialog implements View.OnClickListen
     public void setBalance(String totalBalance,String withdrawalsBalance){
         mMyQingxinCoinBalanceTv.setText(totalBalance);
         mWithdrawalsBalanceTv.setText(withdrawalsBalance);
+        mAmount = withdrawalsBalance;
     }
 }

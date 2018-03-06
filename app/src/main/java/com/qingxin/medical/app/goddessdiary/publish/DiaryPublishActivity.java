@@ -45,7 +45,7 @@ import java.io.File;
 public class DiaryPublishActivity extends QingXinActivity implements View.OnClickListener, DiaryPublishContract.View {
 
     public static void startSelf(@NonNull Context context) {
-        startSelf(context,null);
+        startSelf(context, null);
     }
 
     public static void startSelf(@NonNull Context context, @Nullable DiaryItemBean diaryItemBean) {
@@ -123,11 +123,11 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
 
         DiaryItemBean diaryItemBean = (DiaryItemBean) getIntent().getSerializableExtra(DIARYITEMBEAN);
         isEdit = diaryItemBean != null;
-        if (isEdit){
+        if (isEdit) {
             mDescrTv.setText(diaryItemBean.getWords());
-            if (null != diaryItemBean.getProduct()){
-                mCategoryTv.setText(diaryItemBean.getProduct().getName());
-            }
+//            if (null != diaryItemBean.getProduct()) {
+//                mCategoryTv.setText(diaryItemBean.getProduct().getName());
+//            }
             mBeforePhoto = VLUtils.getNetWorkBitmap(diaryItemBean.getOper_before_photo());
             mAfterPhoto = VLUtils.getNetWorkBitmap(diaryItemBean.getOper_after_photo());
             AlbumItemData<Bitmap> albumItemData = new AlbumItemData<Bitmap>(mAfterPhoto) {

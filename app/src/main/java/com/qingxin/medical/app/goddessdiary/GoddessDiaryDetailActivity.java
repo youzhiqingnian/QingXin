@@ -23,6 +23,8 @@ import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
+import com.vlee78.android.vl.VLUtils;
+
 /**
  * Date 2018-02-02
  *
@@ -142,10 +144,11 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         if (mCollectBean.getIs_collect().equals("n")) {
             mCollectionTv.setText(R.string.plus_collection);
             showToast(getString(R.string.cancel_collect_ok));
+            sendBroadCast(2);
         } else {
             mCollectionTv.setText(R.string.cancel_collection);
             showToast(getString(R.string.collect_ok));
-            sendBroadCast();
+            sendBroadCast(1);
         }
         Intent intent = new Intent();
         intent.putExtra(DIARY_ID, id);
@@ -156,8 +159,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     @SuppressLint("DefaultLocale")
     private void setData(GoddessDiaryDetailBean diaryDetailBean) {
 
-        DiaryItemBean itemBean;
-        itemBean = diaryDetailBean.getItem();
+        DiaryItemBean itemBean = diaryDetailBean.getItem();
         String collectState;
         if (itemBean.getIs_collect().equals("y")) {
             collectState = getString(R.string.cancel_collection);
@@ -171,10 +173,13 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         mBeforeCoverSdv.setImageURI(Uri.parse(itemBean.getOper_before_photo()));
         mAfterCoverSdv.setImageURI(Uri.parse(itemBean.getOper_after_photo()));
 
-        mProductCoverSdv.setImageURI(Uri.parse(itemBean.getProduct().getCover()));
-        mDiaryProductIntroTv.setText(itemBean.getProduct().getName());
-        mReserveCountTv.setText(String.format("%d%s", itemBean.getProduct().getOrder(), getString(R.string.book_times)));
-        mProductPriceTv.setText(String.format("%d%s%d", itemBean.getProduct().getPrice(), getString(R.string.gap), itemBean.getProduct().getOld_price()));
+
+//        mDiaryProductIntroTv.setText(itemBean.getProduct().getName());
+//        if(!VLUtils.stringIsEmpty(itemBean.getProduct().getCover())){
+//            mProductCoverSdv.setImageURI(Uri.parse(itemBean.getProduct().getCover()));
+//        }
+//        mReserveCountTv.setText(String.format("%d%s", itemBean.getProduct().getOrder(), getString(R.string.book_times)));
+//        mProductPriceTv.setText(String.format("%d%s%d", itemBean.getProduct().getPrice(), getString(R.string.gap), itemBean.getProduct().getOld_price()));
         mDiaryDetailTv.setText(itemBean.getSummary());
         mDiaryPublishDateTv.setText(itemBean.getCreated_at());
         mScanCountTv.setText(String.valueOf(itemBean.getVisit_num()));
@@ -256,9 +261,18 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         }
     }
 
-    private void sendBroadCast() {
+    private void sendBroadCast(int flag) {
         Intent intent = new Intent(REFRESH_ACTION);
         intent.putExtra("refresh", true);
+        if(flag == 1){
+            // 收藏产品
+            int collect_amount = QingXinApplication.getInstance().getLoginSession().getMem().getCollect_amount() + 1;
+            QingXinApplication.getInstance().getLoginSession().getMem().setCollect_amount(collect_amount);
+        }else if(flag == 2){
+            // 取消收藏产品
+            int collect_amount = QingXinApplication.getInstance().getLoginSession().getMem().getCollect_amount() - 1;
+            QingXinApplication.getInstance().getLoginSession().getMem().setCollect_amount(collect_amount);
+        }
         LocalBroadcastManager.getInstance(this).sendBroadcast(
                 intent
         );

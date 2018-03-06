@@ -18,10 +18,12 @@ import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.app.vip.ProductListAdapter;
+import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
+import com.vlee78.android.vl.VLUtils;
 
 /**
  * Date 2018-03-02
@@ -39,6 +41,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
 
     private ProductListAdapter mAdapter;
 
+    private ProductListBean mProductListBean;
 
     private boolean isClear;
 
@@ -128,7 +131,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
         if(mRefreshLayout != null){
             mRefreshLayout.setRefreshing(false);
         }
-        if (first) {
+        if (first && QingXinApplication.getInstance().getLoginUser() != null) {
             showView(R.layout.layout_loading);
             VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
                 @Override
@@ -158,23 +161,24 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     }
 
     @Override
-    public void onSuccess(ProductListBean ProductListBean) {
+    public void onSuccess(ProductListBean productListBean) {
         hideView(R.layout.layout_loading);
-        Log.i("我预定的产品列表", ProductListBean.toString());
+        mProductListBean = productListBean;
+        Log.i("我预定的产品列表", productListBean.toString());
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
-            mAdapter.setNewData(ProductListBean.getItems());
+            mAdapter.setNewData(productListBean.getItems());
         } else {
-            mAdapter.addData(ProductListBean.getItems());
+            mAdapter.addData(productListBean.getItems());
         }
-        if (ProductListBean.getItems().size() < QingXinConstants.ROWS) {
+        if (productListBean.getItems().size() < QingXinConstants.ROWS) {
             //第一页如果不够一页就不显示没有更多数据布局
             mAdapter.loadMoreEnd(isClear);
         } else {
             mAdapter.loadMoreComplete();
         }
-        if(ProductListBean != null && ProductListBean.getCount() != 0){
-            sendBroadCast(ProductListBean.getCount()+"");
+        if(productListBean != null && productListBean.getCount() != 0){
+            sendBroadCast(productListBean.getCount()+"");
         }
     }
 
@@ -196,7 +200,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     @Override
     public void onProductButtonClick(int position,String id) {
         // 联系我们
-
+        VLUtils.gotoDail(getActivity(), mProductListBean.getItems().get(position).getMobile());
     }
 
     private void sendBroadCast(String bookCount) {

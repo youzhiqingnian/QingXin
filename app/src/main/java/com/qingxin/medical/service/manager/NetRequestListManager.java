@@ -8,12 +8,14 @@ import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.app.homepagetask.model.RecommendResultBean;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
+import com.qingxin.medical.app.homepagetask.model.WithdrawalsItemBean;
 import com.qingxin.medical.app.vip.AmountBean;
 import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.app.vip.VipDetailBean;
 import com.qingxin.medical.app.vip.VipListBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.base.MemBean;
+import com.qingxin.medical.home.ItemBean;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.service.RetrofitService;
@@ -100,6 +102,15 @@ public class NetRequestListManager {
      */
     public static Observable<ContentBean<CheckInBean>> checkIn() {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).checkIn();
+    }
+
+    /**
+     * 申请提现
+     * @param amount
+     * @return
+     */
+    public static Observable<ContentBean<ItemBean<WithdrawalsItemBean>>> applyWithdrawals(String amount) {
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).applyWithdrawals(amount);
     }
 
     /**
