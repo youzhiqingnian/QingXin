@@ -69,7 +69,8 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
             mDiaryDetailTv,
             mDiaryPublishDateTv,
             mScanCountTv,
-            mCollectionCountTv;
+            mCollectionCountTv,
+            mRelateProductTitleTv;
 
     private ShareDialog mShareDialog;
 
@@ -132,6 +133,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         mDiaryPublishDateTv = findViewById(R.id.diaryPublishDateTv);
         mScanCountTv = findViewById(R.id.scanCountTv);
         mCollectionCountTv = findViewById(R.id.collectionCountTv);
+        mRelateProductTitleTv = findViewById(R.id.relateProductTitleTv);
         mScrollTopIv = findViewById(R.id.scrollTopIv);
         mShareDialog = new ShareDialog(this);
         mShareDialog.setOnShareDialogListener(this);
@@ -181,6 +183,15 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
                 mTitle = itemBean.getProduct().getName();
             }
 
+            mDiaryProductIntroTv.setText(itemBean.getProduct().getName());
+            if (!VLUtils.stringIsEmpty(itemBean.getProduct().getCover().get(0))) {
+                mProductCoverSdv.setImageURI(Uri.parse(itemBean.getProduct().getCover().get(0)));
+            }
+            mReserveCountTv.setText(String.format("%d%s", itemBean.getProduct().getOrder(), getString(R.string.book_times)));
+            mProductPriceTv.setText(String.format("%d%s%d", itemBean.getProduct().getPrice(), getString(R.string.gap), itemBean.getProduct().getOld_price()));
+        } else {
+            mRelateProductRl.setVisibility(View.GONE);
+            mRelateProductTitleTv.setVisibility(View.GONE);
         }
         String collectState;
         if (itemBean.getIs_collect().equals("y")) {
@@ -195,13 +206,6 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         mBeforeCoverSdv.setImageURI(Uri.parse(itemBean.getOper_before_photo()));
         mAfterCoverSdv.setImageURI(Uri.parse(itemBean.getOper_after_photo()));
 
-
-        mDiaryProductIntroTv.setText(itemBean.getProduct().getName());
-        if (!VLUtils.stringIsEmpty(itemBean.getProduct().getCover().get(0))) {
-            mProductCoverSdv.setImageURI(Uri.parse(itemBean.getProduct().getCover().get(0)));
-        }
-        mReserveCountTv.setText(String.format("%d%s", itemBean.getProduct().getOrder(), getString(R.string.book_times)));
-        mProductPriceTv.setText(String.format("%d%s%d", itemBean.getProduct().getPrice(), getString(R.string.gap), itemBean.getProduct().getOld_price()));
         mDiaryDetailTv.setText(Html.fromHtml(itemBean.getWords()));
         mDiaryPublishDateTv.setText(itemBean.getCreated_at());
         mScanCountTv.setText(String.valueOf(itemBean.getVisit_num()));

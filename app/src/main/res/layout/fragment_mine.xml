@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/wholeLayoutCdl"
     android:layout_width="match_parent"
@@ -26,27 +27,37 @@
                 android:background="@color/text_color_blue"
                 android:orientation="vertical">
 
-                <FrameLayout
+               <!-- <FrameLayout
                     android:layout_width="92dp"
                     android:layout_height="92dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="48dp"
-                    android:background="@drawable/mine_head_ring_bg">
+                    android:background="@drawable/mine_head_ring_bg">-->
 
-                    <com.qingxin.medical.widget.indicator.view.CircleImageView
+                    <com.facebook.drawee.view.SimpleDraweeView
                         android:id="@+id/userHeadSdv"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:scaleType="centerCrop" />
+                        android:layout_width="92dp"
+                        android:layout_height="92dp"
+                        android:layout_gravity="center_horizontal"
+                        app:roundAsCircle="true"
+                        app:roundingBorderWidth="4dp"
+                        android:layout_marginTop="48dp"
+                        app:placeholderImage="@mipmap/mine_defualt_head_logo"
+                        fresco:failureImage="@mipmap/mine_defualt_head_logo"
+                        fresco:failureImageScaleType="centerCrop"
+                        fresco:placeholderImageScaleType="centerCrop"
+                        android:background="@drawable/mine_head_ring_bg"
 
-                    <ImageView
+                        />
+
+                    <!--<ImageView
                         android:id="@+id/defaultHeadIv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@mipmap/mine_defualt_head_logo" />
+                        android:src="@mipmap/mine_defualt_head_logo" />-->
 
-                </FrameLayout>
+           <!--     </FrameLayout>-->
 
                 <TextView
                     android:id="@+id/userNicknameTv"
