@@ -10,17 +10,22 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
 import com.qingxin.medical.mine.login.LoginFragment;
+import com.qingxin.medical.service.QingXinBroadCastReceiver;
+import com.qingxin.medical.utils.HandErrorUtils;
 
 /**
  * 首页我的界面
  *
  * @author zhikuo
  */
-public class MineFragment extends QingXinFragment {
+public class MineFragment extends QingXinFragment implements QingXinBroadCastReceiver.OnReceiverCallbackListener {
+
+    private QingXinBroadCastReceiver mReceiver;
 
     public MineFragment() {
     }
@@ -46,8 +51,18 @@ public class MineFragment extends QingXinFragment {
         } else {
             getFragmentManager().beginTransaction().add(R.id.container, MineDataFragment.newInstance()).commit();
         }
+        initBroadcastReceiver();
+
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mBroadcastReceiver, new IntentFilter(LoginFragment.LOGIN_ACTION));
     }
+
+    private void initBroadcastReceiver() {
+        mReceiver = new QingXinBroadCastReceiver();
+        IntentFilter intentFilter = new IntentFilter(HandErrorUtils.LOGOUT_ACTION);
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
+        mReceiver.setReceiverListener(this);
+    }
+
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -62,5 +77,10 @@ public class MineFragment extends QingXinFragment {
     public void onDetach() {
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mBroadcastReceiver);
+    }
+
+    @Override
+    public void receiverUpdata(Intent intent) {
+        getFragmentManager().beginTransaction().add(R.id.container, LoginFragment.newInstance(false)).commitAllowingStateLoss();
     }
 }
