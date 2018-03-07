@@ -24,8 +24,6 @@ import com.qingxin.medical.map.GaoDeMapModel;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
 import com.vlee78.android.vl.VLUtils;
 
-import butterknife.ButterKnife;
-
 /**
  * 严选详情界面
  * Date 2018/2/8
@@ -76,7 +74,6 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
             }
         }
         mShareDialog = new ShareDialog(this);
-        ButterKnife.bind(this);
         initFakeStatusBarHeight();
         loadData(strictSelBean.getThumbnail());
 
@@ -240,12 +237,6 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
             return;
         }
         finish();
-    }
-
-    @Override
-    protected void onDestroy() {
-        ButterKnife.unbind(this);
-        super.onDestroy();
     }
 
     @Override
