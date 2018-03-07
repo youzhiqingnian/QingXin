@@ -36,6 +36,7 @@
             android:background="@drawable/blue_stroke_bg"
             android:gravity="center"
             android:text="@string/delete"
+            android:visibility="gone"
             android:textColor="@color/text_color_blue"
             android:textSize="12sp" />
 

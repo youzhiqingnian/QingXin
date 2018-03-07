@@ -25,9 +25,11 @@ import com.qingxin.medical.app.homepagetask.model.MemBean;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
 import com.qingxin.medical.common.CommonDialogFactory;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.common.QingXinLocalPhotoPopupWindow;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.qingxin.medical.upload.UploadResult;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.widget.indicator.CommonNavigator;
 import com.qingxin.medical.widget.indicator.CommonNavigatorAdapter;
 import com.qingxin.medical.widget.indicator.IPagerIndicator;
@@ -144,7 +146,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
                 mCountTextViewList.add(titleView);
                 if (QingXinApplication.getInstance().getLoginSession() != null && mCountTextViewList.size() == 3) {
                     Log.i("进去之后填充数量了吗", "填充了哟，三种数量");
-                    setCountRefresh();
+                    mPresenter.getSession();
                 }
                 titleView.setOnClickListener(v -> viewPager.setCurrentItem(index));
                 return titleView;
@@ -248,15 +250,22 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
     @Override
     public void receiverUpdata(Intent intent) {
         if (intent.getBooleanExtra("refresh", false)) {
-            setCountRefresh();
+            mPresenter.getSession();
         }
     }
 
+    @Override
+    protected void onVisible(boolean first) {
+        super.onVisible(first);
+        if(!first){
+            mPresenter.getSession();
+        }
+    }
 
-    private void setCountRefresh() {
-        String bookCount = QingXinApplication.getInstance().getLoginSession().getMem().getBook_amount() + "";
-        String diaryCount = QingXinApplication.getInstance().getLoginSession().getMem().getDiary_amount() + "";
-        String collectCount = QingXinApplication.getInstance().getLoginSession().getMem().getCollect_amount() + "";
+    private void setCountRefresh(com.qingxin.medical.base.MemBean memBean) {
+        String bookCount = memBean.getMem().getBook_amount() + "";
+        String diaryCount = memBean.getMem().getDiary_amount() + "";
+        String collectCount = memBean.getMem().getCollect_amount() + "";
 
         if (!VLUtils.stringIsEmpty(bookCount)) {
             mCountTextViewList.get(0).setText("预约 · " + bookCount);
@@ -290,10 +299,21 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
     }
 
     @Override
+    public void onSuccess(com.qingxin.medical.base.MemBean memBean) {
+        setCountRefresh(memBean);
+    }
+
+    @Override
     public void onSuccess(UploadResult uploadResultBean) {
         if (uploadResultBean != null) {
             mUploadeResultBean = uploadResultBean;
         }
+    }
+
+    @Override
+    public void onError(QingXinError error) {
+        hideView(R.layout.layout_loading);
+        HandErrorUtils.handleError(error);
     }
 
 
@@ -317,10 +337,5 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
                 });
             }
         });
-    }
-
-    @Override
-    public void onError(String result) {
-
     }
 }
