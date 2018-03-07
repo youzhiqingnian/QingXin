@@ -1,6 +1,6 @@
 package com.qingxin.medical.app.goddessdiary.publish;
 
-import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
+import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.base.ContentBean;
 
 import retrofit2.http.Field;
@@ -21,6 +21,7 @@ public interface DiaryPublishService {
     @POST("/diary")
     Observable<ContentBean<DiaryPublishResult>> diaryPublish(@Field("wiki_id") String wikiId, @Field("oper_before_photo") String beforePhoto, @Field("oper_after_photo") String afterPhoto, @Field("words") String words);
 
+    @FormUrlEncoded
     @PUT("/diary/{id}")
-    Observable<ContentBean<DiaryItemBean>> updateDiary(@Path("id")String diaryId, @Field("wiki_id") String wiki_id, @Field("oper_before_photo") String beforePhoto, @Field("oper_after_photo") String afterPhoto, @Field("words") String words);
+    Observable<ContentBean<GoddessDiaryDetailBean>> updateDiary(@Path("id")String diaryId, @Field("wiki_id") String wiki_id, @Field("oper_before_photo") String beforePhoto, @Field("oper_after_photo") String afterPhoto, @Field("words") String words);
 }

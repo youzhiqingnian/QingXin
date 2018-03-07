@@ -1,5 +1,6 @@
 package com.qingxin.medical.mine;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -26,6 +27,8 @@ import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
+
+import java.util.List;
 
 /**
  * Date 2018-03-02
@@ -180,7 +183,21 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     }
 
     private VLActivity.VLActivityResultListener mResultListener = (requestCode, resultCode, intent) -> {
-        //TODO
+        if (requestCode == DiaryPublishActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            DiaryItemBean modifyItemBean = (DiaryItemBean) intent.getSerializableExtra(DiaryPublishActivity.DIARYITEMBEAN);
+            if (null != modifyItemBean) {
+                List<DiaryItemBean> diaryItemBeans = mAdapter.getData();
+                int index = 0;
+                for (DiaryItemBean diaryItemBean : diaryItemBeans) {
+                    if (modifyItemBean.getId().equals(diaryItemBean.getId())) {
+                        diaryItemBeans.set(index, modifyItemBean);
+                        mAdapter.notifyItemChanged(index);
+                        break;
+                    }
+                    index++;
+                }
+            }
+        }
     };
 
     private void sendBroadCast() {

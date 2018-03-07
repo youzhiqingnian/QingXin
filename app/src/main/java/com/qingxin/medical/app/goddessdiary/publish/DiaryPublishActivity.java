@@ -229,10 +229,10 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
                             return;
                         }
                         if (!isWordsChanged) {
-                            mDiaryPublishParams.setContent("");
+                            mDiaryPublishParams.setContent(null);
                         }
                         if (!isWikiChanged) {
-                            mDiaryPublishParams.setWikiId("");
+                            mDiaryPublishParams.setWikiId(null);
                         }
                         if (!isBeforeChanged) {
                             mDiaryPublishParams.setBeforeFile(null);

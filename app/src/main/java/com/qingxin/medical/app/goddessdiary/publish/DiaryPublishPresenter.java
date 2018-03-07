@@ -2,7 +2,7 @@ package com.qingxin.medical.app.goddessdiary.publish;
 
 import android.support.annotation.NonNull;
 
-import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
+import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.retrofit.RetrofitModel;
@@ -178,7 +178,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
         mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(DiaryPublishService.class).updateDiary(diaryPublishParams.getDiaryId(), diaryPublishParams.getWikiId(), diaryPublishParams.getBeforeFileName(), diaryPublishParams.getAfterFileName(), diaryPublishParams.getContent())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ContentBean<DiaryItemBean>>() {
+                .subscribe(new Observer<ContentBean<GoddessDiaryDetailBean>>() {
                     @Override
                     public void onCompleted() {
 
@@ -190,9 +190,9 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(ContentBean<DiaryItemBean> resultContentBean) {
+                    public void onNext(ContentBean<GoddessDiaryDetailBean> resultContentBean) {
                         if (!HandErrorUtils.isError(resultContentBean.getCode())) {
-                            mDiaryPublishPublishView.onUpdateSuccess(resultContentBean.getContent());
+                            mDiaryPublishPublishView.onUpdateSuccess(resultContentBean.getContent().getItem());
                         } else {
                             mDiaryPublishPublishView.onPublishFailed(new QingXinError(resultContentBean.getMsg()));
                         }
