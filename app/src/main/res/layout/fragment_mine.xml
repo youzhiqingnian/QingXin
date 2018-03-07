@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -20,44 +19,32 @@
             android:layout_height="228dp"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="228dp"
                 android:background="@color/text_color_blue"
                 android:orientation="vertical">
 
-               <!-- <FrameLayout
+                <!-- <FrameLayout
+                     android:layout_width="92dp"
+                     android:layout_height="92dp"
+                     android:layout_gravity="center_horizontal"
+                     android:layout_marginTop="48dp"
+                     android:background="@drawable/mine_head_ring_bg">-->
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/userHeadSdv"
                     android:layout_width="92dp"
                     android:layout_height="92dp"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="48dp"
-                    android:background="@drawable/mine_head_ring_bg">-->
-
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/userHeadSdv"
-                        android:layout_width="92dp"
-                        android:layout_height="92dp"
-                        android:layout_gravity="center_horizontal"
-                        app:roundAsCircle="true"
-                        app:roundingBorderWidth="4dp"
-                        android:layout_marginTop="48dp"
-                        app:placeholderImage="@mipmap/mine_defualt_head_logo"
-                        fresco:failureImage="@mipmap/mine_defualt_head_logo"
-                        fresco:failureImageScaleType="centerCrop"
-                        fresco:placeholderImageScaleType="centerCrop"
-                        android:background="@drawable/mine_head_ring_bg"
-
-                        />
-
-                    <!--<ImageView
-                        android:id="@+id/defaultHeadIv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@mipmap/mine_defualt_head_logo" />-->
-
-           <!--     </FrameLayout>-->
+                    android:background="@drawable/mine_head_ring_bg"
+                    app:failureImage="@mipmap/mine_defualt_head_logo"
+                    app:failureImageScaleType="centerCrop"
+                    app:placeholderImage="@mipmap/mine_defualt_head_logo"
+                    app:placeholderImageScaleType="centerCrop"
+                    app:roundAsCircle="true"
+                    app:roundingBorderWidth="4dp" />
 
                 <TextView
                     android:id="@+id/userNicknameTv"

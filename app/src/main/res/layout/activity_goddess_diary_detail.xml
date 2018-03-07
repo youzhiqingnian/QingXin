@@ -37,11 +37,11 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginTop="12dp"
-                    app:roundAsCircle="true"
-                    fresco:failureImage="@mipmap/ic_diary_user_default"
-                    fresco:failureImageScaleType="centerCrop"
-                    fresco:placeholderImage="@mipmap/ic_diary_user_default"
-                    fresco:placeholderImageScaleType="centerCrop" />
+                    app:failureImage="@mipmap/ic_diary_user_default"
+                    app:failureImageScaleType="centerCrop"
+                    app:placeholderImage="@mipmap/ic_diary_user_default"
+                    app:placeholderImageScaleType="centerCrop"
+                    app:roundAsCircle="true" />
 
                 <TextView
                     android:id="@+id/authorNameTv"
@@ -49,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="9dp"
+                    android:layout_marginStart="9dp"
                     android:layout_toEndOf="@+id/authoerHeadSdv"
                     android:layout_toRightOf="@+id/authoerHeadSdv"
                     android:textColor="@color/text_color_hint"
@@ -58,15 +59,16 @@
                     android:id="@+id/collectionTv"
                     android:layout_width="60dp"
                     android:layout_height="24dp"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginEnd="15dp"
                     android:layout_marginRight="15dp"
                     android:background="@drawable/collection_stroke_bg"
                     android:gravity="center"
                     android:text="@string/plus_collection"
                     android:textColor="@color/stroke_blue"
                     android:textSize="12sp" />
-
             </RelativeLayout>
 
             <LinearLayout
@@ -74,11 +76,13 @@
                 android:layout_height="168dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
+                android:baselineAligned="false"
                 android:orientation="horizontal">
 
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1">
 
@@ -87,11 +91,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        app:roundedCornerRadius="4dp"
-                        fresco:failureImage="@mipmap/ic_diary_default"
-                        fresco:failureImageScaleType="centerCrop"
-                        fresco:placeholderImage="@mipmap/ic_diary_default"
-                        fresco:placeholderImageScaleType="centerCrop" />
+                        app:failureImage="@mipmap/ic_diary_default"
+                        app:failureImageScaleType="centerCrop"
+                        app:placeholderImage="@mipmap/ic_diary_default"
+                        app:placeholderImageScaleType="centerCrop"
+                        app:roundedCornerRadius="4dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -117,11 +122,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
-                        app:roundedCornerRadius="4dp"
-                        fresco:failureImage="@mipmap/ic_diary_default"
-                        fresco:failureImageScaleType="centerCrop"
-                        fresco:placeholderImage="@mipmap/ic_diary_default"
-                        fresco:placeholderImageScaleType="centerCrop" />
+                        app:failureImage="@mipmap/ic_diary_default"
+                        app:failureImageScaleType="centerCrop"
+                        app:placeholderImage="@mipmap/ic_diary_default"
+                        app:placeholderImageScaleType="centerCrop"
+                        app:roundedCornerRadius="4dp" />
 
                     <TextView
                         android:id="@+id/textView"
@@ -164,20 +169,20 @@
                     android:layout_marginBottom="15dp"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="20dp"
-                    app:roundedCornerRadius="4dp"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    app:roundedCornerRadius="4dp" />
 
                 <TextView
                     android:id="@+id/diaryProductIntroTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/productCoverSdv"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_toEndOf="@+id/productCoverSdv"
                     android:layout_toRightOf="@+id/productCoverSdv"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="10dp"
                     android:textColor="@color/text_color"
                     android:textSize="14sp" />
 

@@ -1,9 +1,10 @@
 package com.qingxin.medical.app.vip;
 
+import android.graphics.Paint;
 import android.net.Uri;
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -55,12 +56,9 @@ public class VipListAdapter extends BaseQuickAdapter<VipProductBean, BaseViewHol
             if(mType == 2){
                 mContactUsTv.setText(mContext.getResources().getString(R.string.cancel_collection));
             }
-            mContactUsTv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(btnCallBackListener != null){
-                        btnCallBackListener.onProductButtonClick(helper.getAdapterPosition(), item.getId());
-                    }
+            mContactUsTv.setOnClickListener(view -> {
+                if(btnCallBackListener != null){
+                    btnCallBackListener.onProductButtonClick(helper.getAdapterPosition(), item.getId());
                 }
             });
         }
@@ -70,6 +68,7 @@ public class VipListAdapter extends BaseQuickAdapter<VipProductBean, BaseViewHol
         mHospitalNameTv.setText(item.getHospital());
         mPriceTv.setText(String.valueOf(item.getPrice()));
         mOldpriceTv.setText(String.format("¥%s", item.getOld_price()));
-        mOrderCountTv.setText(String.format("%s次预约", item.getOrder()));
+        mOldpriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+        mOrderCountTv.setText(String.format("%s次预约", item.getBook_num()));
     }
 }

@@ -75,6 +75,7 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.fresco.zoomable.DoubleTapGestureListener;
 import com.qingxin.medical.fresco.zoomable.ZoomableDraweeView;
+import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLAsyncHandler.VLAsyncRes;
 
 import org.json.JSONArray;
@@ -572,6 +573,8 @@ public final class VLUtils {
         if (null != telephonyManager && telephonyManager.getSimState() != TelephonyManager.SIM_STATE_ABSENT) {
             Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse(String.format("tel:%s", phoneNum)));
             context.startActivity(intent);
+        } else {
+            ToastUtils.showToast("未检测到sim卡");
         }
     }
 
@@ -2218,6 +2221,7 @@ public final class VLUtils {
     private static String generateFileName() {
         return UUID.randomUUID().toString();
     }
+
     /**
      * 保存bitmap到本地
      */

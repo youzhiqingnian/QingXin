@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinAdapter;
 import com.qingxin.medical.R;
-import com.qingxin.medical.album.AlbumItemData;
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishParams;
 import com.qingxin.medical.app.homepagetask.model.MemBean;
 import com.qingxin.medical.base.QingXinApplication;
@@ -41,7 +40,6 @@ import com.qingxin.medical.widget.indicator.MagicIndicator;
 import com.qingxin.medical.widget.indicator.SimplePagerTitleView;
 import com.qingxin.medical.widget.indicator.ViewPagerHelper;
 import com.vlee78.android.vl.VLAsyncHandler;
-import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLUtils;
@@ -154,12 +152,9 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
         indicator.setNavigator(navigator);
         ViewPagerHelper.bind(indicator, viewPager);
 
-        mUserHeadSdv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                isUpload = true;
-                getPhotoPopupWindow().show(viewPager);
-            }
+        mUserHeadSdv.setOnClickListener(view -> {
+            isUpload = true;
+            getPhotoPopupWindow().show(viewPager);
         });
 
 

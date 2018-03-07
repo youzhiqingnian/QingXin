@@ -20,10 +20,10 @@
             android:scaleType="centerCrop"
             app:actualImageScaleType="centerCrop"
             app:roundAsCircle="true"
-            fresco:failureImage="@mipmap/ic_diary_user_default"
-            fresco:failureImageScaleType="centerCrop"
-            fresco:placeholderImage="@mipmap/ic_diary_user_default"
-            fresco:placeholderImageScaleType="centerCrop" />
+            app:failureImage="@mipmap/ic_diary_user_default"
+            app:failureImageScaleType="centerCrop"
+            app:placeholderImage="@mipmap/ic_diary_user_default"
+            app:placeholderImageScaleType="centerCrop" />
 
         <TextView
             android:id="@+id/authorName"

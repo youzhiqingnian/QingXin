@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -335,8 +336,9 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         mProductNameTv.setText(itemBean.getName());
         mPriceTv.setText(String.valueOf(itemBean.getPrice()));
         mGrayRmbIconTv.setText(String.format("￥%s", itemBean.getOld_price()));
+        mGrayRmbIconTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         mCityNameTv.setText(String.format("%s%s", itemBean.getProvince_name(), itemBean.getCity_name()));
-        mOrderCountTv.setText(String.format("%s次预约", itemBean.getOrder()));
+        mOrderCountTv.setText(String.format("%s次预约", itemBean.getBook_num()));
         mHospitalNameTv.setText(itemBean.getHospital());
 
         if (vipDetailBean.getItems().getIs_collect().equals("n")) {
@@ -355,7 +357,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
             mOrderNowTv.setText(R.string.already_booked);
         }
 
-        if(!VLUtils.stringIsEmpty(itemBean.getAbout())){
+        if (!VLUtils.stringIsEmpty(itemBean.getAbout())) {
             mProductDetailTv.setText(Html.fromHtml(itemBean.getAbout()));
         }
 //        VLUtils.setControllerListener(mVipDetailImgZdv, "http://p36zly2vu.bkt.clouddn.com/" + itemBean.getCover());

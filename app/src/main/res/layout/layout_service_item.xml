@@ -22,11 +22,11 @@
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:scaleType="centerCrop"
-            app:roundAsCircle="true"
-            fresco:failureImage="@mipmap/ic_service_default"
-            fresco:failureImageScaleType="centerCrop"
-            fresco:placeholderImage="@mipmap/ic_service_default"
-            fresco:placeholderImageScaleType="centerCrop" />
+            app:failureImage="@mipmap/ic_service_default"
+            app:failureImageScaleType="centerCrop"
+            app:placeholderImage="@mipmap/ic_service_default"
+            app:placeholderImageScaleType="centerCrop"
+            app:roundAsCircle="true" />
 
         <ImageView
             android:layout_width="wrap_content"
