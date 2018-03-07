@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
+import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.common.QingXinError;
 
 /**
@@ -17,12 +18,14 @@ public class DiaryPublishContract {
 
         void onPublishSuccess(DiaryPublishResult diaryPublishResult);
 
+        void onUpdateSuccess(DiaryItemBean diaryItemBean);
+
         void onPublishFailed(QingXinError error);
     }
 
     public interface Presenter extends BasePresenter {
         void diaryPublish(@NonNull DiaryPublishParams diaryPublishParams);
 
-        void updateDiary(@NonNull DiaryPublishParams diaryPublishParams);
+        void diaryUpdate(@NonNull DiaryPublishParams diaryPublishParams);
     }
 }

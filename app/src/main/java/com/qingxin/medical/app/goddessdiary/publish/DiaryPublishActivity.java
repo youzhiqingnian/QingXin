@@ -1,7 +1,6 @@
 package com.qingxin.medical.app.goddessdiary.publish;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -33,6 +32,7 @@ import com.qingxin.medical.common.QingXinLocalPhotoPopupWindow;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyActivity;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyListBean;
 import com.qingxin.medical.utils.HandErrorUtils;
+import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLAsyncHandler;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLScheduler;
@@ -54,17 +54,19 @@ import static com.qingxin.medical.app.goddessdiary.publish.DiaryPublishContract.
  */
 public class DiaryPublishActivity extends QingXinActivity implements View.OnClickListener, PublishView {
 
-    public static void startSelf(@NonNull Context context) {
-        startSelf(context, null);
+    public static void startSelf(@NonNull VLActivity activity) {
+        startSelf(activity, null, null);
     }
 
-    public static void startSelf(@NonNull Context context, @Nullable DiaryItemBean diaryItemBean) {
-        Intent intent = new Intent(context, DiaryPublishActivity.class);
+    public static void startSelf(@NonNull VLActivity activity, @Nullable DiaryItemBean diaryItemBean, VLActivityResultListener resultListener) {
+        Intent intent = new Intent(activity, DiaryPublishActivity.class);
         intent.putExtra(DIARYITEMBEAN, diaryItemBean);
-        context.startActivity(intent);
+        activity.setActivityResultListener(resultListener);
+        activity.startActivityForResult(intent, REQUEST_CODE);
     }
 
     public static final String DIARYITEMBEAN = "DIARYITEMBEAN";
+    public static final int REQUEST_CODE = 1111;
 
     private TextView mCategoryTv, mPublishTv;
     private EditText mDescrTv;
@@ -149,6 +151,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
             if (null != mDiaryItemBean.getWiki()) {
                 mCategoryTv.setText(mDiaryItemBean.getWiki().getName());
             }
+            mDiaryPublishParams.setDiaryId(mDiaryItemBean.getId());
             mDiaryPublishParams.setWikiId(mDiaryItemBean.getWiki_id());
             mDiaryDetailPresenter = new GoddessDiaryDetailPresenter(new DiaryDetailContract.View() {
                 @Override
@@ -237,7 +240,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
                         if (!isAfterChanged) {
                             mDiaryPublishParams.setAfterFile(null);
                         }
-                        mPresenter.updateDiary(mDiaryPublishParams);
+                        mPresenter.diaryUpdate(mDiaryPublishParams);
                         mPublishTv.setEnabled(false);
                         mPublishTv.setText("正在发布中,请稍后");
                     }
@@ -333,6 +336,15 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
     @Override
     public void onPublishSuccess(DiaryPublishResult diaryPublishResult) {
         showToast("发布成功，后台人员审核过后您将看到您的日记");
+        DiaryPublishActivity.this.finish();
+    }
+
+    @Override
+    public void onUpdateSuccess(DiaryItemBean diaryItemBean) {
+        showToast("更新成功");
+        Intent intent = new Intent();
+        intent.putExtra(DIARYITEMBEAN, diaryItemBean);
+        setResult(RESULT_OK, intent);
         DiaryPublishActivity.this.finish();
     }
 

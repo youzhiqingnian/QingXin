@@ -2,6 +2,7 @@ package com.qingxin.medical.app.goddessdiary.publish;
 
 import android.support.annotation.NonNull;
 
+import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.retrofit.RetrofitModel;
@@ -9,6 +10,7 @@ import com.qingxin.medical.upload.UploadResult;
 import com.qingxin.medical.upload.UploadService;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.vlee78.android.vl.VLApplication;
+import com.vlee78.android.vl.VLUtils;
 
 import java.io.File;
 
@@ -59,9 +61,9 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
     }
 
     @Override
-    public void updateDiary(@NonNull DiaryPublishParams diaryPublishParams) {
+    public void diaryUpdate(@NonNull DiaryPublishParams diaryPublishParams) {
         if (null == diaryPublishParams.getAfterFile() && null == diaryPublishParams.getBeforeFile()) {
-            publishDiary(diaryPublishParams);
+            updateDiary(diaryPublishParams);
         } else if (null != diaryPublishParams.getBeforeFile() && null != diaryPublishParams.getAfterFile()) {
             uploadPhotos(diaryPublishParams);
         } else if (null == diaryPublishParams.getBeforeFile() && null != diaryPublishParams.getAfterFile()) {
@@ -95,7 +97,11 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
                             } else if (AFTER_FILE.equals(flag)) {
                                 diaryPublishParams.setAfterFileName(uploadResultContentBean.getContent().getFilename());
                             }
-                            publishDiary(diaryPublishParams);
+                            if (VLUtils.stringIsEmpty(diaryPublishParams.getDiaryId())){
+                                publishDiary(diaryPublishParams);
+                            }else {
+                                updateDiary(diaryPublishParams);
+                            }
                         } else {
                             mDiaryPublishPublishView.onPublishFailed(new QingXinError(uploadResultContentBean.getMsg()));
                         }
@@ -129,7 +135,11 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
                                 uploadPhotos(diaryPublishParams);
                             } else {
                                 diaryPublishParams.setAfterFileName(uploadResultContentBean.getContent().getFilename());
-                                publishDiary(diaryPublishParams);
+                                if (VLUtils.stringIsEmpty(diaryPublishParams.getDiaryId())){
+                                    publishDiary(diaryPublishParams);
+                                }else {
+                                    updateDiary(diaryPublishParams);
+                                }
                             }
                         } else {
                             mDiaryPublishPublishView.onPublishFailed(new QingXinError(uploadResultContentBean.getMsg()));
@@ -157,6 +167,32 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
                     public void onNext(ContentBean<DiaryPublishResult> resultContentBean) {
                         if (!HandErrorUtils.isError(resultContentBean.getCode())) {
                             mDiaryPublishPublishView.onPublishSuccess(resultContentBean.getContent());
+                        } else {
+                            mDiaryPublishPublishView.onPublishFailed(new QingXinError(resultContentBean.getMsg()));
+                        }
+                    }
+                }));
+    }
+
+    private void updateDiary(@NonNull DiaryPublishParams diaryPublishParams) {
+        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(DiaryPublishService.class).updateDiary(diaryPublishParams.getDiaryId(), diaryPublishParams.getWikiId(), diaryPublishParams.getBeforeFileName(), diaryPublishParams.getAfterFileName(), diaryPublishParams.getContent())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ContentBean<DiaryItemBean>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mDiaryPublishPublishView.onPublishFailed(new QingXinError(e));
+                    }
+
+                    @Override
+                    public void onNext(ContentBean<DiaryItemBean> resultContentBean) {
+                        if (!HandErrorUtils.isError(resultContentBean.getCode())) {
+                            mDiaryPublishPublishView.onUpdateSuccess(resultContentBean.getContent());
                         } else {
                             mDiaryPublishPublishView.onPublishFailed(new QingXinError(resultContentBean.getMsg()));
                         }

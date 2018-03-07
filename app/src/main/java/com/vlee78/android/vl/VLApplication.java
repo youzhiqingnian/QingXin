@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -16,13 +15,15 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Process;
+import android.support.multidex.MultiDexApplication;
 import android.util.DisplayMetrics;
 import android.util.SparseArray;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VLApplication extends Application implements VLMessageManager.VLMessageHandler {
+public class VLApplication extends MultiDexApplication implements VLMessageManager.VLMessageHandler {
     private static VLApplication gInstance;
 
     public static VLApplication instance() {
