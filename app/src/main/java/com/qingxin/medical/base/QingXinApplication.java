@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 
 import com.qingxin.medical.QingXinConstants;
+import com.qingxin.medical.config.ConfigModel;
 import com.qingxin.medical.fresco.QingXinFrescoModel;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyModel;
 import com.qingxin.medical.map.GaoDeMapModel;
@@ -62,6 +63,7 @@ public class QingXinApplication extends VLApplication {
         manager.registerModel(UserModel.class);
         manager.registerModel(MedicalBeautyModel.class);
         manager.registerModel(SessionModel.class);
+        manager.registerModel(ConfigModel.class);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.vip.ProductListBean;
+import com.qingxin.medical.common.QingXinError;
 
 /**
  * Date 2018-02-05
@@ -15,12 +16,15 @@ public class MyCollectedProductListContract {
 
     interface View extends BaseView<Presenter> {
         void onSuccess(ProductListBean ProductListBean);
+
         void onSuccess(CollectBean collectBean);
-        void onError(String result);
+
+        void onError(QingXinError error);
     }
 
     interface Presenter extends BasePresenter {
         void getMyCollectProductList(int limit, int skip, String type, String actyp);
+
         void cancelCollect(String id);
     }
 }

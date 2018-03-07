@@ -1,23 +1,24 @@
-package com.qingxin.medical.app.goddessdiary;
+package com.qingxin.medical.config;
 
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
+import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.common.QingXinError;
-import com.qingxin.medical.home.ListBean;
 
 /**
+ * Date 2018-03-07
  *
- * Date 2018-01-31
  * @author zhikuo1
  */
-public class DiaryListContract {
+public class ConfigContract {
 
     public interface View extends BaseView<Presenter> {
-        void onSuccess(ListBean<DiaryItemBean> diary);
+        void onSuccess(ContentBean<ConfigBean> diary);
+
         void onError(QingXinError error);
     }
 
     public interface Presenter extends BasePresenter {
-        void getGoddessDiaryList(int limit,int skip,String search);
+        void getConfigBean();
     }
 }

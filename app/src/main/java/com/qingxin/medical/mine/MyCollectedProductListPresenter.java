@@ -5,9 +5,9 @@ import android.support.annotation.NonNull;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.qingxin.medical.utils.ToastUtils;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -27,7 +27,7 @@ public class MyCollectedProductListPresenter implements MyCollectedProductListCo
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    public MyCollectedProductListPresenter(MyCollectedProductListContract.View vipListView) {
+    MyCollectedProductListPresenter(@NonNull MyCollectedProductListContract.View vipListView) {
         mCollectListryView = vipListView;
         mCompositeSubscription = new CompositeSubscription();
         mCollectListryView.setPresenter(this);
@@ -57,7 +57,7 @@ public class MyCollectedProductListPresenter implements MyCollectedProductListCo
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mCollectListryView.onError(new QingXinError(e));
                     }
 
                     @Override
@@ -65,7 +65,7 @@ public class MyCollectedProductListPresenter implements MyCollectedProductListCo
                         if (!HandErrorUtils.isError(vipList.getCode())) {
                             mCollectListryView.onSuccess(vipList.getContent());
                         } else {
-                            ToastUtils.showToast(vipList.getMsg());
+                            mCollectListryView.onError(new QingXinError(vipList.getMsg()));
                         }
                     }
                 })
@@ -84,7 +84,7 @@ public class MyCollectedProductListPresenter implements MyCollectedProductListCo
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mCollectListryView.onError(new QingXinError(e));
                     }
 
                     @Override
@@ -92,7 +92,7 @@ public class MyCollectedProductListPresenter implements MyCollectedProductListCo
                         if (!HandErrorUtils.isError(collectBean.getCode())) {
                             mCollectListryView.onSuccess(collectBean.getContent());
                         } else {
-                            ToastUtils.showToast(collectBean.getMsg());
+                            mCollectListryView.onError(new QingXinError(collectBean.getMsg()));
                         }
                     }
                 })

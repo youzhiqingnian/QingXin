@@ -62,33 +62,6 @@ public class MineDataPresenter implements MineDataContract.Presenter {
 
     }
 
-    @Override
-    public void getSession() {
-        mCompositeSubscription.add(NetRequestListManager.isChcekIn()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ContentBean<com.qingxin.medical.base.MemBean>>() {
-                    @Override
-                    public void onCompleted() {
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
-                    }
-
-                    @Override
-                    public void onNext(ContentBean<com.qingxin.medical.base.MemBean> memBean) {
-                        if(!HandErrorUtils.isError(memBean.getCode())){
-                            mUploadHeadView.onSuccess(memBean.getContent());
-                        }else{
-                            ToastUtils.showToast(memBean.getMsg());
-                        }
-                    }
-                })
-        );
-    }
-
     private void uploadPhotos(@NonNull DiaryPublishParams diaryPublishParams) {
         File file = diaryPublishParams.getBeforeFile();
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);

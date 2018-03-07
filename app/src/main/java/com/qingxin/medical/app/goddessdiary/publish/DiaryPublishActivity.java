@@ -28,9 +28,11 @@ import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailPresenter;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.CommonDialogFactory;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.common.QingXinLocalPhotoPopupWindow;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyActivity;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyListBean;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.vlee78.android.vl.VLAsyncHandler;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLScheduler;
@@ -165,7 +167,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
                 }
 
                 @Override
-                public void onError(String result) {
+                public void onError(QingXinError error) {
 
                 }
 
@@ -335,8 +337,8 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
     }
 
     @Override
-    public void onPublishFailed(String result) {
-        showToast(result);
+    public void onPublishFailed(QingXinError error) {
+        HandErrorUtils.handleError(error);
         mPublishTv.setEnabled(true);
         mPublishTv.setText(isEdit ? getResources().getString(R.string.sure_modify) : getResources().getString(R.string.sure_publish));
     }

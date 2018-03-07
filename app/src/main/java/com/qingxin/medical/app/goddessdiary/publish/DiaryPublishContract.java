@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
+import com.qingxin.medical.common.QingXinError;
 
 /**
  * Date 2018-01-31
@@ -16,7 +17,7 @@ public class DiaryPublishContract {
 
         void onPublishSuccess(DiaryPublishResult diaryPublishResult);
 
-        void onPublishFailed(String result);
+        void onPublishFailed(QingXinError error);
     }
 
     public interface Presenter extends BasePresenter {

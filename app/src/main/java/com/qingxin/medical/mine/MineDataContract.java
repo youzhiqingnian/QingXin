@@ -24,8 +24,6 @@ public class MineDataContract {
 
         void onSuccess(UploadResult uploadResultBean);
 
-        void onSuccess(com.qingxin.medical.base.MemBean memBean);
-
         void onError(String result);
     }
 
@@ -33,8 +31,6 @@ public class MineDataContract {
         void headUpload(@NonNull DiaryPublishParams diaryPublishParams);
 
         void updateDiary(@NonNull DiaryPublishParams diaryPublishParams);
-
-        void getSession();
     }
 
 }

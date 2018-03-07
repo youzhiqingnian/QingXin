@@ -2,6 +2,7 @@ package com.qingxin.medical.home.medicalbeauty;
 
 import android.support.annotation.NonNull;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.utils.HandErrorUtils;
@@ -58,7 +59,7 @@ public class MedicalBeautyPresenter implements MedicalBeautyContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mStrictSelView.onError(new QingXinError(e));
                     }
 
                     @Override
@@ -66,9 +67,8 @@ public class MedicalBeautyPresenter implements MedicalBeautyContract.Presenter {
                         if(!HandErrorUtils.isError(contentBean.getCode())){
                             mStrictSelView.onSucess(contentBean.getContent());
                         }else{
-                            ToastUtils.showToast(contentBean.getMsg());
+                            mStrictSelView.onError(new QingXinError(contentBean.getMsg()));
                         }
-
                     }
                 })
         );
@@ -91,7 +91,7 @@ public class MedicalBeautyPresenter implements MedicalBeautyContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mStrictSelView.onError(new QingXinError(e));
                     }
 
                     @Override
@@ -100,9 +100,8 @@ public class MedicalBeautyPresenter implements MedicalBeautyContract.Presenter {
                             mStrictSelView.onGetSecondarySuccess(contentBean.getContent());
                             mMedicalBeautyModel.putData(id, contentBean.getContent());
                         }else{
-                            ToastUtils.showToast(contentBean.getMsg());
+                            mStrictSelView.onError(new QingXinError(contentBean.getMsg()));
                         }
-
                     }
                 })
         );

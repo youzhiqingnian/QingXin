@@ -5,9 +5,10 @@ import android.util.Log;
 
 import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.qingxin.medical.utils.ToastUtils;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -26,7 +27,7 @@ public class VipDetailPresenter implements VipDetailContract.Presenter {
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    public VipDetailPresenter(VipDetailContract.View vipDetailView) {
+    VipDetailPresenter(@NonNull VipDetailContract.View vipDetailView) {
         mVipDetailView = vipDetailView;
         mCompositeSubscription = new CompositeSubscription();
         mVipDetailView.setPresenter(this);
@@ -56,17 +57,16 @@ public class VipDetailPresenter implements VipDetailContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mVipDetailView.onError(new QingXinError(e));
                     }
 
                     @Override
                     public void onNext(ContentBean<VipDetailBean> vipDetail) {
-                        if(!HandErrorUtils.isError(vipDetail.getCode())){
+                        if (!HandErrorUtils.isError(vipDetail.getCode())) {
                             mVipDetailView.onSuccess(vipDetail.getContent());
-                        }else{
-                            ToastUtils.showToast(vipDetail.getMsg());
+                        } else {
+                            mVipDetailView.onError(new QingXinError(vipDetail.getMsg()));
                         }
-
                     }
                 })
         );
@@ -74,7 +74,6 @@ public class VipDetailPresenter implements VipDetailContract.Presenter {
 
     @Override
     public void collect(String id) {
-
         mCompositeSubscription.add(NetRequestListManager.collectVip(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -85,15 +84,15 @@ public class VipDetailPresenter implements VipDetailContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mVipDetailView.onError(new QingXinError(e));
                     }
 
                     @Override
                     public void onNext(ContentBean<CollectBean> collectBean) {
-                        if(!HandErrorUtils.isError(collectBean.getCode())){
+                        if (!HandErrorUtils.isError(collectBean.getCode())) {
                             mVipDetailView.onSuccess(collectBean.getContent());
-                        }else{
-                            ToastUtils.showToast(collectBean.getMsg());
+                        } else {
+                            mVipDetailView.onError(new QingXinError(collectBean.getMsg()));
                         }
                     }
                 })
@@ -113,20 +112,19 @@ public class VipDetailPresenter implements VipDetailContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mVipDetailView.onError(new QingXinError(e));
                     }
 
                     @Override
                     public void onNext(ContentBean<AmountBean> amountBean) {
-                        Log.i("预定",amountBean.toString());
-                        if(!HandErrorUtils.isError(amountBean.getCode())){
+                        Log.i("预定", amountBean.toString());
+                        if (!HandErrorUtils.isError(amountBean.getCode())) {
                             mVipDetailView.onSuccess(amountBean.getContent());
-                        }else{
-                            ToastUtils.showToast(amountBean.getMsg());
+                        } else {
+                            mVipDetailView.onError(new QingXinError(amountBean.getMsg()));
                         }
                     }
                 })
         );
     }
-
 }

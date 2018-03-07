@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.base.MemBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.user.UserService;
@@ -28,7 +29,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
     private LoginContract.LoginView mLoginView;
     private CompositeSubscription mCompositeSubscription;
 
-    public LoginPresenter(@NonNull LoginContract.LoginView view) {
+    LoginPresenter(@NonNull LoginContract.LoginView view) {
         this.mLoginView = view;
         mLoginView.setPresenter(this);
         mCompositeSubscription = new CompositeSubscription();
@@ -58,7 +59,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mLoginView.onError(new QingXinError(e));
                     }
 
                     @Override
@@ -68,9 +69,8 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                             if(!HandErrorUtils.isError(userTokenBeanContentBean.getCode())){
                                 mLoginView.onSuccess(userTokenBeanContentBean.getContent());
                             }else{
-                                ToastUtils.showToast(userTokenBeanContentBean.getMsg());
+                                mLoginView.onError(new QingXinError(userTokenBeanContentBean.getMsg()));
                             }
-
                         }
                     }
                 }));
@@ -88,7 +88,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mLoginView.onError(new QingXinError(e));
                     }
 
                     @Override
@@ -96,7 +96,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                         if(!HandErrorUtils.isError(memBean.getCode())){
                             mLoginView.onSuccess(memBean.getContent());
                         }else{
-                            ToastUtils.showToast(memBean.getMsg());
+                            mLoginView.onError(new QingXinError(memBean.getMsg()));
                         }
                     }
                 })
@@ -115,13 +115,13 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mLoginView.onError(new QingXinError(e));
                     }
 
                     @Override
                     public void onNext(ContentBean contentBean) {
                         if(HandErrorUtils.isError(contentBean.getCode())){
-                            ToastUtils.showToast(contentBean.getMsg());
+                            mLoginView.onError(new QingXinError(contentBean.getMsg()));
                         }else {
                             if (null != mLoginView){
                                 mLoginView.onGetMobileCodeSuccess();

@@ -3,6 +3,7 @@ package com.qingxin.medical.app.homepagetask;
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.homepagetask.model.RecommendResultBean;
+import com.qingxin.medical.common.QingXinError;
 
 /**
  * Date 2018-01-31
@@ -15,7 +16,7 @@ public class RecommendUserContract {
 
         void onSuccess(RecommendResultBean result);
 
-        void onError(String result);
+        void onError(QingXinError error);
     }
 
     public interface Presenter extends BasePresenter {

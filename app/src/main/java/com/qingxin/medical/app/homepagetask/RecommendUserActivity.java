@@ -2,10 +2,8 @@ package com.qingxin.medical.app.homepagetask;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -17,9 +15,12 @@ import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.RecommendResultBean;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.common.QingXinError;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
+
 /**
  * Date 2018-02-27
  *
@@ -126,8 +127,8 @@ public class RecommendUserActivity extends QingXinActivity implements RecommendU
 
     @Override
     public void onSuccess(RecommendResultBean result) {
-        Log.i("推荐用户的bean",result.toString());
-        if(!VLUtils.stringIsEmpty(result.getId())){
+        Log.i("推荐用户的bean", result.toString());
+        if (!VLUtils.stringIsEmpty(result.getId())) {
             showToast(getResources().getString(R.string.recommend_success));
             setResult(Activity.RESULT_OK);
             this.finish();
@@ -135,8 +136,8 @@ public class RecommendUserActivity extends QingXinActivity implements RecommendU
     }
 
     @Override
-    public void onError(String result) {
-
+    public void onError(QingXinError error) {
+        HandErrorUtils.handleError(error);
     }
 
     @Override

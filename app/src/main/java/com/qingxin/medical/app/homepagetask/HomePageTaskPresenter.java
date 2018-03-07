@@ -5,15 +5,15 @@ import android.util.Log;
 
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.qingxin.medical.utils.ToastUtils;
-import com.vlee78.android.vl.VLUtils;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -59,7 +59,7 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mHomePageTaskView.onError(new QingXinError(e));
                     }
 
                     @Override
@@ -68,9 +68,8 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
                         if(!HandErrorUtils.isError(homeBean.getCode())){
                             mHomePageTaskView.onSuccess(homeBean.getContent());
                         }else{
-                            ToastUtils.showToast(homeBean.getMsg());
+                            mHomePageTaskView.onError(new QingXinError(homeBean.getMsg()));
                         }
-
                     }
                 })
         );

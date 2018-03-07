@@ -17,7 +17,9 @@ import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinFragment;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLTitleBar;
@@ -129,12 +131,13 @@ public class GoddessDiaryListFragment extends QingXinFragment implements DiaryLi
     }
 
     @Override
-    public void onError(String result) {
+    public void onError(QingXinError error) {
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
         } else {
             mAdapter.loadMoreFail();
         }
+        HandErrorUtils.handleError(error);
     }
 
     @Override

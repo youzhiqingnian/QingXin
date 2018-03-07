@@ -11,7 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLTitleBar;
 
@@ -121,6 +123,7 @@ public class MedicalBeautyActivity extends QingXinActivity implements MedicalBea
     }
 
     @Override
-    public void onError(String result) {
+    public void onError(QingXinError error) {
+        HandErrorUtils.handleError(error);
     }
 }

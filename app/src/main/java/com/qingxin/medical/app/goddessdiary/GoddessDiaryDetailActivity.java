@@ -22,6 +22,8 @@ import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
+import com.qingxin.medical.common.QingXinError;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
@@ -207,8 +209,8 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     }
 
     @Override
-    public void onError(String result) {
-
+    public void onError(QingXinError error) {
+        HandErrorUtils.handleError(error);
     }
 
     @Override

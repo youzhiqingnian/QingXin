@@ -3,6 +3,7 @@ package com.qingxin.medical.app.homepagetask;
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 
 /**
@@ -16,7 +17,7 @@ public class ServiceListContract {
 
         void onSuccess(ListBean<ServiceBean> diary);
 
-        void onError(String result);
+        void onError(QingXinError error);
     }
 
     public interface Presenter extends BasePresenter {

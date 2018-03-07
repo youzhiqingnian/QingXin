@@ -33,7 +33,9 @@ import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.FragmentToActivity;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.map.GaoDeMapModel;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.widget.decoration.GridSpacingItemDecoration;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
 import com.qingxin.medical.home.districtsel.StrictSelDetailActivity;
@@ -283,14 +285,19 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     }
 
     @Override
-    public void onError(String result) {
+    public void onError(QingXinError error) {
         hideView(R.layout.layout_loading);
+        HandErrorUtils.handleError(error);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cityTv: //城市列表
+                if (null == mHomeBean) {
+                    showToast("没有获取到数据,请退出重试");
+                    return;
+                }
                 CityListActivity.startSelf(getVLActivity(), mHomeBean.getOpencitys(), mResultListener);
                 break;
             case R.id.shareRl: //歆人专享

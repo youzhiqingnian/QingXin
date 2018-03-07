@@ -90,6 +90,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/signInCountTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -155,6 +156,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/shareCountTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -207,6 +209,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/inviteCountTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -237,8 +240,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@color/line_color"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -260,6 +262,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/recommendCountTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -269,7 +272,6 @@
             android:textColor="@color/text_color_blue"
             android:textSize="14sp"
             android:textStyle="bold" />
-
 
         <TextView
             android:id="@+id/clickToRecommendTv"
