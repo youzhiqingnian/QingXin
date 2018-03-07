@@ -297,4 +297,10 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
         HandErrorUtils.handleError(error);
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReceiver);
+    }
+
 }

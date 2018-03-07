@@ -34,6 +34,7 @@ import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.FragmentToActivity;
 import com.qingxin.medical.common.QingXinError;
+import com.qingxin.medical.config.ConfigModel;
 import com.qingxin.medical.map.GaoDeMapModel;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.widget.decoration.GridSpacingItemDecoration;
@@ -44,6 +45,7 @@ import com.qingxin.medical.home.medicalbeauty.MedicalBeautyActivity;
 import com.qingxin.medical.search.SearchActivity;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLActivity;
+import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
@@ -198,8 +200,10 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 firstPrPriceTv.setText(String.format("%s元", productList.get(0).getPrice()));
                 firstPrOldPriceTv.setText(String.format("原价%s元", productList.get(0).getOld_price()));
                 firstPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                mFirstPrCoverSdv.setImageURI(Uri.parse(productList.get(0).getCover().get(0)));
-
+//                mFirstPrCoverSdv.setImageURI(Uri.parse(productList.get(0).getCover().get(0)));
+                if(null != QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean() && null != QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages() && QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages().size() >= 1){
+                    mFirstPrCoverSdv.setImageURI(Uri.parse(QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages().get(0)));
+                }
                 List<String> idAndName = new ArrayList<String>();
                 idAndName.add(productList.get(0).getId());
                 idAndName.add(productList.get(0).getName());
@@ -211,7 +215,10 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 secondPrPriceTv.setText(String.format("%s元", productList.get(1).getPrice()));
                 secondPrOldPriceTv.setText(String.format("原价%s元", productList.get(1).getOld_price()));
                 secondPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                mSecondPrCoverSdv.setImageURI(Uri.parse(productList.get(1).getCover().get(0)));
+//                mSecondPrCoverSdv.setImageURI(Uri.parse(productList.get(1).getCover().get(0)));
+                if(null != QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean() && null != QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages() && QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages().size() >= 2){
+                    mSecondPrCoverSdv.setImageURI(Uri.parse(QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages().get(1)));
+                }
                 List<String> idAndName = new ArrayList<String>();
                 idAndName.add(productList.get(1).getId());
                 idAndName.add(productList.get(1).getName());
@@ -223,7 +230,10 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 thirdPrPriceTv.setText(String.format("%s元", productList.get(2).getPrice()));
                 thirdPrOldPriceTv.setText(String.format("原价%s元", productList.get(2).getOld_price()));
                 thirdPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-                mThirdPrCoverSdv.setImageURI(Uri.parse(productList.get(2).getCover().get(0)));
+//                mThirdPrCoverSdv.setImageURI(Uri.parse(productList.get(2).getCover().get(0)));
+                if(null != QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean() && null != QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages() && QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages().size() >= 3){
+                    mThirdPrCoverSdv.setImageURI(Uri.parse(QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages().get(2)));
+                }
                 List<String> idAndName = new ArrayList<String>();
                 idAndName.add(productList.get(2).getId());
                 idAndName.add(productList.get(2).getName());

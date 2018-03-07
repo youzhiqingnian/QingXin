@@ -12,7 +12,12 @@ import com.amap.api.location.AMapLocationClientOption;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.Constants;
 import com.qingxin.medical.app.homepagetask.HomePageTaskActivity;
+import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.common.QingXinError;
+import com.qingxin.medical.config.ConfigBean;
+import com.qingxin.medical.config.ConfigContract;
+import com.qingxin.medical.config.ConfigPresenter;
 import com.qingxin.medical.guide.GuideActivity;
 import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLBlock;
@@ -24,7 +29,7 @@ import com.vlee78.android.vl.VLScheduler;
  *
  * @author zhikuo1
  */
-public class SplashActivity extends QingXinActivity {
+public class SplashActivity extends QingXinActivity implements ConfigContract.View{
 
     //声明AMapLocationClient类对象
     public AMapLocationClient mLocationClient = null;
@@ -33,11 +38,15 @@ public class SplashActivity extends QingXinActivity {
     public AMapLocationClientOption mLocationOption = null;
     private static final String FIRST_START = "isFirstStart";
 
+    private ConfigPresenter mPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
+        mPresenter = new ConfigPresenter(this);
+        mPresenter.getConfigBean();
         //requestGaodeLoction();
         boolean isFirstStart = getSharedPreferences().getBoolean(FIRST_START, true);
         VLScheduler.instance.schedule(3000, VLScheduler.THREAD_MAIN, new VLBlock() {
@@ -54,6 +63,18 @@ public class SplashActivity extends QingXinActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.subscribe();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mPresenter.unsubscribe();
     }
 
     private void requestGaodeLoction() {
@@ -147,4 +168,18 @@ public class SplashActivity extends QingXinActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
+    @Override
+    public void setPresenter(ConfigContract.Presenter presenter) {
+
+    }
+
+    @Override
+    public void onSuccess(ContentBean<ConfigBean> diary) {
+
+    }
+
+    @Override
+    public void onError(QingXinError error) {
+
+    }
 }

@@ -233,4 +233,10 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
             getMyCollectList(true);
         }
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReceiver);
+    }
 }
