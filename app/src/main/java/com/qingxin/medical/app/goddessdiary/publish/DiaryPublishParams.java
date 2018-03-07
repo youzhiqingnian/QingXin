@@ -15,6 +15,15 @@ public class DiaryPublishParams extends BaseBean {
     private String beforeFileName, afterFileName;
     private String wikiId;
     private String content;
+    private String diaryId;
+
+    public String getDiaryId() {
+        return diaryId;
+    }
+
+    public void setDiaryId(String diaryId) {
+        this.diaryId = diaryId;
+    }
 
     public File getBeforeFile() {
         return beforeFile;
