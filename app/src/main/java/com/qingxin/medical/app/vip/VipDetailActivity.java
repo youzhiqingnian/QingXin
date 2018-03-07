@@ -20,7 +20,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
@@ -36,10 +35,8 @@ import com.vlee78.android.vl.VLPagerView;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
-
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * 歆人专享详情
  * Date 2018-02-06
@@ -112,6 +109,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         initListener();
 
         if (!TextUtils.isEmpty(id)) {
+            showView(R.layout.layout_loading);
             mPresenter.getVipDetail(id);
         }
     }
@@ -267,6 +265,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
 
     @Override
     public void onSuccess(VipDetailBean vipDetailBean) {
+        hideView(R.layout.layout_loading);
         Log.i("专享详情==", vipDetailBean.toString());
         setData(vipDetailBean);
     }
@@ -308,6 +307,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
 
     @Override
     public void onError(QingXinError error) {
+        hideView(R.layout.layout_loading);
         HandErrorUtils.handleError(error);
     }
 

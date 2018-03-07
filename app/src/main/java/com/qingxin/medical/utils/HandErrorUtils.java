@@ -69,6 +69,20 @@ public class HandErrorUtils {
             case "1002":
                 strRes = R.string.e1002;
                 break;
+            case "1003":
+                strRes = R.string.e1003;
+                break;
+            case "1005":
+                strRes = R.string.e1005;
+                break;
+            case "1010":
+                strRes = R.string.e1010;
+                break;
+            case "1011":
+                strRes = R.string.e1011;
+            case "1012":
+                strRes = R.string.e1012;
+                break;
             case "1020":
                 strRes = R.string.e1020;
                 break;
@@ -81,11 +95,20 @@ public class HandErrorUtils {
             case "1040":
                 strRes = R.string.e1040;
                 break;
+            case "1050":
+                strRes = R.string.e1050;
+                break;
+            case "1051":
+                strRes = R.string.e1051;
+                break;
             case "1100":
                 strRes = R.string.e1100;
                 break;
             case "1110":
                 strRes = R.string.e1110;
+                break;
+            case "1111":
+                strRes = R.string.e1111;
                 break;
             case "1200":
                 strRes = R.string.e1200;
