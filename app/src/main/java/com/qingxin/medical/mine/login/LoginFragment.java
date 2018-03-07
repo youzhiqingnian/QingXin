@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -173,6 +174,7 @@ public class LoginFragment extends QingXinFragment implements View.OnClickListen
     @Override
     public void onSuccess(MemBean memBean) {
         if (memBean != null) {
+            Log.i("session的bean",memBean.toString());
             // 获取到了session的bean
             getModel(SessionModel.class).onLoginSuccess(memBean);
             Intent intent = new Intent(LOGIN_ACTION);

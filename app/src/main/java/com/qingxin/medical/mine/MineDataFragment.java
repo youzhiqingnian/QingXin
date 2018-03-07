@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.content.LocalBroadcastManager;
@@ -18,13 +17,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinAdapter;
 import com.qingxin.medical.R;
-import com.qingxin.medical.album.AlbumAdapter;
 import com.qingxin.medical.album.AlbumItemData;
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishParams;
-import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishResult;
 import com.qingxin.medical.app.homepagetask.model.MemBean;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
@@ -40,12 +36,12 @@ import com.qingxin.medical.widget.indicator.LinePagerIndicator;
 import com.qingxin.medical.widget.indicator.MagicIndicator;
 import com.qingxin.medical.widget.indicator.SimplePagerTitleView;
 import com.qingxin.medical.widget.indicator.ViewPagerHelper;
+import com.qingxin.medical.widget.indicator.view.CircleImageView;
 import com.vlee78.android.vl.VLAsyncHandler;
+import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLUtils;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -63,7 +59,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
 
     private AppBarLayout mAppbar;
 
-    private SimpleDraweeView mUserHeadSdv;
+    private CircleImageView mUserHeadSdv;
     private ImageView mDefaultHeadIv;
 
     private List<TextView> mCountTextViewList = new ArrayList();
@@ -71,6 +67,8 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
     private QingXinBroadCastReceiver mReceiver;
 
     public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
+
+    private UploadResult mUploadeResultBean;
 
     private Bitmap mBeforePhoto;
     private String mBeforePhotoPath;
@@ -106,14 +104,13 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
     private void initView() {
 
         mUserHeadSdv = mRootView.findViewById(R.id.userHeadSdv);
-        mUserHeadSdv.setImageURI(Uri.parse("http://qingxin-assets.awesomes.cn/app/bc4e8580-216b-11e8-b2dd-cb5a2df58a45.jpg"));
+//        mUserHeadSdv.setImageURI(Uri.parse("http://qingxin-assets.awesomes.cn/app/bc4e8580-216b-11e8-b2dd-cb5a2df58a45.jpg"));
         mDefaultHeadIv = mRootView.findViewById(R.id.defaultHeadIv);
         TextView userNicknameTv = mRootView.findViewById(R.id.userNicknameTv);
 
         if (QingXinApplication.getInstance().getLoginUser() != null) {
             if (!VLUtils.stringIsEmpty(QingXinApplication.getInstance().getLoginUser().getCover())) {
-                mDefaultHeadIv.setVisibility(View.GONE);
-                mUserHeadSdv.setImageURI(Uri.parse(QingXinApplication.getInstance().getLoginUser().getCover()));
+                loadHeadBitmap(QingXinApplication.getInstance().getLoginUser().getCover());
             }
             userNicknameTv.setText(QingXinApplication.getInstance().getLoginUser().getName());
         }
@@ -281,17 +278,45 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
     @Override
     public void onSuccess(MemBean membean) {
         // 修改个人资料成功
-        showToast("修改个人资料成功");
+        if (membean != null) {
+            Log.i("上传头像成功了", mUploadeResultBean.toString());
+
+            if (mUploadeResultBean != null && !VLUtils.stringIsEmpty(mUploadeResultBean.getUrl())) {
+                showToast("上传头像成功");
+                QingXinApplication.getInstance().getLoginSession().getMem().setCover(mUploadeResultBean.getUrl());
+                loadHeadBitmap(mUploadeResultBean.getUrl());
+            }
+        }
     }
 
     @Override
     public void onSuccess(UploadResult uploadResultBean) {
-        Log.i("上传头像成功了",uploadResultBean.toString());
-        if (uploadResultBean != null && !VLUtils.stringIsEmpty(uploadResultBean.getUrl())) {
-            mDefaultHeadIv.setVisibility(View.GONE);
-            Log.i("上传头像成功了","真的成功了");
-//            mUserHeadSdv.setImageURI(Uri.parse(uploadResultBean.getUrl()));
+        if (uploadResultBean != null) {
+            mUploadeResultBean = uploadResultBean;
         }
+    }
+
+
+    private void loadHeadBitmap(String bitmapImgPath) {
+        VLScheduler.instance.schedule(0, VLScheduler.THREAD_BG_NORMAL, new VLBlock() {
+            @Override
+            protected void process(boolean canceled) {
+                mBeforePhoto = VLUtils.getNetWorkBitmap(bitmapImgPath);
+                VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {
+                    @Override
+                    protected void process(boolean canceled) {
+                        AlbumItemData<Bitmap> beforeItemData = new AlbumItemData<Bitmap>(mBeforePhoto) {
+                            @Override
+                            public String getImageUrl() {
+                                return null;
+                            }
+                        };
+                        mDefaultHeadIv.setVisibility(View.GONE);
+                        mUserHeadSdv.setImageBitmap(mBeforePhoto);
+                    }
+                });
+            }
+        });
     }
 
     @Override
