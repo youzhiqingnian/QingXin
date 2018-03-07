@@ -34,19 +34,19 @@
                     android:layout_marginTop="48dp"
                     android:background="@drawable/mine_head_ring_bg">
 
-                    <com.facebook.drawee.view.SimpleDraweeView
+                    <ImageView
                         android:id="@+id/userHeadSdv"
                         android:layout_width="88dp"
                         android:layout_height="88dp"
                         android:scaleType="centerCrop"
-                        app:roundAsCircle="true" />
+                        />
 
-                    <ImageView
+                   <!-- <ImageView
                         android:id="@+id/defaultHeadIv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@mipmap/mine_defualt_head_logo" />
+                        android:src="@mipmap/mine_defualt_head_logo" />-->
 
                 </FrameLayout>
 

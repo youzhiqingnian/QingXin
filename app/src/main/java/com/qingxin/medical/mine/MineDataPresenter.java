@@ -6,9 +6,11 @@ import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishParams;
 import com.qingxin.medical.app.homepagetask.model.MemBean;
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
+import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.upload.UploadResult;
 import com.qingxin.medical.upload.UploadService;
 import com.qingxin.medical.utils.HandErrorUtils;
+import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLApplication;
 import java.io.File;
 import okhttp3.MediaType;
@@ -60,6 +62,33 @@ public class MineDataPresenter implements MineDataContract.Presenter {
 
     }
 
+    @Override
+    public void getSession() {
+        mCompositeSubscription.add(NetRequestListManager.isChcekIn()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ContentBean<com.qingxin.medical.base.MemBean>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        HandErrorUtils.handleError(e);
+                    }
+
+                    @Override
+                    public void onNext(ContentBean<com.qingxin.medical.base.MemBean> memBean) {
+                        if(!HandErrorUtils.isError(memBean.getCode())){
+                            mUploadHeadView.onSuccess(memBean.getContent());
+                        }else{
+                            ToastUtils.showToast(memBean.getMsg());
+                        }
+                    }
+                })
+        );
+    }
+
     private void uploadPhotos(@NonNull DiaryPublishParams diaryPublishParams) {
         File file = diaryPublishParams.getBeforeFile();
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
@@ -83,8 +112,7 @@ public class MineDataPresenter implements MineDataContract.Presenter {
                             Log.i("头像内部上传成功", uploadResultContentBean.toString());
                             mUploadHeadView.onSuccess(uploadResultContentBean.getContent());
                             diaryPublishParams.setBeforeFileName(uploadResultContentBean.getContent().getFilename());
-
-                            modifyHead(uploadResultContentBean.getContent().getFilename());
+                            modifyHead(diaryPublishParams.getBeforeFileName());
                         } else {
                             mUploadHeadView.onError(uploadResultContentBean.getMsg());
                         }

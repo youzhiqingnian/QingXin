@@ -251,6 +251,15 @@ public class DiaryItemBean extends BaseBean  implements Serializable {
         public void setCover(String cover) {
             this.cover = cover;
         }
+
+        @Override
+        public String toString() {
+            return "MemBean{" +
+                    "id='" + id + '\'' +
+                    ", name='" + name + '\'' +
+                    ", cover='" + cover + '\'' +
+                    '}';
+        }
     }
 
     @Override
