@@ -3,17 +3,19 @@ package com.qingxin.medical.app.goddessdiary;
 import android.support.annotation.NonNull;
 
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 /**
- *
  * Date 2018-02-02
+ *
  * @author zhikuo1
  */
 
@@ -54,17 +56,16 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mDiaryDetailView.onError(new QingXinError(e));
                     }
 
                     @Override
                     public void onNext(ContentBean<GoddessDiaryDetailBean> diaryDetailBean) {
-                        if(!HandErrorUtils.isError(diaryDetailBean.getCode())){
+                        if (!HandErrorUtils.isError(diaryDetailBean.getCode())) {
                             mDiaryDetailView.onSuccess(diaryDetailBean.getContent());
-                        }else{
-                            ToastUtils.showToast(diaryDetailBean.getMsg());
+                        } else {
+                            mDiaryDetailView.onError(new QingXinError(diaryDetailBean.getMsg()));
                         }
-
                     }
                 })
         );
@@ -83,21 +84,18 @@ public class GoddessDiaryDetailPresenter implements DiaryDetailContract.Presente
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mDiaryDetailView.onError(new QingXinError(e));
                     }
 
                     @Override
                     public void onNext(ContentBean<CollectBean> collectBean) {
-                        if(!HandErrorUtils.isError(collectBean.getCode())){
+                        if (!HandErrorUtils.isError(collectBean.getCode())) {
                             mDiaryDetailView.onSuccess(collectBean.getContent());
-                        }else{
-                            ToastUtils.showToast(collectBean.getMsg());
+                        } else {
+                            mDiaryDetailView.onError(new QingXinError(collectBean.getMsg()));
                         }
-
                     }
                 })
         );
-
     }
-
 }

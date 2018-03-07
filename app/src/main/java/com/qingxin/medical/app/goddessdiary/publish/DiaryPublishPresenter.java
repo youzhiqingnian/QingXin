@@ -3,6 +3,7 @@ package com.qingxin.medical.app.goddessdiary.publish;
 import android.support.annotation.NonNull;
 
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.upload.UploadResult;
 import com.qingxin.medical.upload.UploadService;
@@ -83,7 +84,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mDiaryPublishPublishView.onPublishFailed(new QingXinError(e));
                     }
 
                     @Override
@@ -96,7 +97,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
                             }
                             publishDiary(diaryPublishParams);
                         } else {
-                            mDiaryPublishPublishView.onPublishFailed(uploadResultContentBean.getMsg());
+                            mDiaryPublishPublishView.onPublishFailed(new QingXinError(uploadResultContentBean.getMsg()));
                         }
                     }
                 }));
@@ -116,7 +117,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mDiaryPublishPublishView.onPublishFailed(new QingXinError(e));
                     }
 
                     @Override
@@ -131,7 +132,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
                                 publishDiary(diaryPublishParams);
                             }
                         } else {
-                            mDiaryPublishPublishView.onPublishFailed(uploadResultContentBean.getMsg());
+                            mDiaryPublishPublishView.onPublishFailed(new QingXinError(uploadResultContentBean.getMsg()));
                         }
                     }
                 }));
@@ -149,7 +150,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mDiaryPublishPublishView.onPublishFailed(new QingXinError(e));
                     }
 
                     @Override
@@ -157,7 +158,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
                         if (!HandErrorUtils.isError(resultContentBean.getCode())) {
                             mDiaryPublishPublishView.onPublishSuccess(resultContentBean.getContent());
                         } else {
-                            mDiaryPublishPublishView.onPublishFailed(resultContentBean.getMsg());
+                            mDiaryPublishPublishView.onPublishFailed(new QingXinError(resultContentBean.getMsg()));
                         }
                     }
                 }));

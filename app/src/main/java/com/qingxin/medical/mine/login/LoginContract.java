@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.base.MemBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.user.UserTokenBean;
 
 /**
@@ -20,8 +21,7 @@ public class LoginContract {
 
         void onGetMobileCodeSuccess();
 
-        void onError(String errorCode, String message);
-
+        void onError(QingXinError error);
     }
 
     public interface LoginPresenter extends BasePresenter {

@@ -13,7 +13,9 @@ import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
@@ -135,13 +137,14 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
     }
 
     @Override
-    public void onError(String result) {
+    public void onError(QingXinError error) {
         hideView(R.layout.layout_loading);
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
         } else {
             mAdapter.loadMoreFail();
         }
+        HandErrorUtils.handleError(error);
     }
 
     @Override

@@ -16,7 +16,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +26,8 @@ import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.login.LoginActivity;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
+import com.qingxin.medical.common.QingXinError;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
@@ -298,15 +299,15 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         intent.putExtra(VIP_ID, id);
         intent.putExtra(BOOK_NUM, String.valueOf(amountBean.getAmount()));
         setResult(Activity.RESULT_OK, intent);
-        if (amountBean != null && amountBean.getAmount() > 0) {
+        if (amountBean.getAmount() > 0) {
             // 通知我预约的产品列表刷新数据
             sendBroadCast(3);
         }
     }
 
     @Override
-    public void onError(String result) {
-
+    public void onError(QingXinError error) {
+        HandErrorUtils.handleError(error);
     }
 
     @Override
@@ -334,7 +335,7 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         mProductNameTv.setText(itemBean.getName());
         mPriceTv.setText(String.valueOf(itemBean.getPrice()));
         mGrayRmbIconTv.setText(String.format("￥%s", itemBean.getOld_price()));
-        mCityNameTv.setText(itemBean.getProvince_name() + itemBean.getCity_name());
+        mCityNameTv.setText(String.format("%s%s", itemBean.getProvince_name(), itemBean.getCity_name()));
         mOrderCountTv.setText(String.format("%s次预约", itemBean.getOrder()));
         mHospitalNameTv.setText(itemBean.getHospital());
 

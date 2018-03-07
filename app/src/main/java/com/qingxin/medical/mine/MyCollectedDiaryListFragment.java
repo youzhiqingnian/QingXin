@@ -20,8 +20,10 @@ import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListAdapter;
 import com.qingxin.medical.base.QingXinApplication;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
@@ -197,13 +199,14 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
     }
 
     @Override
-    public void onError(String result) {
+    public void onError(QingXinError error) {
         hideView(R.layout.layout_loading);
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
         } else {
             mAdapter.loadMoreFail();
         }
+        HandErrorUtils.handleError(error);
     }
 
     @Override

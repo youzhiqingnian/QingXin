@@ -3,6 +3,7 @@ package com.qingxin.medical.app.goddessdiary;
 import android.support.annotation.NonNull;
 
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
@@ -56,7 +57,7 @@ public class GoddessDiaryPresenter implements DiaryListContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mGoddessDiaryView.onError(new QingXinError(e));
                     }
 
                     @Override
@@ -64,7 +65,7 @@ public class GoddessDiaryPresenter implements DiaryListContract.Presenter {
                         if (!HandErrorUtils.isError(diary.getCode())) {
                             mGoddessDiaryView.onSuccess(diary.getContent());
                         } else {
-                            ToastUtils.showToast(diary.getMsg());
+                            mGoddessDiaryView.onError(new QingXinError(diary.getMsg()));
                         }
                     }
                 })

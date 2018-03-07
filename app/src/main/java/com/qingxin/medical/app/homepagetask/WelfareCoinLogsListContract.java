@@ -4,9 +4,8 @@ import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
-import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import com.qingxin.medical.app.homepagetask.model.WithdrawalsItemBean;
-import com.qingxin.medical.base.MemBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 
 /**
@@ -24,7 +23,7 @@ public class WelfareCoinLogsListContract {
 
         void onSuccess(WithdrawalsItemBean withdrawalsBean);
 
-        void onError(String result);
+        void onError(QingXinError error);
     }
 
     public interface Presenter extends BasePresenter {

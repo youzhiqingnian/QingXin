@@ -2,12 +2,17 @@ package com.qingxin.medical.utils;
 
 import com.google.gson.JsonParseException;
 import com.qingxin.medical.R;
+import com.qingxin.medical.common.QingXinError;
 import com.vlee78.android.vl.VLApplication;
+
 import org.json.JSONException;
 
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.text.ParseException;
+
 import retrofit2.HttpException;
+
 /**
  * Date 2018-02-28
  *
@@ -95,17 +100,24 @@ public class HandErrorUtils {
         return VLApplication.instance().getResources().getString(strRes);
     }
 
+    public static void handleError(QingXinError error){
+        if (null == error.getThrowable()){
+            ToastUtils.showToast(error.getMsg());
+        }else {
+            handleError(error.getThrowable());
+        }
+    }
 
-    public static void handleError(Throwable e){
+    public static void handleError(Throwable e) {
         Throwable throwable = e;
         //获取最根源的异常
-        while(throwable.getCause() != null){
+        while (throwable.getCause() != null) {
             e = throwable;
             throwable = throwable.getCause();
         }
-        if (e instanceof HttpException){             //HTTP错误
+        if (e instanceof HttpException) {             //HTTP错误
             HttpException httpException = (HttpException) e;
-            switch(httpException.code()){
+            switch (httpException.code()) {
                 case UNAUTHORIZED:
                 case FORBIDDEN:
                     ToastUtils.showToast("当前资源不可用，未获取到响应权限");        //权限错误，需要实现
@@ -122,11 +134,13 @@ public class HandErrorUtils {
             }
         } else if (e instanceof JsonParseException
                 || e instanceof JSONException
-                || e instanceof ParseException){
+                || e instanceof ParseException) {
             ToastUtils.showToast("数据解析错误");            //均视为解析错误
-        } else if (e instanceof SocketTimeoutException){
+        } else if (e instanceof SocketTimeoutException) {
             ToastUtils.showToast("连接超时,请稍后再试");
-        }else {
+        } else if (e instanceof ConnectException) {
+            ToastUtils.showToast("当前网络错误，请检查您的网络!");
+        } else {
             ToastUtils.showToast("未知错误");          //未知错误
         }
     }

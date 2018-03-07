@@ -4,6 +4,7 @@ import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 
 /**
@@ -17,7 +18,7 @@ public class MyCollectedDiaryListContract {
     interface View extends BaseView<Presenter> {
         void onSuccess(ListBean<DiaryItemBean> diary);
         void onSuccess(CollectBean collectBean);
-        void onError(String result);
+        void onError(QingXinError error);
     }
 
     interface Presenter extends BasePresenter {

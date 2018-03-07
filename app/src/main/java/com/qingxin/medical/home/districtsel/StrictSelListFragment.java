@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinFragment;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
+import com.qingxin.medical.utils.HandErrorUtils;
 
 /**
  * 本地严选--机构列表
@@ -99,13 +101,13 @@ public class StrictSelListFragment extends QingXinFragment implements SwipeRefre
     }
 
     @Override
-    public void onError(String result) {
-        showToast(result);
+    public void onError(QingXinError error) {
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
         } else {
             mAdapter.loadMoreFail();
         }
+        HandErrorUtils.handleError(error);
     }
 
     @Override

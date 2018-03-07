@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
@@ -26,7 +27,7 @@ public class MyCollectedDiaryListPresenter implements MyCollectedDiaryListContra
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    public MyCollectedDiaryListPresenter(MyCollectedDiaryListContract.View vipListView) {
+    MyCollectedDiaryListPresenter(@NonNull MyCollectedDiaryListContract.View vipListView) {
         mCollectListryView = vipListView;
         mCompositeSubscription = new CompositeSubscription();
         mCollectListryView.setPresenter(this);
@@ -34,7 +35,6 @@ public class MyCollectedDiaryListPresenter implements MyCollectedDiaryListContra
 
     @Override
     public void subscribe() {
-
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MyCollectedDiaryListPresenter implements MyCollectedDiaryListContra
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mCollectListryView.onError(new QingXinError(e));
                     }
 
                     @Override
@@ -64,7 +64,7 @@ public class MyCollectedDiaryListPresenter implements MyCollectedDiaryListContra
                         if (!HandErrorUtils.isError(vipList.getCode())) {
                             mCollectListryView.onSuccess(vipList.getContent());
                         } else {
-                            ToastUtils.showToast(vipList.getMsg());
+                            mCollectListryView.onError(new QingXinError(vipList.getMsg()));
                         }
                     }
                 })
@@ -83,7 +83,7 @@ public class MyCollectedDiaryListPresenter implements MyCollectedDiaryListContra
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mCollectListryView.onError(new QingXinError(e));
                     }
 
                     @Override
@@ -91,7 +91,7 @@ public class MyCollectedDiaryListPresenter implements MyCollectedDiaryListContra
                         if(!HandErrorUtils.isError(collectBean.getCode())){
                             mCollectListryView.onSuccess(collectBean.getContent());
                         }else{
-                            ToastUtils.showToast(collectBean.getMsg());
+                            mCollectListryView.onError(new QingXinError(collectBean.getMsg()));
                         }
                     }
                 })

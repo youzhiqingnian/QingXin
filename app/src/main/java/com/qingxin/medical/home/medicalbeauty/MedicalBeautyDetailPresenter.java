@@ -1,12 +1,14 @@
 package com.qingxin.medical.home.medicalbeauty;
 
 import android.support.annotation.NonNull;
+
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ItemBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLApplication;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -49,12 +51,11 @@ public class MedicalBeautyDetailPresenter implements MedicalBeautyDetailContract
                 .subscribe(new Observer<ContentBean<ItemBean<MedicalBeautyRealDetailBean>>>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mMedicalBeautyDetailView.onError(new QingXinError(e));
                     }
 
                     @Override
@@ -62,9 +63,8 @@ public class MedicalBeautyDetailPresenter implements MedicalBeautyDetailContract
                         if(!HandErrorUtils.isError(contentBean.getCode())){
                             mMedicalBeautyDetailView.onSucess(contentBean.getContent());
                         }else{
-                            ToastUtils.showToast(contentBean.getMsg());
+                            mMedicalBeautyDetailView.onError(new QingXinError(contentBean.getMsg()));
                         }
-
                     }
                 })
         );

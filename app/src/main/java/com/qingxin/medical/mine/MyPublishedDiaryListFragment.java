@@ -22,7 +22,6 @@ import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
@@ -159,11 +158,7 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
 
     @Override
     public void onError(QingXinError error) {
-        if (error.getThrowable() != null) {
-            HandErrorUtils.handleError(error.getThrowable());
-        } else {
-            ToastUtils.showToast(error.getMsg());
-        }
+        HandErrorUtils.handleError(error);
         hideView(R.layout.layout_loading);
         if (isClear) {
             mRefreshLayout.setRefreshing(false);

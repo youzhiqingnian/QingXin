@@ -6,23 +6,25 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.login.CountDownUtils;
 import com.qingxin.medical.base.MemBean;
 import com.qingxin.medical.base.QingXinFragment;
-import com.qingxin.medical.service.QingXinBroadCastReceiver;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.user.SessionModel;
 import com.qingxin.medical.user.UserModel;
 import com.qingxin.medical.user.UserTokenBean;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -161,7 +163,6 @@ public class LoginFragment extends QingXinFragment implements View.OnClickListen
 
     @Override
     public void onSuccess(UserTokenBean userTokenBean) {
-        Log.i("登录成功的bean",userTokenBean.toString());
         hideView(R.layout.layout_loading);
         userTokenBean.getMem().setToken(userTokenBean.getToken());
         getModel(UserModel.class).onLoginSuccess(userTokenBean.getMem());
@@ -190,8 +191,9 @@ public class LoginFragment extends QingXinFragment implements View.OnClickListen
     }
 
     @Override
-    public void onError(String errorCode, String message) {
+    public void onError(QingXinError error) {
         hideView(R.layout.layout_loading);
+        HandErrorUtils.handleError(error);
     }
 
     @Override

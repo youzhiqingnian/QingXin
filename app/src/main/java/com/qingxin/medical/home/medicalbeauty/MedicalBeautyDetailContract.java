@@ -2,6 +2,7 @@ package com.qingxin.medical.home.medicalbeauty;
 
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ItemBean;
 
 /**
@@ -16,7 +17,7 @@ class MedicalBeautyDetailContract {
 
         void onSucess(ItemBean<MedicalBeautyRealDetailBean> medicalBeautyDetailBeen);
 
-        void onError(String result);
+        void onError(QingXinError error);
     }
 
     interface Presenter extends BasePresenter {

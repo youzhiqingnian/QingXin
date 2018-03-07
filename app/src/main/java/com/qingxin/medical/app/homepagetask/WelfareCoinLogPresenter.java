@@ -2,19 +2,23 @@ package com.qingxin.medical.app.homepagetask;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
 import com.qingxin.medical.app.homepagetask.model.CoinLogBean;
 import com.qingxin.medical.app.homepagetask.model.WithdrawalsItemBean;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ItemBean;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.utils.ToastUtils;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+
 /**
  * Date 2018-02-03
  *
@@ -58,18 +62,17 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mWelfareCoinLogView.onError(new QingXinError(e));
                     }
 
                     @Override
                     public void onNext(ContentBean<ListBean<CoinLogBean>> coinLogs) {
-                        Log.i("清新比列表", "youfanhui"+ coinLogs.toString());
-                        if(!HandErrorUtils.isError(coinLogs.getCode())){
+                        Log.i("清新比列表", "youfanhui" + coinLogs.toString());
+                        if (!HandErrorUtils.isError(coinLogs.getCode())) {
                             mWelfareCoinLogView.onSuccess(coinLogs.getContent());
-                        }else{
-                            ToastUtils.showToast(coinLogs.getMsg());
+                        } else {
+                            mWelfareCoinLogView.onError(new QingXinError(coinLogs.getMsg()));
                         }
-
                     }
                 })
         );
@@ -87,19 +90,18 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mWelfareCoinLogView.onError(new QingXinError(e));
                     }
 
                     @Override
                     public void onNext(ContentBean<CheckInBean> checkInBean) {
-                        if(null != checkInBean.getMsg()){
-                            if(!HandErrorUtils.isError(checkInBean.getCode())){
+                        if (null != checkInBean.getMsg()) {
+                            if (!HandErrorUtils.isError(checkInBean.getCode())) {
                                 mWelfareCoinLogView.onSuccess(checkInBean.getContent());
-                            }else{
-                                ToastUtils.showToast(checkInBean.getMsg());
+                            } else {
+                                mWelfareCoinLogView.onError(new QingXinError(checkInBean.getMsg()));
                             }
                         }
-
                     }
                 })
         );
@@ -117,19 +119,18 @@ public class WelfareCoinLogPresenter implements WelfareCoinLogsListContract.Pres
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mWelfareCoinLogView.onError(new QingXinError(e));
                     }
 
                     @Override
                     public void onNext(ContentBean<ItemBean<WithdrawalsItemBean>> withdrawalsBean) {
-                        if(null != withdrawalsBean.getMsg()){
-                            if(!HandErrorUtils.isError(withdrawalsBean.getCode())){
+                        if (null != withdrawalsBean.getMsg()) {
+                            if (!HandErrorUtils.isError(withdrawalsBean.getCode())) {
                                 mWelfareCoinLogView.onSuccess(withdrawalsBean.getContent().getItem());
-                            }else{
-                                ToastUtils.showToast(withdrawalsBean.getMsg());
+                            } else {
+                                mWelfareCoinLogView.onError(new QingXinError(withdrawalsBean.getMsg()));
                             }
                         }
-
                     }
                 })
         );

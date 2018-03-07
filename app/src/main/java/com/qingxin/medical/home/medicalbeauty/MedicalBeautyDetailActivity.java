@@ -8,15 +8,15 @@ import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ItemBean;
-import com.qingxin.medical.home.ListBean;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
 
@@ -59,22 +59,18 @@ public class MedicalBeautyDetailActivity extends QingXinActivity implements Medi
         if (!TextUtils.isEmpty(mMedicalId)) {
             mPresenter.getMedicalBeautyDetail(mMedicalId);
         }
-
     }
 
 
     @Override
     public void onSucess(ItemBean<MedicalBeautyRealDetailBean> medicalBeautyDetailBeen) {
-
         Log.i("医美百科详情", medicalBeautyDetailBeen.toString());
-
         setData(medicalBeautyDetailBeen);
-
     }
 
     @Override
-    public void onError(String result) {
-
+    public void onError(QingXinError error) {
+        HandErrorUtils.handleError(error);
     }
 
     @Override

@@ -5,17 +5,19 @@ import android.util.Log;
 
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
 import com.qingxin.medical.base.ContentBean;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.qingxin.medical.utils.ToastUtils;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+
 /**
- *
  * Date 2018-02-03
+ *
  * @author zhikuo1
  */
 public class ExclusiveServicePresenter implements ServiceListContract.Presenter {
@@ -51,26 +53,23 @@ public class ExclusiveServicePresenter implements ServiceListContract.Presenter 
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<ListBean<ServiceBean>>>() {
 
-
-
                     @Override
                     public void onCompleted() {
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        HandErrorUtils.handleError(e);
+                        mExclusiveServiceView.onError(new QingXinError(e));
                     }
 
                     @Override
                     public void onNext(ContentBean<ListBean<ServiceBean>> diary) {
-                        Log.i("专属服务",diary.toString());
-                        if(!HandErrorUtils.isError(diary.getCode())){
+                        Log.i("专属服务", diary.toString());
+                        if (!HandErrorUtils.isError(diary.getCode())) {
                             mExclusiveServiceView.onSuccess(diary.getContent());
-                        }else{
-                            ToastUtils.showToast(diary.getMsg());
+                        } else {
+                            mExclusiveServiceView.onError(new QingXinError(diary.getMsg()));
                         }
-
                     }
                 })
         );

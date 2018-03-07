@@ -2,6 +2,7 @@ package com.qingxin.medical.home.districtsel;
 
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
+import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 
 /**
@@ -15,7 +16,7 @@ class StrictSelContract {
     interface View extends BaseView<Presenter> {
         void onSuccess(ListBean<StrictSelBean> mDiary);
 
-        void onError(String result);
+        void onError(QingXinError error);
     }
 
     interface Presenter extends BasePresenter {
