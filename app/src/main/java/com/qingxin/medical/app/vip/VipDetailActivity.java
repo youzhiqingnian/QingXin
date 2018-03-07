@@ -355,7 +355,9 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
             mOrderNowTv.setText(R.string.already_booked);
         }
 
-        mProductDetailTv.setText(Html.fromHtml(itemBean.getAbout()));
+        if(!VLUtils.stringIsEmpty(itemBean.getAbout())){
+            mProductDetailTv.setText(Html.fromHtml(itemBean.getAbout()));
+        }
 //        VLUtils.setControllerListener(mVipDetailImgZdv, "http://p36zly2vu.bkt.clouddn.com/" + itemBean.getCover());
     }
 
