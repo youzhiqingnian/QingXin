@@ -2,13 +2,10 @@ package com.qingxin.medical.config;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.vlee78.android.vl.VLApplication;
-
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -63,6 +60,7 @@ public class ConfigPresenter implements ConfigContract.Presenter {
                         if (!HandErrorUtils.isError(configBeanContentBean.getCode())) {
                             Log.i("全局配置的bean", configBeanContentBean.toString());
                             QingXinApplication.instance().getModel(ConfigModel.class).setConfigBean(configBeanContentBean.getContent());
+                            mConfigView.onSuccess(configBeanContentBean.getContent());
                         }
                     }
                 }));

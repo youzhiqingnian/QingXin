@@ -2,7 +2,6 @@ package com.qingxin.medical.config;
 
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
-import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.common.QingXinError;
 
 /**
@@ -13,7 +12,7 @@ import com.qingxin.medical.common.QingXinError;
 public class ConfigContract {
 
     public interface View extends BaseView<Presenter> {
-        void onSuccess(ContentBean<ConfigBean> diary);
+        void onSuccess(ConfigBean configBean);
 
         void onError(QingXinError error);
     }
