@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.qingxin.medical.QingXinUmengModel;
 import com.qingxin.medical.utils.ToastUtils;
 
 
@@ -112,6 +113,7 @@ public class VLFragment extends Fragment implements VLMessageManager.VLMessageHa
         mState = VLFragmentState.FragmentPaused;
         VLDebug.logV("Fragment pause : " + mClassName + ".onPause()");
         boolean visible = getUserVisibleHint();
+        getModel(QingXinUmengModel.class).onPageEnd(getClass().getSimpleName());
         if (visible) onInvisible();
     }
 
@@ -120,6 +122,7 @@ public class VLFragment extends Fragment implements VLMessageManager.VLMessageHa
         super.onResume();
         mState = VLFragmentState.FragmentResumed;
         VLDebug.logV("Fragment resume : " + mClassName + ".onResume()");
+        getModel(QingXinUmengModel.class).onPageStart(getClass().getSimpleName());
         boolean visible = getUserVisibleHint();
         if (visible) onVisible(false);
     }

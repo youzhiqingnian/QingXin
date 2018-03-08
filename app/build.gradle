@@ -18,14 +18,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-
+        flavorDimensions "versionCode"
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -56,13 +50,85 @@ android {
         }
     }
     buildTypes {
+
+        debug {
+            resValue "string", "UMENG_APPKEY", "5aa0a123b27b0a295800010e"
+            signingConfig signingConfigs.debug
+        }
+
         release {
             minifyEnabled false
+            resValue "string", "UMENG_APPKEY", "5aa096ccf43e483eef0006e3"
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
+    productFlavors {
+        market_lenovo {
+            resValue "string", "APP_CHANNEL", "market_lenovo"
+        }
+
+        market_360 {
+            resValue "string", "APP_CHANNEL", "market_360"
+        }
+
+        market_ppzhushou {
+            resValue "string", "APP_CHANNEL", "market_ppzhushou"
+        }
+
+        market_anzhi {
+            resValue "string", "APP_CHANNEL", "market_anzhi"
+        }
+
+        market_meizu {
+            resValue "string", "APP_CHANNEL", "market_meizu"
+        }
+
+        market_xiaomi {
+            resValue "string", "APP_CHANNEL", "market_xiaomi"
+        }
+
+        market_qq {
+            resValue "string", "APP_CHANNEL", "market_qq"
+        }
+
+        market_wandoujia {
+            resValue "string", "APP_CHANNEL", "market_wandoujia"
+        }
+
+        market_baidu {
+            resValue "string", "APP_CHANNEL", "market_baidu"
+        }
+
+        market_oppo {
+            resValue "string", "APP_CHANNEL", "market_oppo"
+        }
+
+        market_vivo {
+            resValue "string", "APP_CHANNEL", "market_vivo"
+        }
+
+        market_huawei {
+            resValue "string", "APP_CHANNEL", "market_huawei"
+        }
+
+        market_beifen1 {
+            resValue "string", "APP_CHANNEL", "market_beifen1"
+        }
+
+        dev {
+            resValue "string", "APP_CHANNEL", "dev"
+        }
+
+        inner_test {
+            resValue "string", "APP_CHANNEL", "inner_test"
+        }
+
+        official {
+            resValue "string", "APP_CHANNEL", "official"
+        }
+    }
 }
 
 dependencies {
@@ -84,4 +150,5 @@ dependencies {
     compile 'com.android.support:multidex:1.0.3'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
     compile 'com.google.android:flexbox:0.2.6'
+    compile 'com.umeng.analytics:analytics:6.1.4'
 }
