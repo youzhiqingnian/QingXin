@@ -256,14 +256,18 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     public void onResume() {
         super.onResume();
         mPresenter.subscribe();
-        mConfigPresenter.subscribe();
+        if (null != mConfigPresenter) {
+            mConfigPresenter.subscribe();
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mPresenter.unsubscribe();
-        mConfigPresenter.unsubscribe();
+        if (null != mConfigPresenter) {
+            mConfigPresenter.unsubscribe();
+        }
     }
 
     @Override
