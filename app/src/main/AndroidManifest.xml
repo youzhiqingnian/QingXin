@@ -29,6 +29,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppBaseTheme">
+
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="@string/UMENG_APPKEY" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="@string/APP_CHANNEL" />
+
         <activity
             android:name=".app.login.SplashActivity"
             android:screenOrientation="portrait">
