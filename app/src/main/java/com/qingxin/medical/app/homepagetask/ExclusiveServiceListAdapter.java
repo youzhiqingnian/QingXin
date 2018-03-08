@@ -5,11 +5,13 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.homepagetask.model.ServiceBean;
+
 import java.util.List;
 
 /**
@@ -21,7 +23,7 @@ public class ExclusiveServiceListAdapter extends BaseQuickAdapter<ServiceBean, B
 
     private OnClickConsultListener mClickListener;
 
-    ExclusiveServiceListAdapter(@Nullable List<ServiceBean> data,OnClickConsultListener onClickConsultListener) {
+    ExclusiveServiceListAdapter(@Nullable List<ServiceBean> data, OnClickConsultListener onClickConsultListener) {
         super(R.layout.layout_service_item, data);
         this.mClickListener = onClickConsultListener;
     }
@@ -36,16 +38,16 @@ public class ExclusiveServiceListAdapter extends BaseQuickAdapter<ServiceBean, B
             headSdv.setImageURI(Uri.parse(item.getCover()));
         }
         nameTv.setText(item.getName());
-        goodAtTv.setText(String.format("擅长:%s", item.getGood_at()));
+        goodAtTv.setText(item.getGood_at());
 
         consultTv.setOnClickListener(view -> {
-            if (null != mClickListener){
+            if (null != mClickListener) {
                 mClickListener.onClickConsult(item.getMobile());
             }
         });
     }
 
-    public interface OnClickConsultListener{
+    public interface OnClickConsultListener {
         void onClickConsult(String moblile);
     }
 }

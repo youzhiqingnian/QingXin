@@ -12,9 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
+import com.qingxin.medical.QingXinWebViewActivity;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishActivity;
 import com.qingxin.medical.app.homepagetask.model.CheckInBean;
@@ -30,6 +30,7 @@ import com.qingxin.medical.user.User;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.widget.indicator.view.ApplyWithdrawalsDialog;
 import com.vlee78.android.vl.VLActivity;
+import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLDialog;
 import com.vlee78.android.vl.VLFragment;
@@ -37,7 +38,6 @@ import com.vlee78.android.vl.VLResHandler;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
-
 /**
  * 福利
  * Date 2018-02-05
@@ -113,17 +113,17 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
                 setCheckinUnable();
             }
         }
-        ConfigBean configBean = getModel(ConfigModel.class).getConfigBean();
-        if (null != configBean){
-            TextView signInCountTv = getView().findViewById(R.id.signInCountTv);
-            TextView shareCountTv = getView().findViewById(R.id.shareCountTv);
-            TextView recommendCountTv = getView().findViewById(R.id.recommendCountTv);
-            TextView inviteCountTv = getView().findViewById(R.id.inviteCountTv);
+        ConfigBean configBean = QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean();
+        if (null != configBean) {
+            TextView signInCountTv = mHeaderView.findViewById(R.id.signInCountTv);
+            TextView shareCountTv = mHeaderView.findViewById(R.id.shareCountTv);
+            TextView recommendCountTv = mHeaderView.findViewById(R.id.recommendCountTv);
+            TextView inviteCountTv = mHeaderView.findViewById(R.id.inviteCountTv);
 
-            signInCountTv.setText(String.format("+%s",configBean.getCheckin_coin()));
-            shareCountTv.setText(String.format("+%s",configBean.getPost_diary_coin()));
-            recommendCountTv.setText(String.format("+%s",configBean.getRecommend_mem_coin()));
-            inviteCountTv.setText(String.format("+%s",configBean.getRecommend_new_coin()));
+            signInCountTv.setText(String.format("+%s", configBean.getCheckin_coin()));
+            shareCountTv.setText(String.format("+%s", configBean.getPost_diary_coin()));
+            recommendCountTv.setText(String.format("+%s", configBean.getRecommend_mem_coin()));
+            inviteCountTv.setText(String.format("+%s", configBean.getRecommend_new_coin()));
         }
 
         mQingxinCoinRuleTv.setOnClickListener(this);
@@ -255,7 +255,11 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         switch (view.getId()) {
             case R.id.qingxinCoinRuleTv:
                 // 青歆币规则
-
+                if (null != VLApplication.instance().getModel(ConfigModel.class).getConfigBean() && !VLUtils.stringIsEmpty(VLApplication.instance().getModel(ConfigModel.class).getConfigBean().getCoin_rule_url())) {
+                    QingXinWebViewActivity.startSelf(getActivity(), VLApplication.instance().getModel(ConfigModel.class).getConfigBean().getCoin_rule_url());
+                }else{
+                    showToast(getActivity().getResources().getString(R.string.no_get_coin_rule));
+                }
 
                 break;
             case R.id.applyWithDrawalsTv:

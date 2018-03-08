@@ -101,6 +101,8 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
         initListener();
 
         if (!TextUtils.isEmpty(id)) {
+            showViewBelowActionBar(R.layout.layout_loading,QingXinTitleBar.fixActionBarHeight(titleBar));
+
             mPresenter.getGoddessDiaryDetail(id);
         }
     }
@@ -146,6 +148,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
     @Override
     public void onSuccess(GoddessDiaryDetailBean diaryDetailBean) {
         Log.i("diaryDetailBean", diaryDetailBean.toString());
+        hideView(R.layout.layout_loading);
         if (diaryDetailBean.getItem() != null) {
             setData(diaryDetailBean);
         }
@@ -214,6 +217,7 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
 
     @Override
     public void onError(QingXinError error) {
+        hideView(R.layout.layout_loading);
         HandErrorUtils.handleError(error);
     }
 

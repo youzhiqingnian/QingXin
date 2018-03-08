@@ -1,8 +1,14 @@
 package com.qingxin.medical.utils;
 
+import android.content.Intent;
+import android.media.MediaCas;
+import android.support.v4.content.LocalBroadcastManager;
+
 import com.google.gson.JsonParseException;
 import com.qingxin.medical.R;
 import com.qingxin.medical.common.QingXinError;
+import com.qingxin.medical.user.SessionModel;
+import com.qingxin.medical.user.UserModel;
 import com.vlee78.android.vl.VLApplication;
 
 import org.json.JSONException;
@@ -21,6 +27,8 @@ import retrofit2.HttpException;
 
 public class HandErrorUtils {
 
+    public static final String LOGOUT_ACTION = "com.archie.action.LOGOUT_ACTION";
+
     //对应HTTP的状态码
     private static final int UNAUTHORIZED = 401;
     private static final int FORBIDDEN = 403;
@@ -37,22 +45,44 @@ public class HandErrorUtils {
             case "1000":
             case "1001":
             case "1002":
+            case "1003":
+            case "1010":
             case "1011":
+            case "1012":
             case "1020":
             case "1021":
             case "1030":
             case "1040":
+            case "1050":
+            case "1051":
             case "1100":
             case "1110":
+            case "1111":
             case "1200":
                 isError = true;
                 break;
+            case "1005":
+                logout();
+                isError= true;
+                break;
+
             case "200":
                 isError = false;
                 break;
         }
         return isError;
 
+    }
+
+    private static void logout() {
+
+        VLApplication.instance().getModel(UserModel.class).onLogout();
+        VLApplication.instance().getModel(SessionModel.class).onLogout();
+
+        Intent intent = new Intent(LOGOUT_ACTION);
+        LocalBroadcastManager.getInstance(VLApplication.instance()).sendBroadcast(
+                intent
+        );
     }
 
 
@@ -69,6 +99,20 @@ public class HandErrorUtils {
             case "1002":
                 strRes = R.string.e1002;
                 break;
+            case "1003":
+                strRes = R.string.e1003;
+                break;
+            case "1005":
+                strRes = R.string.e1005;
+                break;
+            case "1010":
+                strRes = R.string.e1010;
+                break;
+            case "1011":
+                strRes = R.string.e1011;
+            case "1012":
+                strRes = R.string.e1012;
+                break;
             case "1020":
                 strRes = R.string.e1020;
                 break;
@@ -81,11 +125,20 @@ public class HandErrorUtils {
             case "1040":
                 strRes = R.string.e1040;
                 break;
+            case "1050":
+                strRes = R.string.e1050;
+                break;
+            case "1051":
+                strRes = R.string.e1051;
+                break;
             case "1100":
                 strRes = R.string.e1100;
                 break;
             case "1110":
                 strRes = R.string.e1110;
+                break;
+            case "1111":
+                strRes = R.string.e1111;
                 break;
             case "1200":
                 strRes = R.string.e1200;

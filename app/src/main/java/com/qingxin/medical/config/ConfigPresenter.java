@@ -1,6 +1,7 @@
 package com.qingxin.medical.config;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.base.QingXinApplication;
@@ -18,7 +19,7 @@ import rx.subscriptions.CompositeSubscription;
  *
  * @author zhikuo
  */
-public class ConfigPresenter implements ConfigContract.Presenter{
+public class ConfigPresenter implements ConfigContract.Presenter {
 
     @NonNull
     private ConfigContract.View mConfigView;
@@ -26,7 +27,7 @@ public class ConfigPresenter implements ConfigContract.Presenter{
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    ConfigPresenter(@NonNull ConfigContract.View configView) {
+    public ConfigPresenter(@NonNull ConfigContract.View configView) {
         mConfigView = configView;
         mCompositeSubscription = new CompositeSubscription();
         mConfigView.setPresenter(this);
@@ -60,7 +61,8 @@ public class ConfigPresenter implements ConfigContract.Presenter{
                     @Override
                     public void onNext(ContentBean<ConfigBean> configBeanContentBean) {
                         if (!HandErrorUtils.isError(configBeanContentBean.getCode())) {
-                            VLApplication.instance().getModel(ConfigModel.class).setConfigBean(configBeanContentBean.getContent());
+                            Log.i("全局配置的bean", configBeanContentBean.toString());
+                            QingXinApplication.instance().getModel(ConfigModel.class).setConfigBean(configBeanContentBean.getContent());
                         }
                     }
                 }));

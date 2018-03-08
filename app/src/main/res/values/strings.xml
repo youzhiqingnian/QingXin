@@ -1,16 +1,27 @@
 <resources>
     <string name="app_name">青歆</string>
 
+    <string name="to_expand_hint">更多</string>
+    <string name="to_shrink_hint">收起</string>
+
     <!--错误信息-->
     <string name="e1000">用户未登陆</string>
     <string name="e1001">登陆失败，手机号验证码不匹配</string>
     <string name="e1002">登陆失败，该用户已被禁用</string>
+    <string name="e1003">登陆失败，手机号和验证码不能为空</string>
+    <string name="e1005">Token过期</string>
+    <string name="e1010">一分钟之后才能获取新的验证码</string>
+    <string name="e1011">手机号格式错误</string>
+    <string name="e1012">验证码错误</string>
     <string name="e1020">未开启签到功能</string>
     <string name="e1021">今天已经签到过了</string>
     <string name="e1030">类型参数错误</string>
     <string name="e1040">参数不全</string>
+    <string name="e1050">参数不全</string>
+    <string name="e1051">余额不足</string>
     <string name="e1100">wiki不存在</string>
     <string name="e1110">日记不存在</string>
+    <string name="e1111">无权操作该日记</string>
     <string name="e1200">已经预约过该产品</string>
 
 
@@ -96,6 +107,7 @@
     <string name="warm_remind">温馨提示</string>
     <string name="can_not_withdrawals_remind_message">抱歉，您的青歆币总额未达到10000，还不能提现，加油，再攒攒</string>
     <string name="apply_withdrawals_finish_remind_message">您的申请已收到，稍后青歆客服会与您联系，将现金发放与您</string>
+    <string name="no_get_coin_rule">未获取到配置信息请退出重试</string>
     <string name="plus_300">+300</string>
     <string name="plus_1000">+1000</string>
 

@@ -221,4 +221,10 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
         }
 
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReceiver);
+    }
 }

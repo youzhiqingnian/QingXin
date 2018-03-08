@@ -243,4 +243,11 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
             getMyCollectList(true);
         }
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReceiver);
+    }
+
 }
