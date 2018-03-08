@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="157dp">
+    android:layout_height="wrap_content">
 
     <FrameLayout
         android:id="@+id/portraitFl"
@@ -48,7 +48,7 @@
         android:textColor="@color/text_color"
         android:textSize="16sp" />
 
-    <TextView
+    <com.qingxin.medical.widget.indicator.view.ExpandableTextView
         android:id="@+id/goodAtTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,26 +60,29 @@
         android:layout_marginTop="10dp"
         android:ellipsize="end"
         android:lineSpacingExtra="8dp"
-        android:maxLines="2"
+        app:etv_ToShrinkHintColor="@color/text_color_blue"
+        app:etv_ToExpandHintColor="@color/text_color_blue"
         android:textColor="@color/text_color_origin_price"
         android:textSize="12sp" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/gap_color_gray" />
+
 
     <ImageView
         android:id="@+id/consultTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@id/divider"
         android:layout_alignLeft="@id/nameTv"
         android:layout_alignStart="@id/nameTv"
+        android:layout_marginTop="21dp"
         android:layout_marginBottom="20dp"
+        android:layout_below="@+id/goodAtTv"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/app_name"
         android:src="@mipmap/ic_consult" />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_below="@+id/consultTv"
+        android:background="@color/gap_color_gray" />
 </RelativeLayout>

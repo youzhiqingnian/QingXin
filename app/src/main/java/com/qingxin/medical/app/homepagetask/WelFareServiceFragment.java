@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.QingXinWebViewActivity;
@@ -39,7 +38,6 @@ import com.vlee78.android.vl.VLResHandler;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
-
 /**
  * 福利
  * Date 2018-02-05
@@ -259,6 +257,8 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
                 // 青歆币规则
                 if (null != VLApplication.instance().getModel(ConfigModel.class).getConfigBean() && !VLUtils.stringIsEmpty(VLApplication.instance().getModel(ConfigModel.class).getConfigBean().getCoin_rule_url())) {
                     QingXinWebViewActivity.startSelf(getActivity(), VLApplication.instance().getModel(ConfigModel.class).getConfigBean().getCoin_rule_url());
+                }else{
+                    showToast(getActivity().getResources().getString(R.string.no_get_coin_rule));
                 }
 
                 break;

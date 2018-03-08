@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">青歆</string>
 
+    <string name="to_expand_hint">更多</string>
+    <string name="to_shrink_hint">收起</string>
+
     <!--错误信息-->
     <string name="e1000">用户未登陆</string>
     <string name="e1001">登陆失败，手机号验证码不匹配</string>
@@ -104,6 +107,7 @@
     <string name="warm_remind">温馨提示</string>
     <string name="can_not_withdrawals_remind_message">抱歉，您的青歆币总额未达到10000，还不能提现，加油，再攒攒</string>
     <string name="apply_withdrawals_finish_remind_message">您的申请已收到，稍后青歆客服会与您联系，将现金发放与您</string>
+    <string name="no_get_coin_rule">未获取到配置信息请退出重试</string>
     <string name="plus_300">+300</string>
     <string name="plus_1000">+1000</string>
 
