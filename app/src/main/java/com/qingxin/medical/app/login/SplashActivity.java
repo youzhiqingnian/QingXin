@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.WindowManager;
+
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.Constants;
 import com.qingxin.medical.app.homepagetask.HomePageTaskActivity;
-import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.config.ConfigBean;
@@ -164,22 +164,18 @@ public class SplashActivity extends QingXinActivity implements ConfigContract.Vi
                 ToastUtils.showToast("没有获取到定位权限");
             }
         }
-
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
     public void setPresenter(ConfigContract.Presenter presenter) {
-
     }
 
     @Override
-    public void onSuccess(ContentBean<ConfigBean> diary) {
-
+    public void onSuccess(ConfigBean configBean) {
     }
 
     @Override
     public void onError(QingXinError error) {
-
     }
 }
