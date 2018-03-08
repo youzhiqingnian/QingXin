@@ -55,7 +55,7 @@ public class ExclusiveServiceFragment extends VLFragment implements ServiceListC
 
     @Override
     public View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_goddess_diary_list, container, false);
+        return inflater.inflate(R.layout.fragment_welfareservice, container, false);
     }
 
     @Override
