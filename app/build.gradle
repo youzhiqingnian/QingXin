@@ -14,8 +14,8 @@ android {
         applicationId "com.qingxin.medical"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 10000
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         flavorDimensions "versionCode"
@@ -89,8 +89,8 @@ android {
             resValue "string", "APP_CHANNEL", "market_xiaomi"
         }
 
-        market_qq {
-            resValue "string", "APP_CHANNEL", "market_qq"
+        market_yingyongbao {
+            resValue "string", "APP_CHANNEL", "market_yingyongbao"
         }
 
         market_wandoujia {
@@ -113,20 +113,27 @@ android {
             resValue "string", "APP_CHANNEL", "market_huawei"
         }
 
-        market_beifen1 {
-            resValue "string", "APP_CHANNEL", "market_beifen1"
-        }
-
-        dev {
-            resValue "string", "APP_CHANNEL", "dev"
-        }
-
         inner_test {
             resValue "string", "APP_CHANNEL", "inner_test"
         }
 
         official {
             resValue "string", "APP_CHANNEL", "official"
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            output ->
+                if (variant.buildType.name.equals('debug')) {
+                    def fileName = "QingXin_debug_${variant.productFlavors[0].name}_${defaultConfig.versionName}_${releaseTime()}.apk"
+                    outputFileName = fileName;
+                }
+
+                if (variant.buildType.name.equals('release')) {
+                    def fileName = "QingXin_release_${variant.productFlavors[0].name}_${defaultConfig.versionName}_${releaseTime()}.apk"
+                    outputFileName = fileName;
+                }
         }
     }
 }
@@ -151,4 +158,8 @@ dependencies {
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
     compile 'com.google.android:flexbox:0.2.6'
     compile 'com.umeng.analytics:analytics:6.1.4'
+}
+
+def static releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
 }
