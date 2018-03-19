@@ -203,11 +203,19 @@ public class GoddessDiaryDetailActivity extends QingXinActivity implements Diary
             collectState = getString(R.string.plus_collection);
         }
         mCollectionTv.setText(collectState);
-
-        mAuthoerHeadSdv.setImageURI(Uri.parse(itemBean.getMem().getCover()));
         mAuthorNameTv.setText(itemBean.getMem().getName());
-        mBeforeCoverSdv.setImageURI(Uri.parse(itemBean.getOper_before_photo()));
-        mAfterCoverSdv.setImageURI(Uri.parse(itemBean.getOper_after_photo()));
+
+        if(!VLUtils.stringIsEmpty(itemBean.getMem().getCover())){
+            mAuthoerHeadSdv.setImageURI(Uri.parse(itemBean.getMem().getCover()));
+        }
+
+        if(!VLUtils.stringIsEmpty(itemBean.getOper_before_photo())){
+            mBeforeCoverSdv.setImageURI(Uri.parse(itemBean.getOper_before_photo()));
+        }
+
+        if(!VLUtils.stringIsEmpty(itemBean.getOper_after_photo())){
+            mAfterCoverSdv.setImageURI(Uri.parse(itemBean.getOper_after_photo()));
+        }
 
         mDiaryDetailTv.setText(Html.fromHtml(itemBean.getWords()));
         mDiaryPublishDateTv.setText(itemBean.getCreated_at());
