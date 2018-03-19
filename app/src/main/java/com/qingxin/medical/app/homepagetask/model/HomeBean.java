@@ -25,6 +25,15 @@ public class HomeBean extends BaseBean{
     private List<DiaryItemBean> diarys;
     private List<OpencitysBean> opencitys;
     private List<StrictSelBean> preferrs;
+    private List<String> productimgs;
+
+    public List<String> getProductimgs() {
+        return productimgs;
+    }
+
+    public void setProductimgs(List<String> productimgs) {
+        this.productimgs = productimgs;
+    }
 
     public List<StrictSelBean> getPreferrs() {
         return preferrs;

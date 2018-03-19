@@ -6,11 +6,11 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,18 +34,16 @@ import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.FragmentToActivity;
 import com.qingxin.medical.common.QingXinError;
-import com.qingxin.medical.config.ConfigModel;
-import com.qingxin.medical.map.GaoDeMapModel;
-import com.qingxin.medical.utils.HandErrorUtils;
-import com.qingxin.medical.widget.decoration.GridSpacingItemDecoration;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
 import com.qingxin.medical.home.districtsel.StrictSelDetailActivity;
 import com.qingxin.medical.home.districtsel.StrictSelListActivity;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyActivity;
+import com.qingxin.medical.map.GaoDeMapModel;
 import com.qingxin.medical.search.SearchActivity;
+import com.qingxin.medical.utils.HandErrorUtils;
+import com.qingxin.medical.widget.decoration.GridSpacingItemDecoration;
 import com.qingxin.medical.widget.decoration.SpaceItemDecoration;
 import com.vlee78.android.vl.VLActivity;
-import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
@@ -65,19 +63,11 @@ import java.util.List;
 public class HomeFragment extends VLFragment implements HomePageTaskContract.View, View.OnClickListener {
 
     private View mRootView;
-
     private TextView mCityTv;
     private VLPagerView mPagerView;
-    private LinearLayout mProductListLl;
-    private SimpleDraweeView mFirstPrCoverSdv,
-            mSecondPrCoverSdv,
-            mThirdPrCoverSdv;
-    private FrameLayout mSlectionMoreRl;
     private VLStatedButtonBar mStatedBtnBar;
 
     private HomePageTaskContract.Presenter mPresenter;
-
-    private HomeBean mHomeBean;
     private GoddessDiaryListAdapter mDiaryListAdapter;
 
     public HomeFragment() {
@@ -107,18 +97,12 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
     private void initView() {
         mCityTv = mRootView.findViewById(R.id.cityTv);
-        mFirstPrCoverSdv = mRootView.findViewById(R.id.firstPrCoverSdv);
-        mSecondPrCoverSdv = mRootView.findViewById(R.id.secondPrCoverSdv);
-        mThirdPrCoverSdv = mRootView.findViewById(R.id.thirdPrCoverSdv);
-        mProductListLl = mRootView.findViewById(R.id.productListLl);
-
         LinearLayout shareRl = mRootView.findViewById(R.id.shareRl);
         LinearLayout diaryRl = mRootView.findViewById(R.id.diaryRl);
         LinearLayout selectionRl = mRootView.findViewById(R.id.selectionRl);
         LinearLayout encyclopediasRl = mRootView.findViewById(R.id.encyclopediasRl);
         FrameLayout diaryMoreRl = mRootView.findViewById(R.id.diaryMoreRl);
         LinearLayout searchLl = mRootView.findViewById(R.id.searchLl);
-        mSlectionMoreRl = mRootView.findViewById(R.id.slectionMoreRl);
         mStatedBtnBar = mRootView.findViewById(R.id.statedBtnBar);
 
         AMapLocation aMapLocation = QingXinApplication.getInstance().getLocationService().getAMLocation();
@@ -131,7 +115,6 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         selectionRl.setOnClickListener(this);
         encyclopediasRl.setOnClickListener(this);
         diaryMoreRl.setOnClickListener(this);
-        mSlectionMoreRl.setOnClickListener(this);
         searchLl.setOnClickListener(this);
         showView(R.layout.layout_loading);
         VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
@@ -166,7 +149,8 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     /**
      * 填充数据
      */
-    private void setData() {
+    private void setData(@NonNull HomeBean homeBean) {
+        mCityTv.setTag(homeBean);
         TextView firstPrNameTv = mRootView.findViewById(R.id.firstPrNameTv);
         TextView firstPrPriceTv = mRootView.findViewById(R.id.firstPrPriceTv);
         TextView firstPrOldPriceTv = mRootView.findViewById(R.id.firstPrOldPriceTv);
@@ -179,11 +163,15 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         FrameLayout secondFl = mRootView.findViewById(R.id.secondFl);
         FrameLayout firstFl = mRootView.findViewById(R.id.firstFl);
         FrameLayout thirdFl = mRootView.findViewById(R.id.thirdFl);
+        LinearLayout productListLl = mRootView.findViewById(R.id.productListLl);
+        SimpleDraweeView firstPrCoverSdv = mRootView.findViewById(R.id.firstPrCoverSdv);
+        SimpleDraweeView secondPrCoverSdv = mRootView.findViewById(R.id.secondPrCoverSdv);
+        SimpleDraweeView thirdPrCoverSdv = mRootView.findViewById(R.id.thirdPrCoverSdv);
         secondFl.setOnClickListener(this);
         firstFl.setOnClickListener(this);
         thirdFl.setOnClickListener(this);
 
-        List<HomeBean.BannersBean> bannerList = mHomeBean.getBanners();
+        List<HomeBean.BannersBean> bannerList = homeBean.getBanners();
         mPagerView = mRootView.findViewById(R.id.viewpagerVp);
         BannerPagerAdapter adapter = new BannerPagerAdapter(getActivity(), bannerList);
         mPagerView.getViewPager().setAdapter(adapter);
@@ -192,19 +180,21 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         mPagerView.setCurrentItem(bannerList.size() * 1000);
         mStatedBtnBar.setChecked(mPagerView.getCurrentItem());
         mPagerView.setAutoScroll(3000);
+        List<String> productImgs = homeBean.getProductimgs();
+        if (null != productImgs && productImgs.size() >= 3){
+            firstPrCoverSdv.setImageURI(Uri.parse(productImgs.get(0)));
+            secondPrCoverSdv.setImageURI(Uri.parse(productImgs.get(1)));
+            thirdPrCoverSdv.setImageURI(Uri.parse(productImgs.get(2)));
+        }
 
-        List<VipProductBean> productList = mHomeBean.getProducts();
+        List<VipProductBean> productList = homeBean.getProducts();
         if (productList != null && productList.size() > 0) {
             if (productList.size() >= 1) {
                 firstPrNameTv.setText(productList.get(0).getName());
                 firstPrPriceTv.setText(String.format("%s元", productList.get(0).getPrice()));
                 firstPrOldPriceTv.setText(String.format("原价%s元", productList.get(0).getOld_price()));
                 firstPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-//                mFirstPrCoverSdv.setImageURI(Uri.parse(productList.get(0).getCover().get(0)));
-                if(null != QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean() && null != QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages() && QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages().size() >= 1){
-                    mFirstPrCoverSdv.setImageURI(Uri.parse(QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages().get(0)));
-                }
-                List<String> idAndName = new ArrayList<String>();
+                List<String> idAndName = new ArrayList<>();
                 idAndName.add(productList.get(0).getId());
                 idAndName.add(productList.get(0).getName());
                 firstFl.setTag(idAndName);
@@ -215,11 +205,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 secondPrPriceTv.setText(String.format("%s元", productList.get(1).getPrice()));
                 secondPrOldPriceTv.setText(String.format("原价%s元", productList.get(1).getOld_price()));
                 secondPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-//                mSecondPrCoverSdv.setImageURI(Uri.parse(productList.get(1).getCover().get(0)));
-                if(null != QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean() && null != QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages() && QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages().size() >= 2){
-                    mSecondPrCoverSdv.setImageURI(Uri.parse(QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages().get(1)));
-                }
-                List<String> idAndName = new ArrayList<String>();
+                List<String> idAndName = new ArrayList<>();
                 idAndName.add(productList.get(1).getId());
                 idAndName.add(productList.get(1).getName());
                 secondFl.setTag(idAndName);
@@ -230,11 +216,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
                 thirdPrPriceTv.setText(String.format("%s元", productList.get(2).getPrice()));
                 thirdPrOldPriceTv.setText(String.format("原价%s元", productList.get(2).getOld_price()));
                 thirdPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-//                mThirdPrCoverSdv.setImageURI(Uri.parse(productList.get(2).getCover().get(0)));
-                if(null != QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean() && null != QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages() && QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages().size() >= 3){
-                    mThirdPrCoverSdv.setImageURI(Uri.parse(QingXinApplication.instance().getModel(ConfigModel.class).getConfigBean().getHomeProductImages().get(2)));
-                }
-                List<String> idAndName = new ArrayList<String>();
+                List<String> idAndName = new ArrayList<>();
                 idAndName.add(productList.get(2).getId());
                 idAndName.add(productList.get(2).getName());
                 thirdFl.setTag(idAndName);
@@ -242,15 +224,17 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         } else {
             View productTopLineTv = mRootView.findViewById(R.id.productTopLineTv);
             productTopLineTv.setVisibility(View.GONE);
-            mProductListLl.setVisibility(View.GONE);
+            productListLl.setVisibility(View.GONE);
         }
 
-        List<StrictSelBean> preferrsList = mHomeBean.getPreferrs();
+        List<StrictSelBean> preferrsList = homeBean.getPreferrs();
         RecyclerView slectionRv = mRootView.findViewById(R.id.slectionRv);
         TextView selectionGapTv = mRootView.findViewById(R.id.selectionGapTv);
+        FrameLayout slectionMoreRl = mRootView.findViewById(R.id.slectionMoreRl);
+        slectionMoreRl.setOnClickListener(this);
 
         if (preferrsList == null || preferrsList.size() == 0) {
-            mSlectionMoreRl.setVisibility(View.GONE);
+            slectionMoreRl.setVisibility(View.GONE);
             selectionGapTv.setVisibility(View.GONE);
             slectionRv.setVisibility(View.GONE);
         } else {
@@ -263,17 +247,17 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             strictSelctionAdapter.setOnItemClickListener((adapter12, view, position) -> StrictSelDetailActivity.startSelf(getActivity(), (StrictSelBean) adapter12.getData().get(position)));
         }
 
-        mSlectionMoreRl.setVisibility(View.GONE);
+        slectionMoreRl.setVisibility(View.GONE);
         selectionGapTv.setVisibility(View.GONE);
         slectionRv.setVisibility(View.GONE);
 
         RecyclerView diaryRv = mRootView.findViewById(R.id.diaryRv);
-        List<DiaryItemBean> diaryList = mHomeBean.getDiarys();
+        List<DiaryItemBean> diaryList = homeBean.getDiarys();
         if (diaryList != null && diaryList.size() > 0) {
             diaryRv.setLayoutManager(new LinearLayoutManager(getActivity()));
             mDiaryListAdapter = new GoddessDiaryListAdapter(diaryList);
             diaryRv.addItemDecoration(new SpaceItemDecoration(VLUtils.dip2px(18)));
-            mDiaryListAdapter.setOnItemClickListener((adapter1, view, position) -> GoddessDiaryDetailActivity.startSelf((VLActivity) getActivity(), mHomeBean.getDiarys().get(position).getId(), mResultListener));
+            mDiaryListAdapter.setOnItemClickListener((adapter1, view, position) -> GoddessDiaryDetailActivity.startSelf((VLActivity) getActivity(), homeBean.getDiarys().get(position).getId(), mResultListener));
             diaryRv.setAdapter(mDiaryListAdapter);
             diaryRv.setNestedScrollingEnabled(false);
         }
@@ -287,11 +271,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     @Override
     public void onSuccess(HomeBean homeBean) {
         hideView(R.layout.layout_loading);
-        mHomeBean = homeBean;
-        Log.i("homeBean", homeBean.toString());
-        if (mHomeBean != null) {
-            setData();
-        }
+        setData(homeBean);
     }
 
     @Override
@@ -300,15 +280,17 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         HandErrorUtils.handleError(error);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cityTv: //城市列表
-                if (null == mHomeBean) {
+                HomeBean homeBean = (HomeBean) mCityTv.getTag();
+                if (null == homeBean) {
                     showToast("没有获取到数据,请退出重试");
                     return;
                 }
-                CityListActivity.startSelf(getVLActivity(), mHomeBean.getOpencitys(), mResultListener);
+                CityListActivity.startSelf(getVLActivity(), homeBean.getOpencitys(), mResultListener);
                 break;
             case R.id.shareRl: //歆人专享
                 VipListActivity.startSelf(getActivity());
@@ -365,14 +347,12 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            View mView = LayoutInflater.from(mContext).inflate(R.layout.layout_viewpager, container, false);
-            SimpleDraweeView simpleDraweeView = mView.findViewById(R.id.slectionMoreRl);
+            View view = LayoutInflater.from(mContext).inflate(R.layout.layout_viewpager, container, false);
+            SimpleDraweeView simpleDraweeView = view.findViewById(R.id.simpleDraweeView);
             simpleDraweeView.setImageURI(Uri.parse(mBannerList.get(position % mBannerList.size()).getCover()));
-            container.addView(mView);
-            simpleDraweeView.setOnClickListener(v -> {
-                QingXinWebViewActivity.startSelf(getActivity(), mBannerList.get(position % mBannerList.size()).getLink());
-            });
-            return mView;
+            container.addView(view);
+            simpleDraweeView.setOnClickListener(v -> QingXinWebViewActivity.startSelf(getActivity(), mBannerList.get(position % mBannerList.size()).getLink()));
+            return view;
         }
 
         @Override
