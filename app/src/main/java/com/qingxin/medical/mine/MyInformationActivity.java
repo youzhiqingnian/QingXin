@@ -64,6 +64,7 @@ public class MyInformationActivity extends QingXinActivity implements View.OnCli
             @Override
             public void onClick(View view) {
                 // 保存修改的信息
+                saveMyInfo();
             }
         });
         mModifyHeadFl = findViewById(R.id.modifyHeadFl);
@@ -74,6 +75,13 @@ public class MyInformationActivity extends QingXinActivity implements View.OnCli
         mBottomV = findViewById(R.id.bottomV);
         mPresenter = new MyInformationDataPresenter(this);
         mDiaryPublishParams = new DiaryPublishParams();
+    }
+
+    private void saveMyInfo() {
+
+
+
+
     }
 
     private void initListener() {

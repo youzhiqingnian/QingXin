@@ -29,5 +29,7 @@ public class MyInformationDataContract {
         void updateDiary(@NonNull DiaryPublishParams diaryPublishParams);
 
         void getSession();
+
+        void saveMyInfo();
     }
 }
