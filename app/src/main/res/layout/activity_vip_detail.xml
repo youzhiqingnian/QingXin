@@ -22,14 +22,13 @@
                 android:layout_height="wrap_content">
 
                 <com.vlee78.android.vl.VLPagerView
-                    android:id="@+id/viewpagerVp"
+                    android:id="@+id/pagerView"
                     android:layout_width="match_parent"
                     android:layout_height="376dp"
-                    android:background="#123456"
                     android:orientation="horizontal" />
 
                 <com.vlee78.android.vl.VLStatedButtonBar
-                    android:id="@+id/statedBtnBar"
+                    android:id="@+id/statedButtonBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center_horizontal"

@@ -6,24 +6,12 @@
     android:background="?attr/selectableItemBackground"
     android:orientation="vertical">
 
-    <FrameLayout
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/selectionCoverSdv"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/selectionCoverSdv"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:scaleType="centerCrop"
-            app:roundedCornerRadius="4dp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@string/app_name"
-            android:src="@mipmap/btn_play_logo" />
-    </FrameLayout>
+        android:layout_height="100dp"
+        android:scaleType="centerCrop"
+        app:roundedCornerRadius="4dp" />
 
     <TextView
         android:id="@+id/nameTv"

@@ -18,15 +18,15 @@ import rx.subscriptions.CompositeSubscription;
  *
  * @author zhikuo1
  */
-public class StrictSelPresenter implements StrictSelContract.Presenter {
+public class StrictSelListPresenter implements StrictSelListContract.Presenter {
 
     @NonNull
-    private final StrictSelContract.View mStrictSelView;
+    private final StrictSelListContract.View mStrictSelView;
 
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    StrictSelPresenter(@NonNull StrictSelContract.View goddessDiaryView) {
+    StrictSelListPresenter(@NonNull StrictSelListContract.View goddessDiaryView) {
         mStrictSelView = goddessDiaryView;
         mCompositeSubscription = new CompositeSubscription();
         mStrictSelView.setPresenter(this);

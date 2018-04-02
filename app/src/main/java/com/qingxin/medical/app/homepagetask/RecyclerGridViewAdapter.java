@@ -11,11 +11,11 @@ import com.qingxin.medical.home.districtsel.StrictSelBean;
 import java.util.List;
 
 /**
- *
  * Date 2018-01-30
+ *
  * @author zhikuo1
  */
-public class RecyclerGridViewAdapter extends BaseQuickAdapter<StrictSelBean,BaseViewHolder> {
+public class RecyclerGridViewAdapter extends BaseQuickAdapter<StrictSelBean, BaseViewHolder> {
 
     RecyclerGridViewAdapter(@Nullable List<StrictSelBean> data) {
         super(R.layout.group_home_strictsel, data);
@@ -26,7 +26,10 @@ public class RecyclerGridViewAdapter extends BaseQuickAdapter<StrictSelBean,Base
         SimpleDraweeView mSelectionCoverSdv = helper.getView(R.id.selectionCoverSdv);
         TextView nameTv = helper.getView(R.id.nameTv);
         TextView descrTv = helper.getView(R.id.descrTv);
-        mSelectionCoverSdv.setImageURI(Uri.parse(item.getThumbnail()));
+        String[] cover = item.getCover();
+        if (null != cover && cover.length > 0) {
+            mSelectionCoverSdv.setImageURI(Uri.parse(cover[0]));
+        }
         nameTv.setText(item.getName());
         descrTv.setText(item.getSummary());
     }

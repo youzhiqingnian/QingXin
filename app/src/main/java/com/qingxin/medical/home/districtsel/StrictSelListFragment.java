@@ -21,7 +21,7 @@ import com.qingxin.medical.utils.HandErrorUtils;
  *
  * @author zhikuo
  */
-public class StrictSelListFragment extends QingXinFragment implements SwipeRefreshLayout.OnRefreshListener, StrictSelContract.View {
+public class StrictSelListFragment extends QingXinFragment implements SwipeRefreshLayout.OnRefreshListener, StrictSelListContract.View {
 
     public StrictSelListFragment() {
     }
@@ -37,7 +37,7 @@ public class StrictSelListFragment extends QingXinFragment implements SwipeRefre
     private AgencyAdapter mAdapter;
     private SwipeRefreshLayout mRefreshLayout;
     private boolean isClear;
-    private StrictSelPresenter mPresenter;
+    private StrictSelListPresenter mPresenter;
     private String mType;
     private static final String STRICTSEL_TYEP = "STRICTSEL_TYEP";
     public static final String STRICTSEL_TYEP_HOSPITALS = "hospital";
@@ -56,17 +56,17 @@ public class StrictSelListFragment extends QingXinFragment implements SwipeRefre
         RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new AgencyAdapter(null);
-        mAdapter.setOnLoadMoreListener(() -> getDiaryList(false), recyclerView);
+        mAdapter.setOnLoadMoreListener(() -> getStrictSelList(false), recyclerView);
         recyclerView.setAdapter(mAdapter);
         mType = getArguments().getString(STRICTSEL_TYEP);
-        mPresenter = new StrictSelPresenter(this);
+        mPresenter = new StrictSelListPresenter(this);
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
-        getDiaryList(true);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> StrictSelDetailActivity.startSelf(getActivity(), (StrictSelBean) adapter.getData().get(position)));
+        getStrictSelList(true);
+        mAdapter.setOnItemClickListener((adapter, view, position) -> StrictSelDetailActivity1.startSelf(getActivity(), ((StrictSelBean) adapter.getData().get(position)).getId()));
     }
 
-    private void getDiaryList(boolean isClear) {
+    private void getStrictSelList(boolean isClear) {
         this.isClear = isClear;
         int skip = isClear ? 0 : mAdapter.getData().size();
         if (isClear) {
@@ -77,22 +77,22 @@ public class StrictSelListFragment extends QingXinFragment implements SwipeRefre
 
     @Override
     public void onRefresh() {
-        getDiaryList(true);
+        getStrictSelList(true);
     }
 
     @Override
-    public void setPresenter(StrictSelContract.Presenter presenter) {
+    public void setPresenter(StrictSelListContract.Presenter presenter) {
     }
 
     @Override
-    public void onSuccess(ListBean<StrictSelBean> strictSelBeen) {
+    public void onSuccess(ListBean<StrictSelBean> strictSelListBean) {
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
-            mAdapter.setNewData(strictSelBeen.getItems());
+            mAdapter.setNewData(strictSelListBean.getItems());
         } else {
-            mAdapter.addData(strictSelBeen.getItems());
+            mAdapter.addData(strictSelListBean.getItems());
         }
-        if (strictSelBeen.getItems().size() < QingXinConstants.ROWS) {
+        if (strictSelListBean.getItems().size() < QingXinConstants.ROWS) {
             //第一页如果不够一页就不显示没有更多数据布局
             mAdapter.loadMoreEnd(isClear);
         } else {

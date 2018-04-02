@@ -12,13 +12,17 @@ import java.io.Serializable;
  */
 public class StrictSelBean extends BaseBean  implements Serializable {
 
+    private String city_name;
+
+    private String province_name;
+
+    private String[] cover;
+
     private String id;
 
     private String name;
 
     private String type;
-    //视频封面图
-    private String thumbnail;
     //简介
     private String summary;
     //创建日期
@@ -29,6 +33,30 @@ public class StrictSelBean extends BaseBean  implements Serializable {
     private String order;
     //城市
     private String citycode;
+
+    public String getCity_name() {
+        return city_name;
+    }
+
+    public void setCity_name(String city_name) {
+        this.city_name = city_name;
+    }
+
+    public String getProvince_name() {
+        return province_name;
+    }
+
+    public void setProvince_name(String province_name) {
+        this.province_name = province_name;
+    }
+
+    public String[] getCover() {
+        return cover;
+    }
+
+    public void setCover(String[] cover) {
+        this.cover = cover;
+    }
 
     public String getOrder() {
         return order;
@@ -68,14 +96,6 @@ public class StrictSelBean extends BaseBean  implements Serializable {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getThumbnail() {
-        return thumbnail;
-    }
-
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
     }
 
     public String getSummary() {

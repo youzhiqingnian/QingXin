@@ -6,15 +6,15 @@ import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 
 /**
- * 严选Presenter
+ * 严选列表Presenter
  * Date 2018-02-08
  *
  * @author zhikuo
  */
-class StrictSelContract {
+class StrictSelListContract {
 
     interface View extends BaseView<Presenter> {
-        void onSuccess(ListBean<StrictSelBean> mDiary);
+        void onSuccess(ListBean<StrictSelBean> strictSelListBean);
 
         void onError(QingXinError error);
     }

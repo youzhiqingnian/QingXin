@@ -75,7 +75,10 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
         }
         mShareDialog = new ShareDialog(this);
         initFakeStatusBarHeight();
-        loadData(strictSelBean.getThumbnail());
+        String[] cover = strictSelBean.getCover();
+        if (null != cover && cover.length > 0) {
+            loadData(cover[0]);
+        }
 
         backIv.setOnClickListener(this);
         mTopShareIv.setOnClickListener(this);
@@ -88,7 +91,7 @@ public class StrictSelDetailActivity extends QingXinActivity implements OnClickL
     }
 
     protected void initFakeStatusBarHeight() {
-        View statusbarBgLayout = findViewById(R.id.statusbar_bg_layout);
+        View statusbarBgLayout = findViewById(R.id.statusBar);
         if (statusbarBgLayout == null) {
             return;
         }

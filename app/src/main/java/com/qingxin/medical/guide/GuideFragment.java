@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.qingxin.medical.app.homepagetask.HomePageTaskActivity;
+import com.qingxin.medical.app.homepagetask.HomeActivity;
 import com.qingxin.medical.base.QingXinFragment;
 import com.vlee78.android.vl.VLUtils;
 
@@ -48,7 +48,7 @@ public class GuideFragment extends QingXinFragment {
         mImageView.setImageDrawable(getResources().getDrawable(id));
         if (index == 4) {
             mImageView.setOnClickListener(v -> {
-                HomePageTaskActivity.startSelf(getActivity(), 0);
+                HomeActivity.startSelf(getActivity(), 0);
                 getActivity().finish();
             });
         }

@@ -6,41 +6,17 @@
     android:background="?attr/selectableItemBackground"
     android:orientation="vertical">
 
-    <FrameLayout
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/simpleDraweeView"
         android:layout_width="match_parent"
         android:layout_height="173dp"
         android:layout_marginEnd="15dp"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="20dp">
-
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/simpleDraweeView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:actualImageScaleType="centerCrop"
-            app:roundedCornerRadius="6dp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@string/app_name"
-            android:src="@mipmap/ic_video_play" />
-
-        <TextView
-            android:id="@+id/playCountTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="15dp"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textSize="12sp" />
-    </FrameLayout>
+        android:layout_marginTop="20dp"
+        app:actualImageScaleType="centerCrop"
+        app:roundedCornerRadius="6dp" />
 
     <TextView
         android:id="@+id/nameTv"
