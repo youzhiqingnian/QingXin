@@ -3,7 +3,6 @@ package com.qingxin.medical.mine;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,15 +18,10 @@ import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinAdapter;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishParams;
-import com.qingxin.medical.app.homepagetask.model.MemBean;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
-import com.qingxin.medical.common.CommonDialogFactory;
 import com.qingxin.medical.common.QingXinError;
-import com.qingxin.medical.common.QingXinLocalPhotoPopupWindow;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
-import com.qingxin.medical.upload.UploadResult;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.widget.indicator.CommonNavigator;
 import com.qingxin.medical.widget.indicator.CommonNavigatorAdapter;
@@ -37,14 +31,10 @@ import com.qingxin.medical.widget.indicator.LinePagerIndicator;
 import com.qingxin.medical.widget.indicator.MagicIndicator;
 import com.qingxin.medical.widget.indicator.SimplePagerTitleView;
 import com.qingxin.medical.widget.indicator.ViewPagerHelper;
-import com.vlee78.android.vl.VLAsyncHandler;
 import com.vlee78.android.vl.VLFragment;
-import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLUtils;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * Date 2018/3/5
  *
@@ -56,9 +46,6 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
     private List<TextView> mCountTextViewList = new ArrayList();
     private QingXinBroadCastReceiver mReceiver;
     public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
-    private Bitmap mBeforePhoto;
-    private String mBeforePhotoPath;
-    private DiaryPublishParams mDiaryPublishParams;
     private MineDataPresenter mPresenter;
     private boolean isUpload;
 
@@ -87,12 +74,15 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
         if (null == getView()) return;
         mUserHeadSdv = getView().findViewById(R.id.userHeadSdv);
         TextView userNicknameTv = getView().findViewById(R.id.userNicknameTv);
+
+        userNicknameTv.setOnClickListener(view -> {
+            MyInformationActivity.startSelf(getActivity());
+        });
+
         if (QingXinApplication.getInstance().getLoginUser() != null) {
             userNicknameTv.setText(QingXinApplication.getInstance().getLoginUser().getName());
         }
         mPresenter = new MineDataPresenter(this);
-        mDiaryPublishParams = new DiaryPublishParams();
-
         MagicIndicator indicator = getView().findViewById(R.id.magicIndicator);
         final VLFragment[] fragments = new VLFragment[]{MyBookedProductListFragment.newInstance(), MyPublishedDiaryListFragment.newInstance(), MyCollectedTabListFragment.newInstance()};
         final String[] titles = new String[]{getResources().getString(R.string.appointment_count), getResources().getString(R.string.diary_count), getResources().getString(R.string.collection_count)};
@@ -138,8 +128,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
         ViewPagerHelper.bind(indicator, viewPager);
 
         mUserHeadSdv.setOnClickListener(view -> {
-            isUpload = true;
-            getPhotoPopupWindow().show(viewPager);
+            MyInformationActivity.startSelf(getActivity());
         });
 
         AppBarLayout appBarLayout1 = getView().findViewById(R.id.appbar);
@@ -167,21 +156,8 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
                 }
             }
         });
-    }
-
-    private QingXinLocalPhotoPopupWindow getPhotoPopupWindow() {
-        return CommonDialogFactory.createLoadLocalPhotoPopupWindow(getActivity(), true, new VLAsyncHandler<QingXinLocalPhotoPopupWindow.LoadPhotoResult>(null, VLScheduler.THREAD_MAIN) {
-            @Override
-            protected void handler(boolean succeed) {
-                isUpload = false;
-                if (!succeed) return;
-                QingXinLocalPhotoPopupWindow.LoadPhotoResult result = getParam();
-                if (null == result) return;
-                mBeforePhoto = result.getCutResult();
-                mBeforePhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mBeforePhoto);
-                mDiaryPublishParams.setBeforeFile(new File(mBeforePhotoPath));
-                mPresenter.headUpload(mDiaryPublishParams);
-            }
+        settingIv.setOnClickListener(view -> {
+            SettingActivity.startSelf(getActivity());
         });
     }
 
@@ -236,20 +212,8 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
     }
 
     @Override
-    public void onSuccess(MemBean membean) {
-        // 修改个人资料成功
-        if (membean != null) {
-            mPresenter.getSession();
-        }
-    }
-
-    @Override
     public void onSuccess(com.qingxin.medical.base.MemBean memBean) {
         setCountRefresh(memBean);
-    }
-
-    @Override
-    public void onSuccess(UploadResult uploadResultBean) {
     }
 
     @Override

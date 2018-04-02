@@ -32,32 +32,35 @@
                      android:layout_marginTop="48dp"
                      android:background="@drawable/mine_head_ring_bg">-->
 
-                <com.facebook.drawee.view.SimpleDraweeView
-                    android:id="@+id/userHeadSdv"
-                    android:layout_width="92dp"
-                    android:layout_height="92dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="48dp"
-                    android:background="@drawable/mine_head_ring_bg"
-                    app:failureImage="@mipmap/mine_defualt_head_logo"
-                    app:failureImageScaleType="centerCrop"
-                    app:placeholderImage="@mipmap/mine_defualt_head_logo"
-                    app:placeholderImageScaleType="centerCrop"
-                    app:roundAsCircle="true"
-                    app:roundingBorderWidth="4dp" />
 
-                <TextView
-                    android:id="@+id/userNicknameTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginTop="13dp"
-                    android:textColorHint="@color/white"
-                    android:textSize="14sp" />
+                    <com.facebook.drawee.view.SimpleDraweeView
+                        android:id="@+id/userHeadSdv"
+                        android:layout_width="92dp"
+                        android:layout_height="92dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="48dp"
+                        android:background="@drawable/mine_head_ring_bg"
+                        app:failureImage="@mipmap/mine_defualt_head_logo"
+                        app:failureImageScaleType="centerCrop"
+                        app:placeholderImage="@mipmap/mine_defualt_head_logo"
+                        app:placeholderImageScaleType="centerCrop"
+                        app:roundAsCircle="true"
+                        app:roundingBorderWidth="4dp" />
+
+                    <TextView
+                        android:id="@+id/userNicknameTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="13dp"
+                        android:drawablePadding="3dp"
+                        android:drawableRight="@mipmap/my_info_right_arrow"
+                        android:textColorHint="@color/white"
+                        android:textSize="14sp" />
 
                 <RelativeLayout
                     android:layout_width="88dp"
@@ -127,7 +130,7 @@
                         android:paddingRight="15dp"
                         android:paddingStart="15dp"
                         android:src="@mipmap/white_setting_logo"
-                        android:visibility="gone" />
+                         />
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 

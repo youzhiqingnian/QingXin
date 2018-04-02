@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.vlee78.android.vl.VLTitleBar
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@color/gap_color_gray" />
+
+    <FrameLayout
+        android:id="@+id/aboutQingxinFl"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:drawableLeft="@mipmap/about_qingxin_icon"
+            android:drawablePadding="10dp"
+            android:text="@string/about_qingxin"
+            android:textColor="@color/text_color"
+            android:textSize="14sp"
+            tools:ignore="RtlHardcoded" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/arrow_right_more"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+    </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line_color" />
+    <FrameLayout
+        android:id="@+id/checkVersionUpdateFl"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginStart="15dp"
+            android:drawableLeft="@mipmap/check_version_update_icon"
+            android:drawablePadding="10dp"
+            android:text="@string/check_update"
+            android:textColor="@color/text_color"
+            android:textSize="14sp"
+            tools:ignore="RtlHardcoded" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:text="当前版本v1.0"
+            android:textColor="@color/text_color_blue"
+            tools:ignore="RtlHardcoded" />
+    </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gap_color_gray">
+    <TextView
+        android:id="@+id/logoutTv"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="44dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/blue_button_6dpraduis"
+        android:textSize="14sp"
+        android:textColor="@color/white"
+        android:text="@string/logout"
+        android:gravity="center"
+       />
+    </FrameLayout>
+</LinearLayout>

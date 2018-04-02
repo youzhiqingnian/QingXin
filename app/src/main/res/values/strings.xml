@@ -151,4 +151,22 @@
     <string name="clear_history">清除历史记录</string>
     <string name="net_error">网络错误,点击屏幕重新加载</string>
     <string name="UMENG_ENABLED">true</string>
+
+    <!--个人信息-->
+    <string name="my_information">个人信息</string>
+    <string name="modify_head">修改头像</string>
+    <string name="nickname">昵称</string>
+    <string name="gender">性别</string>
+    <string name="birthday">生日</string>
+    <string name="region">地区</string>
+    <string name="cellphone">手机</string>
+    <string name="save">保存</string>
+    <string name="setting">设置</string>
+    <string name="about_qingxin">关于青歆</string>
+    <string name="check_update">检查更新</string>
+    <string name="logout">退出登录</string>
+    <string name="right_owner">©2018 版权所有
+四川青歆科技有限公司</string>
+    <string name="about_us">关于我们</string>
+
 </resources>
