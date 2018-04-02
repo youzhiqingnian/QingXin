@@ -2,9 +2,11 @@ package com.qingxin.medical.app.goddessdiary;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.DataBaseHelper;
 import com.qingxin.medical.base.QingXinActivity;
 
 /**
