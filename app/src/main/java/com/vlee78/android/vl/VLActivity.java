@@ -323,12 +323,12 @@ public class VLActivity extends AppCompatActivity implements VLMessageManager.VL
         if (mState == VLActivityState.ActivityDestroyed)
             return;
         if (VLUtils.threadInMain()) {
-            VLDialog.showOkCancelDialog(this, title, message, okLabel, cancelLabel, false, resHandler);
+            VLDialog.showOkCancelDialog(this, title, message, okLabel, cancelLabel, cancelable, resHandler);
         } else {
             VLScheduler.instance.schedule(0, VLScheduler.THREAD_MAIN, new VLBlock() {
                 @Override
                 protected void process(boolean canceled) {
-                    VLDialog.showOkCancelDialog(VLActivity.this, title, message, okLabel, cancelLabel, false, resHandler);
+                    VLDialog.showOkCancelDialog(VLActivity.this, title, message, okLabel, cancelLabel, cancelable, resHandler);
                 }
             });
         }

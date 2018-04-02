@@ -9,6 +9,7 @@ import android.content.DialogInterface.OnCancelListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.qingxin.medical.R;
 
 
@@ -26,13 +27,10 @@ public class VLDialog {
         if (VLUtils.stringIsEmpty(cancelLabel))
             cancelLabel = "取消";
         dialog.setCancelable(cancelable);
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setOnCancelListener(new OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                if (resHandler != null)
-                    resHandler.handlerError(VLResHandler.CANCEL, "");
-            }
+        dialog.setCanceledOnTouchOutside(cancelable);
+        dialog.setOnCancelListener(dialog1 -> {
+            if (resHandler != null)
+                resHandler.handlerError(VLResHandler.CANCEL, "");
         });
 
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, okLabel, new DialogInterface.OnClickListener() {
@@ -88,12 +86,9 @@ public class VLDialog {
             progressDialog.setMessage(message);
         progressDialog.setCancelable(cancelable);
         progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setOnCancelListener(new OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                if (resHandler != null)
-                    resHandler.handlerError(VLResHandler.CANCEL, "");
-            }
+        progressDialog.setOnCancelListener(dialog -> {
+            if (resHandler != null)
+                resHandler.handlerError(VLResHandler.CANCEL, "");
         });
         if (okLabel != null) {
             progressDialog.setButton(DialogInterface.BUTTON_POSITIVE, okLabel, new DialogInterface.OnClickListener() {

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+
 import com.qingxin.medical.QingXinAdapter;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
@@ -37,7 +38,6 @@ public class StrictSelListActivity extends QingXinActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_strictsel_list);
         findViewById(R.id.backIv).setOnClickListener(this);
-
         MagicIndicator indicator = findViewById(R.id.magicIndicator);
         final QingXinFragment[] fragments = new QingXinFragment[]{StrictSelListFragment.newInstance(StrictSelListFragment.STRICTSEL_TYEP_HOSPITALS), StrictSelListFragment.newInstance(StrictSelListFragment.STRICTSEL_TYEP_DOCTORS)};
         final String[] titles = new String[]{getResources().getString(R.string.agency), getResources().getString(R.string.doctor)};
