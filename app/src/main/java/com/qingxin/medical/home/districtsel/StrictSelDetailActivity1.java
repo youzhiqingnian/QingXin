@@ -15,14 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.widget.indicator.view.ShareDialog;
+import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLPagerView;
+import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLStatedButtonBar;
 import com.vlee78.android.vl.VLUtils;
 
@@ -36,7 +37,7 @@ public class StrictSelDetailActivity1 extends QingXinActivity implements OnClick
     public static final String STRICTSEL_ID = "STRICTSEL_ID";
     private ShareDialog mShareDialog;
     private StrictSelDetailPresenter mDetailPresenter;
-
+    private VLPagerView mPagerView;
 
     public static void startSelf(@NonNull Context context, @NonNull String id) {
         Intent intent = new Intent(context, StrictSelDetailActivity1.class);
@@ -48,8 +49,14 @@ public class StrictSelDetailActivity1 extends QingXinActivity implements OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_strictsel_detail1);
+        showViewBelowActionBar(R.layout.layout_loading, VLUtils.dip2px(48));
         mDetailPresenter = new StrictSelDetailPresenter(this);
-        mDetailPresenter.getStrictSelDetail(getIntent().getStringExtra(STRICTSEL_ID));
+        VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
+            @Override
+            protected void process(boolean canceled) {
+                mDetailPresenter.getStrictSelDetail(getIntent().getStringExtra(STRICTSEL_ID));
+            }
+        });
     }
 
     @Override
@@ -102,11 +109,13 @@ public class StrictSelDetailActivity1 extends QingXinActivity implements OnClick
 
     @Override
     public void onSuccess(StrictSelBean strictSelBean) {
+        hideView(R.layout.layout_loading);
         setData(strictSelBean);
     }
 
     @Override
     public void onError(QingXinError error) {
+        hideView(R.layout.layout_loading);
         HandErrorUtils.handleError(error);
     }
 
@@ -117,8 +126,8 @@ public class StrictSelDetailActivity1 extends QingXinActivity implements OnClick
         TextView descrTv = findViewById(R.id.descrTv);
         ImageView backIv = findViewById(R.id.topReturnIv);
         ImageView topShareIv = findViewById(R.id.topShareIv);
-        VLPagerView pagerView = findViewById(R.id.pagerView);
         VLStatedButtonBar statedBtnBar = findViewById(R.id.statedButtonBar);
+        mPagerView = findViewById(R.id.pagerView);
 
         nameTv.setText(strictSelBean.getCity_name());
         descrTv.setText(strictSelBean.getSummary());
@@ -150,12 +159,12 @@ public class StrictSelDetailActivity1 extends QingXinActivity implements OnClick
 
         String[] cover = strictSelBean.getCover();
         BannerPagerAdapter adapter = new BannerPagerAdapter(this, cover);
-        pagerView.getViewPager().setAdapter(adapter);
-        pagerView.setPageChangeListener(statedBtnBar::setChecked);
+        mPagerView.getViewPager().setAdapter(adapter);
+        mPagerView.setPageChangeListener(statedBtnBar::setChecked);
         statedBtnBar.setStatedButtonBarDelegate(new DotBarDelegate(this, cover.length));
-        pagerView.setCurrentItem(cover.length * 1000);
-        statedBtnBar.setChecked(pagerView.getCurrentItem());
-        pagerView.setAutoScroll(3000);
+        mPagerView.setCurrentItem(cover.length * 1000);
+        statedBtnBar.setChecked(mPagerView.getCurrentItem());
+        mPagerView.setAutoScroll(3000);
     }
 
     private class BannerPagerAdapter extends PagerAdapter {
@@ -254,5 +263,6 @@ public class StrictSelDetailActivity1 extends QingXinActivity implements OnClick
     protected void onDestroy() {
         super.onDestroy();
         mDetailPresenter.unsubscribe();
+        mPagerView.stopAutoScroll();
     }
 }

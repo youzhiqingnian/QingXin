@@ -11,15 +11,16 @@ import com.qingxin.medical.common.QingXinError;
  *
  * @author zhikuo1
  */
-
-public class MyCollectedProductListContract {
+class MyCollectedProductListContract {
 
     interface View extends BaseView<Presenter> {
         void onSuccess(ProductListBean ProductListBean);
 
-        void onSuccess(CollectBean collectBean);
+        void onCollectSuccess(CollectBean collectBean);
 
         void onError(QingXinError error);
+
+        void onCollectError(QingXinError error);
     }
 
     interface Presenter extends BasePresenter {

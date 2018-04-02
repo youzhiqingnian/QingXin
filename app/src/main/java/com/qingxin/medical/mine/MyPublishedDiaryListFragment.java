@@ -1,5 +1,6 @@
 package com.qingxin.medical.mine;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.qingxin.medical.NetErrorView;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
@@ -25,7 +25,6 @@ import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLFragment;
-
 import java.util.List;
 
 /**
@@ -110,6 +109,7 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     public void setPresenter(MyPublishedDiaryListContract.Presenter presenter) {
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public void onSuccess(ListBean<DiaryItemBean> diary) {
         QingXinApplication.getInstance().getLoginSession().getMem().setDiary_amount(diary.getCount());

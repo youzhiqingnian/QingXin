@@ -60,9 +60,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
     private TextView mClickToSignTv;
     private VLTitleBar mTitleBar;
     private View mHeaderView;
-
     private ApplyWithdrawalsDialog applyWithdrawalsDialog;
-
 
     public WelFareServiceFragment() {
     }
@@ -81,7 +79,6 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
             return;
-        if (getView() == null) return;
         initView();
     }
 
@@ -292,12 +289,9 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
                         }
                     });
                 }
-
                 break;
             case R.id.clickToSignTv://点击签到
-                showViewBelowActionBar(R.layout.layout_loading, QingXinTitleBar.fixActionBarHeight(mTitleBar));
                 mPresenter.checkIn();
-
                 break;
             case R.id.clickToInviteTv:
                 //点击邀请

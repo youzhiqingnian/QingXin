@@ -35,6 +35,7 @@ import com.qingxin.medical.utils.HandErrorUtils;
 import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLAsyncHandler;
 import com.vlee78.android.vl.VLBlock;
+import com.vlee78.android.vl.VLResHandler;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
@@ -68,6 +69,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
     public static final String DIARYITEMBEAN = "DIARYITEMBEAN";
     public static final int REQUEST_CODE = 1111;
 
+    private View mLeftReturn;
     private TextView mCategoryTv, mPublishTv;
     private EditText mDescrTv;
     private AlbumAdapter<Bitmap> mAfterAlbumAdapter, mBeforeAlbumAdapter;
@@ -113,6 +115,7 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
         beforeAlbumRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         afterAlbumRv.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         QingXinTitleBar.init(titleBar, getResources().getString(R.string.publish_diary));
+        mLeftReturn = QingXinTitleBar.setLeftReturnListener(titleBar, this);
         mPublishTv = findViewById(R.id.publishTv);
         chooseItemRl.setOnClickListener(this);
         mPublishTv.setOnClickListener(this);
@@ -213,42 +216,61 @@ public class DiaryPublishActivity extends QingXinActivity implements View.OnClic
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.chooseItemRl:
-                MedicalBeautyActivity.startSelf(this, mMedicalBeautyListBean, mResultListener);
-                break;
-            case R.id.publishTv:
-                if (isCheck()) {
-                    if (!isEdit) {
-                        mPresenter.diaryPublish(mDiaryPublishParams);
-                        mPublishTv.setEnabled(false);
-                        mPublishTv.setText("正在发布中,请稍后");
-                    } else {
-                        if (!isWordsChanged && !isWikiChanged && !isAfterChanged && !isBeforeChanged) {//都没变动
-                            this.finish();
-                            return;
-                        }
-                        if (!isWordsChanged) {
-                            mDiaryPublishParams.setContent(null);
-                        }
-                        if (!isWikiChanged) {
-                            mDiaryPublishParams.setWikiId(null);
-                        }
-                        if (!isBeforeChanged) {
-                            mDiaryPublishParams.setBeforeFile(null);
-                        }
-                        if (!isAfterChanged) {
-                            mDiaryPublishParams.setAfterFile(null);
-                        }
-                        mPresenter.diaryUpdate(mDiaryPublishParams);
-                        mPublishTv.setEnabled(false);
-                        mPublishTv.setText("正在发布中,请稍后");
+        if (v == mLeftReturn) {
+            if (VLUtils.stringIsNotEmpty(mDiaryPublishParams.getWikiId()) || VLUtils.stringIsNotEmpty(mDescrTv.getText().toString().trim()) || null != mBeforePhoto || VLUtils.stringIsNotEmpty(mBeforePhotoPath) || null != mAfterPhoto || VLUtils.stringIsNotEmpty(mAfterPhotoPath)) {
+                showOkCancelDialog("提示", "您确定退出吗?", "确定", "取消", true, new VLResHandler() {
+                    @Override
+                    protected void handler(boolean succeed) {
+                        if (!succeed) return;
+                        DiaryPublishActivity.this.finish();
                     }
-                }
-                break;
-            default:
-                break;
+                });
+            } else {
+                finish();
+            }
+        } else {
+            switch (v.getId()) {
+                case R.id.chooseItemRl:
+                    MedicalBeautyActivity.startSelf(this, mMedicalBeautyListBean, mResultListener);
+                    break;
+                case R.id.publishTv:
+                    if (isCheck()) {
+                        if (!isEdit) {
+                            mPresenter.diaryPublish(mDiaryPublishParams);
+                            mPublishTv.setEnabled(false);
+                            mPublishTv.setText("正在发布中,请稍后");
+                        } else {
+                            if (!isWordsChanged && !isWikiChanged && !isAfterChanged && !isBeforeChanged) {//都没变动
+                                this.finish();
+                                return;
+                            }
+                            if (!isWordsChanged) {
+                                mDiaryPublishParams.setContent(null);
+                            }
+                            if (!isWikiChanged) {
+                                mDiaryPublishParams.setWikiId(null);
+                            }
+                            if (!isBeforeChanged) {
+                                mDiaryPublishParams.setBeforeFile(null);
+                            }
+                            if (!isAfterChanged) {
+                                mDiaryPublishParams.setAfterFile(null);
+                            }
+                            mPresenter.diaryUpdate(mDiaryPublishParams);
+                            mPublishTv.setEnabled(false);
+                            mPublishTv.setText("正在发布中,请稍后");
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        onClick(mLeftReturn);
     }
 
     private QingXinLocalPhotoPopupWindow getPhotoPopupWindow(@NotNull String whichPhoto) {

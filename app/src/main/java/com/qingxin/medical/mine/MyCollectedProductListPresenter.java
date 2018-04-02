@@ -84,19 +84,18 @@ public class MyCollectedProductListPresenter implements MyCollectedProductListCo
 
                     @Override
                     public void onError(Throwable e) {
-                        mCollectListryView.onError(new QingXinError(e));
+                        mCollectListryView.onCollectError(new QingXinError(e));
                     }
 
                     @Override
                     public void onNext(ContentBean<CollectBean> collectBean) {
                         if (!HandErrorUtils.isError(collectBean.getCode())) {
-                            mCollectListryView.onSuccess(collectBean.getContent());
+                            mCollectListryView.onCollectSuccess(collectBean.getContent());
                         } else {
-                            mCollectListryView.onError(new QingXinError(collectBean.getMsg()));
+                            mCollectListryView.onCollectError(new QingXinError(collectBean.getMsg()));
                         }
                     }
                 })
         );
     }
-
 }

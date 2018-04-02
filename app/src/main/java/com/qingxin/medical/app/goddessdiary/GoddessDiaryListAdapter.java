@@ -4,13 +4,11 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.TextView;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.R;
 import com.vlee78.android.vl.VLUtils;
-
 import java.util.List;
 
 /**

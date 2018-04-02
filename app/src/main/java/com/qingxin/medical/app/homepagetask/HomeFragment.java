@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -62,13 +63,20 @@ import java.util.List;
  */
 public class HomeFragment extends VLFragment implements HomePageTaskContract.View, View.OnClickListener {
 
-    private View mRootView;
+    private View mRootView, productTopLineTv;
     private TextView mCityTv;
     private VLPagerView mPagerView;
     private VLStatedButtonBar mStatedBtnBar;
+    private TextView mFirstPrNameTv, mFirstPrPriceTv, mFirstPrOldPriceTv, mSecondPrNameTv, mSecondPrPriceTv, mSecondPrOldPriceTv, mThirdPrNameTv, mThirdPrPriceTv, mThirdPrOldPriceTv, mSelectionGapTv;
+    private FrameLayout mFirstFl, mSecondFl, mThirdFl, mSlectionMoreRl;
+    private SimpleDraweeView mFirstPrCoverSdv, mSecondPrCoverSdv, mThirdPrCoverSdv;
+    private LinearLayout mProductListLl;
+    private RecyclerView mSlectionRv;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     private HomePageTaskContract.Presenter mPresenter;
     private GoddessDiaryListAdapter mDiaryListAdapter;
+    private RecyclerGridViewAdapter mStrictSelAdapter;
 
     public HomeFragment() {
     }
@@ -103,6 +111,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         LinearLayout encyclopediasRl = mRootView.findViewById(R.id.encyclopediasRl);
         FrameLayout diaryMoreRl = mRootView.findViewById(R.id.diaryMoreRl);
         LinearLayout searchLl = mRootView.findViewById(R.id.searchLl);
+        mSwipeRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
         mStatedBtnBar = mRootView.findViewById(R.id.statedButtonBar);
 
         AMapLocation aMapLocation = QingXinApplication.getInstance().getLocationService().getAMLocation();
@@ -116,13 +125,57 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         encyclopediasRl.setOnClickListener(this);
         diaryMoreRl.setOnClickListener(this);
         searchLl.setOnClickListener(this);
-        showView(R.layout.layout_loading);
+
+        mFirstPrNameTv = mRootView.findViewById(R.id.firstPrNameTv);
+        mFirstPrPriceTv = mRootView.findViewById(R.id.firstPrPriceTv);
+        mFirstPrOldPriceTv = mRootView.findViewById(R.id.firstPrOldPriceTv);
+        mSecondPrNameTv = mRootView.findViewById(R.id.secondPrNameTv);
+        mSecondPrPriceTv = mRootView.findViewById(R.id.secondPrPriceTv);
+        mSecondPrOldPriceTv = mRootView.findViewById(R.id.secondPrOldPriceTv);
+        mThirdPrNameTv = mRootView.findViewById(R.id.thirdPrNameTv);
+        mThirdPrPriceTv = mRootView.findViewById(R.id.thirdPrPriceTv);
+        mThirdPrOldPriceTv = mRootView.findViewById(R.id.thirdPrOldPriceTv);
+        mSecondFl = mRootView.findViewById(R.id.secondFl);
+        mFirstFl = mRootView.findViewById(R.id.firstFl);
+        mThirdFl = mRootView.findViewById(R.id.thirdFl);
+        mProductListLl = mRootView.findViewById(R.id.productListLl);
+        mFirstPrCoverSdv = mRootView.findViewById(R.id.firstPrCoverSdv);
+        mSecondPrCoverSdv = mRootView.findViewById(R.id.secondPrCoverSdv);
+        mThirdPrCoverSdv = mRootView.findViewById(R.id.thirdPrCoverSdv);
+        mPagerView = mRootView.findViewById(R.id.pagerView);
+        productTopLineTv = mRootView.findViewById(R.id.productTopLineTv);
+        mSlectionRv = mRootView.findViewById(R.id.slectionRv);
+        mSelectionGapTv = mRootView.findViewById(R.id.selectionGapTv);
+        mSlectionMoreRl = mRootView.findViewById(R.id.slectionMoreRl);
+        RecyclerView diaryRv = mRootView.findViewById(R.id.diaryRv);
+
+        mSecondFl.setOnClickListener(this);
+        mFirstFl.setOnClickListener(this);
+        mThirdFl.setOnClickListener(this);
+        mSlectionMoreRl.setOnClickListener(this);
+        mSwipeRefreshLayout.setOnRefreshListener(this::getHomeData);
+        showViewBelowActionBar(R.layout.layout_loading, VLUtils.dip2px(48));
         VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
             @Override
             protected void process(boolean canceled) {
                 getHomeData();
             }
         });
+
+        mDiaryListAdapter = new GoddessDiaryListAdapter(null);
+        diaryRv.setLayoutManager(new LinearLayoutManager(getActivity()));
+        diaryRv.addItemDecoration(new SpaceItemDecoration(VLUtils.dip2px(18)));
+        mDiaryListAdapter.setOnItemClickListener((adapter1, view, position) -> GoddessDiaryDetailActivity.startSelf((VLActivity) getActivity(), mDiaryListAdapter.getData().get(position).getId(), mResultListener));
+        diaryRv.setAdapter(mDiaryListAdapter);
+        diaryRv.setNestedScrollingEnabled(false);
+
+        RecyclerView.LayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+        mSlectionRv.setLayoutManager(gridLayoutManager);
+        mSlectionRv.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
+        mStrictSelAdapter = new RecyclerGridViewAdapter(null);
+        mSlectionRv.setAdapter(mStrictSelAdapter);
+        mSlectionRv.setNestedScrollingEnabled(false);
+        mStrictSelAdapter.setOnItemClickListener((adapter12, view, position) -> StrictSelDetailActivity1.startSelf(getActivity(), ((StrictSelBean) adapter12.getData().get(position)).getId()));
     }
 
     @Override
@@ -151,28 +204,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
      */
     private void setData(@NonNull HomeBean homeBean) {
         mCityTv.setTag(homeBean);
-        TextView firstPrNameTv = mRootView.findViewById(R.id.firstPrNameTv);
-        TextView firstPrPriceTv = mRootView.findViewById(R.id.firstPrPriceTv);
-        TextView firstPrOldPriceTv = mRootView.findViewById(R.id.firstPrOldPriceTv);
-        TextView secondPrNameTv = mRootView.findViewById(R.id.secondPrNameTv);
-        TextView secondPrPriceTv = mRootView.findViewById(R.id.secondPrPriceTv);
-        TextView secondPrOldPriceTv = mRootView.findViewById(R.id.secondPrOldPriceTv);
-        TextView thirdPrNameTv = mRootView.findViewById(R.id.thirdPrNameTv);
-        TextView thirdPrPriceTv = mRootView.findViewById(R.id.thirdPrPriceTv);
-        TextView thirdPrOldPriceTv = mRootView.findViewById(R.id.thirdPrOldPriceTv);
-        FrameLayout secondFl = mRootView.findViewById(R.id.secondFl);
-        FrameLayout firstFl = mRootView.findViewById(R.id.firstFl);
-        FrameLayout thirdFl = mRootView.findViewById(R.id.thirdFl);
-        LinearLayout productListLl = mRootView.findViewById(R.id.productListLl);
-        SimpleDraweeView firstPrCoverSdv = mRootView.findViewById(R.id.firstPrCoverSdv);
-        SimpleDraweeView secondPrCoverSdv = mRootView.findViewById(R.id.secondPrCoverSdv);
-        SimpleDraweeView thirdPrCoverSdv = mRootView.findViewById(R.id.thirdPrCoverSdv);
-        secondFl.setOnClickListener(this);
-        firstFl.setOnClickListener(this);
-        thirdFl.setOnClickListener(this);
-
         List<HomeBean.BannersBean> bannerList = homeBean.getBanners();
-        mPagerView = mRootView.findViewById(R.id.pagerView);
         BannerPagerAdapter adapter = new BannerPagerAdapter(getActivity(), bannerList);
         mPagerView.getViewPager().setAdapter(adapter);
         mPagerView.setPageChangeListener(position -> mStatedBtnBar.setChecked(position));
@@ -181,82 +213,60 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         mStatedBtnBar.setChecked(mPagerView.getCurrentItem());
         mPagerView.setAutoScroll(3000);
         List<String> productImgs = homeBean.getProductimgs();
-        if (null != productImgs && productImgs.size() >= 3){
-            firstPrCoverSdv.setImageURI(Uri.parse(productImgs.get(0)));
-            secondPrCoverSdv.setImageURI(Uri.parse(productImgs.get(1)));
-            thirdPrCoverSdv.setImageURI(Uri.parse(productImgs.get(2)));
+        if (null != productImgs && productImgs.size() >= 3) {
+            mFirstPrCoverSdv.setImageURI(Uri.parse(productImgs.get(0)));
+            mSecondPrCoverSdv.setImageURI(Uri.parse(productImgs.get(1)));
+            mThirdPrCoverSdv.setImageURI(Uri.parse(productImgs.get(2)));
         }
 
         List<VipProductBean> productList = homeBean.getProducts();
         if (productList != null && productList.size() > 0) {
             if (productList.size() >= 1) {
-                firstPrNameTv.setText(productList.get(0).getName());
-                firstPrPriceTv.setText(String.format("%s元", productList.get(0).getPrice()));
-                firstPrOldPriceTv.setText(String.format("原价%s元", productList.get(0).getOld_price()));
-                firstPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                mFirstPrNameTv.setText(productList.get(0).getName());
+                mFirstPrPriceTv.setText(String.format("%s元", productList.get(0).getPrice()));
+                mFirstPrOldPriceTv.setText(String.format("原价%s元", productList.get(0).getOld_price()));
+                mFirstPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 List<String> idAndName = new ArrayList<>();
                 idAndName.add(productList.get(0).getId());
                 idAndName.add(productList.get(0).getName());
-                firstFl.setTag(idAndName);
+                mFirstFl.setTag(idAndName);
             }
 
             if (productList.size() >= 2) {
-                secondPrNameTv.setText(productList.get(1).getName());
-                secondPrPriceTv.setText(String.format("%s元", productList.get(1).getPrice()));
-                secondPrOldPriceTv.setText(String.format("原价%s元", productList.get(1).getOld_price()));
-                secondPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                mSecondPrNameTv.setText(productList.get(1).getName());
+                mSecondPrPriceTv.setText(String.format("%s元", productList.get(1).getPrice()));
+                mSecondPrOldPriceTv.setText(String.format("原价%s元", productList.get(1).getOld_price()));
+                mSecondPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 List<String> idAndName = new ArrayList<>();
                 idAndName.add(productList.get(1).getId());
                 idAndName.add(productList.get(1).getName());
-                secondFl.setTag(idAndName);
+                mSecondFl.setTag(idAndName);
             }
 
             if (productList.size() >= 3) {
-                thirdPrNameTv.setText(productList.get(2).getName());
-                thirdPrPriceTv.setText(String.format("%s元", productList.get(2).getPrice()));
-                thirdPrOldPriceTv.setText(String.format("原价%s元", productList.get(2).getOld_price()));
-                thirdPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+                mThirdPrNameTv.setText(productList.get(2).getName());
+                mThirdPrPriceTv.setText(String.format("%s元", productList.get(2).getPrice()));
+                mThirdPrOldPriceTv.setText(String.format("原价%s元", productList.get(2).getOld_price()));
+                mThirdPrOldPriceTv.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
                 List<String> idAndName = new ArrayList<>();
                 idAndName.add(productList.get(2).getId());
                 idAndName.add(productList.get(2).getName());
-                thirdFl.setTag(idAndName);
+                mThirdFl.setTag(idAndName);
             }
         } else {
-            View productTopLineTv = mRootView.findViewById(R.id.productTopLineTv);
             productTopLineTv.setVisibility(View.GONE);
-            productListLl.setVisibility(View.GONE);
+            mProductListLl.setVisibility(View.GONE);
         }
 
         List<StrictSelBean> preferrsList = homeBean.getPreferrs();
-        RecyclerView slectionRv = mRootView.findViewById(R.id.slectionRv);
-        TextView selectionGapTv = mRootView.findViewById(R.id.selectionGapTv);
-        FrameLayout slectionMoreRl = mRootView.findViewById(R.id.slectionMoreRl);
-        slectionMoreRl.setOnClickListener(this);
-
         if (preferrsList == null || preferrsList.size() == 0) {
-            slectionMoreRl.setVisibility(View.GONE);
-            selectionGapTv.setVisibility(View.GONE);
-            slectionRv.setVisibility(View.GONE);
+            mSlectionMoreRl.setVisibility(View.GONE);
+            mSelectionGapTv.setVisibility(View.GONE);
+            mSlectionRv.setVisibility(View.GONE);
         } else {
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 2);
-            slectionRv.setLayoutManager(mLayoutManager);
-            slectionRv.addItemDecoration(new GridSpacingItemDecoration(2, VLUtils.dip2px(10), false));
-            RecyclerGridViewAdapter strictSelctionAdapter = new RecyclerGridViewAdapter(preferrsList);
-            slectionRv.setAdapter(strictSelctionAdapter);
-            slectionRv.setNestedScrollingEnabled(false);
-            strictSelctionAdapter.setOnItemClickListener((adapter12, view, position) -> StrictSelDetailActivity1.startSelf(getActivity(), ((StrictSelBean) adapter12.getData().get(position)).getId()));
+            mStrictSelAdapter.setNewData(preferrsList);
         }
-
-        RecyclerView diaryRv = mRootView.findViewById(R.id.diaryRv);
-        List<DiaryItemBean> diaryList = homeBean.getDiarys();
-        if (diaryList != null && diaryList.size() > 0) {
-            diaryRv.setLayoutManager(new LinearLayoutManager(getActivity()));
-            mDiaryListAdapter = new GoddessDiaryListAdapter(diaryList);
-            diaryRv.addItemDecoration(new SpaceItemDecoration(VLUtils.dip2px(18)));
-            mDiaryListAdapter.setOnItemClickListener((adapter1, view, position) -> GoddessDiaryDetailActivity.startSelf((VLActivity) getActivity(), homeBean.getDiarys().get(position).getId(), mResultListener));
-            diaryRv.setAdapter(mDiaryListAdapter);
-            diaryRv.setNestedScrollingEnabled(false);
-        }
+        mDiaryListAdapter.setNewData(homeBean.getDiarys());
     }
 
 
@@ -267,11 +277,13 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
     @Override
     public void onSuccess(HomeBean homeBean) {
         hideView(R.layout.layout_loading);
+        mSwipeRefreshLayout.setRefreshing(false);
         setData(homeBean);
     }
 
     @Override
     public void onError(QingXinError error) {
+        mSwipeRefreshLayout.setRefreshing(false);
         hideView(R.layout.layout_loading);
         HandErrorUtils.handleError(error);
     }

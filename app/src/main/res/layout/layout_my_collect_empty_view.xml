@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="60dp"
+        android:contentDescription="@string/app_name"
         android:src="@mipmap/collect_list_empty_logo" />
 
     <TextView

@@ -1,5 +1,6 @@
 package com.qingxin.medical.mine;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -13,13 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.qingxin.medical.NetErrorView;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryDetailActivity;
 import com.qingxin.medical.app.goddessdiary.GoddessDiaryListAdapter;
-import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
@@ -39,22 +40,13 @@ import java.util.List;
 
 public class MyCollectedDiaryListFragment extends VLFragment implements MyCollectedDiaryListContract.View, SwipeRefreshLayout.OnRefreshListener, GoddessDiaryListAdapter.EditDiaryListener, QingXinBroadCastReceiver.OnReceiverCallbackListener {
 
-    private View mRootView;
-
     private SwipeRefreshLayout mRefreshLayout;
-
     private GoddessDiaryListAdapter mAdapter;
-
     private int mCurrentCancelPosition = 0;
-
     private ListBean<DiaryItemBean> mDiaryList;
-
     private boolean isClear;
-
     private MyCollectedDiaryListContract.Presenter mPresenter;
-
     public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
-
     private QingXinBroadCastReceiver mReceiver;
 
     public MyCollectedDiaryListFragment() {
@@ -69,36 +61,26 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
         return inflater.inflate(R.layout.fragment_mine_tab, container, false);
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
-        if (null == getView()) return;
-        mRootView = getView();
         initView();
         initBroadcastReceiver();
     }
 
-
     private void initView() {
+        if (null == getView()) return;
         mPresenter = new MyCollectedDiaryListPresenter(this);
-
-        mRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
-        RecyclerView recyclerView = mRootView.findViewById(R.id.recyclerView);
-
-
+        mRefreshLayout = getView().findViewById(R.id.swipeRefreshLayout);
+        RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new GoddessDiaryListAdapter(null, 2);
         mAdapter.setOnLoadMoreListener(() -> getMyCollectList(false), recyclerView);
         mAdapter.setEditDiaryListener(this);
         recyclerView.setAdapter(mAdapter);
-
         mAdapter.setOnItemClickListener((adapter, view, position) -> GoddessDiaryDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), mResultListener));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
-        mAdapter.setEmptyView(R.layout.layout_my_collect_empty_view);
     }
 
     /**
@@ -144,11 +126,7 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
-        if (mRefreshLayout != null) {
-            mRefreshLayout.setRefreshing(false);
-        }
-        if (first && QingXinApplication.getInstance().getLoginUser() != null) {
-            showView(R.layout.layout_loading);
+        if (first) {
             VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
                 @Override
                 protected void process(boolean canceled) {
@@ -170,6 +148,7 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
         mPresenter.unsubscribe();
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public void onSuccess(ListBean<DiaryItemBean> diary) {
         hideView(R.layout.layout_loading);
@@ -177,7 +156,12 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
         Log.i("我收藏的日记列表", diary.toString());
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
-            mAdapter.setNewData(diary.getItems());
+            if (diary.getItems().size() == 0) {
+                View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_my_collect_empty_view, null);
+                mAdapter.setEmptyView(emptyView);
+            } else {
+                mAdapter.setNewData(diary.getItems());
+            }
         } else {
             mAdapter.addData(diary.getItems());
         }
@@ -203,6 +187,9 @@ public class MyCollectedDiaryListFragment extends VLFragment implements MyCollec
         hideView(R.layout.layout_loading);
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
+            NetErrorView netErrorView = new NetErrorView(getActivity());
+            netErrorView.setOnClickListener(view -> getMyCollectList(true));
+            mAdapter.setEmptyView(netErrorView);
         } else {
             mAdapter.loadMoreFail();
         }

@@ -8,19 +8,17 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import com.qingxin.medical.NetErrorView;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.CollectBean;
 import com.qingxin.medical.app.homepagetask.model.ProductBean;
+import com.qingxin.medical.app.vip.ProductListAdapter;
 import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.app.vip.VipDetailActivity;
-import com.qingxin.medical.app.vip.ProductListAdapter;
-import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.qingxin.medical.utils.HandErrorUtils;
@@ -28,7 +26,7 @@ import com.vlee78.android.vl.VLActivity;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLScheduler;
-
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -39,24 +37,14 @@ import java.util.List;
 
 public class MyCollectedProductListFragment extends VLFragment implements MyCollectedProductListContract.View, SwipeRefreshLayout.OnRefreshListener, ProductListAdapter.ProductCallbackListener, QingXinBroadCastReceiver.OnReceiverCallbackListener {
 
-    private View mRootView;
-
     private SwipeRefreshLayout mRefreshLayout;
-
     private ProductListAdapter mAdapter;
-
     private List<ProductBean> mProductList;
-
     private int mCurrentCancelPosition = 0;
-
-    public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
-
     private QingXinBroadCastReceiver mReceiver;
-
     private boolean isClear;
-
-
     private MyCollectedProductListContract.Presenter mPresenter;
+    public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
 
     public MyCollectedProductListFragment() {
     }
@@ -70,35 +58,27 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
         return inflater.inflate(R.layout.fragment_mine_tab, container, false);
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-
-        if (null == getView()) return;
-        mRootView = getView();
         initView();
         initBroadcastReceiver();
     }
 
 
     private void initView() {
+        if (null == getView()) return;
         mPresenter = new MyCollectedProductListPresenter(this);
-
-        mRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
-        RecyclerView recyclerView = mRootView.findViewById(R.id.recyclerView);
-
-
+        mRefreshLayout = getView().findViewById(R.id.swipeRefreshLayout);
+        RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new ProductListAdapter(null, 2);
         mAdapter.setOnLoadMoreListener(() -> getMyCollectList(false), recyclerView);
         mAdapter.setBtnCallBackListener(this);
         recyclerView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), mAdapter.getData().get(position).getName() ,mResultListener));
+        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), mAdapter.getData().get(position).getName(), mResultListener));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
-        mAdapter.setEmptyView(R.layout.layout_my_collect_empty_view);
     }
 
     /**
@@ -110,7 +90,6 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
         mReceiver.setReceiverListener(this);
     }
-
 
     private void getMyCollectList(boolean isClear) {
         this.isClear = isClear;
@@ -128,16 +107,13 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
         public void onActivityResult(int requestCode, int resultCode, Intent intent) {
             if (requestCode == VipDetailActivity.VIP_DETAIL_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
                 String vipId = intent.getStringExtra(VipDetailActivity.VIP_ID);
-                int bookNum = intent.getIntExtra(VipDetailActivity.BOOK_NUM, 0);
                 List<ProductBean> vipItemBeans = mAdapter.getData();
-
-
                 int index = 0;
-                for (ProductBean vipItemBean : vipItemBeans) {
-                    if (vipItemBean.getId().equals(vipId)) {
-                        vipItemBean.setOrder(bookNum);
-                        vipItemBeans.remove(index);
-//                        mAdapter.notifyItemChanged(index + mAdapter.getHeaderLayoutCount());
+                Iterator iterator = vipItemBeans.iterator();
+                while (iterator.hasNext()) {
+                    ProductBean vipItemBean = (ProductBean) iterator.next();
+                    if (vipId.equals(vipItemBean.getId())) {
+                        iterator.remove();
                         mAdapter.notifyItemRemoved(index);
                         break;
                     }
@@ -150,11 +126,7 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
-        if (mRefreshLayout != null) {
-            mRefreshLayout.setRefreshing(false);
-        }
-        if (first && QingXinApplication.getInstance().getLoginUser() != null) {
-            showView(R.layout.layout_loading);
+        if (first) {
             VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
                 @Override
                 protected void process(boolean canceled) {
@@ -183,18 +155,19 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
     }
 
     @Override
-    public void onSuccess(ProductListBean ProductListBean) {
-        hideView(R.layout.layout_loading);
-        mProductList = ProductListBean.getItems();
-        Log.i("我收藏的产品列表", ProductListBean.toString());
-
+    public void onSuccess(ProductListBean productListBean) {
+        mProductList = productListBean.getItems();
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
-            mAdapter.setNewData(ProductListBean.getItems());
+            if (productListBean.getItems().size() == 0) {
+                mAdapter.setEmptyView(R.layout.layout_my_collect_empty_view);
+            } else {
+                mAdapter.setNewData(productListBean.getItems());
+            }
         } else {
-            mAdapter.addData(ProductListBean.getItems());
+            mAdapter.addData(productListBean.getItems());
         }
-        if (ProductListBean.getItems().size() < QingXinConstants.ROWS) {
+        if (productListBean.getItems().size() < QingXinConstants.ROWS) {
             //第一页如果不够一页就不显示没有更多数据布局
             mAdapter.loadMoreEnd(isClear);
         } else {
@@ -203,7 +176,7 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
     }
 
     @Override
-    public void onSuccess(CollectBean collectBean) {
+    public void onCollectSuccess(CollectBean collectBean) {
         if (collectBean.getIs_collect().equals("n")) {
             showToast(getString(R.string.cancel_collect_ok));
             mProductList.remove(mCurrentCancelPosition);
@@ -213,12 +186,19 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
 
     @Override
     public void onError(QingXinError error) {
-        hideView(R.layout.layout_loading);
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
+            NetErrorView netErrorView = new NetErrorView(getActivity());
+            netErrorView.setOnClickListener(view -> getMyCollectList(true));
+            mAdapter.setEmptyView(netErrorView);
         } else {
             mAdapter.loadMoreFail();
         }
+        HandErrorUtils.handleError(error);
+    }
+
+    @Override
+    public void onCollectError(QingXinError error) {
         HandErrorUtils.handleError(error);
     }
 
@@ -229,10 +209,7 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
 
     @Override
     public void onProductButtonClick(int position, String id) {
-
         mCurrentCancelPosition = position;
-
-        Log.i("产品取消收藏", "我的产品列表取消收藏");
         // 取消收藏产品
         mPresenter.cancelCollect(id);
     }
@@ -249,5 +226,4 @@ public class MyCollectedProductListFragment extends VLFragment implements MyColl
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReceiver);
     }
-
 }

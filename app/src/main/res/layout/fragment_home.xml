@@ -18,7 +18,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:textColor="@color/text_color"
-        app:layout_constraintBottom_toTopOf="@+id/nestedScrollView"
+        app:layout_constraintBottom_toTopOf="@+id/swipeRefreshLayout"
         app:layout_constraintEnd_toStartOf="@+id/searchLl"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,7 +32,7 @@
         android:layout_marginRight="14dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/home_search_bg"
-        app:layout_constraintBottom_toTopOf="@+id/nestedScrollView"
+        app:layout_constraintBottom_toTopOf="@+id/swipeRefreshLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cityTv"
         app:layout_constraintTop_toTopOf="parent">
@@ -64,263 +64,208 @@
             android:textSize="12sp" />
     </LinearLayout>
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
-        android:layout_width="wrap_content"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/searchLl">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="180dp">
-
-                <com.vlee78.android.vl.VLPagerView
-                    android:id="@+id/pagerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:orientation="horizontal" />
-
-                <com.vlee78.android.vl.VLStatedButtonBar
-                    android:id="@+id/statedButtonBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="bottom|center_horizontal"
-                    android:layout_marginBottom="20dp" />
-            </FrameLayout>
+            android:orientation="vertical"
+            android:scrollbars="none">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="127dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/shareRl"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:contentDescription="@string/app_name"
-                        android:src="@mipmap/new_only_logo" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/share_only_by_new_person"
-                        android:textColor="@color/light_text_color"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/diaryRl"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:contentDescription="@string/app_name"
-                        android:src="@mipmap/girl_god_diary_logo" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/goddess_diary"
-                        android:textColor="@color/light_text_color"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/selectionRl"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:contentDescription="@string/app_name"
-                        android:src="@mipmap/local_strict_selection" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/exclusive_service"
-                        android:textColor="@color/light_text_color"
-                        android:textSize="12sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/encyclopediasRl"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:contentDescription="@string/app_name"
-                        android:src="@mipmap/beauty_medical_encyclopedia" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="8dp"
-                        android:text="@string/encyclopedia_of_medical_beauty"
-                        android:textColor="@color/light_text_color"
-                        android:textSize="12sp" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <View
-                android:id="@+id/productTopLineTv"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/line_color" />
-
-            <LinearLayout
-                android:id="@+id/productListLl"
-                android:layout_width="match_parent"
-                android:layout_height="180dp"
-                android:orientation="horizontal">
 
                 <FrameLayout
-                    android:id="@+id/firstFl"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="325"
-                    android:background="?attr/selectableItemBackground">
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp">
 
-                    <com.facebook.drawee.view.SimpleDraweeView
-                        android:id="@+id/firstPrCoverSdv"
+                    <com.vlee78.android.vl.VLPagerView
+                        android:id="@+id/pagerView"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="180dp"
+                        android:orientation="horizontal" />
 
-                    <TextView
-                        android:id="@+id/firstPrNameTv"
+                    <com.vlee78.android.vl.VLStatedButtonBar
+                        android:id="@+id/statedButtonBar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="22dp"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:textColor="@color/text_color_blue"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="48dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:id="@+id/firstPrPriceTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/text_color_pink"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/firstPrOldPriceTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:layout_marginStart="8dp"
-                            android:textColor="@color/text_color_origin_price"
-                            android:textSize="12sp" />
-                    </LinearLayout>
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="20dp" />
                 </FrameLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="127dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/shareRl"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:contentDescription="@string/app_name"
+                            android:src="@mipmap/new_only_logo" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/share_only_by_new_person"
+                            android:textColor="@color/light_text_color"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/diaryRl"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:contentDescription="@string/app_name"
+                            android:src="@mipmap/girl_god_diary_logo" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/goddess_diary"
+                            android:textColor="@color/light_text_color"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/selectionRl"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:contentDescription="@string/app_name"
+                            android:src="@mipmap/local_strict_selection" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/exclusive_service"
+                            android:textColor="@color/light_text_color"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/encyclopediasRl"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:contentDescription="@string/app_name"
+                            android:src="@mipmap/beauty_medical_encyclopedia" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/encyclopedia_of_medical_beauty"
+                            android:textColor="@color/light_text_color"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+
                 <View
-                    android:layout_width="0.5dp"
-                    android:layout_height="match_parent"
+                    android:id="@+id/productTopLineTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
                     android:background="@color/line_color" />
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="425"
-                    android:orientation="vertical">
+                    android:id="@+id/productListLl"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:orientation="horizontal">
 
                     <FrameLayout
-                        android:id="@+id/secondFl"
-                        android:layout_width="match_parent"
-                        android:layout_height="90dp"
+                        android:id="@+id/firstFl"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="325"
                         android:background="?attr/selectableItemBackground">
 
                         <com.facebook.drawee.view.SimpleDraweeView
-                            android:id="@+id/secondPrCoverSdv"
+                            android:id="@+id/firstPrCoverSdv"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent" />
 
                         <TextView
-                            android:id="@+id/secondPrNameTv"
+                            android:id="@+id/firstPrNameTv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="13dp"
-                            android:layout_marginStart="13dp"
-                            android:layout_marginTop="25dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="22dp"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:textColor="@color/text_color"
-                            android:textSize="14sp" />
+                            android:textColor="@color/text_color_blue"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="13dp"
-                            android:layout_marginStart="13dp"
-                            android:layout_marginTop="47dp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="48dp"
                             android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/secondPrPriceTv"
+                                android:id="@+id/firstPrPriceTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textColor="@color/text_color_pink"
                                 android:textSize="14sp" />
 
                             <TextView
-                                android:id="@+id/secondPrOldPriceTv"
+                                android:id="@+id/firstPrOldPriceTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="8dp"
@@ -331,146 +276,207 @@
                     </FrameLayout>
 
                     <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
+                        android:layout_width="0.5dp"
+                        android:layout_height="match_parent"
                         android:background="@color/line_color" />
 
-                    <FrameLayout
-                        android:id="@+id/thirdFl"
-                        android:layout_width="match_parent"
-                        android:layout_height="90dp"
-                        android:background="?attr/selectableItemBackground">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="425"
+                        android:orientation="vertical">
 
-                        <com.facebook.drawee.view.SimpleDraweeView
-                            android:id="@+id/thirdPrCoverSdv"
+                        <FrameLayout
+                            android:id="@+id/secondFl"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="90dp"
+                            android:background="?attr/selectableItemBackground">
 
-                        <TextView
-                            android:id="@+id/thirdPrNameTv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="13dp"
-                            android:layout_marginStart="13dp"
-                            android:layout_marginTop="25dp"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/text_color" />
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="13dp"
-                            android:layout_marginStart="13dp"
-                            android:layout_marginTop="47dp"
-                            android:orientation="horizontal">
+                            <com.facebook.drawee.view.SimpleDraweeView
+                                android:id="@+id/secondPrCoverSdv"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
 
                             <TextView
-                                android:id="@+id/thirdPrPriceTv"
+                                android:id="@+id/secondPrNameTv"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/text_color_pink"
+                                android:layout_marginLeft="13dp"
+                                android:layout_marginStart="13dp"
+                                android:layout_marginTop="25dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/text_color"
                                 android:textSize="14sp" />
 
-                            <TextView
-                                android:id="@+id/thirdPrOldPriceTv"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="8dp"
-                                android:layout_marginStart="8dp"
-                                android:textColor="@color/text_color_origin_price"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-                    </FrameLayout>
+                                android:layout_marginLeft="13dp"
+                                android:layout_marginStart="13dp"
+                                android:layout_marginTop="47dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/secondPrPriceTv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/text_color_pink"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/secondPrOldPriceTv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginStart="8dp"
+                                    android:textColor="@color/text_color_origin_price"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </FrameLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/line_color" />
+
+                        <FrameLayout
+                            android:id="@+id/thirdFl"
+                            android:layout_width="match_parent"
+                            android:layout_height="90dp"
+                            android:background="?attr/selectableItemBackground">
+
+                            <com.facebook.drawee.view.SimpleDraweeView
+                                android:id="@+id/thirdPrCoverSdv"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                            <TextView
+                                android:id="@+id/thirdPrNameTv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="13dp"
+                                android:layout_marginStart="13dp"
+                                android:layout_marginTop="25dp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/text_color" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="13dp"
+                                android:layout_marginStart="13dp"
+                                android:layout_marginTop="47dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/thirdPrPriceTv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/text_color_pink"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/thirdPrOldPriceTv"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="8dp"
+                                    android:layout_marginStart="8dp"
+                                    android:textColor="@color/text_color_origin_price"
+                                    android:textSize="12sp" />
+                            </LinearLayout>
+                        </FrameLayout>
+                    </LinearLayout>
                 </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/gap_color_gray" />
+
+                <FrameLayout
+                    android:id="@+id/slectionMoreRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="@string/strict_selection_famous_doctor_institute"
+                        android:textColor="@color/text_color_blue"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginRight="15dp"
+                        android:drawableEnd="@mipmap/arrow_right_more"
+                        android:drawablePadding="6dp"
+                        android:drawableRight="@mipmap/arrow_right_more"
+                        android:text="@string/more"
+                        android:textColor="@color/text_color_hint"
+                        android:textSize="14sp" />
+                </FrameLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/slectionRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:scrollbars="vertical" />
+
+                <TextView
+                    android:id="@+id/selectionGapTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/gap_color_gray" />
+
+                <FrameLayout
+                    android:id="@+id/diaryMoreRl"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="?attr/selectableItemBackground">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:text="@string/goddess_diary"
+                        android:textColor="@color/text_color_blue"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginRight="15dp"
+                        android:drawableEnd="@mipmap/arrow_right_more"
+                        android:drawablePadding="6dp"
+                        android:drawableRight="@mipmap/arrow_right_more"
+                        android:text="@string/more"
+                        android:textColor="@color/text_color_hint"
+                        android:textSize="14sp" />
+                </FrameLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/diaryRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="31dp" />
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/gap_color_gray" />
-
-            <FrameLayout
-                android:id="@+id/slectionMoreRl"
-                android:layout_width="match_parent"
-                android:layout_height="40dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginStart="15dp"
-                    android:text="@string/strict_selection_famous_doctor_institute"
-                    android:textColor="@color/text_color_blue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
-                    android:drawableEnd="@mipmap/arrow_right_more"
-                    android:drawablePadding="6dp"
-                    android:drawableRight="@mipmap/arrow_right_more"
-                    android:text="@string/more"
-                    android:textColor="@color/text_color_hint"
-                    android:textSize="14sp" />
-            </FrameLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/slectionRv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
-                android:scrollbars="vertical" />
-
-            <TextView
-                android:id="@+id/selectionGapTv"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/gap_color_gray" />
-
-            <FrameLayout
-                android:id="@+id/diaryMoreRl"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:background="?attr/selectableItemBackground">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginStart="15dp"
-                    android:text="@string/goddess_diary"
-                    android:textColor="@color/text_color_blue"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
-                    android:drawableEnd="@mipmap/arrow_right_more"
-                    android:drawablePadding="6dp"
-                    android:drawableRight="@mipmap/arrow_right_more"
-                    android:text="@string/more"
-                    android:textColor="@color/text_color_hint"
-                    android:textSize="14sp" />
-            </FrameLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/diaryRv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="31dp" />
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </android.support.constraint.ConstraintLayout>

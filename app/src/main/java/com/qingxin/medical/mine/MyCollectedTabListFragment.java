@@ -1,16 +1,12 @@
 package com.qingxin.medical.mine;
 
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.qingxin.medical.R;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLPagerView;
@@ -22,16 +18,10 @@ import com.vlee78.android.vl.VLUtils;
  *
  * @author zhikuo1
  */
-
 public class MyCollectedTabListFragment extends VLFragment {
-
-    private View mRootView;
 
     private VLPagerView mFragmentPager;
     private VLStatedButtonBar mButtonBar;
-
-
-    private boolean isDiary = false;
 
     public MyCollectedTabListFragment() {
     }
@@ -45,22 +35,19 @@ public class MyCollectedTabListFragment extends VLFragment {
         return inflater.inflate(R.layout.fragment_my_collect_tab, container, false);
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null && savedInstanceState.getBoolean("isConflict", false))
             return;
         if (getView() == null) return;
-        mRootView = getView();
-
         initView();
-
     }
 
     private void initView() {
-        mFragmentPager = mRootView.findViewById(R.id.mainPager);
-        mButtonBar = mRootView.findViewById(R.id.mainBottomBar);
+        if (null == getView()) return;
+        mFragmentPager = getView().findViewById(R.id.mainPager);
+        mButtonBar = getView().findViewById(R.id.mainBottomBar);
         mFragmentPager.setOffscreenPageLimit(2);
         //将2个fragment添加至activity中
         VLFragment[] fragments = new VLFragment[]{MyCollectedProductListFragment.newInstance(), MyCollectedDiaryListFragment.newInstance()};
@@ -125,11 +112,4 @@ public class MyCollectedTabListFragment extends VLFragment {
             }
         }
     }
-
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
 }
