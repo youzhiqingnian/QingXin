@@ -166,8 +166,8 @@ public class VipDetailActivity extends QingXinActivity implements VipDetailContr
         mCollectionIv = findViewById(R.id.collectionIv);
         mTopShareIv = findViewById(R.id.topShareIv);
         mScrollTopIv = findViewById(R.id.scrollTopIv);
-        mPagerView = findViewById(R.id.viewpagerVp);
-        mStatedBtnBar = findViewById(R.id.statedBtnBar);
+        mPagerView = findViewById(R.id.pagerView);
+        mStatedBtnBar = findViewById(R.id.statedButtonBar);
         mTopTitleNameTv = findViewById(R.id.topTitleNameTv);
         mProductNameTv = findViewById(R.id.productNameTv);
         mPriceTv = findViewById(R.id.priceTv);

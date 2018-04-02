@@ -7,12 +7,12 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.qingxin.medical.NetErrorView;
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.goddessdiary.DiaryItemBean;
@@ -24,9 +24,7 @@ import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.vlee78.android.vl.VLActivity;
-import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
-import com.vlee78.android.vl.VLScheduler;
 
 import java.util.List;
 
@@ -38,14 +36,9 @@ import java.util.List;
 
 public class MyPublishedDiaryListFragment extends VLFragment implements MyPublishedDiaryListContract.View, SwipeRefreshLayout.OnRefreshListener, GoddessDiaryListAdapter.DeleteDiaryListener, GoddessDiaryListAdapter.EditDiaryListener {
 
-    private View mRootView;
-
     private SwipeRefreshLayout mRefreshLayout;
-
     private GoddessDiaryListAdapter mAdapter;
-
     private MyPublishedDiaryListContract.Presenter mPresenter;
-
     private boolean isClear;
 
     public MyPublishedDiaryListFragment() {
@@ -64,15 +57,14 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (null == getView()) return;
-        mRootView = getView();
         initView();
-
     }
 
     private void initView() {
+        if (null == getView()) return;
         mPresenter = new MyPublishedDiaryListPresenter(this);
-        mRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
-        RecyclerView recyclerView = mRootView.findViewById(R.id.recyclerView);
+        mRefreshLayout = getView().findViewById(R.id.swipeRefreshLayout);
+        RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new GoddessDiaryListAdapter(null, 1);
         mAdapter.setOnLoadMoreListener(() -> getMyCollectList(false), recyclerView);
@@ -83,11 +75,14 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
         mAdapter.setOnItemClickListener((adapter, view, position) -> GoddessDiaryDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), null));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
+    }
 
-        View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_my_diary_empty_view, null);
-        TextView publishDiaryTv = emptyView.findViewById(R.id.publishDiaryTv);
-        publishDiaryTv.setOnClickListener(view -> DiaryPublishActivity.startSelf(getVLActivity()));
-        mAdapter.setEmptyView(emptyView);
+    @Override
+    protected void onVisible(boolean first) {
+        super.onVisible(first);
+        if (first) {
+            getMyCollectList(true);
+        }
     }
 
     private void getMyCollectList(boolean isClear) {
@@ -98,21 +93,6 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
         }
         mPresenter.getMyPublishedDiaryList(QingXinApplication.getInstance().getLoginUser().getId(), QingXinConstants.ROWS, skip);
     }
-
-    @Override
-    protected void onVisible(boolean first) {
-        super.onVisible(first);
-        if (first && QingXinApplication.getInstance().getLoginUser() != null) {
-            showView(R.layout.layout_loading);
-            VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
-                @Override
-                protected void process(boolean canceled) {
-                    getMyCollectList(true);
-                }
-            });
-        }
-    }
-
 
     @Override
     public void onResume() {
@@ -128,21 +108,22 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
 
     @Override
     public void setPresenter(MyPublishedDiaryListContract.Presenter presenter) {
-
     }
 
     @Override
     public void onSuccess(ListBean<DiaryItemBean> diary) {
-        Log.i("我发布的日记的bean", diary.toString());
-        hideView(R.layout.layout_loading);
-        if (diary.getCount() > 0) {
-            QingXinApplication.getInstance().getLoginSession().getMem().setDiary_amount(diary.getCount());
-            sendBroadCast();
-        }
-
+        QingXinApplication.getInstance().getLoginSession().getMem().setDiary_amount(diary.getCount());
+        sendBroadCast();
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
-            mAdapter.setNewData(diary.getItems());
+            if (diary.getItems().size() == 0) {
+                View emptyView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_my_diary_empty_view, null);
+                TextView publishDiaryTv = emptyView.findViewById(R.id.publishDiaryTv);
+                publishDiaryTv.setOnClickListener(view -> DiaryPublishActivity.startSelf(getVLActivity()));
+                mAdapter.setEmptyView(emptyView);
+            } else {
+                mAdapter.setNewData(diary.getItems());
+            }
         } else {
             mAdapter.addData(diary.getItems());
         }
@@ -163,12 +144,19 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     @Override
     public void onError(QingXinError error) {
         HandErrorUtils.handleError(error);
-        hideView(R.layout.layout_loading);
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
+            NetErrorView netErrorView = new NetErrorView(getActivity());
+            netErrorView.setOnClickListener(view -> getMyCollectList(true));
+            mAdapter.setEmptyView(netErrorView);
         } else {
             mAdapter.loadMoreFail();
         }
+    }
+
+    @Override
+    public void onDeleteDiaryError(QingXinError error) {
+        HandErrorUtils.handleError(error);
     }
 
     @Override
@@ -183,7 +171,7 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     }
 
     private VLActivity.VLActivityResultListener mResultListener = (requestCode, resultCode, intent) -> {
-        if (requestCode == DiaryPublishActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK){
+        if (requestCode == DiaryPublishActivity.REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             DiaryItemBean modifyItemBean = (DiaryItemBean) intent.getSerializableExtra(DiaryPublishActivity.DIARYITEMBEAN);
             if (null != modifyItemBean) {
                 List<DiaryItemBean> diaryItemBeans = mAdapter.getData();
@@ -203,7 +191,6 @@ public class MyPublishedDiaryListFragment extends VLFragment implements MyPublis
     private void sendBroadCast() {
         Intent intent = new Intent(MineDataFragment.REFRESH_ACTION);
         intent.putExtra("refresh", true);
-
         LocalBroadcastManager.getInstance(getVLActivity()).sendBroadcast(intent);
     }
 

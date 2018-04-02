@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author zhikuo
  */
-public class AgencyAdapter extends BaseQuickAdapter<StrictSelBean,BaseViewHolder>{
+public class AgencyAdapter extends BaseQuickAdapter<StrictSelBean, BaseViewHolder> {
 
     AgencyAdapter(@Nullable List<StrictSelBean> data) {
         super(R.layout.adapter_agency, data);
@@ -24,12 +24,13 @@ public class AgencyAdapter extends BaseQuickAdapter<StrictSelBean,BaseViewHolder
     @Override
     protected void convert(BaseViewHolder helper, StrictSelBean item) {
         SimpleDraweeView simpleDraweeView = helper.getView(R.id.simpleDraweeView);
-        TextView playCountTv = helper.getView(R.id.playCountTv);
         TextView nameTv = helper.getView(R.id.nameTv);
         TextView descrTv = helper.getView(R.id.descrTv);
 
-        simpleDraweeView.setImageURI(Uri.parse(item.getThumbnail()));
-        playCountTv.setText(String.format("%s 次播放", item.getOrder()));
+        String[] cover = item.getCover();
+        if (null != cover && cover.length > 0) {
+            simpleDraweeView.setImageURI(Uri.parse(cover[0]));
+        }
         nameTv.setText(item.getName());
         descrTv.setText(item.getSummary());
     }

@@ -35,7 +35,7 @@ import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.FragmentToActivity;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
-import com.qingxin.medical.home.districtsel.StrictSelDetailActivity;
+import com.qingxin.medical.home.districtsel.StrictSelDetailActivity1;
 import com.qingxin.medical.home.districtsel.StrictSelListActivity;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyActivity;
 import com.qingxin.medical.map.GaoDeMapModel;
@@ -103,7 +103,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         LinearLayout encyclopediasRl = mRootView.findViewById(R.id.encyclopediasRl);
         FrameLayout diaryMoreRl = mRootView.findViewById(R.id.diaryMoreRl);
         LinearLayout searchLl = mRootView.findViewById(R.id.searchLl);
-        mStatedBtnBar = mRootView.findViewById(R.id.statedBtnBar);
+        mStatedBtnBar = mRootView.findViewById(R.id.statedButtonBar);
 
         AMapLocation aMapLocation = QingXinApplication.getInstance().getLocationService().getAMLocation();
         if (null != aMapLocation) {
@@ -172,7 +172,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
         thirdFl.setOnClickListener(this);
 
         List<HomeBean.BannersBean> bannerList = homeBean.getBanners();
-        mPagerView = mRootView.findViewById(R.id.viewpagerVp);
+        mPagerView = mRootView.findViewById(R.id.pagerView);
         BannerPagerAdapter adapter = new BannerPagerAdapter(getActivity(), bannerList);
         mPagerView.getViewPager().setAdapter(adapter);
         mPagerView.setPageChangeListener(position -> mStatedBtnBar.setChecked(position));
@@ -244,12 +244,8 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             RecyclerGridViewAdapter strictSelctionAdapter = new RecyclerGridViewAdapter(preferrsList);
             slectionRv.setAdapter(strictSelctionAdapter);
             slectionRv.setNestedScrollingEnabled(false);
-            strictSelctionAdapter.setOnItemClickListener((adapter12, view, position) -> StrictSelDetailActivity.startSelf(getActivity(), (StrictSelBean) adapter12.getData().get(position)));
+            strictSelctionAdapter.setOnItemClickListener((adapter12, view, position) -> StrictSelDetailActivity1.startSelf(getActivity(), ((StrictSelBean) adapter12.getData().get(position)).getId()));
         }
-
-        slectionMoreRl.setVisibility(View.GONE);
-        selectionGapTv.setVisibility(View.GONE);
-        slectionRv.setVisibility(View.GONE);
 
         RecyclerView diaryRv = mRootView.findViewById(R.id.diaryRv);
         List<DiaryItemBean> diaryList = homeBean.getDiarys();

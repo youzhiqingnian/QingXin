@@ -84,7 +84,7 @@ public class MyPublishedDiaryListPresenter implements MyPublishedDiaryListContra
 
                     @Override
                     public void onError(Throwable e) {
-                        mPublishedListryView.onError(new QingXinError(e));
+                        mPublishedListryView.onDeleteDiaryError(new QingXinError(e));
                     }
 
                     @Override
@@ -92,7 +92,7 @@ public class MyPublishedDiaryListPresenter implements MyPublishedDiaryListContra
                         if (!HandErrorUtils.isError(contentBean.getCode())) {
                             mPublishedListryView.onDeleteDiarySuccess(position);
                         } else {
-                            mPublishedListryView.onError(new QingXinError(contentBean.getMsg()));
+                            mPublishedListryView.onDeleteDiaryError(new QingXinError(contentBean.getMsg()));
                         }
                     }
                 })

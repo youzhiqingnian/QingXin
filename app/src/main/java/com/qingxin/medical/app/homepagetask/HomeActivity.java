@@ -28,10 +28,10 @@ import com.vlee78.android.vl.VLUtils;
  *
  * @author zhikuo1
  */
-public class HomePageTaskActivity extends QingXinActivity implements LoginFragment.OnLoginSuccessListener {
+public class HomeActivity extends QingXinActivity implements LoginFragment.OnLoginSuccessListener {
 
     public static void startSelf(Context context, int index) {
-        Intent intent = new Intent(context, HomePageTaskActivity.class);
+        Intent intent = new Intent(context, HomeActivity.class);
         intent.putExtra(INDEX, index);
         context.startActivity(intent);
     }

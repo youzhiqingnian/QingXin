@@ -7,18 +7,17 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.qingxin.medical.QingXinConstants;
 import com.qingxin.medical.R;
+import com.qingxin.medical.app.vip.ProductListAdapter;
 import com.qingxin.medical.app.vip.ProductListBean;
 import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListActivity;
-import com.qingxin.medical.app.vip.ProductListAdapter;
-import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
 import com.qingxin.medical.utils.HandErrorUtils;
@@ -33,24 +32,15 @@ import com.vlee78.android.vl.VLUtils;
  * @author zhikuo1
  */
 
-public class MyBookedProductListFragment extends VLFragment implements MyBookedProductListContract.View, SwipeRefreshLayout.OnRefreshListener, ProductListAdapter.ProductCallbackListener,QingXinBroadCastReceiver.OnReceiverCallbackListener {
-
-    private View mRootView;
+public class MyBookedProductListFragment extends VLFragment implements MyBookedProductListContract.View, SwipeRefreshLayout.OnRefreshListener, ProductListAdapter.ProductCallbackListener, QingXinBroadCastReceiver.OnReceiverCallbackListener {
 
     private SwipeRefreshLayout mRefreshLayout;
-
     private MyBookedProductListContract.Presenter mPresenter;
-
     private ProductListAdapter mAdapter;
-
     private ProductListBean mProductListBean;
-
     private boolean isClear;
-
-    public static final String COUNT_ACTION = "com.archie.action.COUNT_ACTION";
-
     private QingXinBroadCastReceiver mReceiver;
-
+    public static final String COUNT_ACTION = "com.archie.action.COUNT_ACTION";
     public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
 
     public MyBookedProductListFragment() {
@@ -59,7 +49,6 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     public static MyBookedProductListFragment newInstance() {
         return new MyBookedProductListFragment();
     }
-
 
     @Override
     protected View onCreateContent(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -70,40 +59,24 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (null == getView()) return;
-        mRootView = getView();
         initView();
         initBroadcastReceiver();
     }
 
     private void initView() {
-
+        if (null == getView()) return;
         mPresenter = new MyBookProductListPresenter(this);
-        mRefreshLayout = mRootView.findViewById(R.id.swipeRefreshLayout);
-        RecyclerView recyclerView = mRootView.findViewById(R.id.recyclerView);
-
-
+        mRefreshLayout = getView().findViewById(R.id.swipeRefreshLayout);
+        RecyclerView recyclerView = getView().findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new ProductListAdapter(null, 1);
         mAdapter.setOnLoadMoreListener(() -> getMyBookedProduct(false), recyclerView);
         mAdapter.setBtnCallBackListener(this);
         recyclerView.setAdapter(mAdapter);
 
-        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), mAdapter.getData().get(position).getName(),null));
+        mAdapter.setOnItemClickListener((adapter, view, position) -> VipDetailActivity.startSelf(getVLActivity(), mAdapter.getData().get(position).getId(), mAdapter.getData().get(position).getName(), null));
         mRefreshLayout.setOnRefreshListener(this);
         mRefreshLayout.setRefreshing(true);
-
-
-        View emptyView = LayoutInflater.from(getVLActivity()).inflate(R.layout.layout_my_booked_product_empty_view,null);
-        TextView goToScanProductTv = emptyView.findViewById(R.id.goToScanProductTv);
-        mAdapter.setEmptyView(emptyView);
-
-        goToScanProductTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                VipListActivity.startSelf(getVLActivity());
-            }
-        });
-
     }
 
     /**
@@ -114,9 +87,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
         IntentFilter intentFilter = new IntentFilter(REFRESH_ACTION);
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
         mReceiver.setReceiverListener(this);
-
     }
-
 
     private void getMyBookedProduct(boolean isClear) {
         this.isClear = isClear;
@@ -130,11 +101,7 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
-        if(mRefreshLayout != null){
-            mRefreshLayout.setRefreshing(false);
-        }
-        if (first && QingXinApplication.getInstance().getLoginUser() != null) {
-            showView(R.layout.layout_loading);
+        if (first) {
             VLScheduler.instance.schedule(200, VLScheduler.THREAD_MAIN, new VLBlock() {
                 @Override
                 protected void process(boolean canceled) {
@@ -156,20 +123,23 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
         mPresenter.unsubscribe();
     }
 
-
     @Override
     public void setPresenter(MyBookedProductListContract.Presenter presenter) {
-
     }
 
     @Override
     public void onSuccess(ProductListBean productListBean) {
-        hideView(R.layout.layout_loading);
         mProductListBean = productListBean;
-        Log.i("我预定的产品列表", productListBean.toString());
         if (isClear) {
             mRefreshLayout.setRefreshing(false);
-            mAdapter.setNewData(productListBean.getItems());
+            if (productListBean.getItems().size() == 0) {
+                View emptyView = LayoutInflater.from(getVLActivity()).inflate(R.layout.layout_my_booked_product_empty_view, null);
+                TextView goToScanProductTv = emptyView.findViewById(R.id.goToScanProductTv);
+                mAdapter.setEmptyView(emptyView);
+                goToScanProductTv.setOnClickListener(view -> VipListActivity.startSelf(getVLActivity()));
+            } else {
+                mAdapter.setNewData(productListBean.getItems());
+            }
         } else {
             mAdapter.addData(productListBean.getItems());
         }
@@ -179,8 +149,8 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
         } else {
             mAdapter.loadMoreComplete();
         }
-        if(productListBean != null && productListBean.getCount() != 0){
-            sendBroadCast(productListBean.getCount()+"");
+        if (productListBean.getCount() != 0) {
+            sendBroadCast(String.valueOf(productListBean.getCount()));
         }
     }
 
@@ -201,25 +171,22 @@ public class MyBookedProductListFragment extends VLFragment implements MyBookedP
     }
 
     @Override
-    public void onProductButtonClick(int position,String id) {
+    public void onProductButtonClick(int position, String id) {
         // 联系我们
         VLUtils.gotoDail(getActivity(), mProductListBean.getItems().get(position).getMobile());
     }
 
     private void sendBroadCast(String bookCount) {
         Intent intent = new Intent(COUNT_ACTION);
-        intent.putExtra("bookCount",bookCount);
-        LocalBroadcastManager.getInstance(getVLActivity()).sendBroadcast(
-                intent
-        );
+        intent.putExtra("bookCount", bookCount);
+        LocalBroadcastManager.getInstance(getVLActivity()).sendBroadcast(intent);
     }
 
     @Override
     public void receiverUpdata(Intent intent) {
-        if(intent.getBooleanExtra("refresh",false)){
+        if (intent.getBooleanExtra("refresh", false)) {
             getMyBookedProduct(true);
         }
-
     }
 
     @Override

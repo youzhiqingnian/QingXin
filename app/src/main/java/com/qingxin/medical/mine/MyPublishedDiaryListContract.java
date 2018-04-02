@@ -11,8 +11,7 @@ import com.qingxin.medical.home.ListBean;
  *
  * @author zhikuo1
  */
-
-public class MyPublishedDiaryListContract {
+class MyPublishedDiaryListContract {
 
     interface View extends BaseView<Presenter> {
         void onSuccess(ListBean<DiaryItemBean> diary);
@@ -20,6 +19,8 @@ public class MyPublishedDiaryListContract {
         void onDeleteDiarySuccess(int position);
 
         void onError(QingXinError error);
+
+        void onDeleteDiaryError(QingXinError error);
     }
 
     interface Presenter extends BasePresenter {

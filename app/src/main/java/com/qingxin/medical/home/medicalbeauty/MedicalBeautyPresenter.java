@@ -6,8 +6,6 @@ import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.qingxin.medical.utils.ToastUtils;
-import com.vlee78.android.vl.VLApplication;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -32,7 +30,7 @@ public class MedicalBeautyPresenter implements MedicalBeautyContract.Presenter {
         mStrictSelView = goddessDiaryView;
         mCompositeSubscription = new CompositeSubscription();
         mStrictSelView.setPresenter(this);
-        mMedicalBeautyModel = VLApplication.instance().getModel(MedicalBeautyModel.class);
+        mMedicalBeautyModel = getModel(MedicalBeautyModel.class);
     }
 
     @Override
@@ -48,7 +46,7 @@ public class MedicalBeautyPresenter implements MedicalBeautyContract.Presenter {
 
     @Override
     public void getMedicalBeautyList(String id) {
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(MedicalStrictService.class).getMedicalBeautyList(id)
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(MedicalStrictService.class).getMedicalBeautyList(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<ListBean<MedicalBeautyListBean>>>() {
@@ -80,7 +78,7 @@ public class MedicalBeautyPresenter implements MedicalBeautyContract.Presenter {
             mStrictSelView.onGetSecondarySuccess(mMedicalBeautyModel.getData(id));
             return;
         }
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(MedicalStrictService.class).getMedicalBeautySecondaryList(id, "children")
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(MedicalStrictService.class).getMedicalBeautySecondaryList(id, "children")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<ListBean<MedicalBeautyDetailBean>>>() {

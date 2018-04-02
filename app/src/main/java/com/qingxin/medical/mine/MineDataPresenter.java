@@ -1,7 +1,7 @@
 package com.qingxin.medical.mine;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
+
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishParams;
 import com.qingxin.medical.app.homepagetask.model.MemBean;
 import com.qingxin.medical.base.ContentBean;
@@ -11,8 +11,9 @@ import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.upload.UploadResult;
 import com.qingxin.medical.upload.UploadService;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.vlee78.android.vl.VLApplication;
+
 import java.io.File;
+
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -26,7 +27,6 @@ import rx.subscriptions.CompositeSubscription;
  *
  * @author zhikuo1
  */
-
 public class MineDataPresenter implements MineDataContract.Presenter {
 
     private MineDataContract.View mUploadHeadView;
@@ -67,7 +67,7 @@ public class MineDataPresenter implements MineDataContract.Presenter {
         File file = diaryPublishParams.getBeforeFile();
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("aFile", file.getName(), requestFile);
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(UploadService.class).uploadFile(body)
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(UploadService.class).uploadFile(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(new Observer<ContentBean<UploadResult>>() {
@@ -83,7 +83,6 @@ public class MineDataPresenter implements MineDataContract.Presenter {
                     @Override
                     public void onNext(ContentBean<UploadResult> uploadResultContentBean) {
                         if (!HandErrorUtils.isError(uploadResultContentBean.getCode())) {
-                            Log.i("头像内部上传成功", uploadResultContentBean.toString());
                             mUploadHeadView.onSuccess(uploadResultContentBean.getContent());
                             diaryPublishParams.setBeforeFileName(uploadResultContentBean.getContent().getFilename());
                             modifyHead(diaryPublishParams.getBeforeFileName());
@@ -123,7 +122,7 @@ public class MineDataPresenter implements MineDataContract.Presenter {
 
 
     private void modifyHead(@NonNull String fileName) {
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(ModifyPersonalInfoService.class).modifyPersonalInfo(fileName)
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(ModifyPersonalInfoService.class).modifyPersonalInfo(fileName)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<MemBean>>() {
@@ -147,6 +146,4 @@ public class MineDataPresenter implements MineDataContract.Presenter {
                     }
                 }));
     }
-
-
 }

@@ -1,34 +1,35 @@
-package com.qingxin.medical.home.medicalbeauty;
+package com.qingxin.medical.home.districtsel;
 
 import android.support.annotation.NonNull;
-
 import com.qingxin.medical.base.ContentBean;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ItemBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.utils.HandErrorUtils;
-
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
+
 /**
- * Date 2018-02-03
+ * Date 2018-04-02
+ * <p>
+ * 获取严选详情
  *
- * @author zhikuo1
+ * @author zhikuo
  */
-public class MedicalBeautyDetailPresenter implements MedicalBeautyDetailContract.Presenter {
+public class StrictSelDetailPresenter implements StrictSelDetailContract.Presenter {
 
     @NonNull
-    private final MedicalBeautyDetailContract.View mMedicalBeautyDetailView;
+    private final StrictSelDetailContract.View mStrictSelView;
 
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    MedicalBeautyDetailPresenter(@NonNull MedicalBeautyDetailContract.View goddessDiaryView) {
-        mMedicalBeautyDetailView = goddessDiaryView;
+    StrictSelDetailPresenter(@NonNull StrictSelDetailContract.View strictSelView) {
+        mStrictSelView = strictSelView;
         mCompositeSubscription = new CompositeSubscription();
-        mMedicalBeautyDetailView.setPresenter(this);
+        mStrictSelView.setPresenter(this);
     }
 
     @Override
@@ -43,26 +44,27 @@ public class MedicalBeautyDetailPresenter implements MedicalBeautyDetailContract
     }
 
     @Override
-    public void getMedicalBeautyDetail(String id) {
-        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(MedicalStrictService.class).getMedicalBeautyDetail(id)
+    public void getStrictSelDetail(String id) {
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(StrictSelService.class).getStrictSelDetail(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ContentBean<ItemBean<MedicalBeautyRealDetailBean>>>() {
+                .subscribe(new Observer<ContentBean<ItemBean<StrictSelBean>>>() {
                     @Override
                     public void onCompleted() {
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mMedicalBeautyDetailView.onError(new QingXinError(e));
+                        mStrictSelView.onError(new QingXinError(e));
                     }
 
                     @Override
-                    public void onNext(ContentBean<ItemBean<MedicalBeautyRealDetailBean>> contentBean) {
-                        if(!HandErrorUtils.isError(contentBean.getCode())){
-                            mMedicalBeautyDetailView.onSucess(contentBean.getContent());
-                        }else{
-                            mMedicalBeautyDetailView.onError(new QingXinError(contentBean.getMsg()));
+                    public void onNext(ContentBean<ItemBean<StrictSelBean>> contentBean) {
+                        if (!HandErrorUtils.isError(contentBean.getCode())) {
+                            mStrictSelView.onSuccess(contentBean.getContent().getItem());
+                        } else {
+                            mStrictSelView.onError(new QingXinError(contentBean.getMsg()));
                         }
                     }
                 })

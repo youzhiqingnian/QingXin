@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_video_rl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <TextView
-        android:id="@+id/statusbar_bg_layout"
+        android:id="@+id/statusBar"
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_alignParentTop="true" >

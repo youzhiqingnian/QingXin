@@ -12,7 +12,7 @@ import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.qingxin.medical.R;
 import com.qingxin.medical.app.Constants;
-import com.qingxin.medical.app.homepagetask.HomePageTaskActivity;
+import com.qingxin.medical.app.homepagetask.HomeActivity;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.config.ConfigBean;
@@ -58,7 +58,7 @@ public class SplashActivity extends QingXinActivity implements ConfigContract.Vi
                     finish();
                 } else {
                     // 进入主页
-                    HomePageTaskActivity.startSelf(SplashActivity.this, 0);
+                    HomeActivity.startSelf(SplashActivity.this, 0);
                     finish();
                 }
             }

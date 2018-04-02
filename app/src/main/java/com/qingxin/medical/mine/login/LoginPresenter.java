@@ -11,8 +11,7 @@ import com.qingxin.medical.service.manager.NetRequestListManager;
 import com.qingxin.medical.user.UserService;
 import com.qingxin.medical.user.UserTokenBean;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.qingxin.medical.utils.ToastUtils;
-import com.vlee78.android.vl.VLApplication;
+
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -48,7 +47,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
     @Override
     public void login(@NonNull String mobile, @NonNull String vcode) {
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(UserService.class).login(mobile, vcode)
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(UserService.class).login(mobile, vcode)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<UserTokenBean>>() {
@@ -105,7 +104,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
     @Override
     public void getMoblieCode(@NonNull String mobile) {
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(UserService.class).getMobileCode(mobile)
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(UserService.class).getMobileCode(mobile)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean>() {
