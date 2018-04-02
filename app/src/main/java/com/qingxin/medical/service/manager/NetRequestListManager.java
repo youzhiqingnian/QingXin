@@ -20,12 +20,14 @@ import com.qingxin.medical.home.ListBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.service.RetrofitService;
 import com.vlee78.android.vl.VLApplication;
+
 import rx.Observable;
 
 /**
- * Created by user on 2018-01-22.
+ * Date 2018-01-22
+ *
+ * @author zhikuo1
  */
-
 public class NetRequestListManager {
 
     /**
@@ -57,7 +59,7 @@ public class NetRequestListManager {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).collectDiary(id);
     }
 
-    public static Observable<ContentBean<VipListBean>> getVipList(int limit, int skip,String search) {
+    public static Observable<ContentBean<VipListBean>> getVipList(int limit, int skip, String search) {
         return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getVipList(limit, skip, search);
     }
 
@@ -106,6 +108,7 @@ public class NetRequestListManager {
 
     /**
      * 申请提现
+     *
      * @param amount
      * @return
      */
@@ -124,11 +127,12 @@ public class NetRequestListManager {
 
     /**
      * 推荐用户
-     * @param name 用户姓名
-     * @param mobile 用户手机号
+     *
+     * @param name    用户姓名
+     * @param mobile  用户手机号
      * @param product 意向产品
-     * @param inthos 意向医院
-     * @param remark 备注
+     * @param inthos  意向医院
+     * @param remark  备注
      * @return
      */
     public static Observable<ContentBean<RecommendResultBean>> submitRecommendUser(String name, String mobile, String product, String inthos, String remark) {
@@ -137,6 +141,7 @@ public class NetRequestListManager {
 
     /**
      * 获取预定/收藏过的产品列表
+     *
      * @param limit
      * @param skip
      * @param type
@@ -149,6 +154,7 @@ public class NetRequestListManager {
 
     /**
      * 获取收藏过的日记列表
+     *
      * @param limit
      * @param skip
      * @param type
@@ -161,11 +167,12 @@ public class NetRequestListManager {
 
     /**
      * 获取发布过的日记列表
+     *
      * @param author 发布者的id
      * @return
      */
     public static Observable<ContentBean<ListBean<DiaryItemBean>>> getMyPublishedDiaryList(String author, int limit, int skip) {
-        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getMyPublishedDiaryList(author,limit,skip);
+        return VLApplication.instance().getModel(RetrofitModel.class).getService(RetrofitService.class).getMyPublishedDiaryList(author, limit, skip);
     }
 
     /**

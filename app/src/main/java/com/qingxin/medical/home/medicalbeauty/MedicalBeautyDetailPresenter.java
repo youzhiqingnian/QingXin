@@ -7,7 +7,6 @@ import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.ItemBean;
 import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.vlee78.android.vl.VLApplication;
 
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -45,7 +44,7 @@ public class MedicalBeautyDetailPresenter implements MedicalBeautyDetailContract
 
     @Override
     public void getMedicalBeautyDetail(String id) {
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(MedicalStrictService.class).getMedicalBeautyDetail(id)
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(MedicalStrictService.class).getMedicalBeautyDetail(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<ItemBean<MedicalBeautyRealDetailBean>>>() {

@@ -33,7 +33,6 @@ import com.qingxin.medical.user.User;
 import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.widget.indicator.view.ApplyWithdrawalsDialog;
 import com.vlee78.android.vl.VLActivity;
-import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLDialog;
 import com.vlee78.android.vl.VLFragment;
@@ -276,7 +275,7 @@ public class WelFareServiceFragment extends VLFragment implements WelfareCoinLog
             case R.id.qingxinCoinRuleTv:
                 // 青歆币规则
                 if (null != getModel(ConfigModel.class).getConfigBean() && !VLUtils.stringIsEmpty(getModel(ConfigModel.class).getConfigBean().getCoin_rule_url())) {
-                    QingXinWebViewActivity.startSelf(getActivity(), VLApplication.instance().getModel(ConfigModel.class).getConfigBean().getCoin_rule_url());
+                    QingXinWebViewActivity.startSelf(getActivity(), getModel(ConfigModel.class).getConfigBean().getCoin_rule_url());
                 } else {
                     showToast(getActivity().getResources().getString(R.string.no_get_coin_rule));
                 }

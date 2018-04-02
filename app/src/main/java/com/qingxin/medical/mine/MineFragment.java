@@ -10,7 +10,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
@@ -52,7 +51,6 @@ public class MineFragment extends QingXinFragment implements QingXinBroadCastRec
             getFragmentManager().beginTransaction().add(R.id.container, MineDataFragment.newInstance()).commit();
         }
         initBroadcastReceiver();
-
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mBroadcastReceiver, new IntentFilter(LoginFragment.LOGIN_ACTION));
     }
 
@@ -62,7 +60,6 @@ public class MineFragment extends QingXinFragment implements QingXinBroadCastRec
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(mReceiver, intentFilter);
         mReceiver.setReceiverListener(this);
     }
-
 
     private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
         @Override

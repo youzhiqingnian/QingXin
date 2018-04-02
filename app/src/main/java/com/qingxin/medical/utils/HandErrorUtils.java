@@ -1,7 +1,6 @@
 package com.qingxin.medical.utils;
 
 import android.content.Intent;
-import android.media.MediaCas;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.gson.JsonParseException;
@@ -63,7 +62,7 @@ public class HandErrorUtils {
                 break;
             case "1005":
                 logout();
-                isError= true;
+                isError = true;
                 break;
 
             case "200":
@@ -71,23 +70,16 @@ public class HandErrorUtils {
                 break;
         }
         return isError;
-
     }
 
     private static void logout() {
-
         VLApplication.instance().getModel(UserModel.class).onLogout();
         VLApplication.instance().getModel(SessionModel.class).onLogout();
-
         Intent intent = new Intent(LOGOUT_ACTION);
-        LocalBroadcastManager.getInstance(VLApplication.instance()).sendBroadcast(
-                intent
-        );
+        LocalBroadcastManager.getInstance(VLApplication.instance()).sendBroadcast(intent);
     }
 
-
     public static String getErrorMsg(String errorCode) {
-
         int strRes = 0;
         switch (errorCode) {
             case "1000":
@@ -153,10 +145,10 @@ public class HandErrorUtils {
         return VLApplication.instance().getResources().getString(strRes);
     }
 
-    public static void handleError(QingXinError error){
-        if (null == error.getThrowable()){
+    public static void handleError(QingXinError error) {
+        if (null == error.getThrowable()) {
             ToastUtils.showToast(error.getMsg());
-        }else {
+        } else {
             handleError(error.getThrowable());
         }
     }
@@ -173,7 +165,8 @@ public class HandErrorUtils {
             switch (httpException.code()) {
                 case UNAUTHORIZED:
                 case FORBIDDEN:
-                    ToastUtils.showToast("当前资源不可用，未获取到响应权限");        //权限错误，需要实现
+                    //权限错误，需要实现
+                    ToastUtils.showToast("当前资源不可用，未获取到响应权限");
                     break;
                 case NOT_FOUND:
                 case REQUEST_TIMEOUT:
@@ -185,16 +178,14 @@ public class HandErrorUtils {
                     ToastUtils.showToast("当前网络错误，请检查您的网络!");  //均视为网络错误
                     break;
             }
-        } else if (e instanceof JsonParseException
-                || e instanceof JSONException
-                || e instanceof ParseException) {
-            ToastUtils.showToast("数据解析错误");            //均视为解析错误
+        } else if (e instanceof JsonParseException || e instanceof JSONException || e instanceof ParseException) {//均视为解析错误
+            ToastUtils.showToast("数据解析错误");
         } else if (e instanceof SocketTimeoutException) {
             ToastUtils.showToast("连接超时,请稍后再试");
         } else if (e instanceof ConnectException) {
             ToastUtils.showToast("当前网络错误，请检查您的网络!");
         } else {
-            ToastUtils.showToast("未知错误");          //未知错误
+            ToastUtils.showToast("未知错误");
         }
     }
 }

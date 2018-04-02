@@ -18,7 +18,6 @@ import java.util.List;
  *
  * @author zhikuo1
  */
-
 public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, BaseViewHolder> {
 
     private int mType = 0;
@@ -65,7 +64,6 @@ public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, Bas
             authorName = helper.getView(R.id.authorName);
             scanCountTv = helper.getView(R.id.scanCountTv);
             collectionCountTv = helper.getView(R.id.collectionCountTv);
-
             if (null != item.getMem()) {
                 authorHeadSdv.setImageURI(Uri.parse(item.getMem().getCover()));
                 authorName.setText(item.getMem().getName());
@@ -75,15 +73,12 @@ public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, Bas
         } else {
             deleteTv = helper.getView(R.id.deleteTv);
             editTv = helper.getView(R.id.editTv);
-
             if (mType == 2) {
                 deleteTv.setVisibility(View.GONE);
                 editTv.setText(mContext.getResources().getString(R.string.cancel_collection));
             }
-
             deleteTv.setOnClickListener(view -> deleteDiaryListener.deleteDiary(helper.getAdapterPosition(), item.getId()));
             editTv.setOnClickListener(view -> editDiaryListener.editDiary(helper.getAdapterPosition(), item.getId()));
-
         }
 
         if (!VLUtils.stringIsEmpty(item.getOper_before_photo())) {
@@ -93,7 +88,6 @@ public class GoddessDiaryListAdapter extends BaseQuickAdapter<DiaryItemBean, Bas
             afterCoverSdv.setImageURI(Uri.parse(item.getOper_after_photo()));
         }
         contentTv.setText(item.getSummary());
-
         tagTv.setText(item.getTags());
     }
 }

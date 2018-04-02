@@ -10,11 +10,11 @@ import com.qingxin.medical.common.QingXinError;
  *
  * @author zhikuo1
  */
-
-public class MyBookedProductListContract {
+class MyBookedProductListContract {
 
     interface View extends BaseView<Presenter> {
         void onSuccess(ProductListBean ProductListBean);
+
         void onError(QingXinError error);
     }
 

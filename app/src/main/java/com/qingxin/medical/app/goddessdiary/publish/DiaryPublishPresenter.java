@@ -9,7 +9,6 @@ import com.qingxin.medical.retrofit.RetrofitModel;
 import com.qingxin.medical.upload.UploadResult;
 import com.qingxin.medical.upload.UploadService;
 import com.qingxin.medical.utils.HandErrorUtils;
-import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLUtils;
 
 import java.io.File;
@@ -76,7 +75,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
     private void uploadPhotos(DiaryPublishParams diaryPublishParams, File file, String flag) {
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("aFile", file.getName(), requestFile);
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(UploadService.class).uploadFile(body)
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(UploadService.class).uploadFile(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(new Observer<ContentBean<UploadResult>>() {
@@ -113,7 +112,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
         File file = isFirstUploadSuccess ? diaryPublishParams.getAfterFile() : diaryPublishParams.getBeforeFile();
         RequestBody requestFile = RequestBody.create(MediaType.parse("application/otcet-stream"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("aFile", file.getName(), requestFile);
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(UploadService.class).uploadFile(body)
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(UploadService.class).uploadFile(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(new Observer<ContentBean<UploadResult>>() {
@@ -149,7 +148,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
     }
 
     private void publishDiary(@NonNull DiaryPublishParams diaryPublishParams) {
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(DiaryPublishService.class).diaryPublish(diaryPublishParams.getWikiId(), diaryPublishParams.getBeforeFileName(), diaryPublishParams.getAfterFileName(), diaryPublishParams.getContent())
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(DiaryPublishService.class).diaryPublish(diaryPublishParams.getWikiId(), diaryPublishParams.getBeforeFileName(), diaryPublishParams.getAfterFileName(), diaryPublishParams.getContent())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<DiaryPublishResult>>() {
@@ -175,7 +174,7 @@ public class DiaryPublishPresenter implements DiaryPublishContract.Presenter {
     }
 
     private void updateDiary(@NonNull DiaryPublishParams diaryPublishParams) {
-        mCompositeSubscription.add(VLApplication.instance().getModel(RetrofitModel.class).getService(DiaryPublishService.class).updateDiary(diaryPublishParams.getDiaryId(), diaryPublishParams.getWikiId(), diaryPublishParams.getBeforeFileName(), diaryPublishParams.getAfterFileName(), diaryPublishParams.getContent())
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(DiaryPublishService.class).updateDiary(diaryPublishParams.getDiaryId(), diaryPublishParams.getWikiId(), diaryPublishParams.getBeforeFileName(), diaryPublishParams.getAfterFileName(), diaryPublishParams.getContent())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<GoddessDiaryDetailBean>>() {
