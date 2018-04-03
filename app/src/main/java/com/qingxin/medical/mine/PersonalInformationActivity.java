@@ -18,12 +18,15 @@ import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishParams;
 import com.qingxin.medical.app.homepagetask.model.MemBean;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
+import com.qingxin.medical.common.CommonDialogAdapter;
 import com.qingxin.medical.common.CommonDialogFactory;
 import com.qingxin.medical.common.MapperUtils;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.common.QingXinLocalPhotoPopupWindow;
 import com.qingxin.medical.upload.UploadResult;
+import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLAsyncHandler;
+import com.vlee78.android.vl.VLResHandler;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
@@ -125,7 +128,14 @@ public class PersonalInformationActivity extends QingXinActivity implements View
                 break;
             case R.id.genderFl:
                 // 性别
-
+                CommonDialogFactory.getInstance().createGenderSelectDialog(this, "请选择性别", new VLResHandler() {
+                    @Override
+                    protected void handler(boolean succeed) {
+                        if (!succeed) return;
+                        CommonDialogAdapter.CommonDialogData data = (CommonDialogAdapter.CommonDialogData) param();
+                        ToastUtils.showToast(data.getName());
+                    }
+                }).show();
                 break;
             case R.id.birthdayFl:
                 // 生日
