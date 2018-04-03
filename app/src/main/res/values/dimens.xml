@@ -5,4 +5,7 @@
     <!-- video -->
     <dimen name="library_video_video_margin_top">0dp</dimen>
     <dimen name="library_video_controlbar_height">36dp</dimen>
+
+    <item name="dialog_min_width_major" type="dimen">65%</item>
+    <item name="dialog_min_width_minor" type="dimen">65%</item>
 </resources>

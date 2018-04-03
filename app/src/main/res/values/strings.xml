@@ -165,8 +165,14 @@
     <string name="about_qingxin">关于青歆</string>
     <string name="check_update">检查更新</string>
     <string name="logout">退出登录</string>
+<<<<<<< HEAD
     <string name="logout_success">退出成功</string>
     <string name="right_owner">©2018 版权所有\n四川青歆科技有限公司</string>
+=======
+    <string name="right_owner">©2018 版权所有四川青歆科技有限公司</string>
+>>>>>>> 4886623c0731c0ae65434ede95082288b9e6932e
     <string name="about_us">关于我们</string>
-
+    <string name="please_choose">请选择</string>
+    <string name="complete">完成</string>
+    <string name="confirm">确定</string>
 </resources>
