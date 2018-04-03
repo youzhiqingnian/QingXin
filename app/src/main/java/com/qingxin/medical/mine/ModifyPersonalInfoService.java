@@ -17,6 +17,6 @@ public interface ModifyPersonalInfoService {
 
     @FormUrlEncoded
     @PUT("/mem")
-    Observable<ContentBean<MemBean>> modifyPersonalInfo(@Field("cover") String cover);
+    Observable<ContentBean<MemBean>> modifyPersonalInfo(@Field("name") String name, @Field("cover") String cover, @Field("gender") String gender, @Field("birthday") String birthday, @Field("province_id") String province_id, @Field("city_id") String city_id);
 
 }

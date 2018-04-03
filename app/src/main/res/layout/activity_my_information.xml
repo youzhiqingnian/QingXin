@@ -121,7 +121,7 @@
             android:layout_marginStart="74dp"
             android:layout_gravity="center_vertical"
             android:textColor="@color/text_color"
-            android:text="女"
+            android:text="男"
             android:textSize="14sp"
             />
         <ImageView

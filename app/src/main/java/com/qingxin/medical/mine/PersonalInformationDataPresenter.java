@@ -23,14 +23,14 @@ import rx.subscriptions.CompositeSubscription;
  *
  * @author zhikuo1
  */
-public class MyInformationDataPresenter implements MyInformationDataContract.Presenter {
+public class PersonalInformationDataPresenter implements PersonalInformationDataContract.Presenter {
 
-    private MyInformationDataContract.View mUploadHeadView;
+    private PersonalInformationDataContract.View mUploadHeadView;
 
     @NonNull
     private CompositeSubscription mCompositeSubscription;
 
-    MyInformationDataPresenter(@NonNull MyInformationDataContract.View uploadHeadView) {
+    PersonalInformationDataPresenter(@NonNull PersonalInformationDataContract.View uploadHeadView) {
         mUploadHeadView = uploadHeadView;
         mCompositeSubscription = new CompositeSubscription();
         mUploadHeadView.setPresenter(this);
@@ -81,7 +81,7 @@ public class MyInformationDataPresenter implements MyInformationDataContract.Pre
                         if (!HandErrorUtils.isError(uploadResultContentBean.getCode())) {
                             mUploadHeadView.onSuccess(uploadResultContentBean.getContent());
                             diaryPublishParams.setBeforeFileName(uploadResultContentBean.getContent().getFilename());
-                            modifyHead(diaryPublishParams.getBeforeFileName());
+//                            modifyHead(diaryPublishParams.getBeforeFileName());
                         } else {
                             mUploadHeadView.onError(new QingXinError(uploadResultContentBean.getMsg()));
                         }
@@ -122,8 +122,8 @@ public class MyInformationDataPresenter implements MyInformationDataContract.Pre
     }
 
 
-    private void modifyHead(@NonNull String fileName) {
-        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(ModifyPersonalInfoService.class).modifyPersonalInfo(fileName)
+    public void modifyPersonalInfo(@NonNull String name, @NonNull String cover, @NonNull String gender, @NonNull String birthday, @NonNull String province_id, @NonNull String city_id) {
+        mCompositeSubscription.add(getModel(RetrofitModel.class).getService(ModifyPersonalInfoService.class).modifyPersonalInfo(name,cover,gender,birthday,province_id,city_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<ContentBean<MemBean>>() {

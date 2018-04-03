@@ -76,7 +76,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
         TextView userNicknameTv = getView().findViewById(R.id.userNicknameTv);
 
         userNicknameTv.setOnClickListener(view -> {
-            MyInformationActivity.startSelf(getActivity());
+            PersonalInformationActivity.startSelf(getActivity());
         });
 
         if (QingXinApplication.getInstance().getLoginUser() != null) {
@@ -128,7 +128,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
         ViewPagerHelper.bind(indicator, viewPager);
 
         mUserHeadSdv.setOnClickListener(view -> {
-            MyInformationActivity.startSelf(getActivity());
+            PersonalInformationActivity.startSelf(getActivity());
         });
 
         AppBarLayout appBarLayout1 = getView().findViewById(R.id.appbar);

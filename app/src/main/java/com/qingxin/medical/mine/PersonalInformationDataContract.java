@@ -13,7 +13,7 @@ import com.qingxin.medical.upload.UploadResult;
  *
  * @author zhikuo1
  */
-public class MyInformationDataContract {
+public class PersonalInformationDataContract {
 
     public interface View extends BaseView<Presenter> {
         void onSuccess(MemBean diaryPublishResult);

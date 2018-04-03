@@ -6,8 +6,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -16,6 +19,7 @@ import com.qingxin.medical.app.homepagetask.model.MemBean;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.CommonDialogFactory;
+import com.qingxin.medical.common.MapperUtils;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.common.QingXinLocalPhotoPopupWindow;
 import com.qingxin.medical.upload.UploadResult;
@@ -29,21 +33,31 @@ import java.io.File;
  *
  * @author zhikuo1
  */
-public class MyInformationActivity extends QingXinActivity implements View.OnClickListener, MyInformationDataContract.View {
+public class PersonalInformationActivity extends QingXinActivity implements View.OnClickListener, PersonalInformationDataContract.View {
 
     private FrameLayout mModifyHeadFl,
             mGenderFl,
             mBirthdayFl,
             mRegionFl;
     private SimpleDraweeView mUserHeadSdv;
+    private EditText mNicknameEt;
+    private TextView mGenderTv,
+                    mBirthdayTv,
+                    mReginTv,
+                    mCellphoneTv;
     private View mBottomV;
     private Bitmap mBeforePhoto;
     private String mBeforePhotoPath;
     private DiaryPublishParams mDiaryPublishParams;
-    private MyInformationDataPresenter mPresenter;
+    private PersonalInformationDataPresenter mPresenter;
+    private String mUploadHeadFileName = "";
+    private String mStartName;
+    private String mStartGender;
+    private String mStartBirthday;
+    private String mStartRegion;
 
     public static void startSelf(@NonNull Context context) {
-        Intent intent = new Intent(context, MyInformationActivity.class);
+        Intent intent = new Intent(context, PersonalInformationActivity.class);
         context.startActivity(intent);
     }
 
@@ -53,17 +67,21 @@ public class MyInformationActivity extends QingXinActivity implements View.OnCli
         setContentView(R.layout.activity_my_information);
         initView();
         initListener();
+        initData();
     }
 
     private void initView() {
+        mNicknameEt = findViewById(R.id.nicknameEt);
+        mGenderTv = findViewById(R.id.genderTv);
+        mBirthdayTv = findViewById(R.id.birthdayTv);
+        mReginTv = findViewById(R.id.reginTv);
+        mCellphoneTv = findViewById(R.id.cellphoneTv);
         VLTitleBar titleBar = findViewById(R.id.titleBar);
         QingXinTitleBar.init(titleBar, getResources().getString(R.string.my_information));
         QingXinTitleBar.setLeftReturn(titleBar, this);
-        QingXinTitleBar.setRightText(titleBar, getResources().getString(R.string.save), new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 保存修改的信息
-                saveMyInfo();
+        QingXinTitleBar.setRightText(titleBar, getResources().getString(R.string.save), view -> {
+            if(isChanged()){
+                mPresenter.modifyPersonalInfo(mNicknameEt.getText().toString().trim(),mUploadHeadFileName,mGenderTv.getText().toString().trim(),mBirthdayTv.getText().toString().trim(),"","");
             }
         });
         mModifyHeadFl = findViewById(R.id.modifyHeadFl);
@@ -72,15 +90,8 @@ public class MyInformationActivity extends QingXinActivity implements View.OnCli
         mRegionFl = findViewById(R.id.regionFl);
         mUserHeadSdv = findViewById(R.id.userHeadSdv);
         mBottomV = findViewById(R.id.bottomV);
-        mPresenter = new MyInformationDataPresenter(this);
+        mPresenter = new PersonalInformationDataPresenter(this);
         mDiaryPublishParams = new DiaryPublishParams();
-    }
-
-    private void saveMyInfo() {
-
-
-
-
     }
 
     private void initListener() {
@@ -88,6 +99,21 @@ public class MyInformationActivity extends QingXinActivity implements View.OnCli
         mGenderFl.setOnClickListener(this);
         mBirthdayFl.setOnClickListener(this);
         mRegionFl.setOnClickListener(this);
+    }
+
+    private void initData() {
+        mStartName = mNicknameEt.getText().toString().trim();
+        mStartGender = mGenderTv.getText().toString().trim();
+        mStartBirthday = mBirthdayTv.getText().toString().trim();
+        mStartRegion = mReginTv.getText().toString().trim();
+    }
+
+    private boolean isChanged() {
+        String endName = mNicknameEt.getText().toString().trim();
+        String endGender = mGenderTv.getText().toString().trim();
+        String endBirthday = mBirthdayTv.getText().toString().trim();
+        String endRegion = mReginTv.getText().toString().trim();
+        return MapperUtils.isChanged(mStartName, endName) || MapperUtils.isChanged(mStartGender, endGender) || MapperUtils.isChanged(mStartBirthday, endBirthday) || MapperUtils.isChanged(mStartRegion, endRegion);
     }
 
     @Override
@@ -122,6 +148,7 @@ public class MyInformationActivity extends QingXinActivity implements View.OnCli
                 if (null == result) return;
                 mBeforePhoto = result.getCutResult();
                 mBeforePhotoPath = VLUtils.saveBitmap(QingXinApplication.getInstance(), mBeforePhoto);
+                assert mBeforePhotoPath != null;
                 mDiaryPublishParams.setBeforeFile(new File(mBeforePhotoPath));
                 mPresenter.headUpload(mDiaryPublishParams);
             }
@@ -141,7 +168,7 @@ public class MyInformationActivity extends QingXinActivity implements View.OnCli
     }
 
     @Override
-    public void setPresenter(MyInformationDataContract.Presenter presenter) {
+    public void setPresenter(PersonalInformationDataContract.Presenter presenter) {
 
     }
 
@@ -149,7 +176,10 @@ public class MyInformationActivity extends QingXinActivity implements View.OnCli
     public void onSuccess(MemBean membean) {
         // 修改个人资料成功
         if (membean != null) {
-            mPresenter.getSession();
+            /*mPresenter.getSession();*/
+            if (!VLUtils.stringIsEmpty(membean.getCover())) {
+                mUserHeadSdv.setImageURI(Uri.parse(membean.getCover()));
+            }
         }
     }
 
@@ -162,7 +192,10 @@ public class MyInformationActivity extends QingXinActivity implements View.OnCli
 
     @Override
     public void onSuccess(UploadResult uploadResultBean) {
-
+        // 上传头像成功
+        if(!TextUtils.isEmpty(uploadResultBean.getFilename())){
+            mUploadHeadFileName = uploadResultBean.getFilename();
+        }
     }
 
     @Override

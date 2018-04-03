@@ -4,23 +4,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.user.SessionModel;
+import com.qingxin.medical.user.UserModel;
+import com.qingxin.medical.utils.ToastUtils;
+import com.vlee78.android.vl.VLApplication;
 import com.vlee78.android.vl.VLTitleBar;
-
 /**
  * Date 2018-04-02
  *
  * @author zhikuo1
  */
 
-public class SettingActivity extends QingXinActivity{
+public class SettingActivity extends QingXinActivity {
 
+    public static final String LOGOUT_ACTION = "com.archie.action.LOGOUT_ACTION";
 
     public static void startSelf(@NonNull Context context) {
         Intent intent = new Intent(context, SettingActivity.class);
@@ -37,14 +41,17 @@ public class SettingActivity extends QingXinActivity{
         FrameLayout aboutQingxinFl = findViewById(R.id.aboutQingxinFl);
         FrameLayout checkVersionUpdateFl = findViewById(R.id.checkVersionUpdateFl);
         TextView logoutTv = findViewById(R.id.logoutTv);
-        aboutQingxinFl.setOnClickListener(view -> {
-            AboutQingXinActivity.startSelf(this);
-        });
+        aboutQingxinFl.setOnClickListener(view -> AboutQingXinActivity.startSelf(this));
         checkVersionUpdateFl.setOnClickListener(view -> {
             // TODO 检查版本更新
         });
-        logoutTv.setOnClickListener(view -> {
-
+        logoutTv.setOnClickListener((View view) -> {
+            VLApplication.instance().getModel(UserModel.class).onLogout();
+            VLApplication.instance().getModel(SessionModel.class).onLogout();
+            Intent intent = new Intent(LOGOUT_ACTION);
+            LocalBroadcastManager.getInstance(VLApplication.instance()).sendBroadcast(intent);
+            finish();
+            ToastUtils.showToast(getResources().getString(R.string.logout_success));
         });
     }
 
