@@ -33,7 +33,6 @@ import com.qingxin.medical.app.homepagetask.model.VipProductBean;
 import com.qingxin.medical.app.vip.VipDetailActivity;
 import com.qingxin.medical.app.vip.VipListActivity;
 import com.qingxin.medical.base.QingXinApplication;
-import com.qingxin.medical.common.FragmentToActivity;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.home.districtsel.StrictSelBean;
 import com.qingxin.medical.home.districtsel.StrictSelDetailActivity1;
@@ -303,9 +302,7 @@ public class HomeFragment extends VLFragment implements HomePageTaskContract.Vie
             case R.id.shareRl: //歆人专享
                 VipListActivity.startSelf(getActivity());
                 break;
-            case R.id.selectionRl: //本地严选(暂时换成专属服务)
-                FragmentToActivity.startSelf(getActivity(), FragmentToActivity.EXCLUSIVE_SERVICE_FRAGMENT);
-                break;
+            case R.id.selectionRl: //本地严选
             case R.id.slectionMoreRl:
                 StrictSelListActivity.startSelf(getActivity());
                 break;
