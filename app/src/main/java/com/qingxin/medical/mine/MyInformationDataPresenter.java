@@ -116,6 +116,11 @@ public class MyInformationDataPresenter implements MyInformationDataContract.Pre
         );
     }
 
+    @Override
+    public void saveMyInfo() {
+
+    }
+
 
     private void modifyHead(@NonNull String fileName) {
         mCompositeSubscription.add(getModel(RetrofitModel.class).getService(ModifyPersonalInfoService.class).modifyPersonalInfo(fileName)
