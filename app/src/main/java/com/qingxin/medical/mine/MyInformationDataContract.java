@@ -1,7 +1,6 @@
 package com.qingxin.medical.mine;
 
 import android.support.annotation.NonNull;
-
 import com.qingxin.medical.app.BasePresenter;
 import com.qingxin.medical.app.BaseView;
 import com.qingxin.medical.app.goddessdiary.publish.DiaryPublishParams;
