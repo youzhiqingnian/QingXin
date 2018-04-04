@@ -79,7 +79,7 @@ public class PersonalInformationDataPresenter implements PersonalInformationData
                     @Override
                     public void onNext(ContentBean<UploadResult> uploadResultContentBean) {
                         if (!HandErrorUtils.isError(uploadResultContentBean.getCode())) {
-                            mUploadHeadView.onSuccess(uploadResultContentBean.getContent());
+                            mUploadHeadView.onUploadHeadSuccess(uploadResultContentBean.getContent());
                             diaryPublishParams.setBeforeFileName(uploadResultContentBean.getContent().getFilename());
 //                            modifyHead(diaryPublishParams.getBeforeFileName());
                         } else {
@@ -107,7 +107,7 @@ public class PersonalInformationDataPresenter implements PersonalInformationData
                     @Override
                     public void onNext(ContentBean<com.qingxin.medical.base.MemBean> memBean) {
                         if (!HandErrorUtils.isError(memBean.getCode())) {
-                            mUploadHeadView.onSuccess(memBean.getContent());
+                            mUploadHeadView.onSessionSuccess(memBean.getContent());
                         } else {
                             mUploadHeadView.onError(new QingXinError(memBean.getMsg()));
                         }
@@ -140,7 +140,7 @@ public class PersonalInformationDataPresenter implements PersonalInformationData
                     @Override
                     public void onNext(ContentBean<MemBean> resultContentBean) {
                         if (!HandErrorUtils.isError(resultContentBean.getCode())) {
-                            mUploadHeadView.onSuccess(resultContentBean.getContent());
+                            mUploadHeadView.onModifyPersonalInfoSuccess(resultContentBean.getContent());
                         } else {
                             mUploadHeadView.onError(new QingXinError(resultContentBean.getMsg()));
                         }

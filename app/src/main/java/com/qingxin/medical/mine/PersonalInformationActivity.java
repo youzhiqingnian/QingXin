@@ -1,5 +1,6 @@
 package com.qingxin.medical.mine;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,16 +22,20 @@ import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.CommonDialogAdapter;
 import com.qingxin.medical.common.CommonDialogFactory;
 import com.qingxin.medical.common.MapperUtils;
+import com.qingxin.medical.common.QingXinDatePopuWindow;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.common.QingXinLocalPhotoPopupWindow;
 import com.qingxin.medical.upload.UploadResult;
-import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLAsyncHandler;
 import com.vlee78.android.vl.VLResHandler;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Date 2018-04-02
  *
@@ -38,16 +43,12 @@ import java.io.File;
  */
 public class PersonalInformationActivity extends QingXinActivity implements View.OnClickListener, PersonalInformationDataContract.View {
 
-    private FrameLayout mModifyHeadFl,
-            mGenderFl,
-            mBirthdayFl,
-            mRegionFl;
     private SimpleDraweeView mUserHeadSdv;
     private EditText mNicknameEt;
     private TextView mGenderTv,
-                    mBirthdayTv,
-                    mReginTv,
-                    mCellphoneTv;
+            mBirthdayTv,
+            mReginTv,
+            mCellphoneTv;
     private View mBottomV;
     private Bitmap mBeforePhoto;
     private String mBeforePhotoPath;
@@ -58,6 +59,7 @@ public class PersonalInformationActivity extends QingXinActivity implements View
     private String mStartGender;
     private String mStartBirthday;
     private String mStartRegion;
+    private String mLastChooseDate = "";
 
     public static void startSelf(@NonNull Context context) {
         Intent intent = new Intent(context, PersonalInformationActivity.class);
@@ -69,7 +71,6 @@ public class PersonalInformationActivity extends QingXinActivity implements View
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_information);
         initView();
-        initListener();
         initData();
     }
 
@@ -83,25 +84,22 @@ public class PersonalInformationActivity extends QingXinActivity implements View
         QingXinTitleBar.init(titleBar, getResources().getString(R.string.my_information));
         QingXinTitleBar.setLeftReturn(titleBar, this);
         QingXinTitleBar.setRightText(titleBar, getResources().getString(R.string.save), view -> {
-            if(isChanged()){
-                mPresenter.modifyPersonalInfo(mNicknameEt.getText().toString().trim(),mUploadHeadFileName,mGenderTv.getText().toString().trim(),mBirthdayTv.getText().toString().trim(),"","");
+            if (isChanged()) {
+                mPresenter.modifyPersonalInfo(mNicknameEt.getText().toString().trim(), mUploadHeadFileName, mGenderTv.getText().toString().trim(), mBirthdayTv.getText().toString().trim(), "", "");
             }
         });
-        mModifyHeadFl = findViewById(R.id.modifyHeadFl);
-        mGenderFl = findViewById(R.id.genderFl);
-        mBirthdayFl = findViewById(R.id.birthdayFl);
-        mRegionFl = findViewById(R.id.regionFl);
+        FrameLayout modifyHeadFl = findViewById(R.id.modifyHeadFl);
+        FrameLayout genderFl = findViewById(R.id.genderFl);
+        FrameLayout birthdayFl = findViewById(R.id.birthdayFl);
+        FrameLayout regionFl = findViewById(R.id.regionFl);
         mUserHeadSdv = findViewById(R.id.userHeadSdv);
         mBottomV = findViewById(R.id.bottomV);
+        genderFl.setOnClickListener(this);
+        modifyHeadFl.setOnClickListener(this);
+        birthdayFl.setOnClickListener(this);
+        regionFl.setOnClickListener(this);
         mPresenter = new PersonalInformationDataPresenter(this);
         mDiaryPublishParams = new DiaryPublishParams();
-    }
-
-    private void initListener() {
-        mModifyHeadFl.setOnClickListener(this);
-        mGenderFl.setOnClickListener(this);
-        mBirthdayFl.setOnClickListener(this);
-        mRegionFl.setOnClickListener(this);
     }
 
     private void initData() {
@@ -119,6 +117,7 @@ public class PersonalInformationActivity extends QingXinActivity implements View
         return MapperUtils.isChanged(mStartName, endName) || MapperUtils.isChanged(mStartGender, endGender) || MapperUtils.isChanged(mStartBirthday, endBirthday) || MapperUtils.isChanged(mStartRegion, endRegion);
     }
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -133,13 +132,32 @@ public class PersonalInformationActivity extends QingXinActivity implements View
                     protected void handler(boolean succeed) {
                         if (!succeed) return;
                         CommonDialogAdapter.CommonDialogData data = (CommonDialogAdapter.CommonDialogData) param();
-                        ToastUtils.showToast(data.getName());
+                        mGenderTv.setText(data.getName());
                     }
                 }).show();
                 break;
             case R.id.birthdayFl:
                 // 生日
-
+                Date chooseDate = null;
+                if(!TextUtils.isEmpty(mLastChooseDate)){
+                    try {
+                        chooseDate = new SimpleDateFormat(VLUtils.formatDate2).parse(mLastChooseDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    chooseDate = new Date();
+                }
+                CommonDialogFactory.createDatePopuWindow(chooseDate, "请选择您的生日", this, new VLAsyncHandler<QingXinDatePopuWindow>(null, VLScheduler.THREAD_MAIN) {
+                    @Override
+                    protected void handler(boolean succeed) {
+                        if (!succeed) return;
+                        QingXinDatePopuWindow qingXinDatePopuWindow = getParam();
+                        Date date = qingXinDatePopuWindow.getSelectedDate();
+                        mLastChooseDate = VLUtils.dateToString(date, VLUtils.formatDate2);
+                        mBirthdayTv.setText(mLastChooseDate);
+                    }
+                }).show(mBottomV);
                 break;
             case R.id.regionFl:
                 // 地区
@@ -183,10 +201,9 @@ public class PersonalInformationActivity extends QingXinActivity implements View
     }
 
     @Override
-    public void onSuccess(MemBean membean) {
+    public void onModifyPersonalInfoSuccess(MemBean membean) {
         // 修改个人资料成功
         if (membean != null) {
-            /*mPresenter.getSession();*/
             if (!VLUtils.stringIsEmpty(membean.getCover())) {
                 mUserHeadSdv.setImageURI(Uri.parse(membean.getCover()));
             }
@@ -194,16 +211,16 @@ public class PersonalInformationActivity extends QingXinActivity implements View
     }
 
     @Override
-    public void onSuccess(com.qingxin.medical.base.MemBean memBean) {
+    public void onSessionSuccess(com.qingxin.medical.base.MemBean memBean) {
         if (!VLUtils.stringIsEmpty(memBean.getMem().getCover())) {
             mUserHeadSdv.setImageURI(Uri.parse(memBean.getMem().getCover()));
         }
     }
 
     @Override
-    public void onSuccess(UploadResult uploadResultBean) {
+    public void onUploadHeadSuccess(UploadResult uploadResultBean) {
         // 上传头像成功
-        if(!TextUtils.isEmpty(uploadResultBean.getFilename())){
+        if (!TextUtils.isEmpty(uploadResultBean.getFilename())) {
             mUploadHeadFileName = uploadResultBean.getFilename();
         }
     }

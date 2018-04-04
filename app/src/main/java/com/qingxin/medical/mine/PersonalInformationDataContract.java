@@ -16,9 +16,9 @@ import com.qingxin.medical.upload.UploadResult;
 public class PersonalInformationDataContract {
 
     public interface View extends BaseView<Presenter> {
-        void onSuccess(MemBean diaryPublishResult);
-        void onSuccess(com.qingxin.medical.base.MemBean memBean);
-        void onSuccess(UploadResult uploadResultBean);
+        void onModifyPersonalInfoSuccess(MemBean diaryPublishResult);
+        void onSessionSuccess(com.qingxin.medical.base.MemBean memBean);
+        void onUploadHeadSuccess(UploadResult uploadResultBean);
         void onError(QingXinError error);
     }
 
