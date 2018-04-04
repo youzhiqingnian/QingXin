@@ -125,14 +125,14 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.all {
             output ->
-                if (variant.buildType.name.equals('debug')) {
+                if (variant.buildType.name == 'debug') {
                     def fileName = "QingXin_debug_${variant.productFlavors[0].name}_${defaultConfig.versionName}_${releaseTime()}.apk"
-                    outputFileName = fileName;
+                    outputFileName = fileName
                 }
 
-                if (variant.buildType.name.equals('release')) {
+                if (variant.buildType.name == 'release') {
                     def fileName = "QingXin_release_${variant.productFlavors[0].name}_${defaultConfig.versionName}_${releaseTime()}.apk"
-                    outputFileName = fileName;
+                    outputFileName = fileName
                 }
         }
     }
@@ -145,19 +145,19 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation files('libs/guava-19.0.jar')
     implementation files('libs/AMap_Location_V3.7.0_20171218.jar')
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.android.support:recyclerview-v7:26.1.0'
-    compile 'com.facebook.fresco:fresco:1.7.1'
-    compile 'com.squareup.okhttp3:okhttp:3.9.1'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
-    compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-    compile 'com.android.support:multidex:1.0.3'
-    compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
-    compile 'com.google.android:flexbox:0.2.6'
-    compile 'com.umeng.analytics:analytics:6.1.4'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
+    implementation 'com.facebook.fresco:fresco:1.7.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.8.1'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.35'
+    implementation 'com.google.android:flexbox:0.2.6'
+    implementation 'com.umeng.analytics:analytics:6.1.4'
 }
 
 def static releaseTime() {
