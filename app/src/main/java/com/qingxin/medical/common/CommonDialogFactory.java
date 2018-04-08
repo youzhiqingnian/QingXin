@@ -118,4 +118,31 @@ public class CommonDialogFactory {
     public static QingXinDatePopuWindow createDateRangeWindow(Date startDate, Date endDate, Context context, VLAsyncHandler<QingXinDatePopuWindow> callback) {
         return new QingXinDatePopuWindow(startDate, endDate, callback, context);
     }
+
+    /**
+     * 创建省地县选择框(2级)
+     *
+     * @param title      标题
+     * @param locationId 区县id
+     * @param callBack   选中回调
+     * @param context    调用上下文
+     *                   从服务器获取配置
+     */
+    public static QingXinLocationPopupWindow createLocationPopupWindow(String title, String locationId, final VLAsyncHandler<QingXinLocationPopupWindow> callBack, Context context) {
+        return createLocationPopupWindow(QingXinLocationPopupWindow.LocationType.CITY, title, locationId, callBack, context);
+    }
+
+    /**
+     * 创建省地县选择框(3级)
+     *
+     * @param locationType 地域显示类型
+     * @param title        标题
+     * @param locationId   区县id
+     * @param callBack     选中回调
+     * @param context      调用上下文
+     *                     从服务器获取配置
+     */
+    public static QingXinLocationPopupWindow createLocationPopupWindow(QingXinLocationPopupWindow.LocationType locationType, String title, String locationId, final VLAsyncHandler<QingXinLocationPopupWindow> callBack, Context context) {
+        return new QingXinLocationPopupWindow(locationType, title, locationId, callBack, context);
+    }
 }

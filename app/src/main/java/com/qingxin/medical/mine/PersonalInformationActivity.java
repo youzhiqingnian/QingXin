@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -21,16 +22,22 @@ import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.common.CommonDialogAdapter;
 import com.qingxin.medical.common.CommonDialogFactory;
+import com.qingxin.medical.common.DistrictItemData;
 import com.qingxin.medical.common.MapperUtils;
+import com.qingxin.medical.common.ProvinceData;
 import com.qingxin.medical.common.QingXinDatePopuWindow;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.common.QingXinLocalPhotoPopupWindow;
+import com.qingxin.medical.common.QingXinLocationPopupWindow;
+import com.qingxin.medical.config.ConfigModel;
 import com.qingxin.medical.upload.UploadResult;
+import com.qingxin.medical.utils.HandErrorUtils;
 import com.vlee78.android.vl.VLAsyncHandler;
 import com.vlee78.android.vl.VLResHandler;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,8 +54,7 @@ public class PersonalInformationActivity extends QingXinActivity implements View
     private EditText mNicknameEt;
     private TextView mGenderTv,
             mBirthdayTv,
-            mReginTv,
-            mCellphoneTv;
+            mReginTv;
     private View mBottomV;
     private Bitmap mBeforePhoto;
     private String mBeforePhotoPath;
@@ -79,7 +85,7 @@ public class PersonalInformationActivity extends QingXinActivity implements View
         mGenderTv = findViewById(R.id.genderTv);
         mBirthdayTv = findViewById(R.id.birthdayTv);
         mReginTv = findViewById(R.id.reginTv);
-        mCellphoneTv = findViewById(R.id.cellphoneTv);
+        TextView cellphoneTv = findViewById(R.id.cellphoneTv);
         VLTitleBar titleBar = findViewById(R.id.titleBar);
         QingXinTitleBar.init(titleBar, getResources().getString(R.string.my_information));
         QingXinTitleBar.setLeftReturn(titleBar, this);
@@ -88,18 +94,68 @@ public class PersonalInformationActivity extends QingXinActivity implements View
                 mPresenter.modifyPersonalInfo(mNicknameEt.getText().toString().trim(), mUploadHeadFileName, mGenderTv.getText().toString().trim(), mBirthdayTv.getText().toString().trim(), "", "");
             }
         });
+        mUserHeadSdv = findViewById(R.id.userHeadSdv);
+        mBottomV = findViewById(R.id.bottomV);
+
         FrameLayout modifyHeadFl = findViewById(R.id.modifyHeadFl);
         FrameLayout genderFl = findViewById(R.id.genderFl);
         FrameLayout birthdayFl = findViewById(R.id.birthdayFl);
         FrameLayout regionFl = findViewById(R.id.regionFl);
-        mUserHeadSdv = findViewById(R.id.userHeadSdv);
-        mBottomV = findViewById(R.id.bottomV);
         genderFl.setOnClickListener(this);
         modifyHeadFl.setOnClickListener(this);
         birthdayFl.setOnClickListener(this);
         regionFl.setOnClickListener(this);
+
         mPresenter = new PersonalInformationDataPresenter(this);
         mDiaryPublishParams = new DiaryPublishParams();
+
+        com.qingxin.medical.base.MemBean memBean = QingXinApplication.getInstance().getLoginSession();
+        cellphoneTv.setText(memBean.getMem().getMobile());
+        String gender = memBean.getMem().getGender();
+        if (!TextUtils.isEmpty(gender)) {
+            if ("M".equals(gender)) {
+                mGenderTv.setText("男");
+            } else if ("F".equals(gender)) {
+                mGenderTv.setText("女");
+            }
+        }
+        setAge(memBean.getMem().getBirthday());
+        setCityName(memBean.getMem().getCity_id(), memBean.getMem().getProvince_id());
+        mUserHeadSdv.setImageURI(Uri.parse(memBean.getMem().getCover()));
+        if (!TextUtils.isEmpty(memBean.getMem().getName())) {
+            mNicknameEt.setText(memBean.getMem().getName());
+            mNicknameEt.setSelection(memBean.getMem().getName().length());
+        }
+    }
+
+    private void setCityName(String cityId, String proviceId) {
+        ConfigModel configModel = getModel(ConfigModel.class);
+        if (!TextUtils.isEmpty(cityId)) {
+            DistrictItemData districtItemData = configModel.getCitiesDataMap().get(cityId);
+            if (null == districtItemData) return;
+            mReginTv.setText(String.format("%s%s", districtItemData.getProvinceData().getName(), districtItemData.getName()));
+        } else {
+            if (!TextUtils.isEmpty(proviceId)) {
+                ProvinceData provinceData = configModel.getProvinceDataMap().get(proviceId);
+                mReginTv.setText(null == provinceData ? "" : provinceData.getName());
+            }
+        }
+    }
+
+    private void setAge(String birthday) {
+        if (!TextUtils.isEmpty(birthday) && birthday.length() >= 10) {
+            mBirthdayTv.setText(birthday.substring(0, 10));
+        }
+    }
+
+    private String getGender(String gender) {
+        if (TextUtils.isEmpty(gender)) return "";
+        if ("男".equals(gender)) {
+            return "M";
+        } else if ("女".equals(gender)) {
+            return "F";
+        }
+        return "";
     }
 
     private void initData() {
@@ -121,12 +177,10 @@ public class PersonalInformationActivity extends QingXinActivity implements View
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.modifyHeadFl:
-                // 修改头像
+            case R.id.modifyHeadFl://修改头像
                 getPhotoPopupWindow().show(mBottomV);
                 break;
-            case R.id.genderFl:
-                // 性别
+            case R.id.genderFl://性别
                 CommonDialogFactory.getInstance().createGenderSelectDialog(this, "请选择性别", new VLResHandler() {
                     @Override
                     protected void handler(boolean succeed) {
@@ -136,16 +190,15 @@ public class PersonalInformationActivity extends QingXinActivity implements View
                     }
                 }).show();
                 break;
-            case R.id.birthdayFl:
-                // 生日
+            case R.id.birthdayFl://生日
                 Date chooseDate = null;
-                if(!TextUtils.isEmpty(mLastChooseDate)){
+                if (!TextUtils.isEmpty(mLastChooseDate)) {
                     try {
                         chooseDate = new SimpleDateFormat(VLUtils.formatDate2).parse(mLastChooseDate);
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                }else{
+                } else {
                     chooseDate = new Date();
                 }
                 CommonDialogFactory.createDatePopuWindow(chooseDate, "请选择您的生日", this, new VLAsyncHandler<QingXinDatePopuWindow>(null, VLScheduler.THREAD_MAIN) {
@@ -159,11 +212,20 @@ public class PersonalInformationActivity extends QingXinActivity implements View
                     }
                 }).show(mBottomV);
                 break;
-            case R.id.regionFl:
-                // 地区
-
+            case R.id.regionFl: //地区
+                CommonDialogFactory.createLocationPopupWindow("", "0", new VLAsyncHandler<QingXinLocationPopupWindow>(null, VLScheduler.THREAD_MAIN) {
+                    @Override
+                    protected void handler(boolean succeed) {
+                        if (!succeed) return;
+                        QingXinLocationPopupWindow qingXinLocationPopupWindow = getParam();
+                        if (null == qingXinLocationPopupWindow) return;
+                        DistrictItemData city = qingXinLocationPopupWindow.getSelectedCity();
+                        setCityName(city == null ? "" : city.getId(), city == null ? "" : city.getId());
+                    }
+                }, this).show(mBottomV);
                 break;
-
+            default:
+                break;
         }
     }
 
@@ -197,7 +259,6 @@ public class PersonalInformationActivity extends QingXinActivity implements View
 
     @Override
     public void setPresenter(PersonalInformationDataContract.Presenter presenter) {
-
     }
 
     @Override
@@ -227,6 +288,6 @@ public class PersonalInformationActivity extends QingXinActivity implements View
 
     @Override
     public void onError(QingXinError error) {
-
+        HandErrorUtils.handleError(error);
     }
 }

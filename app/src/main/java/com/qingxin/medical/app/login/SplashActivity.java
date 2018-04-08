@@ -1,27 +1,30 @@
 package com.qingxin.medical.app.login;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.WindowManager;
 
-import com.amap.api.location.AMapLocationClient;
-import com.amap.api.location.AMapLocationClientOption;
 import com.qingxin.medical.R;
-import com.qingxin.medical.app.Constants;
 import com.qingxin.medical.app.homepagetask.HomeActivity;
 import com.qingxin.medical.base.QingXinActivity;
+import com.qingxin.medical.common.DistrictContract;
+import com.qingxin.medical.common.DistrictItemData;
+import com.qingxin.medical.common.DistrictPresenter;
+import com.qingxin.medical.common.ProvinceData;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.config.ConfigBean;
 import com.qingxin.medical.config.ConfigContract;
+import com.qingxin.medical.config.ConfigModel;
 import com.qingxin.medical.config.ConfigPresenter;
 import com.qingxin.medical.guide.GuideActivity;
-import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLScheduler;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 启动页
@@ -29,16 +32,11 @@ import com.vlee78.android.vl.VLScheduler;
  *
  * @author zhikuo1
  */
-public class SplashActivity extends QingXinActivity implements ConfigContract.View{
+public class SplashActivity extends QingXinActivity implements ConfigContract.View {
 
-    //声明AMapLocationClient类对象
-    public AMapLocationClient mLocationClient = null;
-
-    //声明AMapLocationClientOption对象
-    public AMapLocationClientOption mLocationOption = null;
     private static final String FIRST_START = "isFirstStart";
-
     private ConfigPresenter mPresenter;
+    private DistrictPresenter mDistrictPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +45,6 @@ public class SplashActivity extends QingXinActivity implements ConfigContract.Vi
         setContentView(R.layout.activity_splash);
         mPresenter = new ConfigPresenter(this);
         mPresenter.getConfigBean();
-        //requestGaodeLoction();
         boolean isFirstStart = getSharedPreferences().getBoolean(FIRST_START, true);
         VLScheduler.instance.schedule(3000, VLScheduler.THREAD_MAIN, new VLBlock() {
             @Override
@@ -63,108 +60,86 @@ public class SplashActivity extends QingXinActivity implements ConfigContract.Vi
                 }
             }
         });
+
+        if (null == getModel(ConfigModel.class).getProviceData() || getModel(ConfigModel.class).getProviceData().size() == 0) {
+            mDistrictPresenter = new DistrictPresenter(new DistrictContract.View() {
+                @Override
+                public void onSuccess(List<DistrictItemData> districtBeans) {
+                    resetDistrictData(districtBeans);
+                }
+
+                @Override
+                public void onError(QingXinError error) {
+                }
+
+                @Override
+                public void setPresenter(DistrictContract.Presenter presenter) {
+                }
+            });
+            mDistrictPresenter.getDistrictData("province,city");
+        }
+    }
+
+    private void resetDistrictData(@NonNull List<DistrictItemData> districtBeans) {
+        long startTime = System.currentTimeMillis();
+        List<ProvinceData> proviceDatas = new ArrayList<>();
+        Map<String, ProvinceData> provinceDataMap = new HashMap<>();
+        Map<String, DistrictItemData> cityDataMap = new HashMap<>();
+        int index = 0;
+        for (DistrictItemData districtItemData : districtBeans) {
+            if ("province".equals(districtItemData.getLevel())) {
+                districtItemData.setIndex(index);
+                ProvinceData provinceData = new ProvinceData();
+                provinceData.setId(districtItemData.getId());
+                provinceData.setAdcode(districtItemData.getAdcode());
+                provinceData.setCitycode(districtItemData.getCitycode());
+                provinceData.setParent(districtItemData.getParent());
+                provinceData.setLevel(districtItemData.getLevel());
+                provinceData.setName(districtItemData.getName());
+                provinceData.setIndex(index);
+                proviceDatas.add(provinceData);
+                index++;
+            }
+        }
+
+        int cityIndex = 0;
+        for (ProvinceData provinceData : proviceDatas) {
+            List<DistrictItemData> cities = new ArrayList<>();
+            for (DistrictItemData districtItemData : districtBeans) {
+                if (provinceData.getId().equals(districtItemData.getParent()) && "city".equals(districtItemData.getLevel())) {
+                    cities.add(districtItemData);
+                    districtItemData.setProvinceData(provinceData);
+                    districtItemData.setIndex(cityIndex);
+                    cityDataMap.put(districtItemData.getId(), districtItemData);
+                    cityIndex++;
+                }
+            }
+            provinceData.setCities(cities);
+            provinceDataMap.put(provinceData.getId(), provinceData);
+        }
+        getModel(ConfigModel.class).setCitiesDataMap(cityDataMap);
+        getModel(ConfigModel.class).setProviceData(proviceDatas);
+        getModel(ConfigModel.class).setProvinceDataMap(provinceDataMap);
+        long endTime = System.currentTimeMillis();
+        Log.e("SplashActivity", "" + (endTime - startTime));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mPresenter.subscribe();
+        if (null != mDistrictPresenter) {
+            mDistrictPresenter.subscribe();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.unsubscribe();
-    }
-
-    private void requestGaodeLoction() {
-
-        //初始化定位
-        mLocationClient = new AMapLocationClient(this);
-
-        //初始化AMapLocationClientOption对象
-        mLocationOption = new AMapLocationClientOption();
-
-        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
-        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
-
-        //获取最近3s内精度最高的一次定位结果：
-        //设置setOnceLocationLatest(boolean b)接口为true，启动定位时SDK会返回最近3s内精度最高的一次定位结果。如果设置其为true，setOnceLocation(boolean b)接口也会被设置为true，反之不会，默认为false。
-//        mLocationOption.setOnceLocationLatest(true);
-
-        //获取一次定位结果：
-        //该方法默认为false
-        mLocationOption.setOnceLocation(true);
-
-//        //设置定位间隔,单位毫秒,默认为2000ms，最低1000ms。
-//        mLocationOption.setInterval(1000);
-
-        //设置是否返回地址信息（默认返回地址信息）
-        mLocationOption.setNeedAddress(true);
-
-
-        //单位是毫秒，默认30000毫秒，建议超时时间不要低于8000毫秒。
-        mLocationOption.setHttpTimeOut(20000);
-
-
-        //给定位客户端对象设置定位参数
-        mLocationClient.setLocationOption(mLocationOption);
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.READ_PHONE_STATE)
-                    != PackageManager.PERMISSION_GRANTED) {
-
-                //权限还没有授予，需要在这里写申请权限的代码
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE},
-                        Constants.GAODE_MAP_GRANTED_REQUEST_CODE);
-            } else {
-                //权限已经被授予，在这里直接写要执行的相应方法即可
-                //启动定位
-                mLocationClient.startLocation();
-            }
-
-        } else {
-            //启动定位
-            mLocationClient.startLocation();
+        if (null != mDistrictPresenter) {
+            mDistrictPresenter.unsubscribe();
         }
-
-
-        //设置定位回调监听
-       /* mLocationClient.setLocationListener(new AMapLocationListener() {
-            @Override
-            public void onLocationChanged(AMapLocation aMapLocation) {
-                if (aMapLocation != null) {
-                    if (aMapLocation.getErrorCode() == 0) {
-
-                    } else {
-                        //定位失败时，可通过ErrCode（错误码）信息来确定失败的原因，errInfo是错误信息，详见错误码表。
-                        Log.e("AmapError", "location Error, ErrCode:"
-                                + aMapLocation.getErrorCode() + ", errInfo:"
-                                + aMapLocation.getErrorInfo());
-                        // 提示定位失败
-                        Toast.makeText(this, getStr(R.string.location_failuer), Toast.LENGTH_LONG);
-                    }
-                }
-            }
-        });*/
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-        if (requestCode == Constants.GAODE_MAP_GRANTED_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                mLocationClient.startLocation();
-            } else {
-                ToastUtils.showToast("没有获取到定位权限");
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

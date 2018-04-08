@@ -10,20 +10,20 @@
     <com.vlee78.android.vl.VLTitleBar
         android:id="@+id/titleBar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        />
+        android:layout_height="48dp" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="@color/gap_color_gray"
-        />
+        android:background="@color/gap_color_gray" />
+
     <FrameLayout
         android:id="@+id/modifyHeadFl"
         android:layout_width="match_parent"
         android:layout_height="78dp"
-        android:orientation="horizontal"
         android:background="@color/white"
-        >
+        android:orientation="horizontal">
+
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/userHeadSdv"
             android:layout_width="49dp"
@@ -37,223 +37,219 @@
             app:placeholderImage="@mipmap/mine_defualt_head_logo"
             app:placeholderImageScaleType="centerCrop"
             app:roundAsCircle="true"
-            app:roundingBorderWidth="4dp"
-            />
+            app:roundingBorderWidth="4dp" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="74dp"
             android:layout_marginStart="74dp"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/text_color"
             android:text="@string/modify_head"
-            android:textSize="14sp"
-            />
+            android:textColor="@color/text_color"
+            android:textSize="14sp" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/arrow_right_more"
             android:layout_gravity="center_vertical|right"
-            android:layout_marginRight="15dp"
             android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/arrow_right_more"
             tools:ignore="ContentDescription,RtlHardcoded" />
     </FrameLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="@color/gap_color_gray"
-        />
+        android:background="@color/gap_color_gray" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
-            android:textColor="@color/text_color_origin_price"
             android:text="@string/nickname"
-            android:textSize="14sp"
-            />
+            android:textColor="@color/text_color_origin_price"
+            android:textSize="14sp" />
+
         <EditText
             android:id="@+id/nicknameEt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="74dp"
             android:layout_marginStart="74dp"
-            android:layout_gravity="center_vertical"
             android:background="@null"
+            android:hint="@string/please_input_nick"
             android:textColor="@color/text_color"
-            android:text="qingxin_2015"
             android:textSize="14sp"
             tools:ignore="TextFields" />
     </FrameLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/line_color"
-        />
+        android:background="@color/line_color" />
 
     <FrameLayout
         android:id="@+id/genderFl"
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
-            android:textColor="@color/text_color_origin_price"
             android:text="@string/gender"
-            android:textSize="14sp"
-            />
+            android:textColor="@color/text_color_origin_price"
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/genderTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="74dp"
             android:layout_marginStart="74dp"
-            android:layout_gravity="center_vertical"
             android:textColor="@color/text_color"
-            android:text="男"
-            android:textSize="14sp"
-            />
+            android:textSize="14sp" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/arrow_right_more"
             android:layout_gravity="center_vertical|right"
-            android:layout_marginRight="15dp"
             android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/arrow_right_more"
             tools:ignore="ContentDescription,RtlHardcoded" />
     </FrameLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/line_color"
-        />
+        android:background="@color/line_color" />
 
     <FrameLayout
         android:id="@+id/birthdayFl"
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
-            android:textColor="@color/text_color_origin_price"
             android:text="@string/birthday"
-            android:textSize="14sp"
-            />
+            android:textColor="@color/text_color_origin_price"
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/birthdayTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="74dp"
             android:layout_marginStart="74dp"
-            android:layout_gravity="center_vertical"
             android:textColor="@color/text_color"
-            android:text="1990-10-13"
-            android:textSize="14sp"
-            />
+            android:textSize="14sp" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/arrow_right_more"
             android:layout_gravity="center_vertical|right"
-            android:layout_marginRight="15dp"
             android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/arrow_right_more"
             tools:ignore="ContentDescription,RtlHardcoded" />
     </FrameLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/line_color"
-        />
+        android:background="@color/line_color" />
 
     <FrameLayout
         android:id="@+id/regionFl"
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
-            android:textColor="@color/text_color_origin_price"
             android:text="@string/region"
-            android:textSize="14sp"
-            />
+            android:textColor="@color/text_color_origin_price"
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/reginTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="74dp"
             android:layout_marginStart="74dp"
-            android:layout_gravity="center_vertical"
             android:textColor="@color/text_color"
-            android:text="河北省石家庄市"
-            android:textSize="14sp"
-            />
+            android:textSize="14sp" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/arrow_right_more"
             android:layout_gravity="center_vertical|right"
-            android:layout_marginRight="15dp"
             android:layout_marginEnd="15dp"
+            android:layout_marginRight="15dp"
+            android:src="@mipmap/arrow_right_more"
             tools:ignore="ContentDescription,RtlHardcoded" />
     </FrameLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:background="@color/line_color"
-        />
+        android:background="@color/line_color" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="49dp"
-        android:background="@color/white"
-        >
+        android:background="@color/white">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginStart="15dp"
-            android:textColor="@color/text_color_origin_price"
             android:text="@string/cellphone"
-            android:textSize="14sp"
-            />
+            android:textColor="@color/text_color_origin_price"
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/cellphoneTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="74dp"
             android:layout_marginStart="74dp"
-            android:layout_gravity="center_vertical"
             android:textColor="@color/text_color_origin_price"
-            android:text="15811452510"
-            android:textSize="14sp"
-            />
+            android:textSize="14sp" />
     </FrameLayout>
+
     <View
         android:id="@+id/bottomV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/gap_color_gray"
-        />
+        android:background="@color/gap_color_gray" />
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.qingxin.medical.app.goddessdiary;
 
+import com.qingxin.medical.app.homepagetask.model.MemBean;
 import com.qingxin.medical.app.homepagetask.model.VipProductBean;
 import com.qingxin.medical.base.BaseBean;
 import com.qingxin.medical.home.medicalbeauty.MedicalBeautyListBean;
@@ -214,77 +215,6 @@ public class DiaryItemBean extends BaseBean  implements Serializable {
 
     public void setIs_collect(String is_collect) {
         this.is_collect = is_collect;
-    }
-
-    public static class MemBean implements Serializable{
-
-        /**
-         * id : 9ca209a8-41a6-441f-92cf-7508570b2765
-         * name : 小倩
-         * cover : http://qingxin-assets.awesomes.cn/banner/c63b79d0-065a-11e8-b745-8dcdb0f2d3c3.jpg
-         */
-
-        private String id;
-        private String name;
-        private String cover;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getCover() {
-            return cover;
-        }
-
-        public void setCover(String cover) {
-            this.cover = cover;
-        }
-
-        @Override
-        public String toString() {
-            return "MemBean{" +
-                    "id='" + id + '\'' +
-                    ", name='" + name + '\'' +
-                    ", cover='" + cover + '\'' +
-                    '}';
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "DiaryItemBean{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", product_id='" + product_id + '\'' +
-                ", mem_id='" + mem_id + '\'' +
-                ", oper_before_photo='" + oper_before_photo + '\'' +
-                ", oper_after_photo='" + oper_after_photo + '\'' +
-                ", summary='" + summary + '\'' +
-                ", tags='" + tags + '\'' +
-                ", words='" + words + '\'' +
-                ", ison='" + ison + '\'' +
-                ", created_at='" + created_at + '\'' +
-                ", updated_at='" + updated_at + '\'' +
-                ", visit_num=" + visit_num +
-                ", collect_num=" + collect_num +
-                ", state='" + state + '\'' +
-                ", wiki_id='" + wiki_id + '\'' +
-                ", mem=" + mem +
-                ", product=" + product +
-                ", is_collect='" + is_collect + '\'' +
-                '}';
     }
 
 }

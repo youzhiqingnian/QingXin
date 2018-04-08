@@ -18,11 +18,4 @@ public class ItemBean<T> extends BaseBean {
     public void setItem(T item) {
         this.item = item;
     }
-
-    @Override
-    public String toString() {
-        return "ItemBean{" +
-                "item=" + item +
-                '}';
-    }
 }

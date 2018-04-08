@@ -7,7 +7,6 @@ import com.qingxin.medical.user.User;
  *
  * @author zhikuo1
  */
-
 public class MemBean {
 
     private User mem;
@@ -18,12 +17,5 @@ public class MemBean {
 
     public void setMem(User mem) {
         this.mem = mem;
-    }
-
-    @Override
-    public String toString() {
-        return "MemBean{" +
-                "mem=" + mem +
-                '}';
     }
 }

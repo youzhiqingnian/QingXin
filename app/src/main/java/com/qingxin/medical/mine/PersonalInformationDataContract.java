@@ -25,8 +25,6 @@ public class PersonalInformationDataContract {
     public interface Presenter extends BasePresenter {
         void headUpload(@NonNull DiaryPublishParams diaryPublishParams);
 
-        void updateDiary(@NonNull DiaryPublishParams diaryPublishParams);
-
         void getSession();
 
         void saveMyInfo();

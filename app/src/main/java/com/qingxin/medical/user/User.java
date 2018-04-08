@@ -28,6 +28,43 @@ public class User extends BaseBean {
     private int diary_amount;
     // 收藏产品和日记总和的数量
     private int collect_amount;
+    private String birthday;
+    private String city_id;
+    //性别，男：M 女：F
+    private String gender;
+    private String province_id;
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getCity_id() {
+        return city_id;
+    }
+
+    public void setCity_id(String city_id) {
+        this.city_id = city_id;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getProvince_id() {
+        return province_id;
+    }
+
+    public void setProvince_id(String province_id) {
+        this.province_id = province_id;
+    }
 
     public String getToken() {
         return token;
@@ -117,22 +154,5 @@ public class User extends BaseBean {
 
     public void setCollect_amount(int collect_amount) {
         this.collect_amount = collect_amount;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", id='" + id + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", cover='" + cover + '\'' +
-                ", coin='" + coin + '\'' +
-                ", available_coin='" + available_coin + '\'' +
-                ", has_checkin='" + has_checkin + '\'' +
-                ", book_amount=" + book_amount +
-                ", diary_amount=" + diary_amount +
-                ", collect_amount=" + collect_amount +
-                ", token='" + token + '\'' +
-                '}';
     }
 }

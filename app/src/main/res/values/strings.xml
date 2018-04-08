@@ -171,5 +171,6 @@
     <string name="please_choose">请选择</string>
     <string name="complete">完成</string>
     <string name="confirm">确定</string>
+    <string name="please_input_nick">请输入昵称</string>
 
 </resources>

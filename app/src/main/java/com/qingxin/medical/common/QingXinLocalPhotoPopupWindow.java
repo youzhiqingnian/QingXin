@@ -66,8 +66,6 @@ public class QingXinLocalPhotoPopupWindow implements OnClickListener {
 
     /**
      * 加载图片结果
-     *
-     * @author liliang
      */
     public class LoadPhotoResult implements Serializable {
         /**

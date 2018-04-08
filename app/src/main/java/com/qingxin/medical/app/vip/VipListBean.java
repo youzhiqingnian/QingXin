@@ -1,6 +1,5 @@
 package com.qingxin.medical.app.vip;
 
-import com.qingxin.medical.app.homepagetask.model.ProductBean;
 import com.qingxin.medical.app.homepagetask.model.VipProductBean;
 
 import java.util.List;
@@ -32,11 +31,4 @@ public class VipListBean {
         this.count = count;
     }
 
-    @Override
-    public String toString() {
-        return "ProductListBean{" +
-                "items=" + items +
-                ", count=" + count +
-                '}';
-    }
 }

@@ -1,7 +1,6 @@
 package com.qingxin.medical.app.homepagetask;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.qingxin.medical.app.homepagetask.model.HomeBean;
 import com.qingxin.medical.base.ContentBean;
@@ -64,7 +63,6 @@ public class HomePageTaskPresenter implements HomePageTaskContract.Presenter{
 
                     @Override
                     public void onNext(ContentBean<HomeBean> homeBean) {
-                        Log.i("首页",homeBean.toString());
                         if(!HandErrorUtils.isError(homeBean.getCode())){
                             mHomePageTaskView.onSuccess(homeBean.getContent());
                         }else{

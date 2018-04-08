@@ -9,7 +9,7 @@
         android:id="@+id/date_select_title_bar"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#f2f2f2"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <TextView
@@ -134,19 +134,19 @@
             android:id="@+id/wheelYear"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <com.qingxin.medical.widget.WheelView
             android:id="@+id/wheelMonth"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <com.qingxin.medical.widget.WheelView
             android:id="@+id/wheelDay"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
     </LinearLayout>
 
     <View
