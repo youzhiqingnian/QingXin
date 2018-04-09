@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinAdapter;
 import com.qingxin.medical.R;
@@ -22,7 +23,6 @@ import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.base.QingXinFragment;
 import com.qingxin.medical.common.QingXinError;
 import com.qingxin.medical.service.QingXinBroadCastReceiver;
-import com.qingxin.medical.utils.HandErrorUtils;
 import com.qingxin.medical.widget.indicator.CommonNavigator;
 import com.qingxin.medical.widget.indicator.CommonNavigatorAdapter;
 import com.qingxin.medical.widget.indicator.IPagerIndicator;
@@ -33,21 +33,24 @@ import com.qingxin.medical.widget.indicator.SimplePagerTitleView;
 import com.qingxin.medical.widget.indicator.ViewPagerHelper;
 import com.vlee78.android.vl.VLFragment;
 import com.vlee78.android.vl.VLUtils;
+
 import java.util.ArrayList;
-import java.util.List;
+
 /**
  * Date 2018/3/5
  *
  * @author zhikuo
  */
-public class MineDataFragment extends QingXinFragment implements QingXinBroadCastReceiver.OnReceiverCallbackListener, MineDataContract.View {
+public class MineDataFragment extends QingXinFragment implements QingXinBroadCastReceiver.OnReceiverCallbackListener, MineDataContract.View, View.OnClickListener {
+
+    @SuppressWarnings("unchecked")
+    private ArrayList<TextView> mCountTextViewList = new ArrayList();
 
     private SimpleDraweeView mUserHeadSdv;
-    private List<TextView> mCountTextViewList = new ArrayList();
     private QingXinBroadCastReceiver mReceiver;
-    public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
     private MineDataPresenter mPresenter;
-    private boolean isUpload;
+    private TextView mNameTv;
+    public static final String REFRESH_ACTION = "com.archie.action.REFRESH_ACTION";
 
     public MineDataFragment() {
     }
@@ -73,14 +76,11 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
     private void initView() {
         if (null == getView()) return;
         mUserHeadSdv = getView().findViewById(R.id.userHeadSdv);
-        TextView userNicknameTv = getView().findViewById(R.id.userNicknameTv);
-
-        userNicknameTv.setOnClickListener(view -> {
-            PersonalInformationActivity.startSelf(getActivity());
-        });
-
+        mNameTv = getView().findViewById(R.id.userNicknameTv);
+        mUserHeadSdv.setOnClickListener(this);
+        mNameTv.setOnClickListener(this);
         if (QingXinApplication.getInstance().getLoginUser() != null) {
-            userNicknameTv.setText(QingXinApplication.getInstance().getLoginUser().getName());
+            mNameTv.setText(QingXinApplication.getInstance().getLoginSession().getMem().getName());
         }
         mPresenter = new MineDataPresenter(this);
         MagicIndicator indicator = getView().findViewById(R.id.magicIndicator);
@@ -127,10 +127,6 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
         indicator.setNavigator(navigator);
         ViewPagerHelper.bind(indicator, viewPager);
 
-        mUserHeadSdv.setOnClickListener(view -> {
-            PersonalInformationActivity.startSelf(getActivity());
-        });
-
         AppBarLayout appBarLayout1 = getView().findViewById(R.id.appbar);
         RelativeLayout titleBarRl = getView().findViewById(R.id.titleBarRl);
         TextView topTitleNameTv = getView().findViewById(R.id.topTitleNameTv);
@@ -156,9 +152,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
                 }
             }
         });
-        settingIv.setOnClickListener(view -> {
-            SettingActivity.startSelf(getActivity());
-        });
+        settingIv.setOnClickListener(view -> SettingActivity.startSelf(getActivity()));
     }
 
     @Override
@@ -193,7 +187,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
     @Override
     protected void onVisible(boolean first) {
         super.onVisible(first);
-        if (!first && !isUpload) {
+        if (null != mPresenter) {
             mPresenter.getSession();
         }
     }
@@ -202,6 +196,7 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
         if (!VLUtils.stringIsEmpty(memBean.getMem().getCover())) {
             mUserHeadSdv.setImageURI(Uri.parse(memBean.getMem().getCover()));
         }
+        mNameTv.setText(memBean.getMem().getName());
         mCountTextViewList.get(0).setText(String.format("预约 · %s", memBean.getMem().getBook_amount()));
         mCountTextViewList.get(1).setText(String.format("日记 · %s", memBean.getMem().getDiary_amount()));
         mCountTextViewList.get(2).setText(String.format("收藏 · %s", memBean.getMem().getCollect_amount()));
@@ -213,18 +208,30 @@ public class MineDataFragment extends QingXinFragment implements QingXinBroadCas
 
     @Override
     public void onSuccess(com.qingxin.medical.base.MemBean memBean) {
+        QingXinApplication.getInstance().saveMemberBean(memBean);
         setCountRefresh(memBean);
     }
 
     @Override
     public void onError(QingXinError error) {
         hideView(R.layout.layout_loading);
-        HandErrorUtils.handleError(error);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mReceiver);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.userNicknameTv:
+            case R.id.userHeadSdv:
+                PersonalInformationActivity.startSelf(getActivity());
+                break;
+            default:
+                break;
+        }
     }
 }

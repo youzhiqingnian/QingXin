@@ -3,6 +3,7 @@ package com.qingxin.medical.app.homepagetask;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Process;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +15,7 @@ import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinActivity;
 import com.qingxin.medical.mine.MineFragment;
 import com.qingxin.medical.mine.login.LoginFragment;
+import com.qingxin.medical.update.QingXinAppUpdateMode;
 import com.qingxin.medical.utils.ToastUtils;
 import com.vlee78.android.vl.VLBlock;
 import com.vlee78.android.vl.VLFragment;
@@ -169,5 +171,12 @@ public class HomeActivity extends QingXinActivity implements LoginFragment.OnLog
         } else {
             finish();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getModel(QingXinAppUpdateMode.class).releaseComposite();
+        Process.killProcess(Process.myPid());
     }
 }

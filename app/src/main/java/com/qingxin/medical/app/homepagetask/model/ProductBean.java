@@ -8,29 +8,10 @@ package com.qingxin.medical.app.homepagetask.model;
  */
 public class ProductBean {
 
-
-    /**
-     * id : 0c792be5-59fb-483b-a88d-4d94e7598a11
-     * name : 美容针
-     * cover : ["http://p3u20cqo9.bkt.clouddn.com/product/46acb4c0-0cce-11e8-9a80-a72b786a38c9.jpg"]
-     * old_price : 3888
-     * price : 1288
-     * hospital : 北京清华长庚医院
-     * isvip : y
-     * order : 9
-     * ison : y
-     * created_at : 2018-2-6 23:53:46
-     * updated_at : 2018-2-6 23:53:46
-     * citycode : 0311
-     * collect_num : 1
-     * book_num : 0
-     * mobile : null
-     */
-
     private String id;
     private String name;
-    private int old_price;
-    private int price;
+    private String old_price;
+    private String price;
     private String hospital;
     private String isvip;
     private int order;
@@ -59,19 +40,19 @@ public class ProductBean {
         this.name = name;
     }
 
-    public int getOld_price() {
+    public String getOld_price() {
         return old_price;
     }
 
-    public void setOld_price(int old_price) {
+    public void setOld_price(String old_price) {
         this.old_price = old_price;
     }
 
-    public int getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

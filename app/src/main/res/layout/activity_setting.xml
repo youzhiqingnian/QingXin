@@ -69,12 +69,12 @@
             tools:ignore="RtlHardcoded" />
 
         <TextView
+            android:id="@+id/versionNameTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|right"
             android:layout_marginEnd="15dp"
             android:layout_marginRight="15dp"
-            android:text="当前版本v1.0"
             android:textColor="@color/text_color_blue"
             tools:ignore="RtlHardcoded" />
     </FrameLayout>

@@ -203,6 +203,7 @@ public class QingXinLocalPhotoPopupWindow implements OnClickListener {
                         Uri uri = Uri.fromFile(temp);
                         if (uri != null) {
                             try {
+                                result.mLoadPhotoFile = temp;
                                 result.mCutResult = BitmapFactory.decodeStream(mContext.getContentResolver().openInputStream(Uri.fromFile(temp)));
                                 if (mCallBack != null) {
                                     mCallBack.handlerSuccess(result);

@@ -11,6 +11,7 @@ import com.qingxin.medical.home.medicalbeauty.MedicalBeautyModel;
 import com.qingxin.medical.map.GaoDeMapModel;
 import com.qingxin.medical.map.LocationService;
 import com.qingxin.medical.retrofit.RetrofitModel;
+import com.qingxin.medical.update.QingXinAppUpdateMode;
 import com.qingxin.medical.user.SessionModel;
 import com.qingxin.medical.user.User;
 import com.qingxin.medical.user.UserModel;
@@ -22,6 +23,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+
 /**
  * QingXinApplication
  *
@@ -66,6 +68,7 @@ public class QingXinApplication extends VLApplication {
         manager.registerModel(SessionModel.class);
         manager.registerModel(ConfigModel.class);
         manager.registerModel(QingXinUmengModel.class);
+        manager.registerModel(QingXinAppUpdateMode.class);
     }
 
     @Override
@@ -89,7 +92,7 @@ public class QingXinApplication extends VLApplication {
         return null;
     }
 
-    private MemBean loadPersistentSession(){
+    private MemBean loadPersistentSession() {
         String serializedSession = getSharedPreferences().getString(QingXinConstants.KEY_PREFERENCES_SESSION, null);
         if (serializedSession != null) {
             try {
@@ -121,7 +124,7 @@ public class QingXinApplication extends VLApplication {
         this.mUser = user;
     }
 
-    public void saveMemberBean(@NonNull MemBean memBean){
+    public void saveMemberBean(@NonNull MemBean memBean) {
         SharedPreferences.Editor sharedEditor = getSharedPreferences().edit();
         String serializedUser = null;
         try {
@@ -145,6 +148,7 @@ public class QingXinApplication extends VLApplication {
         sharedEditor.apply();
         this.mUser = null;
     }
+
     /**
      * 删除当前应用保存的已登录用户信息.
      */
@@ -163,6 +167,7 @@ public class QingXinApplication extends VLApplication {
     public User getLoginUser() {
         return this.mUser;
     }
+
     /**
      * 获取当前应用已登录用户信息. null表示尚未登录成功
      *

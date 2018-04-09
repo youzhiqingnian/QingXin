@@ -123,7 +123,6 @@ public class LoginFragment extends QingXinFragment implements View.OnClickListen
                 break;
             case R.id.loginTv://登陆
                 if (isChecked()) {
-                    showView(R.layout.layout_loading);
                     mLoginPresenter.login(mPhoneEt.getText().toString().trim(), mCodeEt.getText().toString().trim());
                 }
                 break;
@@ -164,7 +163,6 @@ public class LoginFragment extends QingXinFragment implements View.OnClickListen
 
     @Override
     public void onSuccess(UserTokenBean userTokenBean) {
-        hideView(R.layout.layout_loading);
         userTokenBean.getMem().setToken(userTokenBean.getToken());
         getModel(UserModel.class).onLoginSuccess(userTokenBean.getMem());
         ToastUtils.showToast("登陆成功");

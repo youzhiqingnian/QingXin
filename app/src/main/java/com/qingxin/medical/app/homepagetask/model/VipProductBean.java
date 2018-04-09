@@ -11,29 +11,10 @@ import java.util.List;
  */
 public class VipProductBean  implements Serializable {
 
-
-    /**
-     * id : 0c792be5-59fb-483b-a88d-4d94e7598a11
-     * name : 美容针
-     * cover : ["http://p3u20cqo9.bkt.clouddn.com/product/46acb4c0-0cce-11e8-9a80-a72b786a38c9.jpg"]
-     * old_price : 3888
-     * price : 1288
-     * hospital : 北京清华长庚医院
-     * isvip : y
-     * order : 9
-     * ison : y
-     * created_at : 2018-2-6 23:53:46
-     * updated_at : 2018-2-6 23:53:46
-     * citycode : 0311
-     * collect_num : 1
-     * book_num : 0
-     * mobile : null
-     */
-
     private String id;
     private String name;
-    private int old_price;
-    private int price;
+    private String old_price;
+    private String price;
     private String hospital;
     private String isvip;
     private int order;
@@ -49,6 +30,22 @@ public class VipProductBean  implements Serializable {
     private String mobile;
     private List<String> cover;
 
+    public String getOld_price() {
+        return old_price;
+    }
+
+    public void setOld_price(String old_price) {
+        this.old_price = old_price;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
     public String getId() {
         return id;
     }
@@ -63,22 +60,6 @@ public class VipProductBean  implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getOld_price() {
-        return old_price;
-    }
-
-    public void setOld_price(int old_price) {
-        this.old_price = old_price;
-    }
-
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
     }
 
     public String getHospital() {
@@ -191,29 +172,5 @@ public class VipProductBean  implements Serializable {
 
     public void setProvince_name(String province_name) {
         this.province_name = province_name;
-    }
-
-    @Override
-    public String toString() {
-        return "VipProductBean{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", old_price=" + old_price +
-                ", price=" + price +
-                ", hospital='" + hospital + '\'' +
-                ", isvip='" + isvip + '\'' +
-                ", order=" + order +
-                ", ison='" + ison + '\'' +
-                ", created_at='" + created_at + '\'' +
-                ", updated_at='" + updated_at + '\'' +
-                ", citycode='" + citycode + '\'' +
-                ", price_unit='" + price_unit + '\'' +
-                ", city_name='" + city_name + '\'' +
-                ", province_name='" + province_name + '\'' +
-                ", collect_num=" + collect_num +
-                ", book_num=" + book_num +
-                ", mobile='" + mobile + '\'' +
-                ", cover=" + cover +
-                '}';
     }
 }

@@ -161,6 +161,7 @@
     <string name="region">地区</string>
     <string name="cellphone">手机</string>
     <string name="save">保存</string>
+    <string name="save_success">保存成功</string>
     <string name="setting">设置</string>
     <string name="about_qingxin">关于青歆</string>
     <string name="check_update">检查更新</string>

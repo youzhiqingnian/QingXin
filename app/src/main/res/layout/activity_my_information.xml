@@ -248,7 +248,6 @@
     </FrameLayout>
 
     <View
-        android:id="@+id/bottomV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/gap_color_gray" />

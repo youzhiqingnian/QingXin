@@ -217,17 +217,15 @@ public abstract class VLAppUpdateModel extends VLModel {
         if (currentActivity == null) return;
         if (mAppUpdateRes.mHttpTaskId == 0) {//下载任务没有开始,启动下载任务
             VLHttpClient httpClient = VLApplication.instance().getHttpClient();
-            mAppUpdateRes.mHttpTaskId = httpClient.httpFileDownloadTask(true, mAppUpdateRes.mDownloadUrl, mAppUpdateRes.mDownloadFilepath, 32 * 1024, new VLHttpClient.VLHttpFileDownloadListener() {
-                        public void onResProgress(int currentLength, int contentLength) {//鏇存柊涓嬭浇杩涘害
-                            String downloadDesc;
-                            if (contentLength > 0)
-                                downloadDesc = (currentLength / 1024) + "k/" + (contentLength / 1024) + "k (" + (currentLength * 100 / contentLength) + "%)";
-                            else
-                                downloadDesc = (currentLength / 1024) + "k";
-                            String title = VLUtils.stringNullDefault(mAppUpdateRes.mPromptDownloadTitle, "下载进度");
-                            currentActivity.updateProgressDialog(title, downloadDesc);
-                        }
-                    },
+            mAppUpdateRes.mHttpTaskId = httpClient.httpFileDownloadTask(true, mAppUpdateRes.mDownloadUrl, mAppUpdateRes.mDownloadFilepath, 32 * 1024, (currentLength, contentLength) -> {
+                String downloadDesc;
+                if (contentLength > 0)
+                    downloadDesc = (currentLength / 1024) + "k/" + (contentLength / 1024) + "k (" + (currentLength * 100 / contentLength) + "%)";
+                else
+                    downloadDesc = (currentLength / 1024) + "k";
+                String title = VLUtils.stringNullDefault(mAppUpdateRes.mPromptDownloadTitle, "下载进度");
+                currentActivity.updateProgressDialog(title, downloadDesc);
+            },
                     new VLAsyncHandler<Object>(null, VLScheduler.THREAD_MAIN) {
                         @Override
                         protected void handler(boolean succeed) {//下载完成
