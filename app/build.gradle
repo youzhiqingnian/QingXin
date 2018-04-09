@@ -14,8 +14,8 @@ android {
         applicationId "com.qingxin.medical"
         minSdkVersion 14
         targetSdkVersion 22
-        versionCode 10000
-        versionName "1.0.0"
+        versionCode 10100
+        versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         flavorDimensions "versionCode"
@@ -65,7 +65,7 @@ android {
     }
 
     productFlavors {
-        /*market_lenovo {
+        market_lenovo {
             resValue "string", "APP_CHANNEL", "market_lenovo"
         }
 
@@ -115,7 +115,7 @@ android {
 
         inner_test {
             resValue "string", "APP_CHANNEL", "inner_test"
-        }*/
+        }
 
         official {
             resValue "string", "APP_CHANNEL", "official"
