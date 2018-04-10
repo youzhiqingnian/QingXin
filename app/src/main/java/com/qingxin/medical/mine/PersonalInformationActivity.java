@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.qingxin.medical.QingXinTitleBar;
 import com.qingxin.medical.R;
@@ -38,6 +39,7 @@ import com.vlee78.android.vl.VLResHandler;
 import com.vlee78.android.vl.VLScheduler;
 import com.vlee78.android.vl.VLTitleBar;
 import com.vlee78.android.vl.VLUtils;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -271,8 +273,9 @@ public class PersonalInformationActivity extends QingXinActivity implements View
                 QingXinLocationPopupWindow qingXinLocationPopupWindow = getParam();
                 if (null == qingXinLocationPopupWindow) return;
                 DistrictItemData city = qingXinLocationPopupWindow.getSelectedCity();
+                ProvinceData provinceData = qingXinLocationPopupWindow.getSelectedProvince();
                 mCityCode = city == null ? "" : city.getId();
-                mProvinceCode = city == null ? "" : (city.getProvinceData() == null ? "" : city.getProvinceData().getId());
+                mProvinceCode = provinceData == null ? "" : provinceData.getId();
                 setCityName(mCityCode, mProvinceCode);
             }
         }, this).show(mRigthtView);

@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
 import com.qingxin.medical.R;
 import com.qingxin.medical.base.QingXinApplication;
 import com.qingxin.medical.config.ConfigModel;
@@ -14,6 +15,7 @@ import com.qingxin.medical.widget.OnWheelChangedListener;
 import com.qingxin.medical.widget.WheelView;
 import com.qingxin.medical.widget.adapters.ArrayWheelAdapter;
 import com.vlee78.android.vl.VLAsyncHandler;
+
 import java.util.List;
 
 /**
@@ -169,8 +171,8 @@ public class QingXinLocationPopupWindow {
         if (selectedProvince != null && mLocationType.ordinal() > LocationType.PROVINCE.ordinal()) {
             mWheelCity.setViewAdapter(new ArrayWheelAdapter<>(mContext, selectedProvince.getCities().toArray()));
             mWheelCity.setCurrentItem(0);
-            if (selectedProvince.getCities() != null && !selectedProvince.getCities().isEmpty()){
-                this.mCurCity = selectedProvince.getCities().get(0);
+            if (selectedProvince.getCities() != null && !selectedProvince.getCities().isEmpty()) {
+                this.mCurCity = selectedProvince.getCities().size() > 0 ? selectedProvince.getCities().get(0) : null;
             }
             updateAreas();
         }
@@ -183,7 +185,7 @@ public class QingXinLocationPopupWindow {
         // 当前选中地市index
         int cCurrent = mWheelCity.getCurrentItem();
         // 当前选中地市
-        this.mCurCity = mCurPro.getCities().get(cCurrent);
+        this.mCurCity = mCurPro.getCities().size() > 0 ? mCurPro.getCities().get(cCurrent) : null;
     }
 
     /**

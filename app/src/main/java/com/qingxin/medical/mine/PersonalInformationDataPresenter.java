@@ -84,18 +84,10 @@ public class PersonalInformationDataPresenter implements PersonalInformationData
         if (!TextUtils.isEmpty(cover)) {
             map.put("cover", cover);
         }
-        if (!TextUtils.isEmpty(gender)) {
-            map.put("gender", gender);
-        }
-        if (!TextUtils.isEmpty(birthday)) {
-            map.put("birthday", birthday);
-        }
-        if (!TextUtils.isEmpty(province_id)) {
-            map.put("province_id", province_id);
-        }
-        if (!TextUtils.isEmpty(city_id)) {
-            map.put("city_id", city_id);
-        }
+        map.put("province_id", province_id);
+        map.put("birthday", birthday);
+        map.put("gender", gender);
+        map.put("city_id", city_id);
         mCompositeSubscription.add(getModel(RetrofitModel.class).getService(ModifyPersonalInfoService.class).modifyPersonalInfo(map)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
