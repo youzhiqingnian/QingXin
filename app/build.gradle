@@ -20,6 +20,9 @@ android {
         multiDexEnabled true
         flavorDimensions "versionCode"
         javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+        ndk {
+            abiFilters "armeabi-v7a"
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
